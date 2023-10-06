@@ -12,4 +12,86 @@ package "<<agr X>>"{
     class X<<entity>><<root>>{}
 }
 
+package "<<agr MapaCampus>>"{
+    class MapaCampus<<entity>><<root>>{}
+    class GrelhaCampus<<vo>>{}
+
+    MapaCampus -- "1" GrelhaCampus
+}
+
+package "<<agr Edificio>>"{
+    class Edificio<<entity>><<root>>{}
+    class DesignaçãoEdficio<<vo>>{}
+    class Elevador<<vo>>{}
+
+    MapaCampus -- "*" Edificio
+    Edificio -- "1" DesignaçãoEdficio
+    Edificio -- "0..1" Elevador
+}
+
+' Faz sentido ser um agregado à parte por estar sujeito a mudanças, obras por exemplo. Confirmar.
+package "<<agr MapaEdificio>>"{
+    class MapaEdificio<<entity>><<root>>{}
+    class GrelhaEdificio<<vo>>{}
+
+    Edificio -- "1" MapaEdificio : "tem"
+    MapaEdificio -- "1" GrelhaEdificio
+}
+
+package "<<agr Piso>>"{
+    class Piso<<entity>><<root>>{}
+    class DesignaçãoPiso<<vo>>{}
+
+    Edificio -- "*" Piso : "contém"
+    Piso -- "1" DesignaçãoPiso
+}
+
+' Refere-se a Sala/Gabinete
+package "<<agr Sala>>"{
+    class Sala<<entity>><<root>>{}
+    class DesignacaoSala<<vo>>{}
+
+    Piso -- "*" Sala
+    Sala -- "1" DesignacaoSala
+}
+
+package "<<agr Passagem>>"{
+    class Passagem<<entity>><<root>>{}
+
+    Passagem -- "1" Piso : "interliga"
+    Passagem -- "1" Piso : "interliga" 
+}
+
+package "<<agr Utilizador>>"{
+    class Utilizador<<entity>><<root>>{}
+}
+
+package "<<agr Administrador>>"{
+
+}
+
+package "<<agr GestorFrota>>"{
+
+}
+
+package "<<agr GestorCampus>>"{
+
+}
+
+package "<<agr Utente>>"{
+
+}
+
+' Faz sentido o drone e o robo existirem por si só?
+package "<<agr DroneISEP>>"{
+
+}
+package "<<agr RobISEP>>"{
+
+}
+
+
+
+
+
 @enduml
