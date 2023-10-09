@@ -16,7 +16,7 @@ package "<<agr MapaCampus>>"{
     class MapaCampus<<entity>><<root>>{}
     class GrelhaCampus<<vo>>{}
 
-    MapaCampus -- "1" GrelhaCampus
+    MapaCampus --> "1" GrelhaCampus
 }
 
 package "<<agr Edificio>>"{
@@ -24,9 +24,9 @@ package "<<agr Edificio>>"{
     class DesignaçãoEdficio<<vo>>{}
     class Elevador<<vo>>{}
 
-    MapaCampus -- "*" Edificio
-    Edificio -- "1" DesignaçãoEdficio
-    Edificio -- "0..1" Elevador
+    MapaCampus --> "*" Edificio
+    Edificio --> "1" DesignaçãoEdficio
+    Edificio --> "0..1" Elevador
 }
 
 ' Faz sentido ser um agregado à parte por estar sujeito a mudanças, obras por exemplo. Confirmar.
@@ -34,16 +34,16 @@ package "<<agr MapaEdificio>>"{
     class MapaEdificio<<entity>><<root>>{}
     class GrelhaEdificio<<vo>>{}
 
-    Edificio -- "1" MapaEdificio : "tem"
-    MapaEdificio -- "1" GrelhaEdificio
+    Edificio --> "1" MapaEdificio : "tem"
+    MapaEdificio --> "1" GrelhaEdificio
 }
 
 package "<<agr Piso>>"{
     class Piso<<entity>><<root>>{}
     class DesignaçãoPiso<<vo>>{}
 
-    Edificio -- "*" Piso : "contém"
-    Piso -- "1" DesignaçãoPiso
+    Edificio --> "*" Piso : "contém"
+    Piso --> "1" DesignaçãoPiso
 }
 
 ' Refere-se a Sala/Gabinete
@@ -64,6 +64,22 @@ package "<<agr Passagem>>"{
 
 package "<<agr Utilizador>>"{
     class Utilizador<<entity>><<root>>{}
+    class Nome<<vo>>{}
+    class NomeUtilizador<<vo>>{}
+    class PasswordUtilizador<<vo>>{}
+
+    Utilizador --> "1" Nome
+    Utilizador --> "1" NomeUtilizador
+    Utilizador --> "1" PasswordUtilizador
+}
+
+package "<<agr GestorFrota>>"{
+    class GestorFrota <<entity>><<root>> {}
+    GestorFrota --|> Utilizador
+}
+
+package "<<agr ABC>>"{
+    
 }
 
 package "<<agr Administrador>>"{
@@ -87,8 +103,15 @@ package "<<agr DroneISEP>>"{
 
 }
 package "<<agr RobISEP>>"{
+    class RobISEP<<root>><<entity>>{}
+    ' Tarefas: Vigilância e transporte de objetos
+    class TipoRobo<<enum>>{}
+    class DesignacaoRobo<<vo>>{}
 
+    RobISEP --> "1" DesignacaoRobo
+    RobISEP --> "1" TipoRobo
 }
+
 
 
 
