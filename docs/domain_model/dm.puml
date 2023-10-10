@@ -8,10 +8,6 @@ skinparam nodesep 150
 hide empty members
 left to right direction
 
-package "<<agr X>>"{
-    class X<<entity>><<root>>{}
-}
-
 package "<<agr MapaCampus>>"{
     class MapaCampus<<entity>><<root>>{}
     class GrelhaCampus<<vo>>{}
@@ -78,24 +74,19 @@ package "<<agr GestorFrota>>"{
     GestorFrota --|> Utilizador
 }
 
-package "<<agr ABC>>"{
-    
-}
-
 package "<<agr Administrador>>"{
-
-}
-
-package "<<agr GestorFrota>>"{
-
+    class Administrador <<entity>><<root>>{}
+    Administrador --|> Utilizador
 }
 
 package "<<agr GestorCampus>>"{
-
+    class GestorCampus <<entity>><<root>>{}
+    GestorCampus --|> Utilizador
 }
 
 package "<<agr Utente>>"{
-
+    class Utente <<entity>><<root>>{}
+    Utente --|> Utilizador
 }
 
 ' Faz sentido o drone e o robo existirem por si só?
