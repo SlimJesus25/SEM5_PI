@@ -18,11 +18,18 @@ package "<<agr MapaCampus>>"{
 package "<<agr Edificio>>"{
     class Edificio<<entity>><<root>>{}
     class DesignaçãoEdficio<<vo>>{}
-    class Elevador<<vo>>{}
 
     MapaCampus --> "*" Edificio
     Edificio --> "1" DesignaçãoEdficio
-    Edificio --> "0..1" Elevador
+}
+
+package "<<agr Elevador>>"{
+    class Elevador<<entity>><<root>>{}
+    class ElevadorDesignacao<<vo>>{}
+
+    Edificio --> "*" Elevador
+    Elevador --> "1" ElevadorDesignacao
+
 }
 
 ' Faz sentido ser um agregado à parte por estar sujeito a mudanças, obras por exemplo. Confirmar.
@@ -47,15 +54,19 @@ package "<<agr Sala>>"{
     class Sala<<entity>><<root>>{}
     class DesignacaoSala<<vo>>{}
 
-    Piso -- "*" Sala
-    Sala -- "1" DesignacaoSala
+    Piso --> "*" Sala
+    Sala --> "1" DesignacaoSala
 }
 
 package "<<agr Passagem>>"{
     class Passagem<<entity>><<root>>{}
+    class PassagemDesignacao<<vo>>{}
 
-    Passagem -- "1" Piso : "interliga"
-    Passagem -- "1" Piso : "interliga" 
+    Passagem --> "1" PassagemDesignacao
+    Passagem --> "1" Piso
+    Passagem --> "1" Piso 
+    Passagem --> "1" Edificio
+    Passagem --> "1" Edificio
 }
 
 package "<<agr Utilizador>>"{
@@ -96,11 +107,17 @@ package "<<agr DroneISEP>>"{
 package "<<agr RobISEP>>"{
     class RobISEP<<root>><<entity>>{}
     ' Tarefas: Vigilância e transporte de objetos
-    class TipoRobo<<enum>>{}
     class DesignacaoRobo<<vo>>{}
 
     RobISEP --> "1" DesignacaoRobo
+}
+
+package "<<agr TipoRobo>>"{
+    class TipoRobo<<root>><<entity>>{}
+    class Tarefa<<enum>>{}
+
     RobISEP --> "1" TipoRobo
+    TipoRobo --> "1" Tarefa
 }
 
 
