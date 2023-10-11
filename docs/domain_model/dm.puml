@@ -15,12 +15,23 @@ package "<<agr MapaCampus>>"{
     MapaCampus --> "1" GrelhaCampus
 }
 
+'o código do edificio é obrigatório, no máximo 5 caracteres, letras e digitos, podendo conter espaços no meio
+'o nome do edificio é opcional, no máximo 50 caracteres alfanuméricos
 package "<<agr Edificio>>"{
     class Edificio<<entity>><<root>>{}
-    class DesignaçãoEdficio<<vo>>{}
+    class CodigoEdificio<<vo>>{}
+    class NomeOpcionalEdificio<<vo>>{}
+    class DescricaoEdificio<<vo>>{}
+    class DimensaoMaximaPiso<<vo>>{}
+    note right{
+        dimensão máxima de cada piso em termos de células (ex., 10 x 10)
+    }
 
     MapaCampus --> "*" Edificio
-    Edificio --> "1" DesignaçãoEdficio
+    Edificio --> "1" CodigoEdificio
+    Edificio --> "1" NomeOpcionalEdificio
+    Edificio --> "1" DescricaoEdificio
+    Edificio --> "1" DimensaoMaximaPiso
 }
 
 package "<<agr Elevador>>"{
@@ -43,19 +54,25 @@ package "<<agr MapaEdificio>>"{
 
 package "<<agr Piso>>"{
     class Piso<<entity>><<root>>{}
-    class DesignaçãoPiso<<vo>>{}
+    class DesignacaoPiso<<vo>>{}
+    class DescricaoPiso<<vo>>{}
 
     Edificio --> "*" Piso : "contém"
-    Piso --> "1" DesignaçãoPiso
+    Piso --> "1" DesignacaoPiso
+    Piso --> "1" DescricaoPiso
 }
 
 ' Refere-se a Sala/Gabinete
 package "<<agr Sala>>"{
     class Sala<<entity>><<root>>{}
     class DesignacaoSala<<vo>>{}
+    class CategoriaSala<<enum>>{} 
+    class DescricaoSala<<vo>>{}
 
     Piso --> "*" Sala
     Sala --> "1" DesignacaoSala
+    Sala --> "1" CategoriaSala
+    Sala --> "1" DescricaoSala
 }
 
 package "<<agr Passagem>>"{
@@ -64,9 +81,9 @@ package "<<agr Passagem>>"{
 
     Passagem --> "1" PassagemDesignacao
     Passagem --> "1" Piso
-    Passagem --> "1" Piso 
+    Passagem <-- "1" Piso 
     Passagem --> "1" Edificio
-    Passagem --> "1" Edificio
+    Passagem <-- "1" Edificio
 }
 
 package "<<agr Utilizador>>"{
@@ -101,23 +118,36 @@ package "<<agr Utente>>"{
 }
 
 ' Faz sentido o drone e o robo existirem por si só?
-package "<<agr DroneISEP>>"{
+package "<<agr Drone>>"{
 
 }
-package "<<agr RobISEP>>"{
-    class RobISEP<<root>><<entity>>{}
-    ' Tarefas: Vigilância e transporte de objetos
-    class DesignacaoRobo<<vo>>{}
+package "<<agr Robo>>"{
+    class Robo<<root>><<entity>>{}
+    class NicknameRobo<<vo>>{}
+    class NumeroSerieRobo<<vo>>{}
+    class CodigoRobo<<vo>>{}
+    class MarcaRobo<<vo>>{}
 
-    RobISEP --> "1" DesignacaoRobo
+    Robo --> "1" NicknameRobo
+    Robo --> "1" CodigoRobo
+    Robo --> "1" NumeroSerieRobo
+    Robo --> "1" MarcaRobo
 }
 
 package "<<agr TipoRobo>>"{
     class TipoRobo<<root>><<entity>>{}
-    class Tarefa<<enum>>{}
 
-    RobISEP --> "1" TipoRobo
-    TipoRobo --> "1" Tarefa
+
+    Robo --> "1" TipoRobo
+}
+
+' Tarefas: Vigilância e transporte de objetos
+package "<<agr Tarefa>>"{
+    class Tarefa<<root>><<entity>>{}
+    class TipoTarefa<<enum>>{}
+
+    TipoRobo --> "*" Tarefa : "executa"
+    Tarefa --> "1" TipoTarefa
 }
 
 
