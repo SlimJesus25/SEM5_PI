@@ -127,11 +127,14 @@ package "<<agr Robo>>"{
     class NumeroSerieRobo<<vo>>{}
     class CodigoRobo<<vo>>{}
     class MarcaRobo<<vo>>{}
+    'Inibido ou nao
+    class EstadoRobo<<enum>>{} 
 
     Robo --> "1" NicknameRobo
     Robo --> "1" CodigoRobo
     Robo --> "1" NumeroSerieRobo
     Robo --> "1" MarcaRobo
+    Robo --> "1" EstadoRobo
 }
 
 package "<<agr TipoRobo>>"{
