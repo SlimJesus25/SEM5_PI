@@ -10,6 +10,7 @@ interface CategoriaSalaProps {
 enum Categorias {
     laboratorio,
     anfiteatro,
+    gabinete,
 }
 
 export class CategoriaSala extends ValueObject<CategoriaSalaProps> {

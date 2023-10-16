@@ -8,7 +8,7 @@ import { Guard } from "../core/logic/Guard";
 
 interface PisoProps {
   descricaoPiso: string;
-  sala: Sala;
+  sala: Array<Sala>;
   designacaoPiso: string;
 }
 
@@ -25,7 +25,7 @@ export class Piso extends AggregateRoot<PisoProps> {
     return this.props.descricaoPiso;
   }
 
-  get sala (): Sala {
+  get sala (): Array<Sala> {
     return this.props.sala;
   }
 

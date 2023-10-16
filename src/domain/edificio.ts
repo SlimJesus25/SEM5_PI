@@ -3,19 +3,19 @@ import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Result } from "../core/logic/Result";
 import { EdificioId } from "./edificioId";
 import { CodigoEdificio } from "./codigoEdificio";
-import { Role } from "../domain/role";
-import { UserPassword } from "./userPassword";
 import { Guard } from "../core/logic/Guard";
-
+import { Elevador } from "./elevador";
+import { Piso } from "./piso";
+import { MapaEdificio } from "./mapaEdificio"
 
 interface EdificioProps {
   codigoEdificio: CodigoEdificio;
   nomeOpcionalEdificio: string;
   descricaoEdificio: string;
   dimensaoMaximaPiso: number;
-  //elevador: Elevador;
-  //passagem: Passagem;
-  //mapaEdificio: MapaEdificio;
+  elevadores: Array<Elevador>;
+  pisos: Array<Piso>
+  mapaEdificio: MapaEdificio;
 }
 
 export class Edificio extends AggregateRoot<EdificioProps> {
@@ -43,6 +43,19 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return this.props.dimensaoMaximaPiso;
   }
 
+  get elevadores (): Array<Elevador> {
+    return this.props.elevadores;
+  }
+
+  get pisos (): Array<Piso> {
+    return this.props.pisos;
+  }
+
+  get mapa (): MapaEdificio {
+    return this.props.mapaEdificio;
+  }
+
+
   private constructor (props: EdificioProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -53,7 +66,10 @@ export class Edificio extends AggregateRoot<EdificioProps> {
       { argument: props.codigoEdificio, argumentName: 'codigoEdificio' },
       { argument: props.descricaoEdificio, argumentName: 'descricaoEdificio' },
       { argument: props.dimensaoMaximaPiso, argumentName: 'dimensaoMaximaEdificio' },
-      { argument: props.nomeOpcionalEdificio, argumentName: 'nomeOpcionalEdificio' }
+      { argument: props.nomeOpcionalEdificio, argumentName: 'nomeOpcionalEdificio' },
+      { argument: props.elevadores, argumentName: 'elevadores' },
+      { argument: props.pisos, argumentName: 'pisos' },
+      { argument: props.mapaEdificio, argumentName: 'mapaEdificio' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
