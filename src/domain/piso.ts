@@ -5,7 +5,6 @@ import { Result } from "../core/logic/Result";
 import { PisoId } from "./pisoId";
 import { Sala } from "./sala";
 import { Guard } from "../core/logic/Guard";
-import ISalaDTO from "../dto/ISalaDTO";
 
 interface PisoProps {
   descricaoPiso: string;

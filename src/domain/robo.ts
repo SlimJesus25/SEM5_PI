@@ -1,16 +1,13 @@
 import { AggregateRoot } from "../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Result } from "../core/logic/Result";
-import { UserEmail } from "./userEmail";
-import { Role } from "../domain/role";
-import { UserPassword } from "./userPassword";
 import { Guard } from "../core/logic/Guard";
 import { NumeroSerieRobo } from "./numeroSerieRobo";
 import { CodigoRobo } from "./codigoRobo";
 import { MarcaRobo } from "./marcaRobo";
 import { RoboId } from "./roboId";
 import { EstadoRobo } from "./estadoRobo";
-
+import { TipoRobo } from "./tipoRobo";
 
 interface RoboProps {
   estado: EstadoRobo;
@@ -18,6 +15,7 @@ interface RoboProps {
   codigo: CodigoRobo;
   numeroSerie: NumeroSerieRobo;
   nickname: string;
+  tipoRobo: TipoRobo;
 }
 
 export class Robo extends AggregateRoot<RoboProps> {
@@ -49,6 +47,10 @@ export class Robo extends AggregateRoot<RoboProps> {
     return this.props.nickname;
   }
 
+  get tipoRobo(): TipoRobo {
+    return this.props.tipoRobo;
+  }
+
   private constructor (props: RoboProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -60,7 +62,8 @@ export class Robo extends AggregateRoot<RoboProps> {
       { argument: props.marca, argumentName: 'marca' },
       { argument: props.codigo, argumentName: 'codigo' },
       { argument: props.numeroSerie, argumentName: 'numeroSerie' },
-      { argument: props.nickname, argumentName: 'nickname' }
+      { argument: props.nickname, argumentName: 'nickname' },
+      { argument: props.tipoRobo, argumentName: 'tipoRobo' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
