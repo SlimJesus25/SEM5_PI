@@ -8,13 +8,6 @@ skinparam nodesep 150
 hide empty members
 left to right direction
 
-package "<<agr MapaCampus>>"{
-    class MapaCampus<<entity>><<root>>{}
-    class GrelhaCampus<<vo>>{}
-
-    MapaCampus --> "1" GrelhaCampus
-}
-
 'o código do edificio é obrigatório, no máximo 5 caracteres, letras e digitos, podendo conter espaços no meio
 'o nome do edificio é opcional, no máximo 50 caracteres alfanuméricos
 package "<<agr Edificio>>"{
@@ -27,7 +20,6 @@ package "<<agr Edificio>>"{
         dimensão máxima de cada piso em termos de células (ex., 10 x 10)
     }
 
-    MapaCampus --> "*" Edificio
     Edificio --> "1" CodigoEdificio
     Edificio --> "1" NomeOpcionalEdificio
     Edificio --> "1" DescricaoEdificio
