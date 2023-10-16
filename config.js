@@ -44,6 +44,10 @@ export default {
     role: {
       name: "RoleController",
       path: "../controllers/roleController"
+    },
+    elevador: {
+      name: "ElevadorController",
+      path: "../controllers/elevadorController"
     }
   },
 
@@ -55,6 +59,10 @@ export default {
     user: {
       name: "UserRepo",
       path: "../repos/userRepo"
+    },
+    elevador: {
+      name: "ElevadorRepo",
+      path: "../repos/elevadorRepo"
     }
   },
 
@@ -62,6 +70,10 @@ export default {
     role: {
       name: "RoleService",
       path: "../services/roleService"
+    },
+    elevador: {
+      name: "ElevadorService",
+      path: "../services/elevadorService"
     }
   },
 };
