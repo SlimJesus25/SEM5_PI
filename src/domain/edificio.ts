@@ -13,7 +13,7 @@ interface EdificioProps {
   nomeOpcionalEdificio: string;
   descricaoEdificio: string;
   dimensaoMaximaPiso: number;
-  elevadores: Array<Elevador>;
+  elevadores: Elevador;
   pisos: Array<Piso>
   mapaEdificio: MapaEdificio;
 }
@@ -43,7 +43,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return this.props.dimensaoMaximaPiso;
   }
 
-  get elevadores (): Array<Elevador> {
+  get elevadores (): Elevador {
     return this.props.elevadores;
   }
 

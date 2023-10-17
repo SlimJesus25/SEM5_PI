@@ -30,7 +30,7 @@ package "<<agr Elevador>>"{
     class Elevador<<entity>><<root>>{}
     class ElevadorDesignacao<<vo>>{}
 
-    Edificio --> "*" Elevador
+    Edificio --> "1" Elevador
     Elevador --> "1" ElevadorDesignacao
 
 }
