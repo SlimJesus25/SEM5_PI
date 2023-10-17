@@ -10,7 +10,7 @@ import { ElevadorMap } from "../mappers/ElevadorMap";
 @Service()
 export default class ElevadorService implements IElevadorService {
   constructor(
-      @Inject(config.repos.elevador.designacao) private elevadorRepo : IElevadorRepo
+      @Inject(config.repos.elevador.name) private elevadorRepo : IElevadorRepo
   ) {}
 
   public async getElevador( elevadorId: string): Promise<Result<IElevadorDTO>> {
