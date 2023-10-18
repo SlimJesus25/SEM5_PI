@@ -48,6 +48,10 @@ export default {
     elevador: {
       name: "ElevadorController",
       path: "../controllers/elevadorController"
+    },
+    sala: {
+      name: "SalaController",
+      path: "../controllers/salaController"
     }
   },
 
@@ -63,6 +67,10 @@ export default {
     elevador: {
       name: "ElevadorRepo",
       path: "../repos/elevadorRepo"
+    },
+    sala: {
+      name: "SalaRepo",
+      path: "../repos/salaRepo"
     }
   },
 
@@ -74,6 +82,10 @@ export default {
     elevador: {
       name: "ElevadorService",
       path: "../services/elevadorService"
+    },
+    sala: {
+      name: "SalaService",
+      path: "../services/salaService"
     }
   },
 };

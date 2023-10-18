@@ -26,20 +26,53 @@ export class Sala extends AggregateRoot<SalaProps> {
     return this.props.descricaoSala;
   }
 
-  get categoria (): CategoriaSala {
-    return this.props.categoriaSala;
+  get categoria (): string {
+    return this.props.categoriaSala.toString();
   }
 
   get designacao (): string {
     return this.props.designacaoSala;
   }
 
+  set descricao (value: string){
+    this.props.descricaoSala = value;
+  }
+
+  set categoria (value: string){
+    //this.props.categoriaSala = value;
+  }
+
+  set designacao (value: string){
+    this.props.designacaoSala = value;
+  }
 
   private constructor (props: SalaProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
-  public static create (props: SalaProps, id?: UniqueEntityID): Result<Sala> {
+  public static create (salaDTO: ISalaDTO, id?: UniqueEntityID): Result<Sala> {
+
+    const keys = Object.keys(CategoriaSala);
+    const v = keys.find((key) => key === salaDTO.categoria);
+    const descricao = salaDTO.descricao;
+    const categoria = v;
+    const designacao = salaDTO.designacao;
+
+    
+
+    if (!!descricao === false || descricao.length === 0) {
+      return Result.fail<Sala>('Must provide sala s description')
+    }else if(!!designacao === false || designacao.length === 0){
+      return Result.fail<Sala>('Must provide sala s designation')
+    } else {
+      const sala = new Sala({ descricaoSala: descricao,
+         categoriaSala: null,
+          designacaoSala: designacao}, id);
+      return Result.ok<Sala>( sala )
+    }
+  }
+
+  /*public static create (props: SalaProps, id?: UniqueEntityID): Result<Sala> {
 
     const guardedProps = [
       { argument: props.designacaoSala, argumentName: 'designacaoSala' },
@@ -59,5 +92,5 @@ export class Sala extends AggregateRoot<SalaProps> {
 
       return Result.ok<Sala>(sala);
     }
-  }
+  }*/
 }
