@@ -1,0 +1,87 @@
+@startuml sd
+
+actor Utilizador as u
+
+participant InterfaceElevadorController as ictrl
+participant ElevadorController as ctrl
+participant InterfaceElevadorService as isvc
+participant ElevadorService as svc
+participant InterfaceElevadorRepo as irepo
+participant ElevadorRepo as repo
+participant ElevadorMapper as mapper
+participant InterfaceElevadorPersistence as ischema
+participant ElevadorSchema as schema
+participant ConfigurationFile as conf
+participant Elevador as model
+
+activate u
+u -> ictrl : criar elevador
+activate ictrl
+ictrl -> ctrl : createElevador(req, res, next)
+activate ctrl
+ctrl -> conf : injeta o serviço do elevador
+activate conf
+conf --> ctrl
+deactivate conf
+ctrl -> isvc : createElevador(IElevadorDTO)
+activate isvc
+isvc -> svc : createElevador(IElevadorDTO)
+activate svc
+svc -> conf : injeta o repositório do elevador
+activate conf
+conf --> svc
+deactivate conf
+svc -> model : elevador = create(elevadorDTO)
+activate model
+model --> svc
+deactivate model
+svc -> irepo : elevador = save(elevador)
+activate irepo
+irepo -> repo : save(elevador)
+activate repo
+repo -> conf : injeta o schema do elevador
+activate conf
+conf --> repo
+deactivate conf
+repo -> mapper : toPersistence(elevador)
+activate mapper
+mapper --> repo
+deactivate mapper
+repo -> ischema : create(elevadorCreated)
+activate ischema 
+ischema -> schema : create(elevadorCreated)
+activate schema
+schema --> ischema
+deactivate schema
+deactivate scheam
+ischema --> repo
+deactivate ischema
+repo -> mapper : toDomain(elevadorCreated)
+activate mapper
+mapper --> repo
+deactivate mapper
+repo --> irepo
+deactivate repo
+irepo --> svc
+deactivate irepo
+svc -> mapper : toDTO(elevador)
+activate mapper
+mapper --> svc
+deactivate mapper
+svc --> isvc
+deactivate svc
+isvc --> ctrl
+deactivate isvc
+alt caso de sucesso
+    ctrl --> ictrl : Envia um código 201 (POST)
+else caso de insucesso
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+end
+deactivate ctrl
+ictrl --> u
+deactivate ictrl
+deactivate u
+
+
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml ed
+
+hide circle
+hide fields
+
+!theme crt-green
+skinparam nodesep 150
+hide empty members
+left to right direction
+
+package "<<agr Elevador>>"{
+    class Elevador<<entity>><<root>>{}
+    class ElevadorDesignacao<<vo>>{}
+
+    Elevador --> "1" ElevadorDesignacao
+}
+
+@enduml
