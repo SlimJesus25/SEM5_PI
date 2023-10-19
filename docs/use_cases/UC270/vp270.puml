@@ -1,7 +1,6 @@
 @startuml sd
 
-actor Utilizador as u
-
+participant Route as route
 participant InterfaceElevadorController as ictrl
 participant ElevadorController as ctrl
 participant InterfaceElevadorService as isvc
@@ -14,8 +13,8 @@ participant ElevadorSchema as schema
 participant ConfigurationFile as conf
 participant Elevador as model
 
-activate u
-u -> ictrl : criar elevador
+activate route
+route -> ictrl : criar elevador
 activate ictrl
 ictrl -> ctrl : createElevador(req, res, next)
 activate ctrl
@@ -78,9 +77,9 @@ else caso de insucesso
     ctrl --> ictrl : Envia um código 404 (NOT FOUND)
 end
 deactivate ctrl
-ictrl --> u
+ictrl --> route
 deactivate ictrl
-deactivate u
+deactivate route
 
 
 
