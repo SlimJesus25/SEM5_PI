@@ -38,8 +38,8 @@ export default class ElevadorController implements IElevadorController /* TODO: 
         return res.status(404).send();
       }
 
-      const roleDTO = elevadorOrError.getValue();
-      return res.status(201).json( roleDTO );
+      const elevadorDTO = elevadorOrError.getValue();
+      return res.status(201).json( elevadorDTO );
     }
     catch (e) {
       return next(e);
