@@ -52,6 +52,34 @@ export default {
     sala: {
       name: "SalaController",
       path: "../controllers/salaController"
+    },
+    edificio: {
+      name: "EdificioController",
+      path: "../controllers/edificioController"
+    },
+    passagem: {
+      name: "PassagemController",
+      path: "../controllers/passagemController"
+    },
+    robo: {
+      name: "RoboController",
+      path: "../controllers/roboController"
+    },
+    piso: {
+      name: "PisoController",
+      path: "../controllers/pisoController"
+    },
+    MapaEdificio: {
+      name: "MapaEdificioController",
+      path: "../controllers/mapaEdificioController"
+    },
+    TipoRobo: {
+      name: "TipoRoboController",
+      path: "../controllers/tipoRoboController"
+    },
+    Tarefa: {
+      name: "TarefaController",
+      path: "../controllers/tarefaController"
     }
   },
 
@@ -71,6 +99,34 @@ export default {
     sala: {
       name: "SalaRepo",
       path: "../repos/salaRepo"
+    },
+    edificio: {
+      name: "EdificioRepo",
+      path: "../repos/edificioRepo"
+    },
+    passagem: {
+      name: "PassagemRepo",
+      path: "../repos/passagemRepo"
+    },
+    robo: {
+      name: "RoboRepo",
+      path: "../repos/roboRepo"
+    },
+    piso: {
+      name: "PisoRepo",
+      path: "../repos/pisoRepo"
+    },
+    MapaEdificio: {
+      name: "MapaEdificioRepo",
+      path: "../repos/mapaEdificioRepo"
+    },
+    TipoRobo: {
+      name: "TipoRoboRepo",
+      path: "../repos/tipoRoboRepo"
+    },
+    Tarefa: {
+      name: "TarefaRepo",
+      path: "../repos/tarefaRepo"
     }
   },
 
@@ -86,6 +142,34 @@ export default {
     sala: {
       name: "SalaService",
       path: "../services/salaService"
+    },
+    edificio: {
+      name: "EdificioService",
+      path: "../services/edificioService"
+    },
+    passagem: {
+      name: "PassagemService",
+      path: "../services/passagemService"
+    },
+    robo: {
+      name: "RoboService",
+      path: "../services/roboService"
+    },
+    piso: {
+      name: "PisoService",
+      path: "../services/pisoService"
+    },
+    MapaEdificio: {
+      name: "MapaEdificioService",
+      path: "../services/mapaEdificioService"
+    },
+    TipoRobo: {
+      name: "TipoRoboService",
+      path: "../services/tipoRoboService"
+    },
+    Tarefa: {
+      name: "TarefaService",
+      path: "../services/tarefaService"
     }
   },
 };
