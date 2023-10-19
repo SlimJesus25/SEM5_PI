@@ -51,6 +51,28 @@ describe('elevador controller', function () {
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({ "designacao": req.body.name,"id": "123"}));
+
+		let body2 = { "name":"elevador525"};
+		let req2: Partial<Request> = {};
+		req2.body = body2;
+		let res2: Partial<Response> = {
+			json: sinon.spy()
+		};
+
+		let next2: Partial<NextFunction> = () => {};
+
+		let elevadorServiceInstance2 = Container.get("ElevadorService");
+		sinon.stub(elevadorServiceInstance2, "updateElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "designacao": req.body.name} ));
+
+		const ctrl2 = new ElevadorController(elevadorServiceInstance2 as IElevadorService);
+
+		// Act
+		await ctrl2.updateElevador(<Request>req2, <Response>res2, <NextFunction>next2);
+
+		// Assert
+		sinon.assert.calledOnce(res2.json);
+		sinon.assert.calledWith(res2.json, sinon.match({ "designacao": req2.body.name,"id": "123"}));
+
 	});
 
 
