@@ -1,0 +1,78 @@
+@startuml sd
+
+participant Route as route
+participant InterfaceEdificioController as ictrl
+participant EdificioController as ctrl
+participant InterfaceEdificioService as isvc
+participant EdificioService as svc
+participant InterfaceEdificioRepo as irepo
+participant EdificioRepo as repo
+participant EdificioMapper as mapper
+participant InterfaceEdificioPersistence as ischema
+participant EdificioSchema as schema
+participant ConfigurationFile as conf
+participant Edificio as model
+
+activate route
+route -> ictrl : listar elevadores num edificio
+activate ictrl
+ictrl -> ctrl : listElevadores(req, res, next)
+activate ctrl
+ctrl -> conf : injeta o serviço do edificio
+activate conf
+conf --> ctrl
+deactivate conf
+ctrl -> isvc : listElevadores(IEdificioDTO)
+activate isvc
+isvc -> svc : listElevadores(IEdificioDTO)
+activate svc
+svc -> conf : injeta o repositório do edificio
+activate conf
+conf --> svc
+deactivate conf
+svc -> irepo : elevadores = listElevadores(edificio)
+activate irepo
+irepo -> repo : listElevadores(edificio)
+activate repo
+repo -> conf : injeta o schema do elevador
+activate conf
+conf --> repo
+deactivate conf
+repo -> ischema : listElevadores(edificio)
+activate ischema 
+ischema -> schema : listElevadores(edificio)
+activate schema
+schema --> ischema
+deactivate schema
+deactivate schema
+ischema --> repo
+deactivate ischema
+repo -> mapper : toDomain(elevadores)
+activate mapper
+mapper --> repo
+deactivate mapper
+repo --> irepo
+deactivate repo
+irepo --> svc
+deactivate irepo
+svc -> mapper : toDTO(elevador)
+activate mapper
+mapper --> svc
+deactivate mapper
+svc --> isvc
+deactivate svc
+isvc --> ctrl
+deactivate isvc
+alt caso de sucesso
+    ctrl --> ictrl : Envia um código 201 (GET)
+else caso de insucesso
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+end
+deactivate ctrl
+ictrl --> route
+deactivate ictrl
+deactivate route
+
+
+
+@enduml
