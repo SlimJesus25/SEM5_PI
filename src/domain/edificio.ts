@@ -7,6 +7,9 @@ import { Guard } from "../core/logic/Guard";
 import { Elevador } from "./elevador";
 import { Piso } from "./piso";
 import { MapaEdificio } from "./mapaEdificio"
+import IEdificioDTO from "../dto/IEdificioDTO";
+import { PisoMap } from "../mappers/PisoMap";
+import { ElevadorMap } from "../mappers/ElevadorMap";
 
 interface EdificioProps {
   codigoEdificio: CodigoEdificio;
@@ -60,6 +63,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     super(props, id);
   }
 
+  
   public static create (props: EdificioProps, id?: UniqueEntityID): Result<Edificio> {
 
     const guardedProps = [
@@ -78,11 +82,41 @@ export class Edificio extends AggregateRoot<EdificioProps> {
       return Result.fail<Edificio>(guardResult.message)
     }     
     else {
-      const user = new Edificio({
+      const edificio = new Edificio({
         ...props
       }, id);
 
-      return Result.ok<Edificio>(user);
+      return Result.ok<Edificio>(edificio);
     }
   }
+  
+  /*
+  public static create (edificioDTO: IEdificioDTO, id?: UniqueEntityID): Result<Edificio> {
+
+    const codigoOrError = CodigoEdificio.create(edificioDTO.codigoEdificio).getValue();
+    const nomeOpcional = edificioDTO.nomeOpcional;
+    const descricao = edificioDTO.descricao;
+    const dimensaoMaxima = edificioDTO.dimensaoMaxima;
+    const elevador = ElevadorMap.toDomain(edificioDTO.elevador);
+    let pisos: Array<Piso>;
+    edificioDTO.pisos.forEach(v => pisos.push(PisoMapper.toDomain(v)));
+    const mapaEdificio = edificioDTO.mapaEdificio;
+
+    if (!!descricao === false || descricao.length === 0) {
+      return Result.fail<Edificio>('Must provide sala s description')
+    }else if(!!designacao === false || designacao.length === 0){
+      return Result.fail<Edificio>('Must provide sala s designation')
+    } else {
+      const edificio = new Edificio({ 
+        codigoEdificio: codigoOrError,
+        nomeOpcionalEdificio: nomeOpcional,
+        descricaoEdificio: descricao,
+        dimensaoMaximaPiso: dimensaoMaxima,
+        elevadores: elevador,
+        pisos: pisos,
+        mapaEdificio: mapaEdificio
+      }, id);
+      return Result.ok<Edificio>( sala )
+    }
+  }*/ 
 }
