@@ -56,7 +56,7 @@ export default class ElevadorService implements IElevadorService {
 
   public async updateElevador(elevadorDTO: IElevadorDTO): Promise<Result<IElevadorDTO>> {
     try {
-      const elevador = await this.elevadorRepo.findByDomainId(elevadorDTO.id);
+      const elevador = await this.elevadorRepo.findByNumeroIdentificativo(elevadorDTO.numeroIdentificativo);
 
       if (elevador === null) {
         return Result.fail<IElevadorDTO>("Elevador não encontrado");

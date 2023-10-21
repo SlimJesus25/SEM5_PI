@@ -5,6 +5,7 @@ import { Result } from "../core/logic/Result";
 import { ElevadorId } from "./elevadorId";
 import { Guard } from "../core/logic/Guard";
 import IElevadorDTO from "../dto/IElevadorDTO";
+import { error } from "console";
 
 interface ElevadorProps {
   descricao: string;
@@ -49,10 +50,14 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
   }
 
   set numeroIdentificativo ( value: number) {
+    if(value == null)
+      throw error("Número identificativo nulo");
     this.props.numeroIdentificativo = value;
   }
 
   set numeroSerie ( value: string) {
+    if(value.length == 0)
+      throw error("Numero série vazio");
     this.props.numeroSerie = value;
   }
 
@@ -77,6 +82,9 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
   }
 
   public static create (elevadorDTO: IElevadorDTO, id?: UniqueEntityID): Result<Elevador> {
+
+    if(elevadorDTO.numeroSerie.length == 0)
+      throw Error("Numero série vazio");
 
     const elevador = new Elevador({ 
       descricao: elevadorDTO.descricao,
