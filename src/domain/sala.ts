@@ -39,7 +39,7 @@ export class Sala extends AggregateRoot<SalaProps> {
   }
 
   set categoria (value: string){
-    //this.props.categoriaSala = value;
+    this.props.categoriaSala = Sala.getCategoriaValue(value);
   }
 
   set designacao (value: string){
@@ -52,13 +52,9 @@ export class Sala extends AggregateRoot<SalaProps> {
 
   public static create (salaDTO: ISalaDTO, id?: UniqueEntityID): Result<Sala> {
 
-    const keys = Object.keys(CategoriaSala);
-    const v = keys.find((key) => key === salaDTO.categoria);
     const descricao = salaDTO.descricao;
-    const categoria = v;
+    const categoria = Sala.getCategoriaValue(salaDTO.categoria);
     const designacao = salaDTO.designacao;
-
-    
 
     if (!!descricao === false || descricao.length === 0) {
       return Result.fail<Sala>('Must provide sala s description')
@@ -66,10 +62,20 @@ export class Sala extends AggregateRoot<SalaProps> {
       return Result.fail<Sala>('Must provide sala s designation')
     } else {
       const sala = new Sala({ descricaoSala: descricao,
-         categoriaSala: null,
+         categoriaSala: categoria,
           designacaoSala: designacao}, id);
       return Result.ok<Sala>( sala )
     }
+  }
+
+  private static getCategoriaValue(categoriaSala : string) : number{
+    if(categoriaSala.toLowerCase() == "anfiteatro")
+      return 1;
+    else if(categoriaSala.toLowerCase() == "gabinete")
+      return 2;
+    else
+      return 0;
+
   }
 
   /*public static create (props: SalaProps, id?: UniqueEntityID): Result<Sala> {
