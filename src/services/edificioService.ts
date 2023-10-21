@@ -2,7 +2,11 @@ import { Service, Inject } from 'typedi';
 import config from "../../config";
 import IEdificioDTO from '../dto/IEdificioDTO';
 import { Edificio } from "../domain/edificio";
+import { Piso } from "../domain/piso";
 import IEdificioRepo from '../services/IRepos/IEdificioRepo';
+import IElevadorRepo from '../services/IRepos/IElevadorRepo';
+import IPisoRepo from '../services/IRepos/IPisoRepo';
+import IMapaEdificioRepo from '../services/IRepos/IMapaEdificioRepo';
 import IEdificioService from './IServices/IEdificioService';
 import { Result } from "../core/logic/Result";
 import { EdificioMap } from "../mappers/EdificioMap";
@@ -10,12 +14,15 @@ import { EdificioMap } from "../mappers/EdificioMap";
 @Service()
 export default class EdificioService implements IEdificioService {
   constructor(
-      @Inject(config.repos.role.name) private roleRepo : IEdificioRepo
+      @Inject(config.repos.role.name) private edificioRepo : IEdificioRepo,
+      @Inject(config.repos.elevador.name) private elevadorRepo: IElevadorRepo,
+      @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo,
+      @Inject(config.repos.mapa.name) private mapaRepo: IMapaEdificioRepo
   ) {}
 
   public async getEdificio( edificioId: string): Promise<Result<IEdificioDTO>> {
     try {
-      const edificio = await this.roleRepo.findByDomainId(edificioId);
+      const edificio = await this.edificioRepo.findByDomainId(edificioId);
 
       if (edificio === null) {
         return Result.fail<IEdificioDTO>("Edificio não encontrado");
@@ -33,6 +40,11 @@ export default class EdificioService implements IEdificioService {
   public async createEdificio(edificioDTO: IEdificioDTO): Promise<Result<IEdificioDTO>> {
     try {
 
+      const edificioDocument = await this.edificioRepo.findByCodigo(edificioDTO.codigoEdificio);
+
+      if(!!edificioDocument)
+        return Result.fail<IEdificioDTO>("Edifício com o código " + edificioDTO.codigoEdificio + " já existe!");
+
       const edificioOrError = await Edificio.create( edificioDTO );
 
       if (edificioOrError.isFailure) {
@@ -41,7 +53,7 @@ export default class EdificioService implements IEdificioService {
 
       const edificioResult = edificioOrError.getValue();
 
-      await this.roleRepo.save(edificioResult);
+      await this.edificioRepo.save(edificioResult);
 
       const edificioDTOResult = EdificioMap.toDTO( edificioResult ) as IEdificioDTO;
       return Result.ok<IEdificioDTO>( edificioDTOResult )
@@ -50,19 +62,29 @@ export default class EdificioService implements IEdificioService {
     }
   }
 
-  public async updateEdificio(roleDTO: IEdificioDTO): Promise<Result<IEdificioDTO>> {
+  public async updateEdificio(edificioDTO: IEdificioDTO): Promise<Result<IEdificioDTO>> {
     try {
-      const role = await this.roleRepo.findByDomainId(roleDTO.id);
+      const edificio = await this.edificioRepo.findByCodigo(edificioDTO.codigoEdificio);
+      const elevador = await this.elevadorRepo.findByDomainId(edificioDTO.elevador);
+      const mapa = await this.mapaRepo.findByDomainId(edificioDTO.mapaEdificio);
+      
+      let pisos: Piso[];
+      edificioDTO.pisos.forEach(async v => pisos.push(await this.pisoRepo.findByDomainId(v)))
 
-      if (role === null) {
-        return Result.fail<IEdificioDTO>("Role not found");
+      if (edificio === null) {
+        return Result.fail<IEdificioDTO>("Edificio não encontrado");
       }
       else {
-        role.name = roleDTO.name;
-        await this.roleRepo.save(role);
+        edificio.codigo = edificioDTO.codigoEdificio;
+        edificio.descricao = edificioDTO.descricao;
+        edificio.dimensaoMaxima = edificioDTO.dimensaoMaxima;
+        edificio.elevadores = elevador;
+        edificio.pisos = pisos;
+        edificio.mapa = mapa;
+        await this.edificioRepo.save(edificio);
 
-        const roleDTOResult = RoleMap.toDTO( role ) as IEdificioDTO;
-        return Result.ok<IEdificioDTO>( roleDTOResult )
+        const edificioDTOResult = EdificioMap.toDTO( edificio ) as IEdificioDTO;
+        return Result.ok<IEdificioDTO>( edificioDTOResult )
         }
     } catch (e) {
       throw e;

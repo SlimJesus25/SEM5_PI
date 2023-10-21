@@ -5,18 +5,16 @@ import { IEdificioPersistence } from '../dataschema/IEdificioPersistence';
 
 import IEdificioDTO from "../dto/IEdificioDTO";
 import { Edificio } from "../domain/edificio";
-
-import { UniqueEntityID } from "../core/domain/UniqueEntityID";
-import { Container } from 'typedi';
-
-import PisoRepo from "../repos/pisoRepo";
+import { Piso } from "../domain/piso";
+import Container from "typedi";
 import ElevadorRepo from "../repos/elevadorRepo";
+
 
 export class EdificioMap extends Mapper<Edificio> {
   
   public static toDTO( edificio: Edificio): IEdificioDTO {
 
-    let pisos: Array<String>;
+    let pisos: string[] = [];
 
     edificio.pisos.forEach(id => pisos.push(id.toString()));
 
@@ -32,32 +30,34 @@ export class EdificioMap extends Mapper<Edificio> {
     } as IEdificioDTO;
   }
 
-  // TODO: Verificar forma de converter todas os pisos.
-  public static async toDomain (edificio: any | Model<IEdificioPersistence & Document> ): Promise<Piso> {
-    
-    const repo = Container.get(PisoRepo);
+  public static async toDomain (edificio: any | Model<IEdificioPersistence & Document> ): Promise<Edificio> {
 
-    const pisos = await repo.findByDomainId(edificio.sala);
-
-    const elevador = await repo.findByDomainId(edificio.elevador);
+    const elevadorRepo = Container.get(ElevadorRepo);
+    //const pisoRepo = Container.get(PisoRepo);
+    let pisos : string[];
+    //edificio.pisos.forEach(v => pisos.push(pisoRepo.findByDomainId(v)));
+    const elevador = await elevadorRepo.findByDomainId(edificio.elevador);
     
     const edificioOrError = Edificio.create({
-        codigoEdificio: edificio.codigoEdificio.getValue(),
-        nomeOpcionalEdificio: edificio.nomeOpcional,
-        descricaoEdificio: edificio.descricao,
-        dimensaoMaximaPiso: edificio.dimensaoMaxima,
-        elevadores: elevador,
-        pisos: edificio.pisos,
-        mapaEdificio: edificio.mapa.id.toValue()
-    }, new UniqueEntityID(edificio.domainId));
+      codigoEdificio: edificio.codigo,
+      nomeOpcional: edificio.nomeOpcional,
+      descricao: edificio.descricao,
+      dimensaoMaxima: edificio.dimensaoMaxima,
+      elevador: edificio.elevador,
+      pisos: pisos
+    });
 
     edificioOrError.isFailure ? console.log(edificioOrError.error) : '';
 
     return edificioOrError.isSuccess ? edificioOrError.getValue() : null;
   }
 
-  // TODO: Verificar forma de persistir array pisos.
   public static toPersistence (edificio: Edificio): any {
+
+    let pisoIDList : string[] = [];
+
+    edificio.pisos.forEach(p => pisoIDList.push(p.id.toString()));
+
     return {
       domainId: edificio.id.toString(),
       codigo: edificio.codigo.value,
@@ -65,7 +65,7 @@ export class EdificioMap extends Mapper<Edificio> {
       descricao: edificio.descricao,
       dimensao: edificio.dimensaoMaxima,
       elevadores: edificio.elevadores.id.toValue(),
-      pisos: edificio.pisos,
+      pisos: pisoIDList,
       mapaEdificio: edificio.mapa.id.toValue()
     }
   }

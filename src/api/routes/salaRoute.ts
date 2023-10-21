@@ -9,23 +9,26 @@ import config from "../../../config";
 const route = Router();
 
 export default (app: Router) => {
-  app.use('/roles', route);
+  app.use('/sala', route);
 
   const ctrl = Container.get(config.controllers.role.name) as ISalaController;
 
-  route.post('',
+  route.post('/createSala',
     celebrate({
       body: Joi.object({
-        name: Joi.string().required()
+        desricao: Joi.string().required(),
+        categoria: Joi.string().required(),
+        designacao: Joi.string().required()
       })
     }),
     (req, res, next) => ctrl.createSala(req, res, next) );
 
-  route.put('',
+  route.put('updateSala',
     celebrate({
       body: Joi.object({
-        id: Joi.string().required(),
-        name: Joi.string().required()
+        desricao: Joi.string().required(),
+        categoria: Joi.string().required(),
+        designacao: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.updateSala(req, res, next) );

@@ -28,7 +28,7 @@ export class PisoMap extends Mapper<Piso> {
   }
 
   // TODO: Verificar forma de converter todas as salas.
-  public static async toDomain (piso: any | Model<IPisoPersistence & Document> ): Promise<Piso> {
+  public static async toDomain (piso: any | Model<IPisoPersistence & Document> ): Piso {
     
     const repo = Container.get(SalaRepo);
 

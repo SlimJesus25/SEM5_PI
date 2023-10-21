@@ -10,6 +10,7 @@ import { MapaEdificio } from "./mapaEdificio"
 import IEdificioDTO from "../dto/IEdificioDTO";
 import { PisoMap } from "../mappers/PisoMap";
 import { ElevadorMap } from "../mappers/ElevadorMap";
+import { MapaEdificioMap } from "../mappers/MapaEdificioMap";
 
 interface EdificioProps {
   codigoEdificio: CodigoEdificio;
@@ -17,7 +18,7 @@ interface EdificioProps {
   descricaoEdificio: string;
   dimensaoMaximaPiso: number;
   elevadores: Elevador;
-  pisos: Array<Piso>
+  pisos: Piso[];
   mapaEdificio: MapaEdificio;
 }
 
@@ -50,7 +51,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return this.props.elevadores;
   }
 
-  get pisos (): Array<Piso> {
+  get pisos (): Piso[] {
     return this.props.pisos;
   }
 
@@ -58,12 +59,40 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return this.props.mapaEdificio;
   }
 
+  set codigo (value : string) {
+    this.props.codigoEdificio = CodigoEdificio.create(value).getValue();
+  }
+
+  set nomeOpcional (value : string) {
+    this.props.nomeOpcionalEdificio = value;
+  }
+
+  set descricao (value : string) {
+    this.props.descricaoEdificio = value;
+  }
+
+  set dimensaoMaxima (value : number) {
+    this.props.dimensaoMaximaPiso = value;
+  }
+
+  set elevadores (value : Elevador) {
+    this.props.elevadores = value;
+  }
+
+  set pisos (value : Piso[]) {
+    this.props.pisos = value;
+  }
+
+  set mapa (value : MapaEdificio) {
+    this.props.mapaEdificio = value;
+  }
 
   private constructor (props: EdificioProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
   
+  /*
   public static create (props: EdificioProps, id?: UniqueEntityID): Result<Edificio> {
 
     const guardedProps = [
@@ -88,25 +117,21 @@ export class Edificio extends AggregateRoot<EdificioProps> {
 
       return Result.ok<Edificio>(edificio);
     }
-  }
+  }*/
   
-  /*
+  
   public static create (edificioDTO: IEdificioDTO, id?: UniqueEntityID): Result<Edificio> {
 
-    const codigoOrError = CodigoEdificio.create(edificioDTO.codigoEdificio).getValue();
-    const nomeOpcional = edificioDTO.nomeOpcional;
-    const descricao = edificioDTO.descricao;
-    const dimensaoMaxima = edificioDTO.dimensaoMaxima;
-    const elevador = ElevadorMap.toDomain(edificioDTO.elevador);
-    let pisos: Array<Piso>;
-    edificioDTO.pisos.forEach(v => pisos.push(PisoMapper.toDomain(v)));
-    const mapaEdificio = edificioDTO.mapaEdificio;
+    try{
+      const codigoOrError = CodigoEdificio.create(edificioDTO.codigoEdificio).getValue();
+      const nomeOpcional = edificioDTO.nomeOpcional;
+      const descricao = edificioDTO.descricao;
+      const dimensaoMaxima = edificioDTO.dimensaoMaxima;
+      const elevador = ElevadorMap.toDomain(edificioDTO.elevador);
+      let pisos: Piso[] = [];
+      edificioDTO.pisos.forEach(v => pisos.push(PisoMap.toDomain(v)));
+      const mapaEdificio = MapaEdificioMap.toDomain(edificioDTO.mapaEdificio);
 
-    if (!!descricao === false || descricao.length === 0) {
-      return Result.fail<Edificio>('Must provide sala s description')
-    }else if(!!designacao === false || designacao.length === 0){
-      return Result.fail<Edificio>('Must provide sala s designation')
-    } else {
       const edificio = new Edificio({ 
         codigoEdificio: codigoOrError,
         nomeOpcionalEdificio: nomeOpcional,
@@ -116,7 +141,10 @@ export class Edificio extends AggregateRoot<EdificioProps> {
         pisos: pisos,
         mapaEdificio: mapaEdificio
       }, id);
-      return Result.ok<Edificio>( sala )
-    }
-  }*/ 
+        return Result.ok<Edificio>( edificio )
+  }catch(e){
+    return Result.fail(e);
+  }
+    
+  }
 }

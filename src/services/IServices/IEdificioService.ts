@@ -7,5 +7,5 @@ export default interface IEdificioService  {
   listElevadores(edificioDTO: IEdificioDTO): Promise<Result<Array<IEdificioDTO>>>;
   listPassagens(edificioDTO: IEdificioDTO): Promise<Result<Array<IEdificioDTO>>>;
 
-  getElevador (elevadorId: string): Promise<Result<IEdificioDTO>>;
+  getEdificio (edificioId: string): Promise<Result<IEdificioDTO>>;
 }

@@ -6,7 +6,7 @@ export default interface IEdificioDTO {
     nomeOpcional: string;
     codigoEdificio: string;
     elevador: string;
-    pisos: Array<string>;
+    pisos: string[];
     mapaEdificio: string;
   }
   

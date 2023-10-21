@@ -17,7 +17,8 @@ export default (app: Router) => {
   route.post('/createElevador',
   celebrate({
     body: Joi.object({
-      designacao: Joi.string().required()
+      designacao: Joi.string().required(),
+      codigo: Joi.string().required()
     })
   }),
   (req, res, next) => ctrl.createElevador(req, res, next));
@@ -26,7 +27,8 @@ export default (app: Router) => {
   route.put('/updateElevador',
   celebrate({
     body: Joi.object({
-      designacao: Joi.string().required()
+      designacao: Joi.string().required(),
+      codigo: Joi.string().required()
     }),
   }),
   (req, res, next) => ctrl.updateElevador(req, res, next));
