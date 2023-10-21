@@ -16,7 +16,7 @@ export default (app: Router) => {
   route.post('/createSala',
     celebrate({
       body: Joi.object({
-        desricao: Joi.string().required(),
+        descricao: Joi.string().required(),
         categoria: Joi.string().required(),
         designacao: Joi.string().required()
       })
@@ -26,7 +26,7 @@ export default (app: Router) => {
   route.put('updateSala',
     celebrate({
       body: Joi.object({
-        desricao: Joi.string().required(),
+        descricao: Joi.string().required(),
         categoria: Joi.string().required(),
         designacao: Joi.string().required()
       }),

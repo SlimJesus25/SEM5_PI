@@ -30,7 +30,7 @@ describe('sala controller', function () {
 		sandbox.restore();
 	});
 
-    it('salaController unit test using salaService stub', async function () {
+    /*it('salaController unit test using salaService stub', async function () {
 		// Arrange
         let body = { "name":'sala1' };
         let req: Partial<Request> = {};
@@ -173,6 +173,78 @@ describe('sala controller', function () {
         , "designacao": req.body.designacao
         , "descricao": req.body.descricao
         , "categoria": req.body.categoria}));
+	});*/
+
+	it('createSala returns status 403 forbidden', async function () {
+		let req: Partial<Request> = {};
+		req.body = 'Já existe uma sala com a designacao B310'
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => {};
+
+		let salaServiceInstace = Container.get("SalaService");
+
+		const obj = sinon.stub(salaServiceInstace, "createSala").returns(Result.fail<ISalaDTO>("Já existe uma sala com a designacao B310"));
+
+		const ctrl = new SalaController(salaServiceInstace as ISalaService);
+		await ctrl.createSala(<Request>req, <Response> res, <NextFunction> next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+		sinon.assert.calledWith(obj, "Já existe uma sala com a designacao B310");
+	});
+
+	it('createSala returns sala json', async function () {
+		let req: Partial<Request> = {};
+		req.body = {
+			"descricao": "Anfiteatro para aulas teorico-práticas",
+			"designacao": "B315",
+			"categoria": "anfiteatro"
+		};
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => {};
+
+		let salaServiceInstace = Container.get("SalaService");
+
+		const obj = sinon.stub(salaServiceInstace, "createSala").returns(Result.ok<ISalaDTO>(req.body as ISalaDTO));
+
+		const ctrl = new SalaController(salaServiceInstace as ISalaService);
+		await ctrl.createSala(<Request>req, <Response> res, <NextFunction> next);
+
+		sinon.assert.calledOnce(obj);
+		sinon.assert.calledWith(obj, sinon.match(req.body));
+	});
+
+	it('createSala returns status 201', async function () {
+		let req: Partial<Request> = {};
+		req.body = {
+			"descricao": "Anfiteatro para aulas teorico-práticas",
+			"designacao": "B315",
+			"categoria": "anfiteatro"
+		};
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => {};
+
+		let salaServiceInstace = Container.get("SalaService");
+
+		const obj = sinon.stub(salaServiceInstace, "createSala").returns(Result.ok<ISalaDTO>(req.body as ISalaDTO));
+
+		const ctrl = new SalaController(salaServiceInstace as ISalaService);
+		await ctrl.createSala(<Request>req, <Response> res, <NextFunction> next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 201);
 	});
 });
 

@@ -33,6 +33,11 @@ export default class SalaService implements ISalaService {
   public async createSala(salaDTO: ISalaDTO): Promise<Result<ISalaDTO>> {
     try {
 
+      const salaDocument = await this.salaRepo.findByDesignacao(salaDTO.designacao);
+
+      if(!!salaDocument)
+        return Result.fail<ISalaDTO>("Já existe uma sala com o nome " + salaDocument.designacao);
+
       const salaOrError = await Sala.create( salaDTO );
 
       if (salaOrError.isFailure) {
@@ -52,7 +57,7 @@ export default class SalaService implements ISalaService {
 
   public async updateSala(salaDTO: ISalaDTO): Promise<Result<ISalaDTO>> {
     try {
-      const sala = await this.salaRepo.findByDomainId(salaDTO.id);
+      const sala = await this.salaRepo.findByDesignacao(salaDTO.designacao);
 
       if (sala === null) {
         return Result.fail<ISalaDTO>("Sala not found");

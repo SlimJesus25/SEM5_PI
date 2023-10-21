@@ -57,6 +57,13 @@ export default class SalaRepo implements ISalaRepo {
     }
   }
 
+  public async findByDesignacao (designacao: string): Promise<Sala>{
+    const query = { designacao: designacao};
+    const salaRecord = await this.salaSchema.findOne(query as FilterQuery<ISalaPersistence & Document>);
+
+    return salaRecord != null ? SalaMap.toDomain(salaRecord) : null;
+  }
+
   public async findByDomainId (salaId: SalaId | string): Promise<Sala> {
     const query = { domainId: salaId};
     const salaRecord = await this.salaSchema.findOne( query as FilterQuery<ISalaPersistence & Document> );
