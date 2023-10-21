@@ -5,7 +5,7 @@ import { ElevadorId } from "../../domain/elevadorId";
 export default interface IRoleRepo extends Repo<Elevador> {
   save(role: Elevador): Promise<Elevador>;
   findByDomainId (roleId: ElevadorId | string): Promise<Elevador>;
-  findByCodigo(codigo: string): Promise<Elevador>;
+  findByNumeroIdentificativo(codigo: number): Promise<Elevador>;
     
   //findByIds (rolesIds: RoleId[]): Promise<Role[]>;
   //saveCollection (roles: Role[]): Promise<Role[]>;

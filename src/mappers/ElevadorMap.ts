@@ -13,8 +13,12 @@ export class ElevadorMap extends Mapper<Elevador> {
   public static toDTO( elevador: Elevador): IElevadorDTO {
     return {
       id: elevador.id.toString(),
-      designacao: elevador.designacao,
-      codigo: elevador.codigo
+      descricao: elevador.descricao,
+      numeroSerie: elevador.numeroSerie,
+      modelo: elevador.modelo,
+      marca: elevador.marca,
+      pisosServidos: elevador.pisosServidos,
+      numeroIdentificativo: elevador.numeroIdentificativo
     } as IElevadorDTO;
   }
 
@@ -29,8 +33,12 @@ export class ElevadorMap extends Mapper<Elevador> {
   public static toPersistence (elevador: Elevador): any {
     return {
       domainId: elevador.id.toString(),
-      designacao: elevador.designacao,
-      codigo: elevador.codigo
+      descricao: elevador.descricao,
+      numeroSerie: elevador.numeroSerie,
+      modelo: elevador.modelo,
+      marca: elevador.marca,
+      pisosServidos: elevador.pisosServidos,
+      numeroIdentificativo: elevador.numeroIdentificativo
     }
   }
 }

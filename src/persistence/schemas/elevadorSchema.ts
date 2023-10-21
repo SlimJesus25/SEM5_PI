@@ -4,7 +4,12 @@ import mongoose from 'mongoose';
 const ElevadorSchema = new mongoose.Schema(
   {
     domainId: { type: String, unique: true },
-    designacao: { type: String, unique: false }
+    descricao: { type: String, unique: false },
+    numeroSerie: { type: String, unique: true },
+    marca: { type: String, unique: false },
+    modelo: { type: String, unique: false },
+    pisosServidos: { type: [String], unique: false},
+    numeroIdentificativo: { type: Number, unique: true}
   },
   {
     timestamps: true

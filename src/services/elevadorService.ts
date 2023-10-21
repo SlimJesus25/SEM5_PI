@@ -33,10 +33,10 @@ export default class ElevadorService implements IElevadorService {
   public async createElevador(elevadorDTO: IElevadorDTO): Promise<Result<IElevadorDTO>> {
     try {
 
-      const elevadorDocument = await this.elevadorRepo.findByCodigo(elevadorDTO.codigo);
+      const elevadorDocument = await this.elevadorRepo.findByNumeroIdentificativo(elevadorDTO.numeroIdentificativo);
 
       if(!!elevadorDocument)
-        return Result.fail<IElevadorDTO>("Já existe um elevador com o código " + elevadorDTO.codigo);
+        return Result.fail<IElevadorDTO>("Já existe um elevador com o código " + elevadorDTO.numeroIdentificativo);
 
       const elevadorOrError = await Elevador.create( elevadorDTO );
 
@@ -62,7 +62,12 @@ export default class ElevadorService implements IElevadorService {
         return Result.fail<IElevadorDTO>("Elevador não encontrado");
       }
       else {
-        elevador.designacao = elevadorDTO.designacao;
+        elevador.descricao = elevadorDTO.descricao;
+        elevador.marca = elevadorDTO.marca;
+        elevador.modelo = elevadorDTO.modelo;
+        elevador.pisosServidos = elevadorDTO.pisosServidos;
+        elevador.numeroSerie = elevadorDTO.numeroSerie;
+        elevador.numeroIdentificativo = elevadorDTO.numeroIdentificativo;
         await this.elevadorRepo.save(elevador);
 
         const elevadorDTOResult = ElevadorMap.toDTO( elevador ) as IElevadorDTO;

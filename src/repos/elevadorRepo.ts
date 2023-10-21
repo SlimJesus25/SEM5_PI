@@ -45,7 +45,12 @@ export default class ElevadorRepo implements IElevadorRepo {
 
         return ElevadorMap.toDomain(roleCreated);
       } else {
-        roleDocument.designacao = elevador.designacao;
+        roleDocument.descricao = elevador.descricao;
+        roleDocument.numeroSerie = elevador.numeroSerie;
+        roleDocument.modelo = elevador.modelo;
+        roleDocument.marca = elevador.marca;
+        roleDocument.pisosServidos = elevador.pisosServidos;
+        roleDocument.numeroIdentificativo = elevador.numeroIdentificativo;
         await roleDocument.save();
 
         return elevador;
@@ -67,7 +72,7 @@ export default class ElevadorRepo implements IElevadorRepo {
   }
   
 
-  public async findByCodigo(value: string): Promise<Elevador> {
+  public async findByNumeroIdentificativo(value: number): Promise<Elevador> {
       const query = { codigo: value.toString() };
       const elevadorRecord = await this.elevadorSchema.findOne(query as FilterQuery<IElevadorPersistence & Document>);
 
