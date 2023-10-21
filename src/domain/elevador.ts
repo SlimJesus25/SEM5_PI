@@ -8,6 +8,7 @@ import IElevadorDTO from "../dto/IElevadorDTO";
 
 interface ElevadorProps {
   designacaoElevador: string;
+  codigoElevador: string;
 }
 
 export class Elevador extends AggregateRoot<ElevadorProps> {
@@ -23,10 +24,13 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
     return this.props.designacaoElevador;
   }
 
+  get codigo (): string {
+    return this.props.codigoElevador;
+  }
+
   set designacao ( value: string) {
     this.props.designacaoElevador = value;
   }
-
 
   private constructor (props: ElevadorProps, id?: UniqueEntityID) {
     super(props, id);
@@ -34,11 +38,14 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
 
   public static create (elevadorDTO: IElevadorDTO, id?: UniqueEntityID): Result<Elevador> {
     const name = elevadorDTO.designacao;
+    const codigo = elevadorDTO.codigo;
 
     if (!!name === false || name.length === 0) {
       return Result.fail<Elevador>('Deve providenciar uma designação para o elevador')
     } else {
-      const elevador = new Elevador({ designacaoElevador: name }, id);
+      const elevador = new Elevador({ 
+        designacaoElevador: name,
+      codigoElevador:  codigo}, id);
       return Result.ok<Elevador>( elevador )
     }
   }

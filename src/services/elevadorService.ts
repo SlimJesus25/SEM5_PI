@@ -33,18 +33,22 @@ export default class ElevadorService implements IElevadorService {
   public async createElevador(elevadorDTO: IElevadorDTO): Promise<Result<IElevadorDTO>> {
     try {
 
+      const elevadorDocument = await this.elevadorRepo.findByCodigo(elevadorDTO.codigo);
+
+      if(!!elevadorDocument)
+        return Result.fail<IElevadorDTO>("Já existe um elevador com o código " + elevadorDTO.codigo);
+
       const elevadorOrError = await Elevador.create( elevadorDTO );
 
       if (elevadorOrError.isFailure) {
         return Result.fail<IElevadorDTO>(elevadorOrError.errorValue());
       }
 
-      const roleResult = elevadorOrError.getValue();
+      const elevadorResult = elevadorOrError.getValue();
+      await this.elevadorRepo.save(elevadorResult);
 
-      await this.elevadorRepo.save(roleResult);
-
-      const roleDTOResult = ElevadorMap.toDTO( roleResult ) as IElevadorDTO;
-      return Result.ok<IElevadorDTO>( roleDTOResult )
+      const elevadorDTOResult = ElevadorMap.toDTO( elevadorResult ) as IElevadorDTO;
+      return Result.ok<IElevadorDTO>( elevadorDTOResult )
     } catch (e) {
       throw e;
     }

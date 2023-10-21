@@ -14,24 +14,23 @@ export class ElevadorMap extends Mapper<Elevador> {
     return {
       id: elevador.id.toString(),
       designacao: elevador.designacao,
+      codigo: elevador.codigo
     } as IElevadorDTO;
   }
 
   public static toDomain (elevador: any | Model<IElevadorPersistence & Document> ): Elevador {
-    const roleOrError = Elevador.create(
-        elevador,
-      new UniqueEntityID(elevador.domainId)
-    );
+    const elevadorOrError = Elevador.create(elevador, new UniqueEntityID(elevador.domainId));
 
-    roleOrError.isFailure ? console.log(roleOrError.error) : '';
+    elevadorOrError.isFailure ? console.log(elevadorOrError.error) : '';
 
-    return roleOrError.isSuccess ? roleOrError.getValue() : null;
+    return elevadorOrError.isSuccess ? elevadorOrError.getValue() : null;
   }
 
   public static toPersistence (elevador: Elevador): any {
     return {
       domainId: elevador.id.toString(),
-      designacao: elevador.designacao
+      designacao: elevador.designacao,
+      codigo: elevador.codigo
     }
   }
 }
