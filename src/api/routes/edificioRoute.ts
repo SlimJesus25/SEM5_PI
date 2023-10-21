@@ -21,7 +21,7 @@ export default (app: Router) => {
       nomeOpcional: Joi.string(),
       codigo: Joi.string().required(),
       elevador: Joi.string().required(),
-      pisos: Joi.array().items(Joi.string()).min(1).max(20),
+      pisos: Joi.array().items(Joi.string()).min(1).max(20).required(),
       mapaEdificio: Joi.string()
     })
   }),

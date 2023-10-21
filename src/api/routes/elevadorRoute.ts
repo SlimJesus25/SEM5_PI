@@ -17,8 +17,12 @@ export default (app: Router) => {
   route.post('/createElevador',
   celebrate({
     body: Joi.object({
-      designacao: Joi.string().required(),
-      codigo: Joi.string().required()
+      descricao: Joi.string(),
+      numeroIdentificativo: Joi.number().required(),
+      modelo: Joi.string(),
+      marca: Joi.string(),
+      pisosServidos: Joi.array().items(Joi.string()).min(1).max(20).required(),
+      numeroSerie: Joi.string()
     })
   }),
   (req, res, next) => ctrl.createElevador(req, res, next));
@@ -27,8 +31,12 @@ export default (app: Router) => {
   route.put('/updateElevador',
   celebrate({
     body: Joi.object({
-      designacao: Joi.string().required(),
-      codigo: Joi.string().required()
+      descricao: Joi.string(),
+      numeroIdentificativo: Joi.number().required(),
+      modelo: Joi.string(),
+      marca: Joi.string(),
+      pisosServidos: Joi.array().items(Joi.string()).min(1).max(20).required(),
+      numeroSerie: Joi.string()
     }),
   }),
   (req, res, next) => ctrl.updateElevador(req, res, next));

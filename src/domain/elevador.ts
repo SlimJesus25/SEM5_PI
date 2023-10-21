@@ -7,8 +7,12 @@ import { Guard } from "../core/logic/Guard";
 import IElevadorDTO from "../dto/IElevadorDTO";
 
 interface ElevadorProps {
-  designacaoElevador: string;
-  codigoElevador: string;
+  descricao: string;
+  numeroSerie: string;
+  modelo: string;
+  marca: string;
+  pisosServidos: string[];
+  numeroIdentificativo: number;
 }
 
 export class Elevador extends AggregateRoot<ElevadorProps> {
@@ -20,16 +24,52 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
     return new ElevadorId(this.elevadorId.toValue());
   }
 
-  get designacao (): string {
-    return this.props.designacaoElevador;
+  get descricao (): string {
+    return this.props.descricao;
   }
 
-  get codigo (): string {
-    return this.props.codigoElevador;
+  get numeroSerie (): string {
+    return this.props.numeroSerie;
+  }
+  
+  get modelo (): string {
+    return this.props.modelo;
   }
 
-  set designacao ( value: string) {
-    this.props.designacaoElevador = value;
+  get marca (): string {
+    return this.props.marca;
+  }
+
+  get pisosServidos (): string[] {
+    return this.props.pisosServidos;
+  }
+
+  get numeroIdentificativo (): number {
+    return this.props.numeroIdentificativo;
+  }
+
+  set numeroIdentificativo ( value: number) {
+    this.props.numeroIdentificativo = value;
+  }
+
+  set numeroSerie ( value: string) {
+    this.props.numeroSerie = value;
+  }
+
+  set modelo ( value: string) {
+    this.props.modelo = value;
+  }
+
+  set marca ( value: string) {
+    this.props.marca = value;
+  }
+
+  set pisosServidos ( value: string[]) {
+    this.props.pisosServidos = value;
+  }
+
+  set descricao ( value: string) {
+    this.props.descricao = value;
   }
 
   private constructor (props: ElevadorProps, id?: UniqueEntityID) {
@@ -37,16 +77,15 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
   }
 
   public static create (elevadorDTO: IElevadorDTO, id?: UniqueEntityID): Result<Elevador> {
-    const name = elevadorDTO.designacao;
-    const codigo = elevadorDTO.codigo;
 
-    if (!!name === false || name.length === 0) {
-      return Result.fail<Elevador>('Deve providenciar uma designação para o elevador')
-    } else {
-      const elevador = new Elevador({ 
-        designacaoElevador: name,
-      codigoElevador:  codigo}, id);
-      return Result.ok<Elevador>( elevador )
-    }
+    const elevador = new Elevador({ 
+      descricao: elevadorDTO.descricao,
+      numeroIdentificativo: elevadorDTO.numeroIdentificativo,
+      modelo: elevadorDTO.modelo,
+      marca: elevadorDTO.marca,
+      pisosServidos: elevadorDTO.pisosServidos,
+      numeroSerie: elevadorDTO.numeroSerie}, id);
+    return Result.ok<Elevador>( elevador )
+    
   }
 }

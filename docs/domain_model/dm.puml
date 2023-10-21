@@ -28,11 +28,20 @@ package "<<agr Edificio>>"{
 
 package "<<agr Elevador>>"{
     class Elevador<<entity>><<root>>{}
-    class ElevadorDesignacao<<vo>>{}
+    class NumeroIdentificativo<<vo>>{}
+    class PisosServidos<<vo>>{}
+    class MarcaElevador<<vo>>{}
+    class ModeloElevador<<vo>>{}
+    class NumeroSerieElevador<<vo>>{}
+    class DescricaoElevador<<vo>>{}
 
     Edificio --> "1" Elevador
-    Elevador --> "1" ElevadorDesignacao
-
+    Elevador --> "1" NumeroIdentificativo
+    Elevador --> "*" PisosServidos
+    Elevador --> "1" MarcaElevador
+    Elevador --> "1" ModeloElevador
+    Elevador --> "1" NumeroSerieElevador
+    Elevador --> "1" DescricaoElevador
 }
 
 ' Faz sentido ser um agregado à parte por estar sujeito a mudanças, obras por exemplo. Confirmar.
