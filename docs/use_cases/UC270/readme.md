@@ -28,7 +28,7 @@ Criar um elevador é uma entidade relevante do domínio que é criada, simplesme
 
 ## 3. Desenho
 
-Para resolver o problema de criação de elevadores foi criado um agregado com a entidade "Elevador" e um value object "Designação". Requisitos como este e o UC280, levou a equipa a decidir que um agregado seria a melhor solução para garantir manutenabilidade. Consideramos ainda tratar o conceito "Elevador" como uma "Passagem". Sendo abstrato, faz sentido, porém optamos pela nossa escolha devido a simplicidade e naturalidade da resolução dos problemas.
+Para resolver o problema de criação de elevadores foi criado um agregado com a entidade "Elevador" e os respetivos value objects. Requisitos como este e o UC280, levou a equipa a decidir que um agregado seria a melhor solução para garantir manutenabilidade e capacidade de atualização. Consideramos ainda tratar o conceito "Elevador" como uma "Passagem". Sendo abstrato, faz sentido, porém optamos pela nossa escolha devido a simplicidade e naturalidade da resolução dos problemas.
 
 ### 3.1. Realização
 
