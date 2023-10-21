@@ -32,7 +32,7 @@ describe('elevador controller', function () {
 
     it('elevadorController unit test using elevadorService stub', async function () {
 		// Arrange
-        let body = { "name":'elevador1' };
+        let body = { "designacao":'elevador1', "codigo":'elevadorB4452' };
         let req: Partial<Request> = {};
 		req.body = body;
         let res: Partial<Response> = {
@@ -41,7 +41,7 @@ describe('elevador controller', function () {
 		let next: Partial<NextFunction> = () => {};
 
 		let elevadorServiceInstance = Container.get("ElevadorService");
-		sinon.stub(elevadorServiceInstance, "createElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "designacao": req.body.name} ));
+		sinon.stub(elevadorServiceInstance, "createElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "designacao": req.body.designacao, "codigo": req.body.codigo} ));
 
 		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
 
@@ -50,7 +50,7 @@ describe('elevador controller', function () {
 
 		// Assert
 		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "designacao": req.body.name,"id": "123"}));
+		sinon.assert.calledWith(res.json, sinon.match({ "id":"123", "designacao":"elevador1", "codigo": "elevadorB4452"}));
 
 		let body2 = { "name":"elevador525"};
 		let req2: Partial<Request> = {};
@@ -62,7 +62,7 @@ describe('elevador controller', function () {
 		let next2: Partial<NextFunction> = () => {};
 
 		let elevadorServiceInstance2 = Container.get("ElevadorService");
-		sinon.stub(elevadorServiceInstance2, "updateElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "designacao": req.body.name} ));
+		sinon.stub(elevadorServiceInstance2, "updateElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "designacao":"elevador1", "codigo": "elevadorB4452"} ));
 
 		const ctrl2 = new ElevadorController(elevadorServiceInstance2 as IElevadorService);
 
@@ -91,7 +91,7 @@ describe('elevador controller', function () {
 
 		let elevadorRepoInstance = Container.get("ElevadorRepo");
 		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
-			resolve(Elevador.create({"id":"123", "designacao": req.body.name}).getValue())
+			resolve(Elevador.create({"id":"123", "designacao":"elevador1", "codigo": "elevadorB4452"}).getValue())
 		}));
 
 		let elevadorServiceInstance = Container.get("ElevadorService");
@@ -120,7 +120,7 @@ describe('elevador controller', function () {
 
 		let elevadorRepoInstance = Container.get("ElevadorRepo");
 		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
-			resolve(Elevador.create({"id":"123", "designacao": req.body.name}).getValue())
+			resolve(Elevador.create({"id":"123", "designacao":"elevador1", "codigo": "elevadorB4452"}).getValue())
 		}));
 
 		let elevadorServiceInstance = Container.get("ElevadorService");		
@@ -142,7 +142,7 @@ describe('elevador controller', function () {
 
     it('elevadorController unit test using elevadorService mock', async function () {		
 		// Arrange
-        let body = { "name":'elevador1' };
+        let body = { "designacao":'elevador1', "codigo":'elevadorB4452' };
         let req: Partial<Request> = {};
 		req.body = body;
 
@@ -156,7 +156,7 @@ describe('elevador controller', function () {
 		elevadorServiceMock.expects("createElevador")
 			.once()
 			.withArgs(sinon.match({name: req.body.name}))
-			.returns(Result.ok<IElevadorDTO>( {"id":"123", "designacao": req.body.name} ));
+			.returns(Result.ok<IElevadorDTO>( {"id":"123", "designacao":"elevador1", "codigo": "elevadorB4452"} ));
 
 		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
 
@@ -166,7 +166,7 @@ describe('elevador controller', function () {
 		// Assert
 		elevadorServiceMock.verify();
 		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","designacao": req.body.name}));
+		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","designacao": req.body.designacao, "codigo": req.body.codigo}));
 	});
 });
 
