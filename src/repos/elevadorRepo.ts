@@ -69,7 +69,7 @@ export default class ElevadorRepo implements IElevadorRepo {
 
   public async findByCodigo(value: string): Promise<Elevador> {
       const query = { codigo: value.toString() };
-      const elevadorRecord = await this.elevadorSchema.findOne(query);
+      const elevadorRecord = await this.elevadorSchema.findOne(query as FilterQuery<IElevadorPersistence & Document>);
 
       if(elevadorRecord != null)
         return ElevadorMap.toDomain(elevadorRecord);
