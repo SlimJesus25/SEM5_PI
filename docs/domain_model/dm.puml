@@ -140,8 +140,13 @@ package "<<agr Robo>>"{
 
 package "<<agr TipoRobo>>"{
     class TipoRobo<<root>><<entity>>{}
+    class MarcaTipoRobo<<vo>>{}
+    class ModeloTipoRobo<<vo>>{}
+    class DesignacaoTipoRobo<<vo>>{}
 
-
+    TipoRobo --> "1" DesignacaoTipoRobo
+    TipoRobo --> "1" MarcaTipoRobo
+    TipoRobo --> "1" ModeloTipoRobo
     Robo --> "1" TipoRobo
 }
 

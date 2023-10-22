@@ -14,7 +14,7 @@ participant ConfigurationFile as conf
 participant Sala as model
 
 activate route
-route -> ictrl : criar sala
+route -> ictrl : /createSala
 activate ictrl
 ictrl -> ctrl : createSala(req, res, next)
 activate ctrl
@@ -30,6 +30,31 @@ svc -> conf : injeta o repositório do sala
 activate conf
 conf --> svc
 deactivate conf
+svc -> irepo : document = findByDesignacao(designacao)
+activate irepo
+irepo -> repo : findByDesignacao(designacao)
+activate repo
+repo -> ischema : findByDesignacao(designacao)
+activate ischema
+ischema -> schema : findByDesignacao(designacao)
+activate schema
+schema --> ischema
+deactivate schema
+ischema --> repo
+deactivate ischema
+repo --> irepo
+deactivate repo
+irepo --> svc
+deactivate irepo
+alt sala com a mesma designacao encontrada
+    svc --> isvc
+    'deactivate svc
+    isvc --> ctrl
+    'deactivate isvc
+    ctrl --> ictrl : Envia um código 403 (FORBIDDEN)
+    'deactivate ctrl
+    ictrl --> route
+end
 svc -> model : sala = create(salaDTO)
 activate model
 model --> svc
@@ -71,11 +96,8 @@ svc --> isvc
 deactivate svc
 isvc --> ctrl
 deactivate isvc
-alt caso de sucesso
-    ctrl --> ictrl : Envia um código 201 (POST)
-else caso de insucesso
-    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
-end
+ctrl --> ictrl : Envia um código 201 (POST)
+
 deactivate ctrl
 ictrl --> route
 deactivate ictrl

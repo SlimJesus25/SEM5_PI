@@ -19,8 +19,21 @@ export class Tarefa extends AggregateRoot<TarefaProps> {
     return TarefaId.caller(this.id)
   }
 
-  get tipo (): TipoTarefa {
+  get tipoTarefa (): TipoTarefa {
     return this.props.tipoTarefa;
+  }
+
+  set tipoTarefa (tipoTarefa: string){
+    this.props.tipoTarefa = Tarefa.getTipoTarefaValue(tipoTarefa);
+  }
+
+  private static getTipoTarefaValue(tipoTarefa : string) : number{
+    if(tipoTarefa.toLowerCase() == "vigilancia")
+      return 0;
+    else if(tipoTarefa.toLowerCase() == "transporte")
+      return 1;
+    else
+      return -1;
   }
 
   private constructor (props: TarefaProps, id?: UniqueEntityID) {
