@@ -5,11 +5,12 @@ import { Result } from "../core/logic/Result";
 import { PisoId } from "./pisoId";
 import { Sala } from "./sala";
 import { Guard } from "../core/logic/Guard";
+import IPisoDTO from "../dto/IPisoDTO";
 
 interface PisoProps {
-  descricaoPiso: string;
+  descricao: string;
   sala: Sala[];
-  designacaoPiso: string;
+  designacao: string;
 }
 
 export class Piso extends AggregateRoot<PisoProps> {
@@ -22,7 +23,7 @@ export class Piso extends AggregateRoot<PisoProps> {
   }
 
   get descricao (): string {
-    return this.props.descricaoPiso;
+    return this.props.descricao;
   }
 
   get sala (): Sala[] {
@@ -30,7 +31,19 @@ export class Piso extends AggregateRoot<PisoProps> {
   }
 
   get designacao (): string {
-    return this.props.designacaoPiso;
+    return this.props.designacao;
+  }
+
+  set descricao (value : string) {
+    this.props.descricao = value;
+  }
+
+  set designacao (value : string) {
+    this.props.designacao = value;
+  }
+
+  set sala (value : Sala[]) {
+    this.props.sala = value;
   }
 
 
@@ -38,11 +51,11 @@ export class Piso extends AggregateRoot<PisoProps> {
     super(props, id);
   }
 
-  public static create (props: PisoProps, id?: UniqueEntityID): Result<Piso> {
+  /*public static create (props: PisoProps, id?: UniqueEntityID): Result<Piso> {
 
     const guardedProps = [
-      { argument: props.designacaoPiso, argumentName: 'designacaoPiso' },
-      { argument: props.descricaoPiso, argumentName: 'descricaoPiso' },
+      { argument: props.designacao, argumentName: 'designacao' },
+      { argument: props.descricao, argumentName: 'descricao' },
       { argument: props.sala, argumentName: 'sala' }
     ];
 
@@ -58,5 +71,24 @@ export class Piso extends AggregateRoot<PisoProps> {
 
       return Result.ok<Piso>(piso);
     }
+  }*/
+  public static create (pisoDTO: IPisoDTO, id?: UniqueEntityID): Result<Piso> {
+
+    try{
+      const descricao = pisoDTO.descricao;
+      const designacao = pisoDTO.designacao;
+      let salas: Sala[] = [];
+      pisoDTO.sala.forEach(v => salas.push(SalaMap.toDomain(v)));
+
+      const piso = new Piso({ 
+        descricao: descricao,
+        designacao: designacao,
+        sala: salas,
+      }, id);
+        return Result.ok<Piso>( piso )
+  }catch(e){
+    return Result.fail(e);
+  }
+    
   }
 }

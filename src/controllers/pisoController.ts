@@ -19,7 +19,7 @@ export default class PisoController implements IPisoController /* TODO: extends 
       const pisoOrError = await this.pisoServiceInstance.createPiso(req.body as IPisoDTO) as Result<IPisoDTO>;
         
       if (pisoOrError.isFailure) {
-        return res.status(402).send();
+        return res.status(404).send();
       }
 
       const pisoDTO = pisoOrError.getValue();

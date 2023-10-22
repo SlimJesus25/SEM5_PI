@@ -1,5 +1,3 @@
-
-
 export default interface IPisoDTO {
     id: string;
     descricao: string;

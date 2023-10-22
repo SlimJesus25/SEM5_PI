@@ -6,11 +6,14 @@ import IPisoRepo from '../services/IRepos/IPisoRepo';
 import IPisoService from './IServices/IPisoService';
 import { Result } from "../core/logic/Result";
 import { PisoMap } from "../mappers/PisoMap";
+import { Sala } from '../domain/sala';
+import ISalaRepo from '../services/IRepos/ISalaRepo';
 
 @Service()
 export default class PisoService implements IPisoService {
   constructor(
-      @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo
+      @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo,
+      @Inject(config.repos.sala.name) private salaRepo: ISalaRepo
   ) {}
 
   public async getPiso( pisoId: string): Promise<Result<IPisoDTO>> {
@@ -58,13 +61,16 @@ export default class PisoService implements IPisoService {
     try {
       const piso = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
 
+      let salas: Sala[];
+      pisoDTO.sala.forEach(async v => salas.push(await this.salaRepo.findByDomainId(v)))
+
       if (piso === null) {
         return Result.fail<IPisoDTO>("Piso não encontrado");
       }
       else {
         piso.descricao = pisoDTO.descricao;
         piso.designacao = pisoDTO.designacao;
-        piso.sala = pisoDTO.sala;
+        piso.sala = salas;
         await this.pisoRepo.save(piso);
 
         const pisoDTOResult = PisoMap.toDTO( piso ) as IPisoDTO;
