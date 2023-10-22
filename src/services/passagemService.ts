@@ -8,6 +8,7 @@ import { Result } from "../core/logic/Result";
 import { PassagemMap } from "../mappers/PassagemMap";
 import IEdificioRepo from './IRepos/IEdificioRepo';
 import { PassagemId } from '../domain/passagemId';
+import IPisoRepo from './IRepos/IPisoRepo';
 
 
 @Service()
@@ -15,6 +16,7 @@ export default class PassagemService implements IPassagemService {
   constructor(
       @Inject(config.repos.passagem.name) private passagemRepo : IPassagemRepo,
       @Inject(config.repos.edificio.name) private edificioRepo : IEdificioRepo
+      @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo
   ) {}
 
   public async getPassagem( passagemId: string): Promise<Result<IPassagemDTO>> {
@@ -23,11 +25,54 @@ export default class PassagemService implements IPassagemService {
 
 
   public async createPassagem(passagemDTO: IPassagemDTO): Promise<Result<IPassagemDTO>> {
-    return null;
+    try {
+
+      const passagemDocument = await this.passagemRepo.findByDomainId(passagemDTO.id);
+
+      if(!!passagemDocument)
+        return Result.fail<IPassagemDTO>("Passagem com o id " + passagemDTO.id + " já existe!");
+
+      const passagemOrError = await Passagem.create( passagemDTO );
+
+      if (passagemOrError.isFailure) {
+        return Result.fail<IPassagemDTO>(passagemOrError.errorValue());
+      }
+
+      const passagemResult = passagemOrError.getValue();
+
+      await this.passagemRepo.save(passagemResult);
+
+      const passagemDTOResult = PassagemMap.toDTO( passagemResult ) as IPassagemDTO;
+      return Result.ok<IPassagemDTO>( passagemDTOResult )
+    } catch (e) {
+      throw e;
+    }
   }
 
   public async updatePassagem(passagemDTO: IPassagemDTO): Promise<Result<IPassagemDTO>> {
-    return null;
+    try {
+      const passagem = await this.passagemRepo.findByDomainId(passagemDTO.id);
+      const edificioA = await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem);
+      const edificioB = await this.edificioRepo.findByCodigo(passagemDTO.edificioDestino);
+      const pisoA = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
+      const pisoB = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
+
+      if (passagem === null) {
+        return Result.fail<IPassagemDTO>("Passagem não encontrada");
+      }
+      else {
+        passagem.edificioUm = edificioA;
+        passagem.edificioDois = edificioB;
+        passagem.pisoUm = pisoA;
+        passagem.pisoDois = pisoB;
+        await this.passagemRepo.save(passagem);
+
+        const passagemDTOResult = PassagemMap.toDTO( passagem ) as IPassagemDTO;
+        return Result.ok<IPassagemDTO>( passagemDTOResult )
+        }
+    } catch (e) {
+      throw e;
+    }
   }
 
   public async listPassagens(codigoEdificioA: string, codigoEdificioB: string): Promise<Result<IPassagemDTO[]>> {

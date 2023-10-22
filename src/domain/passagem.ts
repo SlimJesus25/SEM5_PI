@@ -5,6 +5,10 @@ import { PassagemId } from "./passagemId";
 import { Guard } from "../core/logic/Guard";
 import { Edificio } from "./edificio";
 import { Piso } from "./piso";
+import { EdificioMap } from "../mappers/EdificioMap";
+import IPassagemDTO from "../dto/IPassagemDTO";
+import IEdificioDTO from "../dto/IEdificioDTO";
+import { PisoMap } from "../mappers/PisoMap";
 
 
 interface PassagemProps {
@@ -39,11 +43,27 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     return this.props.pisoB;
   }
 
+  set edificioUm (value : Edificio) {
+    this.props.edificioA = value;
+  }
+  
+  set edificioDois (value : Edificio) {
+    this.props.edificioB = value;
+  }
+
+  set pisoUm (value : Piso) {
+    this.props.pisoA = value;
+  }
+
+  set pisoDois (value : Piso) {
+    this.props.pisoB = value;
+  }
+
   private constructor (props: PassagemProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
-  public static create (props: PassagemProps, id?: UniqueEntityID): Result<Passagem> {
+  /*public static create (props: PassagemProps, id?: UniqueEntityID): Result<Passagem> {
 
     const guardedProps = [
       { argument: props.edificioA, argumentName: 'edificioA' },
@@ -64,5 +84,26 @@ export class Passagem extends AggregateRoot<PassagemProps> {
 
       return Result.ok<Passagem>(passagem);
     }
+  }*/
+
+  public static create (passagemDTO: IPassagemDTO, id?: UniqueEntityID): Result<Passagem> {
+
+    try{
+      const edificioOrigem = EdificioMap.toDomain(passagemDTO.edificioOrigem);
+      const edificioDestino = EdificioMap.toDomain(passagemDTO.edificioDestino);
+      const pisoOrigem = PisoMap.toDomain(passagemDTO.pisoOrigem);
+      const pisoDestino = PisoMap.toDomain(passagemDTO.pisoDestino);
+      
+      const passagem = new Passagem({ 
+        edificioA: edificioOrigem,
+        edificioB: edificioDestino,
+        pisoA: pisoOrigem,
+        pisoB: pisoDestino
+      }, id);
+        return Result.ok<Passagem>( passagem)
+  }catch(e){
+    return Result.fail(e);
+  }
+    
   }
 }
