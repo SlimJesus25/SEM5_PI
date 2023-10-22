@@ -30,7 +30,7 @@ export class Piso extends AggregateRoot<PisoProps> {
   }
 
   get designacao (): string {
-    return this.props.descricaoPiso;
+    return this.props.designacaoPiso;
   }
 
 
