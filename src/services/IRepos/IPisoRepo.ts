@@ -5,6 +5,7 @@ import { PisoId } from "../../domain/pisoId";
 export default interface IPisoRepo extends Repo<Piso> {
   save(role: Piso): Promise<Piso>;
   findByDomainId (pisoId: PisoId | string): Promise<Piso>;
+  findByDesignacao(designacao: string): Promise<Piso>
     
   //findByIds (rolesIds: RoleId[]): Promise<Role[]>;
   //saveCollection (roles: Role[]): Promise<Role[]>;
