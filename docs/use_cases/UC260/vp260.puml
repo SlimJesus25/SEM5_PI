@@ -1,0 +1,69 @@
+@startuml sd
+
+participant Route as route
+participant InterfacePassagemController as ictrl
+participant PassagemController as ctrl
+participant InterfacePassagemService as isvc
+participant PassagemService as svc
+participant InterfacePassagemRepo as irepo
+participant PassagemRepo as repo
+participant PassagemMapper as mapper
+participant InterfacePassagemPersistence as ischema
+participant PassagemSchema as schema
+participant ConfigurationFile as conf
+participant Passagem as model
+
+activate route
+route -> ictrl : /listPassagens
+activate ictrl
+ictrl -> ctrl : listPassagens(req, res, next)
+activate ctrl
+ctrl -> conf : injeta o serviço da Passagem
+activate conf
+conf --> ctrl
+deactivate conf
+ctrl -> isvc : listPassagens(IEdificioDTOA, IEdificioDTOB)
+activate isvc
+isvc -> svc : listPassagem(IEdificioDTOA, IEdificioDTOB)
+activate svc
+svc -> conf : injeta o repositório do sala
+activate conf
+conf --> svc
+deactivate conf
+svc -> irepo : documentList = listPassagensBetween(edificioAId, edificioBId)
+activate irepo
+irepo -> repo : listPassagensBetween(edificioAId, edificioBId)
+activate repo
+repo -> ischema : listPassagensBetween(edificioAId, edificioBId)
+activate ischema
+ischema -> schema : listPassagensBetween(edificioAId, edificioBId)
+activate schema
+schema --> ischema
+deactivate schema
+ischema --> repo
+deactivate ischema
+repo --> irepo
+deactivate repo
+irepo --> svc
+deactivate irepo
+alt nao existem passagens ou edifícios são inválidos
+    svc --> isvc
+    'deactivate svc
+    isvc --> ctrl
+    'deactivate isvc
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+    'deactivate ctrl
+    ictrl --> route
+end
+svc --> isvc
+deactivate svc
+isvc --> ctrl
+deactivate isvc
+ctrl --> ictrl : Envia um código 200 (GET)
+
+deactivate ctrl
+ictrl --> route
+deactivate ictrl
+deactivate route
+
+@enduml

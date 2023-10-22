@@ -1,95 +1,56 @@
-# US 1001
+# UC 260
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
-
-**Critérios de aceitação** - This US has no specific acceptance criteria
+**UC260** - Listar passagens entre 2 edifícios.
 
 ## 2. Análise
 
-### 2.1 Indentificar o problema
-In order to implement this functionality, we divided the documentation in 3 parts:
+### 2.1 Identificar o problema
 
-#### US1001_1 Add User
-
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
-
-#### US1001_2 Deactivate User
-
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
-
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
+Listar passagens entre 2 edifícios deve apresentar todas as passagens que conectem um edificio A a um edificio B (todas as passagens são bidirecionais).
 
 ### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
+
+![excerpt diagram](ed260.svg "ed260.svg")
 
 ### 2.3 Testes de Unidade - Teste de regras de negócio
 
-**Test 1:** *Ensure Username can't be null*
+**Test 1:** *Listar passagem.*
 
-**Test 2:** *Ensure Password can't be null*
+**Test 2:** *Edifico A tem que existir.*
 
-**Test 3:** *Ensure FirstName can't be null*
+**Test 3:** *Edifico B tem que existir.*
 
-**Test 4:** *Ensure LastName can't be null*
-
-**Test 5:** *Ensure Email can't be null*
-
-**Test 6:** *Ensure User can't be null*
-
-**Test 7:** *Ensure list of users can't be null*
+### Adicionar os restantes testes
 
 
 
-## 3. Design
+## 3. Desenho
 
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+Para solucionar este problema, existe um agregado designado por Passagem que tem como atributos um edificio A, outro edificio B, um piso do edificio A e outro piso do edificio B. Desta forma, é possível listar todos as passagens entre dois edificios especificos.
+
+Nota de detalhe técnico: Tabela de dupla entrada.
 
 ### 3.1. Realização
 
-### US1001_1 Add User
-* **Sequence Diagram**
+#### 3.3.1 Diagrama de vista de processos
 
-![sequence diagram](us1001_1/sequence_diagram_addUser.svg "sequence_diagram_1001_1")
+![vp](vp260.svg "vp260.svg")
 
-* **Class Diagram**
+#### 3.3.2 Vista lógica nível (3 ou 4 (verificar))
 
-![class diagram](us1001_1/class_diagram_addUser.svg "class_diagram_1001_1")
-
-### US1001_2 Deactivate  User
-
-* **Sequence Diagram**
- 
-![sequence diagram](us1001_2/sequence_diagram_deactivateUser.svg "sequence_diagram_1001_2")
-
-* **Class Diagram**
-
-![class diagram](us1001_2/class_diagram_deactivateUser.svg "class_diagram_1001_2")
-
-#### US1001_3 List User
-
-* **Sequence Diagram**
-
-![sequence diagram](us1001_3/sequence_diagram_listUser.svg "sequence_diagram_1001_3")
-
-* **Class Diagram**
-
-![class diagram](us1001_3/class_diagram_listUser.svg "class_diagram_1001_3")
 
 ### 3.2. Padrões aplicados
-The applied patters are:
-* DTO;
-* Persistence;
-* Application;
-* Controller;
-* Service;
-* Domain;
-* UI;
+
+Os padrões aplicados são:
+
+- DTO;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
+- Modelo.
