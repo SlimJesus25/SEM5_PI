@@ -11,19 +11,19 @@ import { Result } from "../core/logic/Result";
 @Service()
 export default class PisoController implements IPisoController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
-      @Inject(config.services.elevador.name) private pisoServiceInstance : IPisoService
+      @Inject(config.services.piso.name) private pisoServiceInstance : IPisoService
   ) {}
 
   public async createPiso(req: Request, res: Response, next: NextFunction) {
     try {
-      const pisoOrError = await this.pisoServiceInstance.createElevador(req.body as IPisoDTO) as Result<IPisoDTO>;
+      const pisoOrError = await this.pisoServiceInstance.createPiso(req.body as IPisoDTO) as Result<IPisoDTO>;
         
       if (pisoOrError.isFailure) {
         return res.status(402).send();
       }
 
-      const elevadorDTO = pisoOrError.getValue();
-      return res.json( elevadorDTO ).status(201);
+      const pisoDTO = pisoOrError.getValue();
+      return res.json( pisoDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -32,14 +32,14 @@ export default class PisoController implements IPisoController /* TODO: extends 
 
   public async updatePiso(req: Request, res: Response, next: NextFunction) {
     try {
-      const pisoOrError = await this.pisoServiceInstance.updateElevador(req.body as IPisoDTO) as Result<IPisoDTO>;
+      const pisoOrError = await this.pisoServiceInstance.updatePiso(req.body as IPisoDTO) as Result<IPisoDTO>;
 
       if (pisoOrError.isFailure) {
         return res.status(404).send();
       }
 
-      const elevadorDTO = pisoOrError.getValue();
-      return res.status(201).json( elevadorDTO );
+      const pisoDTO = pisoOrError.getValue();
+      return res.status(201).json( pisoDTO );
     }
     catch (e) {
       return next(e);
