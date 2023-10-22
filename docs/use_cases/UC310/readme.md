@@ -18,17 +18,9 @@ Criar uma sala é uma entidade relevante do domínio que é criada, simplesmente
 
 **Test 1:** *Criar sala.*
 
-**Test 2:** *Designação não pode ser nula.*
+**Test 2:** *Designação não pode ser vazia.*
 
-**Test 3:** *Designação não pode ser vazia.*
-
-**Test 4:** *Descrição não pode ser nula.*
-
-**Test 5:** *Descrição não pode ser vazia.*
-
-**Test 6:** *Categoria não pode ser nula.*
-
-**Test 7:** *Categoria não pode ser vazia.*
+**Test 3:** *Categoria não pode ser vazia.*
 
 ### Adicionar os restantes testes
 
