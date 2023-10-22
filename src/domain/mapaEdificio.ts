@@ -2,7 +2,7 @@ import { AggregateRoot } from "../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Result } from "../core/logic/Result";
 import { Guard } from "../core/logic/Guard";
-import { MapaEdificioId } from "./MapaEdificioId"
+import { MapaEdificioId } from "./mapaEdificioId";
 
 
 interface MapaEdificioProps {

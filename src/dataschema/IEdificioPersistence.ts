@@ -1,4 +1,4 @@
-export interface IUserPersistence {
+export interface IEdificioPersistence {
 	_id: string;
 	codigo: string;
 	nomeOpcional: string;

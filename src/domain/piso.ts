@@ -6,6 +6,7 @@ import { PisoId } from "./pisoId";
 import { Sala } from "./sala";
 import { Guard } from "../core/logic/Guard";
 import IPisoDTO from "../dto/IPisoDTO";
+import { SalaMap } from "../mappers/SalaMap";
 
 interface PisoProps {
   descricao: string;

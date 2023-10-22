@@ -39,12 +39,14 @@ export class EdificioMap extends Mapper<Edificio> {
     const elevador = await elevadorRepo.findByDomainId(edificio.elevador);
     
     const edificioOrError = Edificio.create({
+      id: edificio.id,
       codigoEdificio: edificio.codigo,
       nomeOpcional: edificio.nomeOpcional,
       descricao: edificio.descricao,
       dimensaoMaxima: edificio.dimensaoMaxima,
       elevador: edificio.elevador,
-      pisos: pisos
+      pisos: pisos,
+      mapaEdificio: edificio.mapa,
     });
 
     edificioOrError.isFailure ? console.log(edificioOrError.error) : '';
