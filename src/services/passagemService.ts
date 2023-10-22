@@ -74,12 +74,15 @@ export default class PassagemService implements IPassagemService {
       throw e;
     }
   }
-
-  public async listPassagens(codigoEdificioA: string, codigoEdificioB: string): Promise<Result<IPassagemDTO[]>> {
+  // codigoEdificioA: string, codigoEdificioB: string
+  public async listPassagens(edificios): Promise<Result<IPassagemDTO[]>> {
     try {
 
-        const edificioADoc = await this.edificioRepo.findByCodigo(codigoEdificioA);
-        const edificioBDoc = await this.edificioRepo.findByCodigo(codigoEdificioB);
+        // const edificioADoc = await this.edificioRepo.findByCodigo(codigoEdificioA);
+        // const edificioBDoc = await this.edificioRepo.findByCodigo(codigoEdificioB);
+
+        const edificioADoc = await this.edificioRepo.findByCodigo(edificios.edificioA);
+        const edificioBDoc = await this.edificioRepo.findByCodigo(edificios.edificioB);
   
         if(!!edificioADoc || !!edificioBDoc)
           return Result.fail<IPassagemDTO[]>("Um dos códigos dos edifícios é inválido");

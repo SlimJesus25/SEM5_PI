@@ -26,7 +26,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createPassagem(req, res, next));
 
   // Update passagem existente.
-  route.put('/updateElevador',
+  route.put('/updatePassagem',
   celebrate({
     body: Joi.object({
       edificioA: Joi.string(),
