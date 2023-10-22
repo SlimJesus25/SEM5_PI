@@ -9,37 +9,33 @@ import config from "../../../config";
 const route = Router();
 
 export default (app: Router) => {
-  app.use('/elevador', route);
+  app.use('/passagem', route);
 
-  const ctrl = Container.get(config.controllers.elevador.name) as IPassagemController;
+  const ctrl = Container.get(config.controllers.passagem.name) as IPassagemController;
 
-  // Criar novo elevador.
-  route.post('/createElevador',
+  // Criar nova passagem.
+  route.post('/createPassagem',
   celebrate({
     body: Joi.object({
-      descricao: Joi.string(),
-      numeroIdentificativo: Joi.number().required(),
-      modelo: Joi.string(),
-      marca: Joi.string(),
-      pisosServidos: Joi.array().items(Joi.string()).min(1).max(20).required(),
-      numeroSerie: Joi.string()
+      edificioA: Joi.string(),
+      edificioB: Joi.string(),
+      pisoA: Joi.string(),
+      pisoB: Joi.string()
     })
   }),
-  (req, res, next) => ctrl.createElevador(req, res, next));
+  (req, res, next) => ctrl.createPassagem(req, res, next));
 
-  // Update elevador existente.
+  // Update passagem existente.
   route.put('/updateElevador',
   celebrate({
     body: Joi.object({
-      descricao: Joi.string(),
-      numeroIdentificativo: Joi.number().required(),
-      modelo: Joi.string(),
-      marca: Joi.string(),
-      pisosServidos: Joi.array().items(Joi.string()).min(1).max(20).required(),
-      numeroSerie: Joi.string()
+      edificioA: Joi.string(),
+      edificioB: Joi.string(),
+      pisoA: Joi.string(),
+      pisoB: Joi.string()
     }),
   }),
-  (req, res, next) => ctrl.updateElevador(req, res, next));
+  (req, res, next) => ctrl.updatePassagem(req, res, next));
 
   // Listar passagens entre 2 edifícios (recebe 2 códigos de edifício).
   route.put('/listPassagens',
@@ -49,5 +45,5 @@ export default (app: Router) => {
       codigoEdificioB: Joi.string().required()
     }),
   }),
-  (req, res, next) => ctrl.updateElevador(req, res, next));
+  (req, res, next) => ctrl.listPassagens(req, res, next));
 };
