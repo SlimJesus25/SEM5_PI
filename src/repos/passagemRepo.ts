@@ -24,15 +24,49 @@ export default class PassagemRepo implements IPassagemRepo {
 
   public async exists(passagem: Passagem): Promise<boolean> {
     
-    return null;
+    const idX = passagem.id instanceof PassagemId ? (<PassagemId>passagem.id).toValue() : passagem.id;
+
+    const query = { domainId: idX}; 
+    const roleDocument = await this.passagemSchema.findOne( query as FilterQuery<IPassagemPersistence & Document>);
+
+    return !!roleDocument === true;
   }
 
   public async save (passagem: Passagem): Promise<Passagem> {
-    return null;
+    const query = { domainId: passagem.id.toString()}; 
+
+    const passagemDocument = await this.passagemSchema.findOne( query );
+
+    try {
+      if (passagemDocument === null ) {
+        const rawPassagem: any = PassagemMap.toPersistence(passagem);
+
+        const passagemCreated = await this.passagemSchema.create(rawPassagem);
+
+        return PassagemMap.toDomain(passagemCreated);
+      } else {
+        passagemDocument.edificioA = passagem.edificioUm.id.toString();
+        passagemDocument.edificioB = passagem.edificioDois.id.toString();
+        passagemDocument.pisoA = passagem.pisoUm.id.toString();
+        passagemDocument.pisoB = passagem.pisoDois.id.toString();
+        await passagemDocument.save();
+
+        return passagem;
+      }
+    } catch (err) {
+      throw err;
+    }
   }
 
   public async findByDomainId (passagemId: PassagemId | string): Promise<Passagem> {
-    return null;
+    const query = { domainId: passagemId};
+    const passagemRecord = await this.passagemSchema.findOne( query as FilterQuery<IPassagemPersistence & Document> );
+
+    if( passagemRecord != null) {
+      return PassagemMap.toDomain(passagemRecord);
+    }
+    else
+      return null;
   }
 
   public async listPassagensBetween(idEdificioA: string, idEdificioB: string): Promise<Passagem[]> {
