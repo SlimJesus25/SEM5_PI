@@ -69,15 +69,15 @@ export default {
       name: "PisoController",
       path: "../controllers/pisoController"
     },
-    MapaEdificio: {
+    mapaEdificio: {
       name: "MapaEdificioController",
       path: "../controllers/mapaEdificioController"
     },
-    TipoRobo: {
+    tipoRobo: {
       name: "TipoRoboController",
       path: "../controllers/tipoRoboController"
     },
-    Tarefa: {
+    tarefa: {
       name: "TarefaController",
       path: "../controllers/tarefaController"
     }
@@ -116,15 +116,15 @@ export default {
       name: "PisoRepo",
       path: "../repos/pisoRepo"
     },
-    MapaEdificio: {
+    mapaEdificio: {
       name: "MapaEdificioRepo",
       path: "../repos/mapaEdificioRepo"
     },
-    TipoRobo: {
+    tipoRobo: {
       name: "TipoRoboRepo",
       path: "../repos/tipoRoboRepo"
     },
-    Tarefa: {
+    tarefa: {
       name: "TarefaRepo",
       path: "../repos/tarefaRepo"
     }
@@ -159,15 +159,15 @@ export default {
       name: "PisoService",
       path: "../services/pisoService"
     },
-    MapaEdificio: {
+    mapaEdificio: {
       name: "MapaEdificioService",
       path: "../services/mapaEdificioService"
     },
-    TipoRobo: {
+    tipoRobo: {
       name: "TipoRoboService",
       path: "../services/tipoRoboService"
     },
-    Tarefa: {
+    tarefa: {
       name: "TarefaService",
       path: "../services/tarefaService"
     }
