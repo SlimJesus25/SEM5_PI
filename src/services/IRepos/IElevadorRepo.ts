@@ -2,7 +2,7 @@ import { Repo } from "../../core/infra/Repo";
 import { Elevador } from "../../domain/elevador";
 import { ElevadorId } from "../../domain/elevadorId";
 
-export default interface IRoleRepo extends Repo<Elevador> {
+export default interface IElevadorRepo extends Repo<Elevador> {
   save(role: Elevador): Promise<Elevador>;
   findByDomainId (roleId: ElevadorId | string): Promise<Elevador>;
   findByNumeroIdentificativo(codigo: number): Promise<Elevador>;
