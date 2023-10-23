@@ -31,8 +31,8 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return EdificioId.caller(this.id);
   }
 
-  get codigo (): CodigoEdificio {
-    return this.props.codigoEdificio;
+  get codigo (): string {
+    return this.props.codigoEdificio.value;
   }
 
   get nomeOpcional (): string {
@@ -59,8 +59,8 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return this.props.mapaEdificio;
   }
 
-  set codigo (value : CodigoEdificio) {
-    this.props.codigoEdificio = value;
+  set codigo (value : string) {
+    this.props.codigoEdificio = CodigoEdificio.create(value).getValue();
   }
 
   set nomeOpcional (value : string) {
