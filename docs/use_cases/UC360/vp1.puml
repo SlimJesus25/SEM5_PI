@@ -1,0 +1,6 @@
+@startuml
+actor Actor as actor
+participant SistemaRobDroneGo as srdg
+actor -> srdg: Adicionar um novo robot à frota indicando o seu tipo, designação, etc.
+srdg --> actor
+@enduml
