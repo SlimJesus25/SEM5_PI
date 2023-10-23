@@ -5,11 +5,6 @@ import { PassagemId } from "./passagemId";
 import { Guard } from "../core/logic/Guard";
 import { Edificio } from "./edificio";
 import { Piso } from "./piso";
-import { EdificioMap } from "../mappers/EdificioMap";
-import IPassagemDTO from "../dto/IPassagemDTO";
-import IEdificioDTO from "../dto/IEdificioDTO";
-import { PisoMap } from "../mappers/PisoMap";
-
 
 interface PassagemProps {
   edificioA: Edificio;
@@ -63,7 +58,7 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     super(props, id);
   }
 
-  /*public static create (props: PassagemProps, id?: UniqueEntityID): Result<Passagem> {
+  public static create (props: PassagemProps, id?: UniqueEntityID): Result<Passagem> {
 
     const guardedProps = [
       { argument: props.edificioA, argumentName: 'edificioA' },
@@ -84,8 +79,8 @@ export class Passagem extends AggregateRoot<PassagemProps> {
 
       return Result.ok<Passagem>(passagem);
     }
-  }*/
-
+  }
+  /*
   // Verificar forma de 
   public static create (passagemDTO: IPassagemDTO, id?: UniqueEntityID): Result<Passagem> {
 
@@ -106,5 +101,5 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     return Result.fail(e);
   }
     
-  }
+  }*/
 }
