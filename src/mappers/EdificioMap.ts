@@ -8,6 +8,10 @@ import { Edificio } from "../domain/edificio";
 import { Piso } from "../domain/piso";
 import Container from "typedi";
 import ElevadorRepo from "../repos/elevadorRepo";
+import PisoRepo from "../repos/pisoRepo";
+
+import { Result } from "../core/logic/Result";
+
 
 
 export class EdificioMap extends Mapper<Edificio> {
@@ -33,9 +37,9 @@ export class EdificioMap extends Mapper<Edificio> {
   public static async toDomain (edificio: any | Model<IEdificioPersistence & Document> ): Promise<Edificio> {
 
     const elevadorRepo = Container.get(ElevadorRepo);
-    //const pisoRepo = Container.get(PisoRepo);
+    const pisoRepo = Container.get(PisoRepo);
     let pisos : string[];
-    //edificio.pisos.forEach(v => pisos.push(pisoRepo.findByDomainId(v)));
+    //edificio.pisos.forEach(v => pisos.push(pisoRepo.findByDesignacao(v)));
     const elevador = await elevadorRepo.findByDomainId(edificio.elevador);
     
     const edificioOrError = Edificio.create({

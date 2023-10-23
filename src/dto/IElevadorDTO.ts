@@ -5,7 +5,7 @@ export default interface IElevadorDTO {
     numeroSerie: string;
     modelo: string;
     marca: string;
-    pisosServidos: string[];
+    pisosServidos: string[]; // string[]: designações (únicas) de pisos.
     numeroIdentificativo: number;
   }
   
