@@ -1,10 +1,6 @@
 import { Mapper } from "../core/infra/Mapper";
 import { Container } from 'typedi';
 
-
-import { Document, Model } from 'mongoose';
-import { IPassagemPersistence } from '../dataschema/IPassagemPersistence';
-
 import IPassagemDTO from "../dto/IPassagemDTO";
 import { Passagem } from "../domain/passagem";
 
@@ -19,6 +15,7 @@ export class PassagemMap extends Mapper<Passagem> {
   public static toDTO( passagem: Passagem): IPassagemDTO {
     return {
       id: passagem.id.toString(),
+      designacao: passagem.designacao,
       edificioOrigem: passagem.edificioUm.codigo.toString(),
       edificioDestino: passagem.edificioDois.codigo.toString(),
       pisoOrigem: passagem.pisoUm.designacao.toString(),
@@ -38,6 +35,7 @@ export class PassagemMap extends Mapper<Passagem> {
     const pisoB = await repoPiso.findByDesignacao(raw.pisoB);
 
     const passagemOrError = Passagem.create({
+      designacao: raw.designacao,
       edificioA: edificioA,
       edificioB: edificioB,
       pisoA: pisoA,
@@ -52,6 +50,7 @@ export class PassagemMap extends Mapper<Passagem> {
   public static toPersistence (passagem: Passagem): any {
     return {
       domainId: passagem.id.toString(),
+      designacao: passagem.designacao,
       edificioOrigem: passagem.edificioUm.codigo,
       edificioDestino: passagem.edificioDois.codigo,
       pisoOrigem: passagem.pisoUm.designacao,

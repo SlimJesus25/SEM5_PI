@@ -7,6 +7,7 @@ import { Edificio } from "./edificio";
 import { Piso } from "./piso";
 
 interface PassagemProps {
+  designacao: string;
   edificioA: Edificio;
   edificioB: Edificio;
   pisoA: Piso;
@@ -38,6 +39,14 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     return this.props.pisoB;
   }
 
+  get designacao (): string {
+    return this.props.designacao;
+  }
+
+  set designacao (value : string){
+    this.props.designacao = value;
+  }
+
   set edificioUm (value : Edificio) {
     this.props.edificioA = value;
   }
@@ -61,6 +70,7 @@ export class Passagem extends AggregateRoot<PassagemProps> {
   public static create (props: PassagemProps, id?: UniqueEntityID): Result<Passagem> {
 
     const guardedProps = [
+      { argument: props.designacao, argumentName: 'designacao' },
       { argument: props.edificioA, argumentName: 'edificioA' },
       { argument: props.edificioB, argumentName: 'edificioB' },
       { argument: props.pisoA, argumentName: 'pisoA' },

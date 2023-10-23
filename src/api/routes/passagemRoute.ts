@@ -17,10 +17,11 @@ export default (app: Router) => {
   route.post('/createPassagem',
   celebrate({
     body: Joi.object({
-      edificioA: Joi.string(),
-      edificioB: Joi.string(),
-      pisoA: Joi.string(),
-      pisoB: Joi.string()
+      designacao: Joi.string().required(),
+      edificioA: Joi.string().required(),
+      edificioB: Joi.string().required(),
+      pisoA: Joi.string().required(),
+      pisoB: Joi.string().required()
     })
   }),
   (req, res, next) => ctrl.createPassagem(req, res, next));
@@ -29,10 +30,11 @@ export default (app: Router) => {
   route.put('/updatePassagem',
   celebrate({
     body: Joi.object({
-      edificioA: Joi.string(),
-      edificioB: Joi.string(),
-      pisoA: Joi.string(),
-      pisoB: Joi.string()
+      designacao: Joi.string().required(),
+      edificioA: Joi.string().required(),
+      edificioB: Joi.string().required(),
+      pisoA: Joi.string().required(),
+      pisoB: Joi.string().required()
     }),
   }),
   (req, res, next) => ctrl.updatePassagem(req, res, next));
