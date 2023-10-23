@@ -47,14 +47,14 @@ export default class EdificioRepo implements IEdificioRepo {
       } else {
 
         let pisos : string[] = [];
-        edificio.pisos.forEach(v => pisos.push(v.id.toString()));
+        edificio.pisos.forEach(v => pisos.push(v.designacao));
 
-        edificioDocument.codigoEdificio = edificio.codigo.value;
-        edificioDocument.nomeOpcionalEdificio = edificio.nomeOpcional;
-        edificioDocument.descricaoEdificio = edificio.descricao;
-        edificioDocument.dimensaoMaximaPiso = edificio.dimensaoMaxima;
-        edificioDocument.elevadores = edificio.elevadores.id.toString();
-        edificioDocument.mapaEdificio = edificio.mapa.id.toString();
+        edificioDocument.codigo = edificio.codigo;
+        edificioDocument.nomeOpcional = edificio.nomeOpcional;
+        edificioDocument.descricao = edificio.descricao;
+        edificioDocument.dimensaoMaxima = edificio.dimensaoMaxima;
+        edificioDocument.elevadores = edificio.elevadores.numeroIdentificativo;
+        edificioDocument.mapa = edificio.mapa.id.toString();
         edificioDocument.pisos = pisos;
         await edificioDocument.save();
 

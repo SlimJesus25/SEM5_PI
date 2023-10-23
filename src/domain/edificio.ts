@@ -92,7 +92,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
   }
 
   
-  /*
+  
   public static create (props: EdificioProps, id?: UniqueEntityID): Result<Edificio> {
 
     const guardedProps = [
@@ -117,9 +117,9 @@ export class Edificio extends AggregateRoot<EdificioProps> {
 
       return Result.ok<Edificio>(edificio);
     }
-  }*/
+  }
   
-  
+  /*
   public static create (edificioDTO: IEdificioDTO, id?: UniqueEntityID): Result<Edificio> {
 
     try{
@@ -146,5 +146,5 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return Result.fail(e);
   }
     
-  }
+  }*/
 }

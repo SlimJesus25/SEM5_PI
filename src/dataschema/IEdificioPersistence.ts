@@ -4,7 +4,7 @@ export interface IEdificioPersistence {
 	nomeOpcional: string;
 	descricao: string;
 	dimensaoMaxima: number;
-	elevadores: string;
-	pisos: string;
+	elevadores: number; // Número identificativo do elevador.
+	pisos: string[]; // Designação (única).
     mapa: string;
   }
