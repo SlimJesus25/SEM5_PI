@@ -15,7 +15,7 @@ import IPisoRepo from './IRepos/IPisoRepo';
 export default class PassagemService implements IPassagemService {
   constructor(
       @Inject(config.repos.passagem.name) private passagemRepo : IPassagemRepo,
-      @Inject(config.repos.edificio.name) private edificioRepo : IEdificioRepo
+      @Inject(config.repos.edificio.name) private edificioRepo : IEdificioRepo,
       @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo
   ) {}
 

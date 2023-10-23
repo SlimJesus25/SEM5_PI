@@ -83,8 +83,8 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
 
   public static create (elevadorDTO: IElevadorDTO, id?: UniqueEntityID): Result<Elevador> {
 
-    if(elevadorDTO.numeroSerie.length == 0)
-      throw Error("Numero série vazio");
+    //if(elevadorDTO.numeroSerie.length() == 0)
+    //  throw Error("Numero série vazio");
 
     const elevador = new Elevador({ 
       descricao: elevadorDTO.descricao,
