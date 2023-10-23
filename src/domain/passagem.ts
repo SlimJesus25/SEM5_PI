@@ -5,13 +5,9 @@ import { PassagemId } from "./passagemId";
 import { Guard } from "../core/logic/Guard";
 import { Edificio } from "./edificio";
 import { Piso } from "./piso";
-import { EdificioMap } from "../mappers/EdificioMap";
-import IPassagemDTO from "../dto/IPassagemDTO";
-import IEdificioDTO from "../dto/IEdificioDTO";
-import { PisoMap } from "../mappers/PisoMap";
-
 
 interface PassagemProps {
+  designacao: string;
   edificioA: Edificio;
   edificioB: Edificio;
   pisoA: Piso;
@@ -43,6 +39,14 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     return this.props.pisoB;
   }
 
+  get designacao (): string {
+    return this.props.designacao;
+  }
+
+  set designacao (value : string){
+    this.props.designacao = value;
+  }
+
   set edificioUm (value : Edificio) {
     this.props.edificioA = value;
   }
@@ -63,9 +67,10 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     super(props, id);
   }
 
-  /*public static create (props: PassagemProps, id?: UniqueEntityID): Result<Passagem> {
+  public static create (props: PassagemProps, id?: UniqueEntityID): Result<Passagem> {
 
     const guardedProps = [
+      { argument: props.designacao, argumentName: 'designacao' },
       { argument: props.edificioA, argumentName: 'edificioA' },
       { argument: props.edificioB, argumentName: 'edificioB' },
       { argument: props.pisoA, argumentName: 'pisoA' },
@@ -84,13 +89,14 @@ export class Passagem extends AggregateRoot<PassagemProps> {
 
       return Result.ok<Passagem>(passagem);
     }
-  }*/
-
+  }
+  /*
+  // Verificar forma de 
   public static create (passagemDTO: IPassagemDTO, id?: UniqueEntityID): Result<Passagem> {
 
     try{
-      const edificioOrigem = EdificioMap.toDomain(passagemDTO.edificioOrigem);
-      const edificioDestino = EdificioMap.toDomain(passagemDTO.edificioDestino);
+      const edificioOrigem = EdificioMap.toDomain(passagemDTO.edificioOrigem) as Result<Edificio>;
+      const edificioDestino = await EdificioMap.toDomain(passagemDTO.edificioDestino) as Result<Edificio>;
       const pisoOrigem = PisoMap.toDomain(passagemDTO.pisoOrigem);
       const pisoDestino = PisoMap.toDomain(passagemDTO.pisoDestino);
       
@@ -105,5 +111,5 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     return Result.fail(e);
   }
     
-  }
+  }*/
 }

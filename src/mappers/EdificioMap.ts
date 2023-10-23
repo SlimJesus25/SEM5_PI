@@ -8,6 +8,11 @@ import { Edificio } from "../domain/edificio";
 import { Piso } from "../domain/piso";
 import Container from "typedi";
 import ElevadorRepo from "../repos/elevadorRepo";
+import PisoRepo from "../repos/pisoRepo";
+
+import { Result } from "../core/logic/Result";
+import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+
 
 
 export class EdificioMap extends Mapper<Edificio> {
@@ -16,38 +21,40 @@ export class EdificioMap extends Mapper<Edificio> {
 
     let pisos: string[] = [];
 
-    edificio.pisos.forEach(id => pisos.push(id.toString()));
+    // Vai adicionar as designações dos pisos pisos[].
+    edificio.pisos.forEach(designacao => pisos.push(designacao.toString()));
 
     return {
       id: edificio.id.toString(),
-      codigoEdificio: edificio.codigo.value,
+      codigoEdificio: edificio.codigo,
       nomeOpcional: edificio.nomeOpcional,
       descricao: edificio.descricao,
       dimensaoMaxima: edificio.dimensaoMaxima,
-      elevador: edificio.elevadores.id.toString(),
+      elevador: edificio.elevadores.numeroIdentificativo,
       pisos: pisos,
       mapaEdificio: edificio.mapa.id.toString(),
     } as IEdificioDTO;
   }
 
-  public static async toDomain (edificio: any | Model<IEdificioPersistence & Document> ): Promise<Edificio> {
+  public static async toDomain (raw: any): Promise<Edificio> {
 
     const elevadorRepo = Container.get(ElevadorRepo);
-    //const pisoRepo = Container.get(PisoRepo);
-    let pisos : string[];
-    //edificio.pisos.forEach(v => pisos.push(pisoRepo.findByDomainId(v)));
-    const elevador = await elevadorRepo.findByDomainId(edificio.elevador);
+    const pisoRepo = Container.get(PisoRepo);
+
+    let pisoArray : Piso[];
+
+    raw.pisos.forEach(async v => pisoArray.push( await pisoRepo.findByDesignacao(v)));
+    const elevador = await elevadorRepo.findByNumeroIdentificativo(raw.elevador);
     
     const edificioOrError = Edificio.create({
-      id: edificio.id,
-      codigoEdificio: edificio.codigo,
-      nomeOpcional: edificio.nomeOpcional,
-      descricao: edificio.descricao,
-      dimensaoMaxima: edificio.dimensaoMaxima,
-      elevador: edificio.elevador,
-      pisos: pisos,
-      mapaEdificio: edificio.mapa,
-    });
+      codigoEdificio: raw.codigo,
+      nomeOpcionalEdificio: raw.nomeOpcional,
+      descricaoEdificio: raw.descricao,
+      dimensaoMaximaPiso: raw.dimensaoMaxima,
+      elevadores: raw.elevador,
+      pisos: pisoArray,
+      mapaEdificio: raw.mapa,
+    }, new UniqueEntityID(raw.domainId));
 
     edificioOrError.isFailure ? console.log(edificioOrError.error) : '';
 
@@ -58,15 +65,15 @@ export class EdificioMap extends Mapper<Edificio> {
 
     let pisoIDList : string[] = [];
 
-    edificio.pisos.forEach(p => pisoIDList.push(p.id.toString()));
+    edificio.pisos.forEach(p => pisoIDList.push(p.designacao));
 
     return {
       domainId: edificio.id.toString(),
-      codigo: edificio.codigo.value,
+      codigo: edificio.codigo,
       nomeOpcional: edificio.nomeOpcional,
       descricao: edificio.descricao,
       dimensao: edificio.dimensaoMaxima,
-      elevadores: edificio.elevadores.id.toValue(),
+      elevadores: edificio.elevadores.numeroIdentificativo,
       pisos: pisoIDList,
       mapaEdificio: edificio.mapa.id.toValue()
     }

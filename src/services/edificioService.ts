@@ -65,8 +65,8 @@ export default class EdificioService implements IEdificioService {
   public async updateEdificio(edificioDTO: IEdificioDTO): Promise<Result<IEdificioDTO>> {
     try {
       const edificio = await this.edificioRepo.findByCodigo(edificioDTO.codigoEdificio);
-      const elevador = await this.elevadorRepo.findByDomainId(edificioDTO.elevador);
-      const mapa = await this.mapaRepo.findByDomainId(edificioDTO.mapaEdificio);
+      const elevador = await this.elevadorRepo.findByNumeroIdentificativo(edificioDTO.elevador);
+      const mapa = await this.mapaRepo.findByDomainId(edificioDTO.mapaEdificio); // Alterar esta pesquisa por algo que o identifique para além do ID.
       
       let pisos: Piso[];
       edificioDTO.pisos.forEach(async v => pisos.push(await this.pisoRepo.findByDomainId(v)))

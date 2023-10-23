@@ -7,6 +7,7 @@ import IPassagemService from '../services/IServices/IPassagemService';
 import IPassagemDTO from '../dto/IPassagemDTO';
 
 import { Result } from "../core/logic/Result";
+import IListPassagensEntreEdificiosDTO from '../dto/IListPassagensEntreEdificiosDTO';
 
 @Service()
 export default class PassagemController implements IPassagemController /* TODO: extends ../core/infra/BaseController */ {
@@ -48,7 +49,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
 
   public async listPassagens(req: Request, res: Response, next: NextFunction){
     try {
-      const passagemOrError = await this.passagemServiceInstance.listPassagens(req.body) as Result<IPassagemDTO[]>;
+      const passagemOrError = await this.passagemServiceInstance.listPassagens(req.body as IListPassagensEntreEdificiosDTO) as Result<IPassagemDTO[]>;
 
       if (passagemOrError.isFailure) {
         return res.status(404).send();
