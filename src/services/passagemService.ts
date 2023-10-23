@@ -9,6 +9,7 @@ import { PassagemMap } from "../mappers/PassagemMap";
 import IEdificioRepo from './IRepos/IEdificioRepo';
 import { PassagemId } from '../domain/passagemId';
 import IPisoRepo from './IRepos/IPisoRepo';
+import IListPassagensEntreEdificiosDTO from '../dto/IListPassagensEntreEdificiosDTO';
 
 
 @Service()
@@ -32,7 +33,7 @@ export default class PassagemService implements IPassagemService {
       if(!!passagemDocument)
         return Result.fail<IPassagemDTO>("Passagem com o id " + passagemDTO.id + " já existe!");
 
-      const passagemOrError = await Passagem.create( passagemDTO );
+      const passagemOrError = null;// await Passagem.create( passagemDTO ); // Venancio: alterei o create do passagem, vamos tentar utilizar o que está neste momento em todas as classes (pelo menos as que tenham atributos objetos).
 
       if (passagemOrError.isFailure) {
         return Result.fail<IPassagemDTO>(passagemOrError.errorValue());
@@ -75,19 +76,16 @@ export default class PassagemService implements IPassagemService {
     }
   }
   // codigoEdificioA: string, codigoEdificioB: string
-  public async listPassagens(edificios): Promise<Result<IPassagemDTO[]>> {
+  public async listPassagens(edificios : IListPassagensEntreEdificiosDTO): Promise<Result<IPassagemDTO[]>> {
     try {
 
-        // const edificioADoc = await this.edificioRepo.findByCodigo(codigoEdificioA);
-        // const edificioBDoc = await this.edificioRepo.findByCodigo(codigoEdificioB);
-
-        const edificioADoc = await this.edificioRepo.findByCodigo(edificios.edificioA);
-        const edificioBDoc = await this.edificioRepo.findByCodigo(edificios.edificioB);
+        const edificioADoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioA);
+        const edificioBDoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioB);
   
         if(!!edificioADoc || !!edificioBDoc)
           return Result.fail<IPassagemDTO[]>("Um dos códigos dos edifícios é inválido");
         
-        const passagensResult = this.passagemRepo.listPassagensBetween(edificioADoc.id.toString(), edificioBDoc.id.toString());
+        const passagensResult = this.passagemRepo.listPassagensBetween(edificioADoc.codigo, edificioBDoc.codigo);
   
         let passagensResultDTO : IPassagemDTO[];
 
