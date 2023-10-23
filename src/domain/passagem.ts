@@ -86,11 +86,12 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     }
   }*/
 
+  // Verificar forma de 
   public static create (passagemDTO: IPassagemDTO, id?: UniqueEntityID): Result<Passagem> {
 
     try{
-      const edificioOrigem = EdificioMap.toDomain(passagemDTO.edificioOrigem);
-      const edificioDestino = EdificioMap.toDomain(passagemDTO.edificioDestino);
+      const edificioOrigem = EdificioMap.toDomain(passagemDTO.edificioOrigem) as Result<Edificio>;
+      const edificioDestino = await EdificioMap.toDomain(passagemDTO.edificioDestino) as Result<Edificio>;
       const pisoOrigem = PisoMap.toDomain(passagemDTO.pisoOrigem);
       const pisoDestino = PisoMap.toDomain(passagemDTO.pisoDestino);
       
