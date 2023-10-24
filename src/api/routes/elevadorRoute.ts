@@ -40,23 +40,4 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.updateElevador(req, res, next));
-
-  /*
-
-  route.post('',
-    celebrate({
-      body: Joi.object({
-        name: Joi.string().required()
-      })
-    }),
-    (req, res, next) => ctrl.createElevador(req, res, next) );
-
-  route.put('',
-    celebrate({
-      body: Joi.object({
-        id: Joi.string().required(),
-        name: Joi.string().required()
-      }),
-    }),
-    (req, res, next) => ctrl.updateElevador(req, res, next) );*/
 };
