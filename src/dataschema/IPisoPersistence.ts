@@ -2,5 +2,5 @@ export interface IPisoPersistence {
 	_id: string;
 	descricao: string;
 	designacao: string;
-	sala: string;
+	salas: string[]; // Designações das salas (que identificam-nas).
   }

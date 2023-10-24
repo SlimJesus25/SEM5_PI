@@ -10,6 +10,7 @@ import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Container } from 'typedi';
 
 import SalaRepo from "../repos/salaRepo";
+import { Sala } from "../domain/sala";
 
 export class PisoMap extends Mapper<Piso> {
   
@@ -17,21 +18,30 @@ export class PisoMap extends Mapper<Piso> {
 
     let salas: string[] = [];
 
-    piso.sala.forEach(id => salas.push(id.toString()));
+    piso.salas.forEach(sala => salas.push(sala.designacao));
 
     return {
       id: piso.id.toString(),
       designacao: piso.designacao,
       descricao: piso.descricao,
-      sala: salas,
+      salas: salas,
     } as IPisoDTO;
   }
 
-  public static toDomain (piso: any | Model<IPisoPersistence & Document> ): Piso {
-    const pisoOrError = Piso.create(
-      piso,
-      new UniqueEntityID(piso.domainId)
-    );
+
+  public static async toDomain (raw: any): Promise<Piso> {
+
+    const salaRepo = Container.get(SalaRepo);
+    
+    let salaArray : Sala[];
+
+    raw.salas.forEach(async v => salaArray.push(await salaRepo.findByDesignacao(v)));
+
+    const pisoOrError = Piso.create({
+      descricao: raw.descricao,
+      designacao: raw.designacao,
+      salas: raw.salas
+    });
 
     pisoOrError.isFailure ? console.log(pisoOrError.error) : '';
 
@@ -40,14 +50,14 @@ export class PisoMap extends Mapper<Piso> {
 
   public static toPersistence (piso: Piso): any {
 
-    let salaIDList : string[] = [];
+    let salaDesignacaoList : string[] = [];
 
-    piso.sala.forEach(p => salaIDList.push(p.id.toString()));
+    piso.sala.forEach(p => salaDesignacaoList.push(p.designacao));
 
     return {
       descricao: piso.descricao,
       designacao: piso.designacao,
-      sala: salaIDList,
+      sala: salaDesignacaoList,
     }
   }
 }

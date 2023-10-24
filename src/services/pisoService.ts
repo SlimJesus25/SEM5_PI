@@ -40,8 +40,19 @@ export default class PisoService implements IPisoService {
 
       if(!!pisoDocument)
         return Result.fail<IPisoDTO>("Já existe um piso com a designação " + pisoDTO.designacao);
+      
+        const salaOrError = await this.salaRepo.findByDesignacao(pisoDTO.designacao);
 
-      const pisoOrError = await Piso.create( pisoDTO );
+        let salas : Sala[];
+
+        // Venancio: Adicionar forma de verificação de falha.
+        pisoDTO.salas.forEach(async s => salas.push(await this.salaRepo.findByDesignacao(s)));
+
+      const pisoOrError = await Piso.create({
+        descricao: pisoDTO.descricao,
+        designacao: pisoDTO.designacao,
+        salas: salas
+      });
 
       if (pisoOrError.isFailure) {
         return Result.fail<IPisoDTO>(pisoOrError.errorValue());
@@ -62,7 +73,7 @@ export default class PisoService implements IPisoService {
       const piso = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
 
       let salas: Sala[];
-      pisoDTO.sala.forEach(async v => salas.push(await this.salaRepo.findByDomainId(v)))
+      pisoDTO.salas.forEach(async v => salas.push(await this.salaRepo.findByDesignacao(v)))
 
       if (piso === null) {
         return Result.fail<IPisoDTO>("Piso não encontrado");

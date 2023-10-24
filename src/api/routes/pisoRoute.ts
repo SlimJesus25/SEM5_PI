@@ -17,8 +17,8 @@ export default (app: Router) => {
   route.post('/createPiso',
   celebrate({
     body: Joi.object({
-      descricaoPiso: Joi.string().required(),
-      sala: Joi.array().items(Joi.string()),
+      descricaoPiso: Joi.string(),
+      salas: Joi.array().items(Joi.string()).required(),
       designacaoPiso: Joi.string().required()
     })
   }),
@@ -28,8 +28,8 @@ export default (app: Router) => {
   route.put('/updatePiso',
   celebrate({
     body: Joi.object({
-      descricaoPiso: Joi.string().required(),
-      sala: Joi.array().items(Joi.string()),
+      descricaoPiso: Joi.string(),
+      salas: Joi.array().items(Joi.string()).required(),
       designacaoPiso: Joi.string().required()
     }),
   }),
