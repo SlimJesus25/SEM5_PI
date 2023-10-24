@@ -1,8 +1,8 @@
-# US 1001
+# US 200
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
+**US200** -  Editar informação de piso de edifício
 
 **Critérios de aceitação** - This US has no specific acceptance criteria
 
@@ -11,21 +11,13 @@
 ### 2.1 Indentificar o problema
 In order to implement this functionality, we divided the documentation in 3 parts:
 
-#### US1001_1 Add User
+**Respostas do cliente:**
 
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
+Pergunta: Em relação às User Stories de edição, temos já uma ideia das informações que são opcionais, mas queremos ter a certeza daquilo que é editável ou não. Posto isto, poderia indicar que informações pretende editar nas US160, US200, US250 e US280?
 
-#### US1001_2 Deactivate User
+Resposta: requisito 200 - editar piso - todas as informações à exceção do edificio a que o piso se refere
 
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
 
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
 
 ### 2.2 Excerto do MD
 ![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
