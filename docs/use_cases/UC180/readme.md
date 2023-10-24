@@ -1,8 +1,8 @@
-# US 1001
+# US 180
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
+**US180** -  Listar edifícios com min e max de pisos
 
 **Critérios de aceitação** - This US has no specific acceptance criteria
 
@@ -11,21 +11,11 @@
 ### 2.1 Indentificar o problema
 In order to implement this functionality, we divided the documentation in 3 parts:
 
-#### US1001_1 Add User
+**Respostas do cliente:**
 
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
+Pergunta: pode, por favor, explicar o que se pretende com esta US ? 
 
-#### US1001_2 Deactivate User
-
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
-
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
+Resposta: permitir pesquisar que edificios tem no minimo X pisos e no máximo Y pisos
 
 ### 2.2 Excerto do MD
 ![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
