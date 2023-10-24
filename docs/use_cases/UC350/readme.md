@@ -1,8 +1,8 @@
-# US 1001
+# US 350
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
+**US350** -  Como gestor de frota pretendo adicionar um novo tipo de robot indicando a sua designação e que tipos de tarefas pode executar da lista prédefinida de tarefas
 
 **Critérios de aceitação** - This US has no specific acceptance criteria
 
@@ -11,21 +11,37 @@
 ### 2.1 Indentificar o problema
 In order to implement this functionality, we divided the documentation in 3 parts:
 
-#### US1001_1 Add User
+**Respostas do cliente:**
 
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
+Pergunta: A minha dúvida é em relação às tarefas e às suas definições.
+Existem diferentes tipos de tarefas, por isso, cada uma terá os seus atributos. No entanto, que atributos definem uma tarefa em geral? Apenas a sua designação?
+Em relação às tarefas existentes (vigilância de um piso e transporte de um objeto) existem algum requerimento especial? Para além da especificação do piso na vigilância e especificação do objeto e local de recolha e entrega no caso do transporte.
 
-#### US1001_2 Deactivate User
+Resposta: de momento todos os robots da frota apenas suportam estes dois tipos de tarefas. a existirem novos tipos de tarefas será necessáiro desenvolvimento especifico para tal. Em consequência não existem "tarefas em geral"
+As tarefas de vigilância caracterizam-se por indicar qual o edificio e piso(s) que se pretende vigiar bem como o número de contacto em caso de incidente. tipicamente o segurança irá requisitar que um robot "dê uma volta pelos pisos X, Y e Z do edificio N". Caso o robot detete alguma situação anómala, o robot irá enviar um SMS para o contacto indicado (*)
+As tarefas de "piclup & delivery" caracterizam-se por indicar qual a sala que se pretende de pickup e qual a sala de delivery, bem como um nome e um contacto para pickup e outro para delivery. deve também ser indicado um código de confirmação que a pessoa que receberá deverá introduzir no painel do robot. adicionalmente deve ser indicada uma descrição da entrega, ex., "Marcadores de cor vermelha (1x) e azul (2x)"
+(*) fora do âmbito do protótipo
 
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
+Pergunta: A US 350 (Como gestor de frota pretendo adicionar um novo tipo de robot indicando a sua designação e que tipos de tarefas pode executar da lista prédefinida de tarefas) - adicionar um tipo é indicar qual é a marca, o modelo e as tarefas que pode desempenhar um robot?
 
-#### US1001_3 List User
+Resposta: no requisito 350 definimos tipos de robots e no requisito 360 definimos robots desses tipos.
+se ajudar, fica aqui uma analogia.
 
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
+definir tipos de viaturas:
+tipo 1: renault clio 5 portas gasolina
+tipo 2: renault megane 5 portas diesel
+definir viaturas
+viatura com matricula AA-00-01 do tipo 1
+viatura com matricula BB-10-CC do tipo 2
+
+Pergunta: Relativamente à US350 foi referido numa resposta anterior "o requisito 350 permite definir que tipos de robots existem. por exemplo "Tipo A: Robot marca X modelo Y com capacidade de executar tarefas de vigilância"
+Pretende alguma regra de negócio para o limite de caracteres para o tipo, marca e modelo?
+
+Resposta: tipo de robot: obrigatório, alfanum+ericos, maximo 25 caracteres
+marca: obrigatório, maximo 50 caracteres
+modelo: obrigatório, máximo 100 caracteres
+
+
 
 ### 2.2 Excerto do MD
 ![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
