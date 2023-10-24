@@ -52,7 +52,7 @@ export class Piso extends AggregateRoot<PisoProps> {
     super(props, id);
   }
 
-  /*public static create (props: PisoProps, id?: UniqueEntityID): Result<Piso> {
+  public static create (props: PisoProps, id?: UniqueEntityID): Result<Piso> {
 
     const guardedProps = [
       { argument: props.designacao, argumentName: 'designacao' },
@@ -72,7 +72,11 @@ export class Piso extends AggregateRoot<PisoProps> {
 
       return Result.ok<Piso>(piso);
     }
-  }*/
+  }
+
+
+  /*
+  COMENTADO POR JOAO PARA TESTES DE EDIFICIO
   public static create (pisoDTO: IPisoDTO, id?: UniqueEntityID): Result<Piso> {
 
     try{
@@ -92,4 +96,5 @@ export class Piso extends AggregateRoot<PisoProps> {
   }
     
   }
+  */
 }
