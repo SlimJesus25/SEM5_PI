@@ -7,6 +7,7 @@ import { Result } from '../src/core/logic/Result';
 import IElevadorService from "../src/services/IServices/IElevadorService";
 import ElevadorController from "../src/controllers/elevadorController";
 import IElevadorDTO from '../src/dto/IElevadorDTO';
+import { Elevador } from '../src/domain/elevador'
 
 describe('elevador controller', function () {
 	const sandbox = sinon.createSandbox();
@@ -29,156 +30,6 @@ describe('elevador controller', function () {
 		sandbox.restore();
 	});
 
-	/*
-    it('elevadorController unit test using elevadorService stub', async function () {
-		// Arrange
-        let body = { "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 };
-        let req: Partial<Request> = {};
-		req.body = body;
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
-
-		let elevadorServiceInstance = Container.get("ElevadorService");
-		sinon.stub(elevadorServiceInstance, "createElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 } ));
-
-		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
-
-		// Act
-		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100}));
-
-		/*let body2 = { "name":"elevador525"};
-		let req2: Partial<Request> = {};
-		req2.body = body2;
-		let res2: Partial<Response> = {
-			json: sinon.spy()
-		};
-
-		let next2: Partial<NextFunction> = () => {};
-
-		let elevadorServiceInstance2 = Container.get("ElevadorService");
-		sinon.stub(elevadorServiceInstance2, "updateElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 } ));
-
-		const ctrl2 = new ElevadorController(elevadorServiceInstance2 as IElevadorService);
-
-		// Act
-		await ctrl2.updateElevador(<Request>req2, <Response>res2, <NextFunction>next2);
-
-		// Assert
-		sinon.assert.calledOnce(res2.json);
-		sinon.assert.calledWith(res2.json, sinon.match({ "designacao": req2.body.name,"id": "123"}));
-
-	});
-
-
-    it('elevadorController + elevadorService integration test using elevadorRepoistory and Elevador stubs', async function () {	
-		// Arrange	
-        let body = { "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 };
-        let req: Partial<Request> = {};
-		req.body = body;
-
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
-
-		sinon.stub(Elevador, "create").returns(Result.ok({"id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100}));
-
-		let elevadorRepoInstance = Container.get("ElevadorRepo");
-		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
-			resolve(Elevador.create({"id":"123", "descricao": "Elevador super rápido",
-			"numeroSerie": "11111",
-			 "modelo": "Azal",
-			  "marca": "Otis",
-			   "pisosServidos": ["1", "2", "3"],
-				"numeroIdentificativo": 100 }).getValue())
-		}));
-
-		let elevadorServiceInstance = Container.get("ElevadorService");
-
-		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
-
-		// Act
-		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","designacao": req.body.name}));
-	});
-
-
-    it('elevadorController + elevadorService integration test using spy on elevadorService', async function () {		
-		// Arrange
-        let body = { "name":'elevador1' };
-        let req: Partial<Request> = {};
-		req.body = body;
-
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
-
-		let elevadorRepoInstance = Container.get("ElevadorRepo");
-		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
-			resolve(Elevador.create({"id":"123", "descricao": "Elevador super rápido",
-			"numeroSerie": "11111",
-			 "modelo": "Azal",
-			  "marca": "Otis",
-			   "pisosServidos": ["1", "2", "3"],
-				"numeroIdentificativo": 100 }).getValue())
-		}));
-
-		let elevadorServiceInstance = Container.get("ElevadorService");		
-		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "createElevador");
-
-		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
-
-		// Act
-		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","designacao": req.body.name}));
-		sinon.assert.calledOnce(elevadorServiceSpy);
-		//sinon.assert.calledTwice(roleServiceSpy);
-		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({name: req.body.name}));
-	});
-	*/
 
 	it('createElevator returns status 403 forbidden', async function () {
 		let req: Partial<Request> = {};
@@ -258,6 +109,38 @@ describe('elevador controller', function () {
 		sinon.assert.calledWith(res.status, 201);
 	});
 
+	/*
+	let body = {
+			"id" : "123",
+			"descricao": "Elevador super lento",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			};
+
+		let req: Partial<Request> = {};
+
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => {};
+
+		let elevadorServiceInstace = Container.get("ElevadorService");
+
+		const obj = sinon.stub(elevadorServiceInstace, "updateElevador").returns(Result.ok<IElevadorDTO>(body as IElevadorDTO));
+
+		const ctrl = new ElevadorController(elevadorServiceInstace as IElevadorService);
+		await ctrl.updateElevador(<Request>req, <Response> res, <NextFunction> next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 201);
+	*/
+
 
 	it("updateElevador returns status 404", async function() {
 		let body = "Elevador não encontrado";
@@ -267,7 +150,7 @@ describe('elevador controller', function () {
 		req.body = body;
 
 		let res: Partial<Response> = {
-			json: sinon.spy(),
+			status: sinon.spy(),
 		};
 
 		let next: Partial<NextFunction> = () => {};
@@ -327,21 +210,29 @@ describe('elevador controller', function () {
 	});
 
 	it("updateElevador returns status 201", async function() {
-		let body = "";
+		let body = {
+			"id" : "123",
+			"descricao": "Elevador super lento",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			};
 
 		let req: Partial<Request> = {};
 
 		req.body = body;
 
 		let res: Partial<Response> = {
-			json: sinon.spy(),
+			status: sinon.spy(),
 		};
 
 		let next: Partial<NextFunction> = () => {};
 
 		let elevadorServiceInstace = Container.get("ElevadorService");
 
-		const obj = sinon.stub(elevadorServiceInstace, "updateElevador").returns(Result.fail<IElevadorDTO>(""));
+		const obj = sinon.stub(elevadorServiceInstace, "updateElevador").returns(Result.ok<IElevadorDTO>(body as IElevadorDTO));
 
 		const ctrl = new ElevadorController(elevadorServiceInstace as IElevadorService);
 		await ctrl.updateElevador(<Request>req, <Response> res, <NextFunction> next);
@@ -350,17 +241,17 @@ describe('elevador controller', function () {
 		sinon.assert.calledWith(res.status, 201);
 	});
 
-
-    it('elevadorController unit test using elevadorService mock', async function () {		
+	it('elevadorController + elevadorService integration test using spy on elevadorService, success creation case', async function () {		
 		// Arrange
-        let body = { "descricao": "Elevador super rápido",
-		 "numeroSerie": "11111",
-		  "modelo": "Azal",
-		   "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			 "numeroIdentificativo": 100 };
-
-
+        let body = {
+			"id" : "123",
+			"descricao": "Elevador super lento",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			};
         let req: Partial<Request> = {};
 		req.body = body;
 
@@ -369,35 +260,213 @@ describe('elevador controller', function () {
         };
 		let next: Partial<NextFunction> = () => {};
 
+		let elevadorRepoInstance = Container.get("ElevadorRepo");
+		sinon.stub(elevadorRepoInstance, "findByNumeroIdentificativo").returns(null);
+
+		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
+			resolve(Elevador.create({
+			"descricao": "Elevador super lento",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			}).getValue())
+		}));
+
 		let elevadorServiceInstance = Container.get("ElevadorService");		
-		const elevadorServiceMock = sinon.mock(elevadorServiceInstance, "createElevador")
-		elevadorServiceMock.expects("createElevador")
-			.once()
-			.withArgs(sinon.match({name: req.body.name}))
-			.returns(Result.ok<IElevadorDTO>( {"id":"123",
-			 "descricao": "Elevador super rápido",
-		 "numeroSerie": "11111",
-		  "modelo": "Azal",
-		   "marca": "Otis",
-		    "pisosServidos": ["1", "2", "3"],
-			 "numeroIdentificativo": 100 } ));
+		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "createElevador");
 
 		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
 
-		// Act
+	// Act
 		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
 
 		// Assert
-		elevadorServiceMock.verify();
 		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({"id":"123",
-		"descricao": "Elevador super rápido",
-	"numeroSerie": "11111",
-	 "modelo": "Azal",
-	  "marca": "Otis",
-	   "pisosServidos": ["1", "2", "3"],
+		sinon.assert.calledWith(res.json, sinon.match({ "descricao": "Elevador super lento",
+		"numeroSerie": "11111",
+		"modelo": "Azal",
+		"marca": "Otis",
+		"pisosServidos": ["1", "2", "3"],
 		"numeroIdentificativo": 100}));
+		sinon.assert.calledOnce(elevadorServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({name: req.body.name}));
 	});
+
+
+	it('elevadorController + elevadorService integration test using spy on elevadorService, unsuccess creation test', async function () {		
+		// Arrange
+        let body = {
+			"id" : "123",
+			"descricao": "Elevador super lento",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			};
+        let req: Partial<Request> = {};
+		req.body = body;
+
+        let res: Partial<Response> = {
+			status: sinon.spy()
+        };
+		let next: Partial<NextFunction> = () => {};
+
+		let elevadorRepoInstance = Container.get("ElevadorRepo");
+		sinon.stub(elevadorRepoInstance, "findByNumeroIdentificativo").returns(new Promise<Elevador>((resolve, reject) => {
+			resolve(Elevador.create({
+			"descricao": "Elevador super lento",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			}).getValue())
+		}));
+
+		// Isto não vai correr porque é suposto falhar na verificação de existência do prédio.
+		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
+			resolve(Elevador.create({
+			"descricao": "Elevador super lento",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			}).getValue())
+		}));
+
+		let elevadorServiceInstance = Container.get("ElevadorService");		
+		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "createElevador");
+
+		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
+
+	// Act
+		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+	});
+
+	it('elevadorController + elevadorService integration test using spy on elevadorService, success updating case', async function () {		
+		// Arrange
+        let body = {
+			"id" : "123",
+			"descricao": "Elevador super RÁPIDO",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			};
+        let req: Partial<Request> = {};
+		req.body = body;
+
+        let res: Partial<Response> = {
+			json: sinon.spy()
+        };
+		let next: Partial<NextFunction> = () => {};
+
+		let elevadorRepoInstance = Container.get("ElevadorRepo");
+		sinon.stub(elevadorRepoInstance, "findByNumeroIdentificativo").returns(new Promise<Elevador>((resolve, reject) => {
+			resolve(Elevador.create({
+			"descricao": "Elevador super LENTO",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			}).getValue())
+		}));
+
+		// Era possível dizer que o serviço não estaria a ser testado por causa deste retorno do save
+		// , porém, no serviço, o retorno do save não é aproveitado.
+		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
+			resolve(Elevador.create({
+			"descricao": "Elevador super RÁPIDO",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			}).getValue())
+		}));
+
+		let elevadorServiceInstance = Container.get("ElevadorService");		
+		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "updateElevador");
+
+		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
+
+	// Act
+		await ctrl.updateElevador(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.json);
+		sinon.assert.calledWith(res.json, sinon.match({ "descricao": "Elevador super RÁPIDO",
+		"numeroSerie": "11111",
+		"modelo": "Azal",
+		"marca": "Otis",
+		"pisosServidos": ["1", "2", "3"],
+		"numeroIdentificativo": 100}));
+		sinon.assert.calledOnce(elevadorServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({name: req.body.name}));
+	});
+
+	it('elevadorController + elevadorService integration test using spy on elevadorService, unsuccess updating case', async function () {		
+		// Arrange
+        let body = {
+			"id" : "123",
+			"descricao": "Elevador super RÁPIDO",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			};
+        let req: Partial<Request> = {};
+		req.body = body;
+
+        let res: Partial<Response> = {
+			status: sinon.spy()
+        };
+		let next: Partial<NextFunction> = () => {};
+
+		let elevadorRepoInstance = Container.get("ElevadorRepo");
+		sinon.stub(elevadorRepoInstance, "findByNumeroIdentificativo").returns(null);
+
+		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
+			resolve(Elevador.create({
+			"descricao": "Elevador super RÁPIDO",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["1", "2", "3"],
+			"numeroIdentificativo": 100
+			}).getValue())
+		}));
+
+		let elevadorServiceInstance = Container.get("ElevadorService");		
+		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "updateElevador");
+
+		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
+
+	// Act
+		await ctrl.updateElevador(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 404);
+		sinon.assert.calledOnce(elevadorServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({name: req.body.name}));
+	});
+
+
 });
 
 

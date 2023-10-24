@@ -23,7 +23,7 @@ export default class ElevadorController implements IElevadorController /* TODO: 
       }
 
       const elevadorDTO = elevadorOrError.getValue();
-      return res.status(201).json( elevadorDTO );
+      return res.json( elevadorDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -39,7 +39,7 @@ export default class ElevadorController implements IElevadorController /* TODO: 
       }
 
       const elevadorDTO = elevadorOrError.getValue();
-      return res.status(201).json( elevadorDTO );
+      return res.json( elevadorDTO ).status(201);
     }
     catch (e) {
       return next(e);
