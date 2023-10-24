@@ -10,9 +10,12 @@ import IMapaEdificioRepo from '../services/IRepos/IMapaEdificioRepo';
 import IEdificioService from './IServices/IEdificioService';
 import { Result } from "../core/logic/Result";
 import { EdificioMap } from "../mappers/EdificioMap";
+import { ElevadorMap } from "../mappers/ElevadorMap";
 import { CodigoEdificio } from '../domain/codigoEdificio';
 import { Elevador } from '../domain/elevador';
 import { MapaEdificio } from '../domain/mapaEdificio';
+import IListElevadoresDTO from '../dto/IListElevadoresDTO';
+import IElevadorDTO from '../dto/IElevadorDTO';
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -119,13 +122,26 @@ export default class EdificioService implements IEdificioService {
     }
   }
 
-  public async listElevadores(edificioDTO: IEdificioDTO): Promise<Result<Array<IEdificioDTO>>> {
-    return null;
+  public async listElevadores(listElevadoresDTO: IListElevadoresDTO): Promise<Result<IElevadorDTO[]>> {
+    try {
+
+      const edificio = await this.edificioRepo.findByCodigo(listElevadoresDTO.codigoEdificio);
+
+      if(!!edificio)
+        return Result.fail<IElevadorDTO[]>("O códigos do edifício é inválido");
+      
+      let elevadoresDTO : IElevadorDTO[];
+
+      // O UC pede para listar os elevadoreS, porém, no sprint A é pedido para assumir que no máximo existe apenas 1 elevador por edifício.
+      // Como tal, esta solução adiciona só 1 elemento ao array. Se no futuro for necessário alterar, basta meter um foreach.
+      elevadoresDTO.push(ElevadorMap.toDTO(edificio.elevadores));
+
+      return Result.ok<IElevadorDTO[]>( elevadoresDTO )
+    } catch (e) {
+      throw e;
+    }
   }
 
-  public async listPassagens(edificioDTO: IEdificioDTO): Promise<Result<Array<IEdificioDTO>>> {
-    return null;
-  }
 
 
 }

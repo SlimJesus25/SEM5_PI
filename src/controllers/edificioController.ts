@@ -7,6 +7,9 @@ import IEdificioService from '../services/IServices/IEdificioService';
 import IEdificioDTO from '../dto/IEdificioDTO';
 
 import { Result } from "../core/logic/Result";
+import IListElevadoresDTO from '../dto/IListElevadoresDTO';
+import { Elevador } from '../domain/elevador';
+import IElevadorDTO from '../dto/IElevadorDTO';
 
 @Service()
 export default class EdificioController implements IEdificioController /* TODO: extends ../core/infra/BaseController */ {
@@ -48,23 +51,20 @@ export default class EdificioController implements IEdificioController /* TODO: 
 
   public async listElevadores(req: Request, res: Response, next: NextFunction){
     try {
-        const edificioOrError = null;
-        //const edificioOrError = await this.edificioServiceInstance.listElevadores(req.body as IEdificioDTO) as Result<IEdificioDTO>;
-  
-        if (edificioOrError.isFailure) {
-          return res.status(404).send();
-        }
-  
-        const elevadorDTO = edificioOrError.getValue();
-        return res.status(200).json( elevadorDTO );
+      const elevadorOrError = await this.edificioServiceInstance.listElevadores(req.body as IListElevadoresDTO) as Result<IElevadorDTO[]>;
+
+      if (elevadorOrError.isFailure) {
+        return res.status(404).send();
       }
-      catch (e) {
-        return next(e);
-      }
+
+      const passasgemDTO = elevadorOrError.getValue();
+      return res.status(200).json( passasgemDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
   };
 
-  public async listPassagens(req: Request, res: Response, next: NextFunction){
 
-  };
 
 }

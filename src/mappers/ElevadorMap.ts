@@ -1,8 +1,5 @@
 import { Mapper } from "../core/infra/Mapper";
 
-import { Document, Model } from 'mongoose';
-import { IElevadorPersistence } from '../dataschema/IElevadorPersistence';
-
 import IElevadorDTO from "../dto/IElevadorDTO";
 import { Elevador } from "../domain/elevador";
 
@@ -22,8 +19,16 @@ export class ElevadorMap extends Mapper<Elevador> {
     } as IElevadorDTO;
   }
 
-  public static toDomain (elevador: any | Model<IElevadorPersistence & Document> ): Elevador {
-    const elevadorOrError = Elevador.create(elevador, new UniqueEntityID(elevador.domainId));
+  public static async toDomain (raw: any): Promise<Elevador> {
+    
+    const elevadorOrError = Elevador.create({
+      descricao: raw.descricao,
+      numeroIdentificativo: raw.numeroIdentificativo,
+      numeroSerie: raw.numeroSerie,
+      modelo: raw.modelo,
+      marca: raw.marca,
+      pisosServidos: raw.pisosServidos,
+    }, new UniqueEntityID(raw.domainId));
 
     elevadorOrError.isFailure ? console.log(elevadorOrError.error) : '';
 

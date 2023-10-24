@@ -38,7 +38,14 @@ export default class ElevadorService implements IElevadorService {
       if(!!elevadorDocument)
         return Result.fail<IElevadorDTO>("Já existe um elevador com o código " + elevadorDTO.numeroIdentificativo);
 
-      const elevadorOrError = await Elevador.create( elevadorDTO );
+      const elevadorOrError = Elevador.create({
+        descricao: elevadorDTO.descricao,
+        modelo: elevadorDTO.modelo,
+        marca: elevadorDTO.marca,
+        numeroIdentificativo: elevadorDTO.numeroIdentificativo,
+        numeroSerie: elevadorDTO.numeroSerie,
+        pisosServidos: elevadorDTO.pisosServidos
+      })
 
       if (elevadorOrError.isFailure) {
         return Result.fail<IElevadorDTO>(elevadorOrError.errorValue());

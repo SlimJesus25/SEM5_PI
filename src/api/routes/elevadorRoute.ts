@@ -14,7 +14,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.elevador.name) as IElevadorController;
 
   // Criar novo elevador.
-  route.post('/createElevador',
+  route.post('/elevador',
   celebrate({
     body: Joi.object({
       descricao: Joi.string(),
@@ -28,7 +28,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createElevador(req, res, next));
 
   // Update elevador existente.
-  route.put('/updateElevador',
+  route.put('/elevador',
   celebrate({
     body: Joi.object({
       descricao: Joi.string(),
@@ -40,23 +40,4 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.updateElevador(req, res, next));
-
-  /*
-
-  route.post('',
-    celebrate({
-      body: Joi.object({
-        name: Joi.string().required()
-      })
-    }),
-    (req, res, next) => ctrl.createElevador(req, res, next) );
-
-  route.put('',
-    celebrate({
-      body: Joi.object({
-        id: Joi.string().required(),
-        name: Joi.string().required()
-      }),
-    }),
-    (req, res, next) => ctrl.updateElevador(req, res, next) );*/
 };
