@@ -1,34 +1,18 @@
-# US 1001
+# UC 370
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
+**UC370** -  Inibir um robô
 
-**Critérios de aceitação** - This US has no specific acceptance criteria
 
 ## 2. Análise
 
 ### 2.1 Indentificar o problema
-In order to implement this functionality, we divided the documentation in 3 parts:
+Como gestor de frota quero inibir um robô. Feito através do uso de um método PATCH
 
-#### US1001_1 Add User
-
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
-
-#### US1001_2 Deactivate User
-
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
-
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
 
 ### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
+![excerpt diagram](domain_excerpt_370.svg "domain_excerpt_370.svg")
 
 ### 2.3 Testes de Unidade - Teste de regras de negócio
 
@@ -55,41 +39,16 @@ they persist in the database to make sure we can solve the US1001_2 and US1001_3
 
 ### 3.1. Realização
 
-### US1001_1 Add User
-* **Sequence Diagram**
+### 3.3.1 Diagrama de Sequência
 
-![sequence diagram](us1001_1/sequence_diagram_addUser.svg "sequence_diagram_1001_1")
+![sequence diagram](uc370/sequence_diagram.svg "sequence_diagram")
 
-* **Class Diagram**
-
-![class diagram](us1001_1/class_diagram_addUser.svg "class_diagram_1001_1")
-
-### US1001_2 Deactivate  User
-
-* **Sequence Diagram**
- 
-![sequence diagram](us1001_2/sequence_diagram_deactivateUser.svg "sequence_diagram_1001_2")
-
-* **Class Diagram**
-
-![class diagram](us1001_2/class_diagram_deactivateUser.svg "class_diagram_1001_2")
-
-#### US1001_3 List User
-
-* **Sequence Diagram**
-
-![sequence diagram](us1001_3/sequence_diagram_listUser.svg "sequence_diagram_1001_3")
-
-* **Class Diagram**
-
-![class diagram](us1001_3/class_diagram_listUser.svg "class_diagram_1001_3")
 
 ### 3.2. Padrões aplicados
-The applied patters are:
-* DTO;
-* Persistence;
-* Application;
-* Controller;
-* Service;
-* Domain;
-* UI;
+Os padrões aplicados são:
+- DTO;
+- Persistência;
+- Aplicação;
+- Controlador;
+- Serviço;
+- Modelo.

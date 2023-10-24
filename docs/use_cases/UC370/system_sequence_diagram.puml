@@ -1,0 +1,6 @@
+@startuml
+actor Actor as actor
+participant SistemaRobDroneGo as srdg
+actor -> srdg: Como gestor de frota pretendo inibir um robot
+srdg --> actor
+@enduml
