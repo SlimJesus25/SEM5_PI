@@ -41,4 +41,13 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.updateEdificio(req, res, next));
 
+  // List elevadores de um edifício.
+  route.put('/listElevadores',
+  celebrate({
+    body: Joi.object({
+        codigoEdificio: Joi.string().required(),
+    }),
+  }),
+  (req, res, next) => ctrl.listElevadores(req, res, next));
+
 };

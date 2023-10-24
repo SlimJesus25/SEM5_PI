@@ -81,7 +81,32 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
     super(props, id);
   }
 
-  public static create (elevadorDTO: IElevadorDTO, id?: UniqueEntityID): Result<Elevador> {
+  public static create (props: ElevadorProps, id?: UniqueEntityID): Result<Elevador> {
+
+    const guardedProps = [
+      { argument: props.descricao, argumentName: 'descricao' },
+      { argument: props.marca, argumentName: 'marca' },
+      { argument: props.modelo, argumentName: 'modelo' },
+      { argument: props.numeroIdentificativo, argumentName: 'numeroIdentificativo' },
+      { argument: props.numeroSerie, argumentName: 'numeroSerie' },
+      { argument: props.pisosServidos, argumentName: 'pisosServidos' }
+    ];
+
+    const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
+
+    if (!guardResult.succeeded) {
+      return Result.fail<Elevador>(guardResult.message)
+    }     
+    else {
+      const edificio = new Elevador({
+        ...props
+      }, id);
+
+      return Result.ok<Elevador>(edificio);
+    }
+  }
+
+  /*public static create (elevadorDTO: IElevadorDTO, id?: UniqueEntityID): Result<Elevador> {
 
     //if(elevadorDTO.numeroSerie.length() == 0)
     //  throw Error("Numero série vazio");
@@ -95,5 +120,5 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
       numeroSerie: elevadorDTO.numeroSerie}, id);
     return Result.ok<Elevador>( elevador )
     
-  }
+  }*/
 }

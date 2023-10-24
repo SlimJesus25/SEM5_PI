@@ -40,6 +40,7 @@ describe('passagem controller', function () {
         let response: IPassagemDTO[] = [
             {
                 "id": "1",
+				"designacao": "ABC",
                 "edificioOrigem": "1",
                 "edificioDestino": "2",
                 "pisoOrigem": "2",
@@ -47,6 +48,7 @@ describe('passagem controller', function () {
             },
             {
                 "id": "2",
+				"designacao": "DEF",
                 "edificioOrigem": "1",
                 "edificioDestino": "2",
                 "pisoOrigem": "3",

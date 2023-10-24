@@ -48,7 +48,7 @@ describe('Edificio', () => {
         "id": "1",
         "descricao": "gandapiso",
         "designacao": "gandadesignacao",
-        "sala": [dummySala.getValue(), dummySala2.getValue()]
+        "salas": [dummySala.getValue(), dummySala2.getValue()]
       }
 
       const dummyPiso1 = Piso.create(body3).getValue();
