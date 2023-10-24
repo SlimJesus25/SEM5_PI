@@ -1,8 +1,8 @@
-# US 1001
+# US 190
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
+**US190** -  Criar piso de edifício
 
 **Critérios de aceitação** - This US has no specific acceptance criteria
 
@@ -11,21 +11,17 @@
 ### 2.1 Indentificar o problema
 In order to implement this functionality, we divided the documentation in 3 parts:
 
-#### US1001_1 Add User
+**Respostas do cliente:**
 
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
+Pergunta: Não entendemos o que é pretendido  com as us's 190 e 310.
 
-#### US1001_2 Deactivate User
+Resposta: o requisito 190 Criar piso permite definir um piso para um dos edificios criados anteriormente, por exemplo, o piso 1 do edificio B com uma breve descrição (ex., "salas TP")
 
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
+Pergunta: É esperado que seja imposto um limite aquando da criação de um piso? Ex: 0 <= andar piso <= 100, De forma a evitar valores irrealistas.
+Relativamente à breve descrição, referida em: https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25016, existirá alguma restrição quanto ao comprimento da mesma, como é o caso da descrição do edifício?
 
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
+Resposta: não existem limites. podem existir pisos subteraneos, ex., piso -1.
+a breve descrição é opcional e no máximo terá 250 caracteres
 
 ### 2.2 Excerto do MD
 ![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
