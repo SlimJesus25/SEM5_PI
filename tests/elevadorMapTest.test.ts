@@ -1,10 +1,7 @@
 import * as sinon from 'sinon';
 import { Elevador } from '../src/domain/elevador';
-import IElevadorDTO from '../src/dto/IElevadorDTO';
 
 import { ElevadorMap } from '../src/mappers/ElevadorMap'
-
-// Problema está no ID do Elevador, deve ser mudado.
 
 describe('elevador map', () => {
     const body = {
