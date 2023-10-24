@@ -10,6 +10,24 @@
 
 Criar um elevador é uma entidade relevante do domínio que é criada, simplesmente, através de um POST.
 
+**Respostas do cliente:**
+
+Pergunta: há alguma restrição para o ID do elevador?
+esse número identificativo tem alguma especificação? era isso que queria perguntar
+
+Resposta: trata-se de um número inteiro
+
+Pergunta: Após análise do enunciado deparei-me com a coincidência: todos os edificios que têm elevador, este último serve todos os pisos desse edificio. Pode existir algum edifício em que o elevador não sirva todos os pisos?
+
+Resposta: sim, é possivel tal situação
+
+Pergunta: Relativamente à funcionalidade de criar elevador, no seguimento da sua resposta em (https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25298#p32051), gostaríamos que clarificasse quais das propriedades que indicou serem alfanuméricas podem conter espaços; por exemplo, nós acharíamos que seria sensato a descrição poder conter espaços.
+Adicionalmente, gostaria de saber se o identificador numérico que referiu deve ser fornecido ao sistema ou gerado automaticamente pelo mesmo, dado que este deve ser único dentro de cada edifício.
+
+Resposta: todos os atributos alfanumercos podme conter espaços à exceção do número de série
+o número indeitifcativo do elevador deve ser gerado sequencialmente pelo sistema tendo em conta o edifico, por exemplo, existirá o elevador 1 do edificio B e o elevador 1 do edificio A
+
+
 ### 2.2 Excerto do MD
 
 ![excerpt diagram](ed270.svg "ed270.svg")
