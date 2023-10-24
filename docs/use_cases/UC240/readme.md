@@ -1,8 +1,8 @@
-# US 1001
+# US 240
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
+**US240** -  Criar passagem entre edifícios
 
 **Critérios de aceitação** - This US has no specific acceptance criteria
 
@@ -11,21 +11,13 @@
 ### 2.1 Indentificar o problema
 In order to implement this functionality, we divided the documentation in 3 parts:
 
-#### US1001_1 Add User
+**Respostas do cliente:**
 
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
+Pergunta: No mesmo edifício é possível ter duas passagens para outro edifício, em pisos diferentes? 
+Por exemplo, do edifício B existir uma passagem para o edifício G no piso 2 e outra no piso 3 também para o G. 
 
-#### US1001_2 Deactivate User
+Resposta: sim. em cada piso podem existir várias passagens, cada uma para outro edificio, e no mesmo edificio podem existir várias passagens para um outro edificio desde que em pisos diferentes 
 
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
-
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
 
 ### 2.2 Excerto do MD
 ![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
