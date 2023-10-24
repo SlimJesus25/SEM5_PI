@@ -1,0 +1,6 @@
+@startuml
+actor Actor as actor
+participant SistemaRobDroneGo as srdg
+actor -> srdg: Listar pisos de edifício com passagem para outros edifícios
+srdg --> actor
+@enduml
