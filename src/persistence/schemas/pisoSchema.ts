@@ -17,10 +17,12 @@ const Piso = new mongoose.Schema(
       type: String,
       required: [true, 'Introduza designação'],
       index: true,
+      unique: true
     },
 
     salas: {
-      type: Array<String>,
+      type: [String],
+      require: [true, 'Introduza as salas'],
     },
   },
   { timestamps: true },

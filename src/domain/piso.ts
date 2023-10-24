@@ -10,7 +10,7 @@ import { SalaMap } from "../mappers/SalaMap";
 
 interface PisoProps {
   descricao: string;
-  sala: Sala[];
+  salas: Sala[];
   designacao: string;
 }
 
@@ -27,8 +27,8 @@ export class Piso extends AggregateRoot<PisoProps> {
     return this.props.descricao;
   }
 
-  get sala (): Sala[] {
-    return this.props.sala;
+  get salas (): Sala[] {
+    return this.props.salas;
   }
 
   get designacao (): string {
@@ -44,7 +44,7 @@ export class Piso extends AggregateRoot<PisoProps> {
   }
 
   set sala (value : Sala[]) {
-    this.props.sala = value;
+    this.props.salas = value;
   }
 
 
@@ -52,12 +52,12 @@ export class Piso extends AggregateRoot<PisoProps> {
     super(props, id);
   }
 
-  /*public static create (props: PisoProps, id?: UniqueEntityID): Result<Piso> {
+  public static create (props: PisoProps, id?: UniqueEntityID): Result<Piso> {
 
     const guardedProps = [
       { argument: props.designacao, argumentName: 'designacao' },
       { argument: props.descricao, argumentName: 'descricao' },
-      { argument: props.sala, argumentName: 'sala' }
+      { argument: props.salas, argumentName: 'sala' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
@@ -72,7 +72,11 @@ export class Piso extends AggregateRoot<PisoProps> {
 
       return Result.ok<Piso>(piso);
     }
-  }*/
+  }
+
+
+  /*
+  COMENTADO POR JOAO PARA TESTES DE EDIFICIO
   public static create (pisoDTO: IPisoDTO, id?: UniqueEntityID): Result<Piso> {
 
     try{
@@ -92,4 +96,5 @@ export class Piso extends AggregateRoot<PisoProps> {
   }
     
   }
+  */
 }

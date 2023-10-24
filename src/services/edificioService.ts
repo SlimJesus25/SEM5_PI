@@ -10,6 +10,9 @@ import IMapaEdificioRepo from '../services/IRepos/IMapaEdificioRepo';
 import IEdificioService from './IServices/IEdificioService';
 import { Result } from "../core/logic/Result";
 import { EdificioMap } from "../mappers/EdificioMap";
+import { CodigoEdificio } from '../domain/codigoEdificio';
+import { Elevador } from '../domain/elevador';
+import { MapaEdificio } from '../domain/mapaEdificio';
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -42,10 +45,35 @@ export default class EdificioService implements IEdificioService {
 
       const edificioDocument = await this.edificioRepo.findByCodigo(edificioDTO.codigoEdificio);
 
+      let elevador: Elevador;
+
+      const elevadorOrError = await this.elevadorRepo.findByNumeroIdentificativo(edificioDTO.elevador);
+      if (elevadorOrError == null) {
+        return Result.fail<IEdificioDTO>(elevadorOrError.numeroIdentificativo);
+      }
+
+      let pisoArr: Piso[] = [];
+
+      edificioDTO.pisos.forEach(async p => pisoArr.push(await this.pisoRepo.findByDesignacao(p)));
+
+      let mapa: MapaEdificio;
+
+      // Venancio: Substituir isto por algo que o identifique para além do ID.
+      this.mapaRepo.findByDomainId(edificioDTO.mapaEdificio);
+      
+
       if(!!edificioDocument)
         return Result.fail<IEdificioDTO>("Edifício com o código " + edificioDTO.codigoEdificio + " já existe!");
 
-      const edificioOrError = await Edificio.create( edificioDTO );
+      const edificioOrError = await Edificio.create({
+        codigoEdificio: CodigoEdificio.create(edificioDTO.codigoEdificio).getValue(),
+        descricaoEdificio: edificioDTO.descricao,
+        dimensaoMaximaPiso: edificioDTO.dimensaoMaxima,
+        nomeOpcionalEdificio: edificioDTO.nomeOpcional,
+        elevadores: elevador,
+        pisos: pisoArr,
+        mapaEdificio: mapa
+      });
 
       if (edificioOrError.isFailure) {
         return Result.fail<IEdificioDTO>(edificioOrError.errorValue());

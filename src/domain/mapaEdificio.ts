@@ -6,7 +6,7 @@ import { MapaEdificioId } from "./mapaEdificioId";
 
 
 interface MapaEdificioProps {
-  grelha: JSON;
+  grelha: string[][];
 }
 
 export class MapaEdificio extends AggregateRoot<MapaEdificioProps> {
@@ -18,8 +18,12 @@ export class MapaEdificio extends AggregateRoot<MapaEdificioProps> {
     return MapaEdificioId.caller(this.id)
   }
 
-  get grelha (): JSON {
+  get grelha (): string[][] {
     return this.props.grelha;
+  }
+
+  set grelha (value :string[][]){
+    this.props.grelha = value;
   }
 
   private constructor (props: MapaEdificioProps, id?: UniqueEntityID) {

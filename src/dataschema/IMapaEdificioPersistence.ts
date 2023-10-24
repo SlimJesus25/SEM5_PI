@@ -1,4 +1,4 @@
 export interface IMapaEdificioPersistence {
 	_id: string;
-	grelha: string
+	grelha: string[][];
   }

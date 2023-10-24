@@ -19,7 +19,7 @@ export class MapaEdificioMap extends Mapper<MapaEdificio> {
 
     return {
       id: mapaEdificio.id.toString(),
-      grelha: mapaEdificio.grelha.toString(),
+      grelha: mapaEdificio.grelha,
     } as IMapaEdificioDTO;
   }
 
