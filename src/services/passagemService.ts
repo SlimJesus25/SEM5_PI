@@ -33,12 +33,20 @@ export default class PassagemService implements IPassagemService {
       if(!!passagemDocument)
         return Result.fail<IPassagemDTO>("Passagem com o id " + passagemDTO.id + " já existe!");
 
+      const edificioOrigem = await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem);
+      const edificioDestino = await this.edificioRepo.findByCodigo(passagemDTO.edificioDestino);
+      const pisoOrigem = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
+      const pisoDestino = await this.pisoRepo.findByDesignacao(passagemDTO.pisoDestino);
+
+      if(edificioOrigem.id === edificioDestino.id || pisoOrigem.id === pisoDestino.id)
+        return Result.fail<IPassagemDTO>("Origem e destino dos parâmetros não podem ser os mesmos");
+
       const passagemOrError = Passagem.create({
         designacao: passagemDTO.designacao,
-        edificioA: await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem),
-        edificioB: await this.edificioRepo.findByCodigo(passagemDTO.edificioDestino),
-        pisoA: await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem),
-        pisoB: await this.pisoRepo.findByDesignacao(passagemDTO.pisoDestino)
+        edificioA: edificioOrigem,
+        edificioB: edificioDestino,
+        pisoA: pisoOrigem,
+        pisoB: pisoDestino
       });// await Passagem.create( passagemDTO ); // Venancio: alterei o create do passagem, vamos tentar utilizar o que está neste momento em todas as classes (pelo menos as que tenham atributos objetos).
 
       if (passagemOrError.isFailure) {
