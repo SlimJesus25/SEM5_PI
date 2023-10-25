@@ -40,8 +40,6 @@ export default class PisoService implements IPisoService {
 
       if(!!pisoDocument)
         return Result.fail<IPisoDTO>("Já existe um piso com a designação " + pisoDTO.designacao);
-      
-        const salaOrError = await this.salaRepo.findByDesignacao(pisoDTO.designacao);
 
         let salas : Sala[];
 
@@ -57,7 +55,6 @@ export default class PisoService implements IPisoService {
       if (pisoOrError.isFailure) {
         return Result.fail<IPisoDTO>(pisoOrError.errorValue());
       }
-
       const pisoResult = pisoOrError.getValue();
       await this.pisoRepo.save(pisoResult);
 
