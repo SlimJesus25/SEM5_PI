@@ -66,12 +66,14 @@ export default class SalaService implements ISalaService {
     try {
       const sala = await this.salaRepo.findByDesignacao(salaDTO.designacao);
 
+      const categoria = Object.keys(CategoriaSala).find(key => CategoriaSala[key] === salaDTO.categoria);
+
       if (sala === null) {
         return Result.fail<ISalaDTO>("Sala not found");
       }
       else {
         sala.descricao = salaDTO.descricao;
-        sala.categoria = salaDTO.categoria;
+        sala.categoria = CategoriaSala[categoria];
         sala.designacao = salaDTO.designacao;
         await this.salaRepo.save(sala);
 
