@@ -50,4 +50,13 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.listElevadores(req, res, next));
 
+// List todos os edificios
+  route.get('/listEdificios',
+  celebrate({
+    body: Joi.object({
+      codigoEdificioA: Joi.string().required(),
+      codigoEdificioB: Joi.string().required()
+    }),
+  }),
+  (req, res, next) => ctrl.listEdificios(req, res, next));
 };

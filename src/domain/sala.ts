@@ -26,7 +26,7 @@ export class Sala extends AggregateRoot<SalaProps> {
     return this.props.descricaoSala;
   }
 
-  get categoria (): string {
+  get categoria (): CategoriaSala {
     return Object.values(CategoriaSala)[this.props.categoriaSala.toString()];
   }
 
@@ -38,8 +38,8 @@ export class Sala extends AggregateRoot<SalaProps> {
     this.props.descricaoSala = value;
   }
 
-  set categoria (value: string){
-    this.props.categoriaSala = Sala.categoriaValue(value);
+  set categoria (value: CategoriaSala){
+    this.props.categoriaSala = value;
   }
 
   set designacao (value: string){

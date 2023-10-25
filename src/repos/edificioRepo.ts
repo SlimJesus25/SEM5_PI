@@ -11,6 +11,7 @@ import { IEdificioPersistence } from '../dataschema/IEdificioPersistence';
 @Service()
 export default class EdificioRepo implements IEdificioRepo {
   private models: any;
+  find: any;
 
   constructor(
     @Inject('edificioSchema') private edificioSchema : Model<IEdificioPersistence & Document>,
@@ -86,4 +87,24 @@ export default class EdificioRepo implements IEdificioRepo {
       else
         return null;
   }
+
+
+  public async findAll(): Promise<Edificio[]> {
+    const query = {};
+    const edificioSchema = await this.edificioSchema.find(query);
+    try {
+      if (edificioSchema === null) {
+          return null;
+      } else {
+          let edificioArray = [];
+          for (let i = 0; i < edificioSchema.length; i++) {
+              edificioArray[i] = EdificioMap.toDomain(edificioSchema[i]);
+          }
+          return edificioArray;
+      }
+  } catch (err) {
+      throw err;
+  }
+    
+}
 }
