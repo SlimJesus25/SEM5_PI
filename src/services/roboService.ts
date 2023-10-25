@@ -2,7 +2,6 @@ import { Service, Inject } from 'typedi';
 import config from "../../config";
 import IRoboDTO from '../dto/IRoboDTO';
 import { Robo } from "../domain/robo";
-import IRoboRepo from '../services/IRepos/IRoboRepo';
 import IRoboService from './IServices/IRoboService';
 import { Result } from "../core/logic/Result";
 import { RoboMap } from "../mappers/RoboMap";
@@ -13,6 +12,7 @@ import { MarcaRobo } from '../domain/marcaRobo';
 import { CodigoRobo } from '../domain/codigoRobo';
 import { TipoRobo } from '../domain/tipoRobo';
 import ITipoRoboRepo from './IRepos/ITipoRoboRepo';
+import IRoboRepo from './IRepos/IRoboRepo';
 
 @Service()
 export default class RoboService implements IRoboService {
