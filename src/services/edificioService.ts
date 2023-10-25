@@ -142,6 +142,25 @@ export default class EdificioService implements IEdificioService {
     }
   }
 
+  public async listEdificios(): Promise<Result<IEdificioDTO[]>> {
+    try {
+
+        const edificios = await this.edificioRepo.findAll();
+
+        if (!!edificios){
+          return Result.fail<IEdificioDTO[]>("Não existem registros de edifícios");
+        }
+        
+        let edificiosDTO : IEdificioDTO[];
+
+        (await edificios).forEach(p => edificiosDTO.push(EdificioMap.toDTO(p) as IEdificioDTO));
+
+        return Result.ok<IEdificioDTO[]>( edificiosDTO )
+      } catch (e) {
+        throw e;
+      }
+  }
+
 
 
 }

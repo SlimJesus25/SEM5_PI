@@ -65,6 +65,22 @@ export default class EdificioController implements IEdificioController /* TODO: 
     }
   };
 
+  public async listEdificios(req: Request, res: Response, next: NextFunction){
+    try {
+      const edificioOrError = await this.edificioServiceInstance.listEdificios() as Result<IEdificioDTO[]>;
+
+      if (edificioOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const edificioDTO = edificioOrError.getValue();
+      return res.status(200).json( edificioDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
+
 
 
 }
