@@ -1,6 +1,6 @@
 @startuml
 actor Actor as actor
 participant SistemaRobDroneGo as srdg
-actor -> srdg: Como gestor de frota pretendo inibir um robot
-srdg --> actor
+actor -> srdg: Envia pedido de inibiçao de robô
+srdg --> actor: Sucesso ou insucesso da operação
 @enduml

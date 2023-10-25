@@ -1,0 +1,139 @@
+@startuml sd
+
+
+participant PisoRoute as route
+participant InterfacePisoController as ictrl
+participant PisoController as ctrl
+participant InterfacePisoService as isvc
+participant PisoService as svc
+participant InterfacePisoRepo as irepo
+participant InterfaceSalaRepo as isrepo
+participant PisoRepo as repo
+participant SalaRepo as srepo
+participant PisoMapper as mapper
+participant InterfacePisoPersistence as ischema
+participant PisoSchema as schema
+participant SalaMapper as smapper
+participant InterfaceSalaPersistence as isschema
+participant SalaSchema as sschema
+participant ConfigurationFile as conf
+participant Piso as model
+
+
+route -> ictrl++ : updatePiso(req,res,next)
+route++
+ictrl -> ctrl : updatePiso(req,res,next)
+ctrl++
+ctrl -> conf : injeta o serviço do piso
+conf++
+conf --> ctrl
+conf--
+ctrl -> isvc : updatePiso(pisoDTO)
+isvc++
+isvc -> svc : updatePiso(pisoDTO)
+svc++
+svc -> conf : injeta o repositório do piso
+conf++
+conf --> svc
+conf--
+svc -> conf : injeta o repositório da sala
+conf++
+conf --> svc
+conf--
+svc -> irepo : findByDesignacao(designacao)
+irepo++
+irepo -> repo : findByDesignacao(designacao)
+repo++
+repo -> conf : injeta o schema dos pisos
+conf++
+conf --> repo
+conf--
+repo -> ischema : findOne(query)
+ischema++
+ischema -> schema : findOne(query)
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+ischema--
+repo -> mapper : toDomain(pisoRecord)
+mapper++
+mapper --> repo
+mapper--
+repo--> irepo
+repo--
+irepo --> svc
+irepo--
+loop
+svc -> isrepo : findByDesignacao(designacao)
+isrepo++
+isrepo -> srepo : findByDesignacao(designacao)
+srepo++
+srepo -> conf : injeta o schema das salas
+conf++
+conf --> srepo
+conf--
+srepo -> isschema : findOne(query)
+isschema++
+isschema -> sschema : findOne(query)
+sschema++
+sschema --> isschema
+sschema--
+isschema --> srepo
+isschema--
+srepo -> smapper : toDomain(salaRecord)
+smapper++
+smapper --> srepo
+smapper--
+srepo --> isrepo
+srepo--
+isrepo --> svc
+isrepo--
+end
+
+
+
+
+
+
+svc -> irepo: save(piso)
+irepo++
+irepo -> repo :save(piso)
+repo++
+repo -> ischema : findOne(query)
+ischema++
+ischema -> schema : findOne(query)
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+alt cria piso
+else atualiza piso
+repo -> ischema
+ischema -> schema : save()
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+ischema--
+end
+repo --> irepo
+repo--
+irepo --> svc
+irepo--
+svc -> mapper : toDTO(piso)
+mapper++
+mapper --> svc
+mapper--
+svc --> isvc 
+svc--
+isvc --> ctrl
+isvc--
+ctrl --> ictrl
+alt caso de sucesso
+    ctrl --> ictrl : Envia um código 201 (GET)
+else caso de insucesso
+    ctrl --> ictrl : Envia um código 403 (NOT FOUND)
+end
+ctrl--
+ictrl --> route

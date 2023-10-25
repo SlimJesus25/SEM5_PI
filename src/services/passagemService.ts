@@ -10,7 +10,7 @@ import IEdificioRepo from './IRepos/IEdificioRepo';
 import { PassagemId } from '../domain/passagemId';
 import IPisoRepo from './IRepos/IPisoRepo';
 import IListPassagensEntreEdificiosDTO from '../dto/IListPassagensEntreEdificiosDTO';
-
+import IListPisosComPassagemDTO from '../dto/IListPisosComPassagemDTO';
 
 @Service()
 export default class PassagemService implements IPassagemService {
@@ -33,7 +33,13 @@ export default class PassagemService implements IPassagemService {
       if(!!passagemDocument)
         return Result.fail<IPassagemDTO>("Passagem com o id " + passagemDTO.id + " já existe!");
 
-      const passagemOrError = null;// await Passagem.create( passagemDTO ); // Venancio: alterei o create do passagem, vamos tentar utilizar o que está neste momento em todas as classes (pelo menos as que tenham atributos objetos).
+      const passagemOrError = Passagem.create({
+        designacao: passagemDTO.designacao,
+        edificioA: await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem),
+        edificioB: await this.edificioRepo.findByCodigo(passagemDTO.edificioDestino),
+        pisoA: await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem),
+        pisoB: await this.pisoRepo.findByDesignacao(passagemDTO.pisoDestino)
+      });// await Passagem.create( passagemDTO ); // Venancio: alterei o create do passagem, vamos tentar utilizar o que está neste momento em todas as classes (pelo menos as que tenham atributos objetos).
 
       if (passagemOrError.isFailure) {
         return Result.fail<IPassagemDTO>(passagemOrError.errorValue());
@@ -96,6 +102,24 @@ export default class PassagemService implements IPassagemService {
         throw e;
       }
   }
-
-
+  
+  //codigoEdificioA
+  public async listPisos(edificio: IListPisosComPassagemDTO): Promise<Result<String[]>>{
+    try{
+      const edificioDoc = await this.edificioRepo.findByCodigo(edificio.codigoEdificio);
+      
+      if(!!edificioDoc)
+        return Result.fail<String[]>("Código do edifício é inválido");
+      
+      const passagemResult = this.passagemRepo.listPassagens(edificioDoc.codigo);
+      
+      let passagensResultDTO : IPassagemDTO[];
+      
+      (await passagemResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
+      
+      return Result.ok<String[]>(passagensResultDTO.map(piso => piso.pisoOrigem))
+  }catch(e) {
+    throw e;
+   }
+ }
 }
