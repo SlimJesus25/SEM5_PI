@@ -30,7 +30,7 @@ svc -> conf : injeta o repositório do edificio
 activate conf
 conf --> svc
 deactivate conf
-svc -> repo : edificio = findByDomainId(id)
+svc -> repo : edificio = findByCodigo(codigo)
 activate repo
 repo --> svc
 deactivate repo

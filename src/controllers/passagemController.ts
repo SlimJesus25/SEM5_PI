@@ -8,6 +8,9 @@ import IPassagemDTO from '../dto/IPassagemDTO';
 
 import { Result } from "../core/logic/Result";
 import IListPassagensEntreEdificiosDTO from '../dto/IListPassagensEntreEdificiosDTO';
+import IListPisosComPassagemDTO from '../dto/IListPisosComPassagemDTO';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
 
 @Service()
 export default class PassagemController implements IPassagemController /* TODO: extends ../core/infra/BaseController */ {
@@ -55,11 +58,28 @@ export default class PassagemController implements IPassagemController /* TODO: 
         return res.status(404).send();
       }
 
-      const passasgemDTO = passagemOrError.getValue();
-      return res.status(200).json( passasgemDTO );
+      const passagemDTO = passagemOrError.getValue();
+      return res.status(200).json( passagemDTO );
     }
     catch (e) {
       return next(e);
     }
+  }
+  
+  public async listPisos(req: Request, res: Response, next: NextFunction) {
+      try{
+        const passagemOrError = await this.passagemServiceInstance.listPisos(req.body as IListPisosComPassagemDTO) as Result<String[]>;
+        
+        if(passagemOrError.isFailure){
+          return res.status(404).send();
+        }
+        
+        const passagemDTO = passagemOrError.getValue();
+        return res.status(200).json(passagemDTO);
+        
+      }
+      catch(e){
+        return next(e);
+      }
   }
 }
