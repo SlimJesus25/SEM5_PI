@@ -1,0 +1,221 @@
+@startuml sd
+
+
+participant PassagemRoute as route
+participant InterfacePassagemController as ictrl
+participant PassagemController as ctrl
+participant InterfacePassagemService as isvc
+participant PassagemService as svc
+participant InterfacePassagemRepo as irepo
+participant PassagemRepo as repo
+participant InterfaceEdificioRepo as ierepo
+participant EdificioRepo as erepo
+participant InterfacePisoRepo as iprepo
+participant PisoRepo as prepo
+participant PassagemMapper as mapper
+participant InterfacePassagemPersistence as ischema
+participant PassagemSchema as schema
+participant EdificioMapper as emapper
+participant InterfaceEdificioPersistence as ieschema
+participant EdificioSchema as eschema
+participant PisoMapper as pmapper
+participant InterfacePisoPersistence as ipschema
+participant PisoSchema as pschema
+participant ConfigurationFile as conf
+participant Passagem as model
+
+
+route -> ictrl++ : createPassagem(req,res,next)
+route++
+ictrl -> ctrl : createPassagem(req,res,next)
+ctrl++
+ctrl -> conf : injeta o serviço da passagem
+conf++
+conf --> ctrl
+conf--
+ctrl -> isvc : createPassagem(passagemDTO)
+isvc++
+isvc -> svc : createPassagem(IPisoDTO)
+svc++
+svc -> conf : injeta o repositório da passagem
+conf++
+conf --> svc
+conf--
+svc -> conf : injeta o repositório do edificio
+conf++
+conf --> svc
+conf--
+svc -> conf : injeta o repositório do piso
+conf++
+conf --> svc
+conf--
+svc -> irepo : findByDomainId(id)
+irepo++
+irepo -> repo : findByDomainId(id)
+repo++
+repo -> conf : injeta o schema das passagens
+conf++
+conf --> repo
+conf--
+repo -> ischema : findOne(query)
+ischema++
+ischema -> schema : findOne(query)
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+ischema--
+repo -> mapper : toDomain(passagemRecord)
+mapper++
+mapper --> repo
+mapper--
+repo--> irepo
+repo--
+irepo --> svc
+irepo--
+svc -> model : create()
+model++
+
+svc -> ierepo : findByCodigo(edificioOrigem)
+ierepo++
+ierepo -> erepo : findByCodigo(edificoOrigem)
+erepo++
+erepo -> conf : injeta o schema dos edificios
+conf++
+conf --> erepo
+conf--
+erepo -> ieschema : findOne(query)
+ieschema++
+ieschema -> eschema : findOne(query)
+eschema++
+eschema --> ieschema
+eschema--
+ieschema --> erepo
+ieschema--
+erepo -> emapper : toDomain(edificioRecord)
+emapper++
+emapper --> erepo
+emapper--
+erepo--> ierepo
+erepo--
+ierepo --> svc
+ierepo--
+
+svc -> ierepo : findByCodigo(edificioDestino)
+ierepo++
+ierepo -> erepo : findByCodigo(edificoDestino)
+erepo++
+erepo -> ieschema : findOne(query)
+ieschema++
+ieschema -> eschema : findOne(query)
+eschema++
+eschema --> ieschema
+eschema--
+ieschema --> erepo
+ieschema--
+erepo -> emapper : toDomain(edificioRecord)
+emapper++
+emapper --> erepo
+emapper--
+erepo--> ierepo
+erepo--
+ierepo --> svc
+ierepo--
+
+svc -> iprepo : findByDesignacao(pisoOrigem)
+iprepo++
+iprepo -> prepo : findByDesignacao(pisoOrigem)
+prepo++
+prepo -> conf : injeta o schema dos pisos
+conf++
+conf --> prepo
+conf--
+prepo -> ipschema : findOne(query)
+ipschema++
+ipschema -> pschema : findOne(query)
+pschema++
+pschema --> ipschema
+pschema--
+ipschema --> prepo
+ipschema--
+prepo -> pmapper : toDomain(pisoRecord)
+pmapper++
+pmapper --> prepo
+pmapper--
+prepo--> iprepo
+prepo--
+iprepo --> svc
+iprepo--
+
+svc -> iprepo : findByDesignacao(pisoDestino)
+iprepo++
+iprepo -> prepo : findByDesignacao(pisoDestino)
+prepo++
+prepo -> ipschema : findOne(query)
+ipschema++
+ipschema -> pschema : findOne(query)
+pschema++
+pschema --> ipschema
+pschema--
+ipschema --> prepo
+ipschema--
+prepo -> pmapper : toDomain(pisoRecord)
+pmapper++
+pmapper --> prepo
+pmapper--
+prepo--> iprepo
+prepo--
+iprepo --> svc
+iprepo--
+
+model --> svc
+model--
+svc -> irepo: save(passagem)
+irepo++
+irepo -> repo :save(passagem)
+repo++
+repo -> ischema : findOne(query)
+ischema++
+ischema -> schema : findOne(query)
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+alt cria passagem
+repo -> mapper : toPersistence(passagem)
+mapper++
+mapper --> repo
+mapper--
+repo -> ischema : create(rawPassagem)
+ischema -> schema : create(rawPassagem)
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+ischema--
+repo -> mapper : toDomain(passagemCreated)
+mapper++
+mapper --> repo
+mapper--
+else atualiza passagem
+end
+repo --> irepo
+repo--
+irepo --> svc
+irepo--
+svc -> mapper : toDTO(passagemResult)
+mapper++
+mapper --> svc
+mapper--
+svc --> isvc 
+svc--
+isvc --> ctrl
+isvc--
+ctrl --> ictrl
+alt caso de sucesso
+    ctrl --> ictrl : Envia um código 201 (GET)
+else caso de insucesso
+    ctrl --> ictrl : Envia um código 403 (NOT FOUND)
+end
+ctrl--
+ictrl --> route

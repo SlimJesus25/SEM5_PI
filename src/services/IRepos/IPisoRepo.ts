@@ -3,7 +3,7 @@ import { Piso } from "../../domain/piso";
 import { PisoId } from "../../domain/pisoId";
 
 export default interface IPisoRepo extends Repo<Piso> {
-  save(role: Piso): Promise<Piso>;
+  save(piso: Piso): Promise<Piso>;
   findByDomainId (pisoId: PisoId | string): Promise<Piso>;
   findByDesignacao(designacao: string): Promise<Piso>
     

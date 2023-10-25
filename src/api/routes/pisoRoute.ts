@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
 
 import { Container } from 'typedi';
-import IPisoController from '../../controllers/IControllers/IPisoController';
+import IPisoController from '../../controllers/IControllers/IPisoController'; 
 
 import config from "../../../config";
 

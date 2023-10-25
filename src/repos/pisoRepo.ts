@@ -71,7 +71,7 @@ export default class PisoRepo implements IPisoRepo {
   
 
   public async findByDesignacao(value: string): Promise<Piso> {
-      const query = { codigo: value.toString() };
+      const query = { designacao: value.toString() };
       const pisoRecord = await this.pisoSchema.findOne(query);
 
       if(pisoRecord != null)
