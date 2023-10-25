@@ -17,7 +17,7 @@ export default (app: Router) => {
   route.post('/createRobo',
   celebrate({
     body: Joi.object({
-      estado: Joi.array().items(Joi.string()).min(1).max(20).required(),
+      estado: Joi.string().required(),
       marca: Joi.string().required(),
       codigo: Joi.string().required(),
       numeroSerie: Joi.string().required(),
@@ -31,7 +31,7 @@ export default (app: Router) => {
   route.put('/updateRobo',
   celebrate({
     body: Joi.object({
-      estado: Joi.array().items(Joi.string()).min(1).max(20).required(),
+      estado: Joi.string().required(),
       marca: Joi.string().required(),
       codigo: Joi.string().required(),
       numeroSerie: Joi.string().required(),

@@ -1,12 +1,10 @@
 import { Mapper } from "../core/infra/Mapper";
 
-import { Document, Model } from 'mongoose';
-import { ISalaPersistence } from '../dataschema/ISalaPersistence';
-
 import ISalaDTO from "../dto/ISalaDTO";
 import { Sala } from "../domain/sala";
 
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+import { CategoriaSala } from "../domain/categoriaSala";
 
 export class SalaMap extends Mapper<Sala> {
   
@@ -19,11 +17,15 @@ export class SalaMap extends Mapper<Sala> {
     } as ISalaDTO;
   }
 
-  public static toDomain (sala: any | Model<ISalaPersistence & Document> ): Sala {
-    const salaOrError = Sala.create(
-        sala,
-      new UniqueEntityID(sala.domainId)
-    );
+  public static async toDomain (raw: any): Promise<Sala> {
+
+    const index = Object.values(CategoriaSala).find(k => CategoriaSala[k] == raw.categoriaSala) as CategoriaSala;
+
+    const salaOrError = Sala.create({
+      descricaoSala: raw.descricaoSala,
+      categoriaSala: index,
+      designacaoSala: raw.designacaoSala
+    }, new UniqueEntityID(raw.domainId));
 
     salaOrError.isFailure ? console.log(salaOrError.error) : '';
 
@@ -33,8 +35,9 @@ export class SalaMap extends Mapper<Sala> {
   public static toPersistence (sala: Sala): any {
     return {
       domainId: sala.id.toString(),
-      name: sala.designacao
-      
+      descricaoSala: sala.descricao,
+      categoriaSala: sala.categoria,
+      designacaoSala: sala.designacao
     }
   }
 }
