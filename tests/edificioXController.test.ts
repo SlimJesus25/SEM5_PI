@@ -17,6 +17,7 @@ import { Piso } from '../src/domain/piso';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Sala } from '../src/domain/sala';
+import { CategoriaSala } from '../src/domain/categoriaSala';
 
 
 describe('edificio controller', function () {
@@ -240,8 +241,8 @@ describe('edificio controller', function () {
        
 
         const dummyElevador = Elevador.create(body2).getValue();
-        const dummySala  = Sala.create({"id": "1", "descricao" :"descricao", "categoria": "laboratorio", "designacao": "designacao"})
-        const dummySala2  = Sala.create({"id": "2", "descricao" :"descricao", "categoria": "laboratorio", "designacao": "designacao"})
+        const dummySala  = Sala.create({descricaoSala :"descricao", categoriaSala: CategoriaSala.laboratorio, designacaoSala: "designacao"})
+        const dummySala2  = Sala.create({descricaoSala :"descricao", categoriaSala: CategoriaSala.laboratorio, designacaoSala: "designacao"})
 
 
       const body3 = {
