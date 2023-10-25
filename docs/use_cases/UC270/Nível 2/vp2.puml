@@ -1,0 +1,9 @@
+@startuml
+actor Administrador as actor
+participant SistemaRobDroneGo as srdg
+participant MDL as mdl
+actor -> srdg: Criar elevador em edifício
+srdg -> mdl: 
+mdl --> srdg:
+srdg --> actor:
+@enduml

@@ -4,4 +4,5 @@ export default interface IPassagemController  {
   createPassagem(req: Request, res: Response, next: NextFunction);
   updatePassagem(req: Request, res: Response, next: NextFunction);
   listPassagens(req: Request, res: Response, next: NextFunction);
+  listPisos(req: Request, res: Response, next: NextFunction);
 }

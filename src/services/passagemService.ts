@@ -10,7 +10,7 @@ import IEdificioRepo from './IRepos/IEdificioRepo';
 import { PassagemId } from '../domain/passagemId';
 import IPisoRepo from './IRepos/IPisoRepo';
 import IListPassagensEntreEdificiosDTO from '../dto/IListPassagensEntreEdificiosDTO';
-
+import IListPisosComPassagemDTO from '../dto/IListPisosComPassagemDTO';
 
 @Service()
 export default class PassagemService implements IPassagemService {
@@ -96,6 +96,24 @@ export default class PassagemService implements IPassagemService {
         throw e;
       }
   }
-
-
+  
+  //codigoEdificioA
+  public async listPisos(edificio: IListPisosComPassagemDTO): Promise<Result<String[]>>{
+    try{
+      const edificioDoc = await this.edificioRepo.findByCodigo(edificio.codigoEdificio);
+      
+      if(!!edificioDoc)
+        return Result.fail<String[]>("Código do edifício é inválido");
+      
+      const passagemResult = this.passagemRepo.listPassagens(edificioDoc.codigo);
+      
+      let passagensResultDTO : IPassagemDTO[];
+      
+      (await passagemResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
+      
+      return Result.ok<String[]>(passagensResultDTO.map(piso => piso.pisoOrigem))
+  }catch(e) {
+    throw e;
+   }
+ }
 }

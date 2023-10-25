@@ -75,6 +75,8 @@ describe('passagem controller', function () {
 		sinon.assert.calledWith(obj, sinon.match(req.body));
     });
 
+	//TODO para list pisos com passagem
+	
 	
 });
 
