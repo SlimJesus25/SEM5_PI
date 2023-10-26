@@ -51,4 +51,11 @@ export default (app: Router) => {
   (req, res, next) => ctrl.listElevadores(req, res, next));
  
   */
+ // List todos os robos
+ route.get('/listRobos',
+ celebrate({
+   body: Joi.object({
+   }),
+ }),
+ (req, res, next) => ctrl.listRobos(req, res, next));
 };
