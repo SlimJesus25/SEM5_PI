@@ -42,7 +42,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.updateEdificio(req, res, next));
 
   // List elevadores de um edifício.
-  route.put('/listElevadores',
+  route.get('/listElevadores',
   celebrate({
     body: Joi.object({
         codigoEdificio: Joi.string().required(),
@@ -50,6 +50,7 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.listElevadores(req, res, next));
 
+  //Mateus: Alterou de put para get
 // List todos os edificios
   route.get('/listEdificios',
   celebrate({
@@ -57,4 +58,13 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.listEdificios(req, res, next));
+
+  // List pisos de um edifício.
+  route.get('/listPisos',
+  celebrate({
+    body: Joi.object({
+        codigoEdificio: Joi.string().required(),
+    }),
+  }),
+  (req, res, next) => ctrl.listPisos(req, res, next));
 };
