@@ -6,5 +6,4 @@ export default interface IPisoService  {
   updatePiso(pisoDTO: IPisoDTO): Promise<Result<IPisoDTO>>;
   getPiso( pisoId: string): Promise<Result<IPisoDTO>>;
   listPisoPassagem(edificioDTO: IPisoDTO): Promise<Result<Array<IPisoDTO>>>;
-  listPisos(): Promise<Result<IPisoDTO[]>>;
 }
