@@ -148,7 +148,7 @@ export default class EdificioService implements IEdificioService {
         const edificios = await this.edificioRepo.findAll();
 
         if (!!edificios){
-          return Result.fail<IEdificioDTO[]>("Não existem registros de edifícios");
+          return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
         }
         
         let edificiosDTO : IEdificioDTO[];

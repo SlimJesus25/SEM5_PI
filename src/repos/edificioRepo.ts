@@ -96,10 +96,8 @@ export default class EdificioRepo implements IEdificioRepo {
       if (edificioSchema === null) {
           return null;
       } else {
-          let edificioArray = [];
-          for (let i = 0; i < edificioSchema.length; i++) {
-              edificioArray[i] = EdificioMap.toDomain(edificioSchema[i]);
-          }
+          let edificioArray: Edificio[] = [];
+          edificioSchema.forEach(async v => edificioArray.push(await EdificioMap.toDomain(v)));
           return edificioArray;
       }
   } catch (err) {
