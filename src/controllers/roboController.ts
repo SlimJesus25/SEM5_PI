@@ -45,4 +45,20 @@ export default class RoboController implements IRoboController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async listRobos(req: Request, res: Response, next: NextFunction){
+    try {
+      const roboOrError = await this.roboServiceInstance.listRobos() as Result<IRoboDTO[]>;
+
+      if (roboOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const roboDTO = roboOrError.getValue();
+      return res.status(200).json( roboDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
 }
