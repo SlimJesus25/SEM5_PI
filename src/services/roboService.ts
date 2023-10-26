@@ -55,4 +55,23 @@ export default class RoboService implements IRoboService {
     }
   }
 
+  public async listRobos(): Promise<Result<IRoboDTO[]>> {
+    try {
+
+        const robos = await this.roboRepo.findAll();
+
+        if (!!robos){
+          return Result.fail<IRoboDTO[]>("Não existem registos de edifícios");
+        }
+        
+        let robosDTO : IRoboDTO[];
+
+        (await robos).forEach(p => robosDTO.push(RoboMap.toDTO(p) as IRoboDTO));
+
+        return Result.ok<IRoboDTO[]>( robosDTO )
+      } catch (e) {
+        throw e;
+      }
+  }
+
 }
