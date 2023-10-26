@@ -96,12 +96,12 @@ export default class PassagemService implements IPassagemService {
         const edificioADoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioA);
         const edificioBDoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioB);
   
-        if(!!edificioADoc || !!edificioBDoc)
+        if(edificioADoc == null || edificioBDoc == null)
           return Result.fail<IPassagemDTO[]>("Um dos códigos dos edifícios é inválido");
         
-        const passagensResult = this.passagemRepo.listPassagensBetween(edificioADoc.codigo, edificioBDoc.codigo);
+        const passagensResult = await this.passagemRepo.listPassagensBetween(edificioADoc.codigo, edificioBDoc.codigo);
   
-        let passagensResultDTO : IPassagemDTO[];
+        let passagensResultDTO : IPassagemDTO[] = [];
 
         (await passagensResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
 
