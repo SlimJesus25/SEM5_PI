@@ -10,6 +10,8 @@ import { Result } from "../core/logic/Result";
 import IListElevadoresDTO from '../dto/IListElevadoresDTO';
 import { Elevador } from '../domain/elevador';
 import IElevadorDTO from '../dto/IElevadorDTO';
+import IListPisosDTO from '../dto/IListPisosDTO';
+import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class EdificioController implements IEdificioController /* TODO: extends ../core/infra/BaseController */ {
@@ -80,6 +82,22 @@ export default class EdificioController implements IEdificioController /* TODO: 
       return next(e);
     }
   }
+
+  public async listPisos(req: Request, res: Response, next: NextFunction){
+    try {
+      const pisoOrError = await this.edificioServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
+
+      if (pisoOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const pisoDTO = pisoOrError.getValue();
+      return res.status(200).json( pisoDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 
 
 
