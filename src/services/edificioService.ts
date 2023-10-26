@@ -16,6 +16,7 @@ import { Elevador } from '../domain/elevador';
 import { MapaEdificio } from '../domain/mapaEdificio';
 import IListElevadoresDTO from '../dto/IListElevadoresDTO';
 import IElevadorDTO from '../dto/IElevadorDTO';
+import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -159,6 +160,11 @@ export default class EdificioService implements IEdificioService {
       } catch (e) {
         throw e;
       }
+  }
+  
+  // joao: adicionei isto, porque os teste do controller do edificio estavam a explodir, depois troca para o método verdadeiro
+  public async listPisos(codigoEdificio: IListElevadoresDTO): Promise<Result<IPisoDTO[]>> {
+    return null;
   }
 
 
