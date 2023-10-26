@@ -81,6 +81,22 @@ export default class EdificioController implements IEdificioController /* TODO: 
     }
   }
 
+  public async listPisos(req: Request, res: Response, next: NextFunction){
+    try {
+      const pisoOrError = await this.edificioServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
+
+      if (pisoOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const pisoDTO = pisoOrError.getValue();
+      return res.status(200).json( pisoDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
 
 
 }
