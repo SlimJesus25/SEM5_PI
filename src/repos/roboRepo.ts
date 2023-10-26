@@ -23,6 +23,16 @@ export default class RoboRepo implements IRoboRepo {
     }
   }
 
+  public async exists(robo: Robo): Promise<boolean> {
+    
+    const idX = robo.id instanceof RoboId ? (<RoboId>robo.id).toValue() : robo.id;
+
+    const query = { domainId: idX}; 
+    const roboDocument = await this.roboSchema.findOne( query as FilterQuery<IRoboPersistence & Document>);
+
+    return !!roboDocument === true;
+  }
+
   public async save (robo: Robo): Promise<Robo> {
     const query = { domainId: robo.id.toString()}; 
 
@@ -36,12 +46,12 @@ export default class RoboRepo implements IRoboRepo {
 
         return RoboMap.toDomain(roboCreated);
       } else {
-        roboDocument.estado = robo.estado,
-        roboDocument.marca = robo.marca,
-        roboDocument.codigo = robo.codigo,
-        roboDocument.numeroSerie = robo.numeroSerie,
+        roboDocument.estado = robo.estado.toString(),
+        roboDocument.marca = robo.marca.value,
+        roboDocument.codigo = robo.codigo.value,
+        roboDocument.numeroSerie = robo.numeroSerie.value,
         roboDocument.nickname = robo.nickname,
-        roboDocument.tipoRobo = robo.tipoRobo,
+        roboDocument.tipoRobo = robo.tipoRobo.designacao,
         await roboDocument.save();
 
         return robo;
@@ -72,4 +82,20 @@ export default class RoboRepo implements IRoboRepo {
       else
         return null;
   }
+
+  public async findAll(): Promise<Robo[]> {
+    const query = {};
+    const roboSchema = await this.roboSchema.find(query);
+    try {
+      if (roboSchema === null) {
+          return null;
+      } else {
+          let roboArray: Robo[] = [];
+          roboSchema.forEach(async v => roboArray.push(await RoboMap.toDomain(v)));
+          return roboArray;
+      }
+  } catch (err) {
+      throw err;
+  }
+}
 }
