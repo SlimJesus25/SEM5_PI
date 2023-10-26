@@ -19,6 +19,7 @@ import IElevadorDTO from '../dto/IElevadorDTO';
 import IPisoDTO from '../dto/IPisoDTO';
 import IListPisosDTO from '../dto/IListPisosDTO';
 import { PisoMap } from '../mappers/PisoMap';
+import IListMinMaxDTO from '../dto/IListMinMaxDTO';
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -183,6 +184,28 @@ export default class EdificioService implements IEdificioService {
     }
   }
 
+  public async listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>> {
+    try {
 
+      const edificios = await this.edificioRepo.findAll();
+
+      if (!!edificios){
+        return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
+      }
+      
+      let edificiosDTO : IEdificioDTO[];
+
+      (await edificios).forEach((edificio) => {
+        const numPisos = edificio.pisos.length;
+    
+        if (numPisos > minMax.min && numPisos < minMax.max) {
+          edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
+        }
+      });
+
+      return Result.ok<IEdificioDTO[]>( edificiosDTO )
+    } catch (e) {
+      throw e;
+    }
 
 }

@@ -4,6 +4,7 @@ import IListElevadoresDTO from "../../dto/IListElevadoresDTO";
 import IElevadorDTO from "../../dto/IElevadorDTO";
 import IListPisosDTO from "../../dto/IListPisosDTO";
 import IPisoDTO from "../../dto/IPisoDTO";
+import IListMinMaxDTO from "../../dto/IListMinMaxDTO";
 
 
 export default interface IEdificioService  {
@@ -13,4 +14,5 @@ export default interface IEdificioService  {
   listEdificios(): Promise<Result<IEdificioDTO[]>>;
   getEdificio (edificioId: string): Promise<Result<IEdificioDTO>>;
   listPisos(codigoEdificio: IListPisosDTO): Promise<Result<IPisoDTO[]>>;
+  listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>>;
 }

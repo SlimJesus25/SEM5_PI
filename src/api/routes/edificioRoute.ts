@@ -72,8 +72,8 @@ export default (app: Router) => {
   route.get('/listMinMax',
   celebrate({
     body: Joi.object({
-        min: Joi.string().required(),
-        max: Joi.string().required()
+        min: Joi.number().required(),
+        max: Joi.number().required()
     }),
   }),
   (req, res, next) => ctrl.listMinMax(req, res, next));
