@@ -39,7 +39,7 @@ export default (app: Router) => {
   route.get('/listPisos',
   celebrate({
     body: Joi.object({
-      codigoEdificioA: Joi.string().required(),
+      codigoEdificio: Joi.string().required(),
     }),
   }),
   (req, res, next) => ctrl.listPisos(req, res, next));
