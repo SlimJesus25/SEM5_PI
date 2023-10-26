@@ -16,6 +16,9 @@ import { Elevador } from '../domain/elevador';
 import { MapaEdificio } from '../domain/mapaEdificio';
 import IListElevadoresDTO from '../dto/IListElevadoresDTO';
 import IElevadorDTO from '../dto/IElevadorDTO';
+import IPisoDTO from '../dto/IPisoDTO';
+import IListPisosDTO from '../dto/IListPisosDTO';
+import { PisoMap } from '../mappers/PisoMap';
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -159,6 +162,24 @@ export default class EdificioService implements IEdificioService {
       } catch (e) {
         throw e;
       }
+  }
+
+  public async listPisos(listPisosDTO: IListPisosDTO): Promise<Result<IPisoDTO[]>> {
+    try {
+
+      const edificio = await this.edificioRepo.findByCodigo(listPisosDTO.codigoEdificio);
+
+      if(!!edificio)
+        return Result.fail<IPisoDTO[]>("O códigos do edifício é inválido");
+      
+      let pisosDTO : IPisoDTO[];
+
+      (await edificio.pisos).forEach(piso => pisosDTO.push(PisoMap.toDTO(piso) as IPisoDTO));
+
+      return Result.ok<IPisoDTO[]>( pisosDTO )
+    } catch (e) {
+      throw e;
+    }
   }
 
 
