@@ -19,12 +19,12 @@ import IElevadorDTO from '../dto/IElevadorDTO';
 import IPisoDTO from '../dto/IPisoDTO';
 import IListPisosDTO from '../dto/IListPisosDTO';
 import { PisoMap } from '../mappers/PisoMap';
-import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class EdificioService implements IEdificioService {
   constructor(
-      @Inject(config.repos.role.name) private edificioRepo : IEdificioRepo, // joao :repos.edificio ?
+      //@Inject(config.repos.role.name) private edificioRepo : IEdificioRepo, // joao :repos.edificio ?
+      @Inject(config.repos.edificio.name) private edificioRepo : IEdificioRepo,
       @Inject(config.repos.elevador.name) private elevadorRepo: IElevadorRepo,
       @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo,
       @Inject(config.repos.mapaEdificio.name) private mapaRepo: IMapaEdificioRepo // joao: alterado para mapaEdifico
@@ -131,12 +131,12 @@ export default class EdificioService implements IEdificioService {
 
       const edificio = await this.edificioRepo.findByCodigo(listElevadoresDTO.codigoEdificio);
 
-      if(!!edificio)
-        return Result.fail<IElevadorDTO[]>("O códigos do edifício é inválido");
-      
-      let elevadoresDTO : IElevadorDTO[];
+      if(edificio == null)
+        return Result.fail<IElevadorDTO[]>("O código do edifício é inválido");
 
-      // O UC pede para listar os elevadoreS, porém, no sprint A é pedido para assumir que no máximo existe apenas 1 elevador por edifício.
+      let elevadoresDTO : IElevadorDTO[] = [];
+
+      // O UC pede para listar os elevadorES, porém, no sprint A é pedido para assumir que no máximo existe apenas 1 elevador por edifício.
       // Como tal, esta solução adiciona só 1 elemento ao array. Se no futuro for necessário alterar, basta meter um foreach.
       elevadoresDTO.push(ElevadorMap.toDTO(edificio.elevadores));
 
