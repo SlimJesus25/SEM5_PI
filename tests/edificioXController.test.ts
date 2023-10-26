@@ -24,6 +24,8 @@ describe('edificio controller', function () {
 	const sandbox = sinon.createSandbox();
 
 	beforeEach(function() {
+
+		// EDIFICIO
 		Container.reset();
 		let edificioSchemaInstance = require("../src/persistence/schemas/edificioSchema").default;
 		Container.set("edificioSchema", edificioSchemaInstance);
@@ -35,6 +37,23 @@ describe('edificio controller', function () {
 		let edificioServiceClass = require("../src/services/edificioService").default;
 		let edificioServiceInstance = Container.get(edificioServiceClass);
 		Container.set("EdificioService", edificioServiceInstance);
+
+
+		// ELEVADOR
+		let elevadorSchemaInstance = require("../src/persistence/schemas/elevadorSchema").default;
+		Container.set("elevadorSchema", elevadorSchemaInstance);
+
+		let elevadorRepoClass = require("../src/repos/elevadorRepo").default;
+		let elevadorRepoInstance = Container.get(elevadorRepoClass);
+		Container.set("ElevadorRepo", elevadorRepoInstance);
+
+		//PISO
+		let pisoSchemaInstance = require("../src/persistence/schemas/pisoSchema").default;
+		Container.set("pisoSchema", pisoSchemaInstance);
+
+		let pisoRepoClass = require("../src/repos/pisoRepo").default;
+		let pisoRepoInstance = Container.get(pisoRepoClass);
+		Container.set("PisoRepo", pisoRepoInstance);	
     });
 
 	afterEach(function() {

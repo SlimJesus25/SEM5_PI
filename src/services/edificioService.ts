@@ -19,6 +19,7 @@ import IElevadorDTO from '../dto/IElevadorDTO';
 import IPisoDTO from '../dto/IPisoDTO';
 import IListPisosDTO from '../dto/IListPisosDTO';
 import { PisoMap } from '../mappers/PisoMap';
+import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class EdificioService implements IEdificioService {
