@@ -34,4 +34,13 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.updatePiso(req, res, next));
+
+  // List todos os pisos de um edificio
+  route.get('/listPisos',
+  celebrate({
+    body: Joi.object({
+      codigoEdificioA: Joi.string().required(),
+    }),
+  }),
+  (req, res, next) => ctrl.listPisos(req, res, next));
 };
