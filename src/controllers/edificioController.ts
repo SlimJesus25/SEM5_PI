@@ -53,14 +53,14 @@ export default class EdificioController implements IEdificioController /* TODO: 
 
   public async listElevadores(req: Request, res: Response, next: NextFunction){
     try {
-      const elevadorOrError = await this.edificioServiceInstance.listElevadores(req.body as IListElevadoresDTO) as Result<IElevadorDTO[]>;
+      const elevadoresOrError = await this.edificioServiceInstance.listElevadores(req.body as IListElevadoresDTO) as Result<IElevadorDTO[]>;
 
-      if (elevadorOrError.isFailure) {
+      if (elevadoresOrError.isFailure) {
         return res.status(404).send();
       }
 
-      const passasgemDTO = elevadorOrError.getValue();
-      return res.status(200).json( passasgemDTO );
+      const passagemDTO = elevadoresOrError.getValue();
+      return res.status(200).json( passagemDTO );
     }
     catch (e) {
       return next(e);
