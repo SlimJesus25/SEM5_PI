@@ -10,6 +10,8 @@ import { Result } from "../core/logic/Result";
 import IListElevadoresDTO from '../dto/IListElevadoresDTO';
 import { Elevador } from '../domain/elevador';
 import IElevadorDTO from '../dto/IElevadorDTO';
+import IListPisosDTO from '../dto/IListPisosDTO';
+import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class EdificioController implements IEdificioController /* TODO: extends ../core/infra/BaseController */ {

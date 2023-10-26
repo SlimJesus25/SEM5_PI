@@ -2,6 +2,8 @@ import { Result } from "../../core/logic/Result";
 import IEdificioDTO from "../../dto/IEdificioDTO";
 import IListElevadoresDTO from "../../dto/IListElevadoresDTO";
 import IElevadorDTO from "../../dto/IElevadorDTO";
+import IListPisosDTO from "../../dto/IListPisosDTO";
+import IPisoDTO from "../../dto/IPisoDTO";
 
 
 export default interface IEdificioService  {
@@ -10,4 +12,5 @@ export default interface IEdificioService  {
   listElevadores(codigoEdificio: IListElevadoresDTO): Promise<Result<IElevadorDTO[]>>;
   listEdificios(): Promise<Result<IEdificioDTO[]>>;
   getEdificio (edificioId: string): Promise<Result<IEdificioDTO>>;
+  listPisos(codigoEdificio: IListPisosDTO): Promise<Result<IPisoDTO[]>>;
 }
