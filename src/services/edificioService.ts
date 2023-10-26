@@ -24,10 +24,10 @@ import IPisoDTO from '../dto/IPisoDTO';
 @Service()
 export default class EdificioService implements IEdificioService {
   constructor(
-      @Inject(config.repos.role.name) private edificioRepo : IEdificioRepo,
+      @Inject(config.repos.role.name) private edificioRepo : IEdificioRepo, // joao :repos.edificio ?
       @Inject(config.repos.elevador.name) private elevadorRepo: IElevadorRepo,
       @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo,
-      @Inject(config.repos.mapa.name) private mapaRepo: IMapaEdificioRepo
+      @Inject(config.repos.mapaEdificio.name) private mapaRepo: IMapaEdificioRepo // joao: alterado para mapaEdifico
   ) {}
 
   public async getEdificio( edificioId: string): Promise<Result<IEdificioDTO>> {

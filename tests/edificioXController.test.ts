@@ -25,191 +25,80 @@ describe('edificio controller', function () {
 
 	beforeEach(function() {
 
-		// EDIFICIO
-		Container.reset();
-		let edificioSchemaInstance = require("../src/persistence/schemas/edificioSchema").default;
-		Container.set("edificioSchema", edificioSchemaInstance);
+	// Reset the container
+	Container.reset();
 
-		let edificioRepoClass = require("../src/repos/edificioRepo").default;
-		let edificioRepoInstance = Container.get(edificioRepoClass);
-		Container.set("EdificioRepo", edificioRepoInstance);
+	// ELEVADOR
+	let elevadorSchemaInstance = require("../src/persistence/schemas/elevadorSchema").default;
+	Container.set("elevadorSchema", elevadorSchemaInstance);
 
-		let edificioServiceClass = require("../src/services/edificioService").default;
-		let edificioServiceInstance = Container.get(edificioServiceClass);
-		Container.set("EdificioService", edificioServiceInstance);
+	let elevadorRepoClass = require("../src/repos/elevadorRepo").default;
+	let elevadorRepoInstance = Container.get(elevadorRepoClass);
+	Container.set("ElevadorRepo", elevadorRepoInstance);
 
+	// PISO
+	let pisoSchemaInstance = require("../src/persistence/schemas/pisoSchema").default;
+	Container.set("pisoSchema", pisoSchemaInstance);
 
-		// ELEVADOR
-		let elevadorSchemaInstance = require("../src/persistence/schemas/elevadorSchema").default;
-		Container.set("elevadorSchema", elevadorSchemaInstance);
+	let pisoRepoClass = require("../src/repos/pisoRepo").default;
+	let pisoRepoInstance = Container.get(pisoRepoClass);
+	Container.set("PisoRepo", pisoRepoInstance);
 
-		let elevadorRepoClass = require("../src/repos/elevadorRepo").default;
-		let elevadorRepoInstance = Container.get(elevadorRepoClass);
-		Container.set("ElevadorRepo", elevadorRepoInstance);
+	// EDIFICIO
+	let edificioSchemaInstance = require("../src/persistence/schemas/edificioSchema").default;
+	Container.set("edificioSchema", edificioSchemaInstance);
 
-		//PISO
-		let pisoSchemaInstance = require("../src/persistence/schemas/pisoSchema").default;
-		Container.set("pisoSchema", pisoSchemaInstance);
+	let edificioRepoClass = require("../src/repos/edificioRepo").default;
+	let edificioRepoInstance = Container.get(edificioRepoClass);
+	Container.set("EdificioRepo", edificioRepoInstance);
 
-		let pisoRepoClass = require("../src/repos/pisoRepo").default;
-		let pisoRepoInstance = Container.get(pisoRepoClass);
-		Container.set("PisoRepo", pisoRepoInstance);	
+	let edificioServiceClass = require("../src/services/edificioService").default;
+	let edificioServiceInstance = Container.get(edificioServiceClass);
+	Container.set("EdificioService", edificioServiceInstance);
     });
+
 
 	afterEach(function() {
 		sandbox.restore();
 	});
 
-	/*
-    it('elevadorController unit test using elevadorService stub', async function () {
-		// Arrange
-        let body = { "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 };
+	it('listEdificios', async function () {
         let req: Partial<Request> = {};
-		req.body = body;
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
+		req.body = {
+		};
+        let res2: Partial<Response> = {};
+        let response: IEdificioDTO[] = [
+            {
+				"id" : "1",
+                "dimensaoMaxima": 200,
+        		"descricao": "Edificio Acolhe Malucos",
+        		"nomeOpcional": "Edificio Francisco",
+        		"codigoEdificio": "2324",
+        		"elevador": 100,
+        		"pisos": ["1","2","3"],
+        		"mapaEdificio": "1"
+            },
+            
+        ];
 
-		let elevadorServiceInstance = Container.get("ElevadorService");
-		sinon.stub(elevadorServiceInstance, "createElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 } ));
-
-		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
-
-		// Act
-		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100}));
-
-		/*let body2 = { "name":"elevador525"};
-		let req2: Partial<Request> = {};
-		req2.body = body2;
-		let res2: Partial<Response> = {
-			json: sinon.spy()
+		let res: Partial<Response> = {
+			json: sinon.spy(),
 		};
 
-		let next2: Partial<NextFunction> = () => {};
-
-		let elevadorServiceInstance2 = Container.get("ElevadorService");
-		sinon.stub(elevadorServiceInstance2, "updateElevador").returns( Result.ok<IElevadorDTO>( {"id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 } ));
-
-		const ctrl2 = new ElevadorController(elevadorServiceInstance2 as IElevadorService);
-
-		// Act
-		await ctrl2.updateElevador(<Request>req2, <Response>res2, <NextFunction>next2);
-
-		// Assert
-		sinon.assert.calledOnce(res2.json);
-		sinon.assert.calledWith(res2.json, sinon.match({ "designacao": req2.body.name,"id": "123"}));
-
-	});
-
-
-    it('elevadorController + elevadorService integration test using elevadorRepoistory and Elevador stubs', async function () {	
-		// Arrange	
-        let body = { "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100 };
-        let req: Partial<Request> = {};
-		req.body = body;
-
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
 		let next: Partial<NextFunction> = () => {};
 
-		sinon.stub(Elevador, "create").returns(Result.ok({"id":"123", "descricao": "Elevador super rápido",
-		"numeroSerie": "11111",
-		 "modelo": "Azal",
-		  "marca": "Otis",
-		   "pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100}));
+		let edificioServiceInstace = Container.get("EdificioService");
 
-		let elevadorRepoInstance = Container.get("ElevadorRepo");
-		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
-			resolve(Elevador.create({"id":"123", "descricao": "Elevador super rápido",
-			"numeroSerie": "11111",
-			 "modelo": "Azal",
-			  "marca": "Otis",
-			   "pisosServidos": ["1", "2", "3"],
-				"numeroIdentificativo": 100 }).getValue())
-		}));
+		const obj = sinon.stub(edificioServiceInstace, "listEdificios").returns(Result.ok<IEdificioDTO[]>(response as IEdificioDTO[]));
 
-		let elevadorServiceInstance = Container.get("ElevadorService");
+		const ctrl = new EdificioController(edificioServiceInstace as IEdificioService);
+		await ctrl.listEdificios(<Request>req, <Response> res, <NextFunction> next);
 
-		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
-
-		// Act
-		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","designacao": req.body.name}));
-	});
-
-
-    it('elevadorController + elevadorService integration test using spy on elevadorService', async function () {		
-		// Arrange
-        let body = { "name":'elevador1' };
-        let req: Partial<Request> = {};
-		req.body = body;
-
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
-
-		let elevadorRepoInstance = Container.get("ElevadorRepo");
-		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
-			resolve(Elevador.create({"id":"123", "descricao": "Elevador super rápido",
-			"numeroSerie": "11111",
-			 "modelo": "Azal",
-			  "marca": "Otis",
-			   "pisosServidos": ["1", "2", "3"],
-				"numeroIdentificativo": 100 }).getValue())
-		}));
-
-		let elevadorServiceInstance = Container.get("ElevadorService");		
-		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "createElevador");
-
-		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
-
-		// Act
-		await ctrl.createElevador(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","designacao": req.body.name}));
-		sinon.assert.calledOnce(elevadorServiceSpy);
-		//sinon.assert.calledTwice(roleServiceSpy);
-		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({name: req.body.name}));
-	});
-	*/
+		sinon.assert.calledOnce(obj);
+		sinon.assert.calledWith(obj, sinon.match(req.body));
+    });
+});
+	/*
 
 	it('createEdificio returns status 403 forbidden', async function () {
 		let req: Partial<Request> = {};
@@ -465,3 +354,5 @@ describe('edificio controller', function () {
         "mapaEdificio": "1"}));
 	});
 });
+
+*/
