@@ -88,8 +88,8 @@ export default class PassagemRepo implements IPassagemRepo {
     }
   }
   
-  public async listPassagens(idEdificioA: string): Promise<Passagem[]> {
-      const query = {codigoEdificioA: idEdificioA}
+  public async listPassagens(idEdificio: string): Promise<Passagem[]> {
+      const query = {codigoEdificioA: idEdificio, codigoEdificioB : idEdificio}
       const passagemSchema = await this.passagemSchema.find(query);
       try {
         if (passagemSchema === null) {
