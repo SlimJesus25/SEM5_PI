@@ -1,6 +1,0 @@
-@startuml
-actor Actor as actor
-participant SistemaRobDroneGo as srdg
-actor -> srdg: Criar passagem entre edificios
-srdg --> actor
-@enduml

@@ -1,6 +1,0 @@
-@startuml
-actor Actor as actor
-participant SistemaRobDroneGo as srdg
-actor -> srdg: Como gestor de frota pretendo adicionar um novo tipo de robot indicando a sua designação e que tipos de tarefas pode executar da lista prédefinida de tarefas
-srdg --> actor
-@enduml
