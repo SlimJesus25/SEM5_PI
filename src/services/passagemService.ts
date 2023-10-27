@@ -33,7 +33,7 @@ export default class PassagemService implements IPassagemService {
   public async createPassagem(passagemDTO: IPassagemDTO): Promise<Result<IPassagemDTO>> {
     try {
 
-      const passagemDocument = await this.passagemRepo.findByDomainId(passagemDTO.id);
+      const passagemDocument = await this.passagemRepo.findByDesignacao(passagemDTO.id);
 
       if(!!passagemDocument)
         return Result.fail<IPassagemDTO>("Passagem com o id " + passagemDTO.id + " já existe!");
@@ -45,6 +45,9 @@ export default class PassagemService implements IPassagemService {
 
       if(edificioOrigem.id === edificioDestino.id || pisoOrigem.id === pisoDestino.id)
         return Result.fail<IPassagemDTO>("Origem e destino dos parâmetros não podem ser os mesmos");
+
+      if(edificioOrigem.pisos.includes(pisoOrigem) && edificioDestino.pisos.includes(pisoDestino))
+      return Result.fail<IPassagemDTO>("Piso A tem de pertencer ao edificio A e o piso B tem de pertencer ao edificio B");
 
       const passagemOrError = Passagem.create({
         designacao: passagemDTO.designacao,
