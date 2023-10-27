@@ -1,9 +1,19 @@
-@startuml
-actor Administrador as actor
-participant SistemaRobDroneGo as srdg
-participant MDL as mdl
-actor -> srdg: Criar elevador em edifício
-srdg -> mdl: 
-mdl --> srdg:
-srdg --> actor:
+@startuml getPackagingSD
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+box "<<System(C4)>>\n SistemaRobDroneGo"
+participant MasterDataLogistics as mdl <<Container(C4)>>
+mdl -> mdl: POST createElevador(descricao,numeroIdentificativo,modelo,marca,pisosServidos,numeroSerie)
+alt não existe erros durante a operação
+mdl --> mdl: 201 elevador criado
+else existe erros durante a operação
+mdl --> mdl: 403 não foi possivel criar elevador
+end 
+
+end box
+
 @enduml
