@@ -28,7 +28,6 @@ export class PassagemMap extends Mapper<Passagem> {
     const repoEdificio = Container.get(EdificioRepo);
     const repoPiso = Container.get(PisoRepo);
 
-    console.log("Aqui2: ", repoEdificio);
     const edificioA = await repoEdificio.findByCodigo(raw.edificio1);
     const edificioB = await repoEdificio.findByCodigo(raw.edificio2);
 

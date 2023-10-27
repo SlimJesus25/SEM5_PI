@@ -57,7 +57,7 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
 
   set numeroSerie ( value: string) {
     if(value.length == 0)
-      throw error("Numero série vazio");
+      throw new Error("Numero série vazio");
     this.props.numeroSerie = value;
   }
 
