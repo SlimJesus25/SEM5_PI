@@ -15,6 +15,7 @@ import IPisoDTO from '../dto/IPisoDTO';
 import { Piso } from '../domain/piso';
 import { PisoId } from '../domain/pisoId';
 import passagemSchema from '../persistence/schemas/passagemSchema';
+import { PisoMap } from '../mappers/PisoMap';
 
 @Service()
 export default class PassagemService implements IPassagemService {
@@ -108,18 +109,18 @@ export default class PassagemService implements IPassagemService {
   }
   
   //codigoEdificioA
-  public async listPisos(edificio: IListPisosComPassagemDTO): Promise<Result<String[]>>{
+  public async listPisos(edificio: IListPisosComPassagemDTO): Promise<Result<IPisoDTO[]>>{
     try{
       const edificioDoc = await this.edificioRepo.findByCodigo(edificio.codigoEdificio);
       
       if(!!edificioDoc)
-        return Result.fail<String[]>("Código do edifício é inválido");
+        return Result.fail<IPisoDTO[]>("Código do edifício é inválido");
       
-      const passagemResult = this.passagemRepo.listPassagens(edificioDoc.codigo);
+      const passagemResult = (await this.passagemRepo.listPassagens(edificioDoc.codigo)).map(p => p.pisoUm);
       
-      let passagensResultDTO : IPassagemDTO[];
+      let passagensResultDTO: IPisoDTO[];
       
-      (await passagemResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
+      (await passagemResult).forEach((p => passagensResultDTO.push(PisoMap.toDTO(p) as IPisoDTO)));
       
       return Result.ok<IPisoDTO[]>(passagensResultDTO)
   }catch(e) {

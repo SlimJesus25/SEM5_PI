@@ -11,6 +11,7 @@ import IListPassagensEntreEdificiosDTO from '../dto/IListPassagensEntreEdificios
 import IListPisosComPassagemDTO from '../dto/IListPisosComPassagemDTO';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
+import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class PassagemController implements IPassagemController /* TODO: extends ../core/infra/BaseController */ {
@@ -68,7 +69,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
   
   public async listPisos(req: Request, res: Response, next: NextFunction) {
       try{
-        const passagemOrError = await this.passagemServiceInstance.listPisos(req.body as IListPisosComPassagemDTO) as Result<String[]>;
+        const passagemOrError = await this.passagemServiceInstance.listPisos(req.body as IListPisosComPassagemDTO) as Result<IPisoDTO[]>;
         
         if(passagemOrError.isFailure){
           return res.status(404).send();
