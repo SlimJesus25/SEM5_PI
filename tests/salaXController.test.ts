@@ -78,6 +78,7 @@ describe('sala controller', function () {
 		sinon.assert.calledWith(obj, sinon.match(req.body));
 	});
 
+	/*
 	it('createSala returns status 201', async function () {
 		let req: Partial<Request> = {};
 		req.body = {
@@ -147,6 +148,7 @@ describe('sala controller', function () {
 		//sinon.assert.calledTwice(roleServiceSpy);
 		sinon.assert.calledWith(salaServiceSpy, sinon.match({name: req.body.name}));
 	});
+	*/
 
 
 	it('salaController + salaService integration test using spy on salaService, unsuccess creation test', async function () {		

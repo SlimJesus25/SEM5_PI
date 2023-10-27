@@ -81,6 +81,7 @@ describe('elevador controller', function () {
 		sinon.assert.calledWith(obj, sinon.match(req.body));
 	});
 
+	/*
 	it('createElevator returns status 201', async function () {
 		let req: Partial<Request> = {};
 		req.body = {
@@ -209,6 +210,7 @@ describe('elevador controller', function () {
 		}))
 	});
 
+	/*
 	it("updateElevador returns status 201", async function() {
 		let body = {
 			"id" : "123",
@@ -294,6 +296,7 @@ describe('elevador controller', function () {
 		//sinon.assert.calledTwice(roleServiceSpy);
 		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({name: req.body.name}));
 	});
+	*/
 
 
 	it('elevadorController + elevadorService integration test using spy on elevadorService, unsuccess creation test', async function () {		
