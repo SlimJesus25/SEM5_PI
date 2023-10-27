@@ -17,7 +17,7 @@ import IRoboRepo from './IRepos/IRoboRepo';
 @Service()
 export default class RoboService implements IRoboService {
   constructor(
-      @Inject(config.repos.robo.name) private roboRepo : IRoboRepo
+      @Inject(config.repos.robo.name) private roboRepo : IRoboRepo,
       @Inject(config.repos.tipoRobo.name) private tipoRoboRepo : ITipoRoboRepo
   ) {}
 
@@ -72,6 +72,32 @@ export default class RoboService implements IRoboService {
       } catch (e) {
         throw e;
       }
+  }
+
+  // joao: isto também estava em falta, falta depois atualizar
+
+  public async updateRobo(roboDTO: IRoboDTO): Promise<Result<IRoboDTO>> {
+    return null;
+    
+  }
+
+  public async inhibitRobo(roboDTO: IRoboDTO): Promise<Result<IRoboDTO>> {
+    try {
+      const robo = await this.roboRepo.findByCodigo(roboDTO.codigo);
+      
+      if (robo === null) {
+        return Result.fail<IRoboDTO>("Robo não encontrado");
+      }
+      else {
+        robo.inibir;
+        await this.roboRepo.save(robo);
+
+        const roboDTOResult = RoboMap.toDTO( robo ) as IRoboDTO;
+        return Result.ok<IRoboDTO>( roboDTOResult )
+        }
+    } catch (e) {
+      throw e;
+    }
   }
 
 }
