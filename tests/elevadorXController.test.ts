@@ -242,6 +242,7 @@ describe('elevador controller', function () {
 		sinon.assert.calledOnce(res.status);
 		sinon.assert.calledWith(res.status, 201);
 	});
+	*/
 
 	it('elevadorController + elevadorService integration test using spy on elevadorService, success creation case', async function () {		
 		// Arrange
@@ -296,7 +297,6 @@ describe('elevador controller', function () {
 		//sinon.assert.calledTwice(roleServiceSpy);
 		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({name: req.body.name}));
 	});
-	*/
 
 
 	it('elevadorController + elevadorService integration test using spy on elevadorService, unsuccess creation test', async function () {		
