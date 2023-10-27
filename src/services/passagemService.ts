@@ -11,6 +11,10 @@ import { PassagemId } from '../domain/passagemId';
 import IPisoRepo from './IRepos/IPisoRepo';
 import IListPassagensEntreEdificiosDTO from '../dto/IListPassagensEntreEdificiosDTO';
 import IListPisosComPassagemDTO from '../dto/IListPisosComPassagemDTO';
+import IPisoDTO from '../dto/IPisoDTO';
+import { Piso } from '../domain/piso';
+import { PisoId } from '../domain/pisoId';
+import passagemSchema from '../persistence/schemas/passagemSchema';
 
 @Service()
 export default class PassagemService implements IPassagemService {
@@ -117,7 +121,7 @@ export default class PassagemService implements IPassagemService {
       
       (await passagemResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
       
-      return Result.ok<String[]>(passagensResultDTO.map(piso => piso.pisoOrigem))
+      return Result.ok<IPisoDTO[]>(passagensResultDTO)
   }catch(e) {
     throw e;
    }
