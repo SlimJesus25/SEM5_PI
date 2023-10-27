@@ -7,11 +7,11 @@ ParticipantBackgroundColor white
 
 box "<<System(C4)>>\n SistemaRobDroneGo"
 participant MasterDataLogistics as mdl <<Container(C4)>>
-mdl -> mdl: POST createRobo(estado,marca,codigo,numeroSerie,nickname,tipoRobo)
+mdl -> mdl: POST createTipoRobo(designacao,marca,modelo,tarefas)
 alt não existe erros durante a operação
-mdl --> mdl: 201 robo criado
+mdl --> mdl: 201 tipo robo criado
 else existe erros durante a operação
-mdl --> mdl: 403 não foi possivel criar robo
+mdl --> mdl: 403 não foi possivel criar tipo robo
 end 
 
 end box
