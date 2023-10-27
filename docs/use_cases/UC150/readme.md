@@ -49,7 +49,7 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Edif
 
 #### 3.3.2 Vista lógica - nível 3
 
-![sequence diagram](/docs/logical_view/level3/vl3.svg "sequence_diagram_150.svg")
+![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
 
 ### 3.2. Padrões aplicados
 
@@ -57,8 +57,11 @@ Os padrões aplicados são:
 
 - REST + ONION (padrões arquiteturais);
 - DTO;
-- Persistência;
-- Aplicação;
-- Controlador;
-- Serviço;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
 - Modelo.
