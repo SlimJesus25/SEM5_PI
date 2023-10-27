@@ -82,6 +82,7 @@ describe('edificio controller', function () {
 		let next: Partial<NextFunction> = () => { };
 
 		let edificioRepoInstance = Container.get("EdificioRepo");
+		let edificioServiceInstance = Container.get("EdificioService");
 
 		const dummyElevador = Elevador.create({
 			"descricao": "Elevador super rápido",
@@ -130,9 +131,8 @@ describe('edificio controller', function () {
 			mapaEdificio: dummyMapaEdificio
 		});
 
-		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
+		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio.getValue());
 
-		let edificioServiceInstance = Container.get("EdificioService");
 		const edificioServiceSpy = sinon.spy(edificioServiceInstance, "listElevadores");
 
 		const ctrl = new EdificioController(edificioServiceInstance as IEdificioService);
@@ -140,16 +140,28 @@ describe('edificio controller', function () {
 		// Act
 		await ctrl.listElevadores(<Request>req, <Response>res, <NextFunction>next);
 
+
+		/*
+sinon.assert.calledWith(res.json, sinon.match([sinon.match({
+			"designacao": "B4_J4",
+			"edificioDestino": "J",
+			"edificioOrigem": "B",
+			"pisoDestino": "J4",
+			"pisoOrigem": "B4"
+		})]));
+		*/
 		// Assert
 		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({
+		sinon.assert.calledWith(res.json, sinon.match([sinon.match({
 			"descricao": "Elevador super rápido",
 			"numeroSerie": "11111",
 			"modelo": "Azal",
 			"marca": "Otis",
 			"pisosServidos": ["B4", "B3"],
 			"numeroIdentificativo": 100
-		}));
+		})]));
+		sinon.assert.calledOnce(edificioServiceSpy);
+		sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
 		sinon.assert.calledOnce(edificioServiceSpy);
 		sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
 	});
@@ -224,6 +236,7 @@ describe('edificio controller', function () {
 
 		sinon.assert.calledOnce(obj);
 		sinon.assert.calledWith(obj, sinon.match(req.body));
+		
 	});
 
 	
