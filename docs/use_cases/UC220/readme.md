@@ -1,95 +1,60 @@
-# US 1001
+# UC 220
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
-
-**Critérios de aceitação** - This US has no specific acceptance criteria
+**UC220** - Listar pisos de edifício com passagem para outros edifícios.
 
 ## 2. Análise
 
-### 2.1 Indentificar o problema
-In order to implement this functionality, we divided the documentation in 3 parts:
+### 2.1 Identificar o problema
 
-#### US1001_1 Add User
-
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
-
-#### US1001_2 Deactivate User
-
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
-
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
+Listar pisos de um edifício que tenha passagem para outros edifícios é obtido através do GET, e deve listar todos os pisos que tenham as respetivas passagens para outros edificios.
 
 ### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
+
+![excerpt diagram](ed270.svg "ed270.svg")
 
 ### 2.3 Testes de Unidade - Teste de regras de negócio
 
-**Test 1:** *Ensure Username can't be null*
+**Test 1:** *Listar passagem.*
 
-**Test 2:** *Ensure Password can't be null*
+**Test 2:** *Edifico A tem que existir.*
 
-**Test 3:** *Ensure FirstName can't be null*
+### 2.4 Testes de Integração
 
-**Test 4:** *Ensure LastName can't be null*
+**Test 1:** 
 
-**Test 5:** *Ensure Email can't be null*
+## 3. Desenho
 
-**Test 6:** *Ensure User can't be null*
-
-**Test 7:** *Ensure list of users can't be null*
-
-
-
-## 3. Design
-
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+Para solucionar este problema, existe um agregado designado por Passagem que tem como atributos um edificio A, outro edificio B, um piso do edificio A e outro piso do edificio B. Desta forma, é possível listar todas as passagens do edificio A para outros edificios, e assim, listar os pisos correspondentes.
 
 ### 3.1. Realização
 
-### US1001_1 Add User
-* **Sequence Diagram**
+#### 3.3.1 Diagrama de vista de processos de nível 1
 
-![sequence diagram](us1001_1/sequence_diagram_addUser.svg "sequence_diagram_1001_1")
+![vp](vp1.svg "vp1.svg")
 
-* **Class Diagram**
+#### 3.3.1 Diagrama de vista de processos de nível 2
 
-![class diagram](us1001_1/class_diagram_addUser.svg "class_diagram_1001_1")
+![vp](vp2.svg "vp2.svg")
 
-### US1001_2 Deactivate  User
+#### 3.3.1 Diagrama de vista de processos de nível 3
 
-* **Sequence Diagram**
- 
-![sequence diagram](us1001_2/sequence_diagram_deactivateUser.svg "sequence_diagram_1001_2")
+![vp](vp3.svg "vp3.svg")
 
-* **Class Diagram**
+#### 3.3.4 Vista lógica nível (3 ou 4 (verificar))
 
-![class diagram](us1001_2/class_diagram_deactivateUser.svg "class_diagram_1001_2")
-
-#### US1001_3 List User
-
-* **Sequence Diagram**
-
-![sequence diagram](us1001_3/sequence_diagram_listUser.svg "sequence_diagram_1001_3")
-
-* **Class Diagram**
-
-![class diagram](us1001_3/class_diagram_listUser.svg "class_diagram_1001_3")
 
 ### 3.2. Padrões aplicados
-The applied patters are:
-* DTO;
-* Persistence;
-* Application;
-* Controller;
-* Service;
-* Domain;
-* UI;
+
+Os padrões aplicados são:
+
+- DTO;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
+- Modelo.

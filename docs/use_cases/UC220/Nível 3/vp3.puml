@@ -1,0 +1,70 @@
+@startuml sd
+
+participant Passagem as route <<Route>>
+participant IPassagemController as ictrl <<Interface>>
+participant Passagem as ctrl <<Controller>>
+participant IPassagemService as isvc <<Interface>>
+participant Passagem as svc <<Service>>
+participant IPassagemRepo as irepo <<Interface>>
+participant Passagem as repo <<Repository>>
+participant PassagemMapper as mapper <<Mapper>>
+participant IPassagemPersistence as ischema <<Persistence>>
+participant PassagemSchema as schema
+participant ConfigurationFile as conf
+
+
+activate route
+route -> ictrl : /listPassagensPisos
+activate ictrl
+ictrl -> ctrl : listPisos(req, res, next)
+activate ctrl
+ctrl -> conf : injeta o serviço da Passagem
+activate conf
+conf --> ctrl
+deactivate conf
+ctrl -> isvc : listPisos(IEdificioDTO)
+activate isvc
+isvc -> svc : listPisos(IEdificioDTO)
+activate svc
+svc -> conf : injeta o repositório do edificio
+activate conf
+svc -> conf : injeta o repositório da passagem
+conf --> svc
+deactivate conf
+svc -> irepo : IPisoDTO[] = listPassagens(edificioId)
+activate irepo
+irepo -> repo : listPassagens(edificioAId)
+activate repo
+repo -> ischema : listPassagens(edificioAId)
+activate ischema
+ischema -> schema : listPassagens(edificioAId)
+activate schema
+schema --> ischema
+deactivate schema
+ischema --> repo
+deactivate ischema
+repo --> irepo
+deactivate repo
+irepo --> svc
+deactivate irepo
+alt nao existem passagens ou edifícios são inválidos
+    svc --> isvc
+    'deactivate svc
+    isvc --> ctrl
+    'deactivate isvc
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+    'deactivate ctrl
+    ictrl --> route
+end
+svc --> isvc
+deactivate svc
+isvc --> ctrl
+deactivate isvc
+ctrl --> ictrl : Envia um código 200 (GET)
+
+deactivate ctrl
+ictrl --> route
+deactivate ictrl
+deactivate route
+
+@enduml
