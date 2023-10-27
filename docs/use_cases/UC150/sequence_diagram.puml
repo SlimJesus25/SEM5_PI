@@ -1,62 +1,61 @@
 @startuml sd
 
-actor Utilizador as u
-
-participant InterfaceElevadorController as ictrl
-participant ElevadorController as ctrl
-participant InterfaceElevadorService as isvc
-participant ElevadorService as svc
-participant InterfaceElevadorRepo as irepo
-participant ElevadorRepo as repo
-participant ElevadorMapper as mapper
-participant InterfaceElevadorPersistence as ischema
-participant ElevadorSchema as schema
+participant Route as route
+participant InterfaceEdificioController as ictrl
+participant EdificioController as ctrl
+participant InterfaceEdificioService as isvc
+participant EdificioService as svc
+participant InterfaceEdificioRepo as irepo
+participant EdificioRepo as repo
+participant EdificioMapper as mapper
+participant InterfaceEdificioPersistence as ischema
+participant EdificioSchema as schema
 participant ConfigurationFile as conf
-participant Elevador as model
+participant Edificio as model
 
-activate u
-u -> ictrl : criar elevador
+activate route
+route -> ictrl : criar edificio
 activate ictrl
-ictrl -> ctrl : createElevador(req, res, next)
+ictrl -> ctrl : createEdificio(req, res, next)
 activate ctrl
-ctrl -> conf : injeta o serviço do elevador
+ctrl -> conf : injeta o serviço do edificio
 activate conf
 conf --> ctrl
 deactivate conf
-ctrl -> isvc : createElevador(IElevadorDTO)
+ctrl -> isvc : createEdificio(IEdificioDTO)
 activate isvc
-isvc -> svc : createElevador(IElevadorDTO)
+isvc -> svc : createEdificio(IEdificioDTO)
 activate svc
-svc -> conf : injeta o repositório do elevador
+svc -> conf : injeta o repositório do edificio
 activate conf
 conf --> svc
 deactivate conf
-svc -> model : elevador = create(elevadorDTO)
+svc -> model : edificio = create(edificioDTO)
 activate model
 model --> svc
 deactivate model
-svc -> irepo : elevador = save(elevador)
+svc -> irepo : edificio = save(edificio)
 activate irepo
-irepo -> repo : save(elevador)
+irepo -> repo : save(edificio)
 activate repo
-repo -> conf : injeta o schema do elevador
+repo -> conf : injeta o schema do edificio
 activate conf
 conf --> repo
 deactivate conf
-repo -> mapper : toPersistence(elevador)
+repo -> mapper : toPersistence(edificio)
 activate mapper
 mapper --> repo
 deactivate mapper
-repo -> ischema : create(elevadorCreated)
+repo -> ischema : create(edificioCreated)
 activate ischema 
-ischema -> schema : create(elevadorCreated)
+ischema -> schema : create(edificioCreated)
 activate schema
 schema --> ischema
 deactivate schema
-deactivate scheam
+deactivate schema
 ischema --> repo
 deactivate ischema
-repo -> mapper : toDomain(elevadorCreated)
+repo -> mapper : toDomain(edificioCreated)
 activate mapper
 mapper --> repo
 deactivate mapper
@@ -64,7 +63,7 @@ repo --> irepo
 deactivate repo
 irepo --> svc
 deactivate irepo
-svc -> mapper : toDTO(elevador)
+svc -> mapper : toDTO(edificio)
 activate mapper
 mapper --> svc
 deactivate mapper
@@ -78,9 +77,9 @@ else caso de insucesso
     ctrl --> ictrl : Envia um código 404 (NOT FOUND)
 end
 deactivate ctrl
-ictrl --> u
+ictrl --> route
 deactivate ictrl
-deactivate u
+deactivate route
 
 
 
