@@ -1,0 +1,19 @@
+@startuml getPackagingSD
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+box "<<System(C4)>>\n SistemaRobDroneGo"
+participant MasterDataLogistics as mdl <<Container(C4)>>
+mdl -> mdl: PUT updateEdificio(codigoEdificio,descricaoEdificio,dimensaoMaximaPiso,nomeOpcionalEdificio,elevadores,pisos,mapaEdificio)
+alt não existe erros durante a operação
+mdl --> mdl: 201 edificio atualizado
+else existe erros durante a operação
+mdl --> mdl: 404 não foi possivel atualizar edificio
+end 
+
+end box
+
+@enduml
