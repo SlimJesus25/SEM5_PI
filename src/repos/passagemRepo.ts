@@ -106,4 +106,14 @@ export default class PassagemRepo implements IPassagemRepo {
     }
       
   }
+
+  public async findByDesignacao(value: string): Promise<Passagem> {
+    const query = { designacao: value.toString() };
+    const passagemRecord = await this.passagemSchema.findOne(query);
+
+    if(passagemRecord != null)
+      return PassagemMap.toDomain(passagemRecord);
+    else
+      return null;
+}
 }
