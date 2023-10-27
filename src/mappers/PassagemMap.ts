@@ -28,11 +28,12 @@ export class PassagemMap extends Mapper<Passagem> {
     const repoEdificio = Container.get(EdificioRepo);
     const repoPiso = Container.get(PisoRepo);
 
-    const edificioA = await repoEdificio.findByCodigo(raw.edificioA);
-    const edificioB = await repoEdificio.findByCodigo(raw.edificioB);
+    console.log("Aqui2: ", repoEdificio);
+    const edificioA = await repoEdificio.findByCodigo(raw.edificio1);
+    const edificioB = await repoEdificio.findByCodigo(raw.edificio2);
 
-    const pisoA = await repoPiso.findByDesignacao(raw.pisoA);
-    const pisoB = await repoPiso.findByDesignacao(raw.pisoB);
+    const pisoA = await repoPiso.findByDesignacao(raw.piso1);
+    const pisoB = await repoPiso.findByDesignacao(raw.piso2);
 
     const passagemOrError = Passagem.create({
       designacao: raw.designacao,

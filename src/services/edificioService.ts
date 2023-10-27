@@ -16,14 +16,19 @@ import { Elevador } from '../domain/elevador';
 import { MapaEdificio } from '../domain/mapaEdificio';
 import IListElevadoresDTO from '../dto/IListElevadoresDTO';
 import IElevadorDTO from '../dto/IElevadorDTO';
+import IPisoDTO from '../dto/IPisoDTO';
+import IListPisosDTO from '../dto/IListPisosDTO';
+import { PisoMap } from '../mappers/PisoMap';
+import IListMinMaxDTO from '../dto/IListMinMaxDTO';
 
 @Service()
 export default class EdificioService implements IEdificioService {
   constructor(
-      @Inject(config.repos.role.name) private edificioRepo : IEdificioRepo,
+      //@Inject(config.repos.role.name) private edificioRepo : IEdificioRepo, // joao :repos.edificio ?
+      @Inject(config.repos.edificio.name) private edificioRepo : IEdificioRepo,
       @Inject(config.repos.elevador.name) private elevadorRepo: IElevadorRepo,
       @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo,
-      @Inject(config.repos.mapa.name) private mapaRepo: IMapaEdificioRepo
+      @Inject(config.repos.mapaEdificio.name) private mapaRepo: IMapaEdificioRepo // joao: alterado para mapaEdifico
   ) {}
 
   public async getEdificio( edificioId: string): Promise<Result<IEdificioDTO>> {
@@ -127,12 +132,12 @@ export default class EdificioService implements IEdificioService {
 
       const edificio = await this.edificioRepo.findByCodigo(listElevadoresDTO.codigoEdificio);
 
-      if(!!edificio)
-        return Result.fail<IElevadorDTO[]>("O códigos do edifício é inválido");
-      
-      let elevadoresDTO : IElevadorDTO[];
+      if(edificio == null)
+        return Result.fail<IElevadorDTO[]>("O código do edifício é inválido");
 
-      // O UC pede para listar os elevadoreS, porém, no sprint A é pedido para assumir que no máximo existe apenas 1 elevador por edifício.
+      let elevadoresDTO : IElevadorDTO[] = [];
+
+      // O UC pede para listar os elevadorES, porém, no sprint A é pedido para assumir que no máximo existe apenas 1 elevador por edifício.
       // Como tal, esta solução adiciona só 1 elemento ao array. Se no futuro for necessário alterar, basta meter um foreach.
       elevadoresDTO.push(ElevadorMap.toDTO(edificio.elevadores));
 
@@ -142,6 +147,66 @@ export default class EdificioService implements IEdificioService {
     }
   }
 
+  public async listEdificios(): Promise<Result<IEdificioDTO[]>> {
+    try {
 
+        const edificios = await this.edificioRepo.findAll();
 
+        if (!!edificios){
+          return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
+        }
+        
+        let edificiosDTO : IEdificioDTO[];
+
+        (await edificios).forEach(p => edificiosDTO.push(EdificioMap.toDTO(p) as IEdificioDTO));
+
+        return Result.ok<IEdificioDTO[]>( edificiosDTO )
+      } catch (e) {
+        throw e;
+      }
+  }
+
+  public async listPisos(listPisosDTO: IListPisosDTO): Promise<Result<IPisoDTO[]>> {
+    try {
+
+      const edificio = await this.edificioRepo.findByCodigo(listPisosDTO.codigoEdificio);
+
+      if(!!edificio)
+        return Result.fail<IPisoDTO[]>("O códigos do edifício é inválido");
+      
+      let pisosDTO : IPisoDTO[];
+
+      (await edificio.pisos).forEach(piso => pisosDTO.push(PisoMap.toDTO(piso) as IPisoDTO));
+
+      return Result.ok<IPisoDTO[]>( pisosDTO )
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>> {
+    try {
+
+      const edificios = await this.edificioRepo.findAll();
+
+      if (!!edificios){
+        return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
+      }
+      
+      let edificiosDTO : IEdificioDTO[];
+
+      (await edificios).forEach((edificio) => {
+        const numPisos = edificio.pisos.length;
+    
+        if (numPisos > minMax.min && numPisos < minMax.max) {
+          edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
+        }
+      });
+
+      return Result.ok<IEdificioDTO[]>( edificiosDTO )
+    } catch (e) {
+      throw e;
+    }
+
+}
 }

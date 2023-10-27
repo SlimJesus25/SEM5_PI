@@ -6,5 +6,6 @@ export default interface IRoboDTO {
     codigo: string;
     numeroSerie: string;
     nickname: string;
+    tipoRobo: string
   }
   

@@ -12,7 +12,7 @@ participant EdificioMapper as mapper
 participant InterfaceEdificioPersistence as ischema
 participant EdificioSchema as schema
 participant ConfigurationFile as conf
-participant Edificio as model
+
 
 
 activate route

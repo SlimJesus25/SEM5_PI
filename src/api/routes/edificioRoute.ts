@@ -42,7 +42,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.updateEdificio(req, res, next));
 
   // List elevadores de um edifício.
-  route.put('/listElevadores',
+  route.get('/listElevadores',
   celebrate({
     body: Joi.object({
         codigoEdificio: Joi.string().required(),
@@ -50,4 +50,31 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.listElevadores(req, res, next));
 
+  //Mateus: Alterou de put para get
+// List todos os edificios
+  route.get('/listEdificios',
+  celebrate({
+    body: Joi.object({
+    }),
+  }),
+  (req, res, next) => ctrl.listEdificios(req, res, next));
+
+  // List pisos de um edifício.
+  route.get('/listPisos',
+  celebrate({
+    body: Joi.object({
+        codigoEdificio: Joi.string().required(),
+    }),
+  }),
+  (req, res, next) => ctrl.listPisos(req, res, next));
+
+  // List edifícios com min e max de pisos.
+  route.get('/listMinMax',
+  celebrate({
+    body: Joi.object({
+        min: Joi.number().required(),
+        max: Joi.number().required()
+    }),
+  }),
+  (req, res, next) => ctrl.listMinMax(req, res, next));
 };

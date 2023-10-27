@@ -39,11 +39,11 @@ export default class SalaService implements ISalaService {
       if(!!salaDocument)
         return Result.fail<ISalaDTO>("Já existe uma sala com o nome " + salaDocument.designacao);
 
-      const categoria = Object.keys(CategoriaSala)[Object.values(CategoriaSala).indexOf(salaDTO.categoria)];
+      const categoria = Object.keys(CategoriaSala).find(key => CategoriaSala[key] === salaDTO.categoria);
 
       const salaOrError = await Sala.create( {
         "descricaoSala": salaDTO.descricao,
-        "categoriaSala": categoria,
+        "categoriaSala": CategoriaSala[categoria],
         "designacaoSala": salaDTO.designacao
       } );
 
@@ -66,12 +66,14 @@ export default class SalaService implements ISalaService {
     try {
       const sala = await this.salaRepo.findByDesignacao(salaDTO.designacao);
 
+      const categoria = Object.keys(CategoriaSala).find(key => CategoriaSala[key] === salaDTO.categoria);
+
       if (sala === null) {
         return Result.fail<ISalaDTO>("Sala not found");
       }
       else {
         sala.descricao = salaDTO.descricao;
-        sala.categoria = salaDTO.categoria;
+        sala.categoria = CategoriaSala[categoria];
         sala.designacao = salaDTO.designacao;
         await this.salaRepo.save(sala);
 

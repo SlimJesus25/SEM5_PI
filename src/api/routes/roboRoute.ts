@@ -17,7 +17,7 @@ export default (app: Router) => {
   route.post('/createRobo',
   celebrate({
     body: Joi.object({
-      estado: Joi.array().items(Joi.string()).min(1).max(20).required(),
+      estado: Joi.string().required(),
       marca: Joi.string().required(),
       codigo: Joi.string().required(),
       numeroSerie: Joi.string().required(),
@@ -31,7 +31,7 @@ export default (app: Router) => {
   route.put('/updateRobo',
   celebrate({
     body: Joi.object({
-      estado: Joi.array().items(Joi.string()).min(1).max(20).required(),
+      estado: Joi.string().required(),
       marca: Joi.string().required(),
       codigo: Joi.string().required(),
       numeroSerie: Joi.string().required(),
@@ -51,4 +51,23 @@ export default (app: Router) => {
   (req, res, next) => ctrl.listElevadores(req, res, next));
  
   */
+ // List todos os robos
+ route.get('/listRobos',
+ celebrate({
+   body: Joi.object({
+   }),
+ }),
+ (req, res, next) => ctrl.listRobos(req, res, next));
+
+
+
+ // Inibir robo existente.
+ route.patch('/inhibitRobo',
+ celebrate({
+   body: Joi.object({
+     codigo: Joi.string().required(),
+   }),
+ }),
+ (req, res, next) => ctrl.inhibitRobo(req, res, next));
+
 };

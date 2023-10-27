@@ -1,6 +1,6 @@
 @startuml
 actor Actor as actor
-participant SistemaRobDroneGo as srdg
+participant SistemaRobDroneGo as srdg <<System(C4)>>
 actor -> srdg: Adicionar um novo robot à frota indicando o seu tipo, designação, etc.
 srdg --> actor
 @enduml
