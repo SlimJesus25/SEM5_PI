@@ -78,4 +78,9 @@ export default class PisoRepo implements IPisoRepo {
       else
         return null;
   }
+
+  public async findByEdificio(codigoEdificio: string): Promise<Piso[]>{
+    return null;
+  }
+
 }

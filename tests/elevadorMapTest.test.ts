@@ -2,16 +2,46 @@ import * as sinon from 'sinon';
 import { Elevador } from '../src/domain/elevador';
 
 import { ElevadorMap } from '../src/mappers/ElevadorMap'
+import { MapaEdificio } from '../src/domain/mapaEdificio';
+import { Edificio } from '../src/domain/edificio';
+import { CodigoEdificio } from '../src/domain/codigoEdificio';
+import { Piso } from '../src/domain/piso';
 
 describe('elevador map', () => {
+
+    const dummyMapaEdificio = MapaEdificio.create({
+        grelha: [["2"], ["4"]]
+    }).getValue();
+
+    const edificio = Edificio.create({
+        dimensaoMaximaPiso: 200,
+        descricaoEdificio: "Edificio Acolhe Malucos",
+        nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+        codigoEdificio: CodigoEdificio.create("B").getValue(),
+        mapaEdificio: dummyMapaEdificio
+    }).getValue();
+
+    const dummyPiso = Piso.create({
+        "descricao": "Piso de gabinetes e aulas teórica-práticas",
+        "designacao": "B1",
+        "edificio": edificio
+    }).getValue();
+
+    const dummyPiso2 = Piso.create({
+        "descricao": "Piso de gabinetes e aulas laboratoriais",
+        "designacao": "B2",
+        "edificio": edificio
+    }).getValue();
+
     const body = {
         id: 't12345',
         descricao: "Elevador super rápido",
         numeroSerie: "11111",
         modelo: "Azur",
         marca: "Otis",
-        pisosServidos: ["1", "2", "3"],
-        numeroIdentificativo: 155
+        pisosServidos: [dummyPiso, dummyPiso2],
+        numeroIdentificativo: 155,
+        edificio: edificio,
     };
 
     const elevador = Elevador.create(body).getValue();
@@ -22,8 +52,9 @@ describe('elevador map', () => {
         numeroSerie: "11111",
         modelo: "Azur",
         marca: "Otis",
-        pisosServidos: ["1", "2", "3"],
-        numeroIdentificativo: 155
+        pisosServidos: ["B1", "B2"],
+        numeroIdentificativo: 155,
+        edificio: "B"
     };
 
     const expectedPersistence = {
@@ -32,8 +63,9 @@ describe('elevador map', () => {
         numeroSerie: "11111",
         marca: "Otis",
         modelo: "Azur",
-        pisosServidos: ["1", "2", "3"],
-        numeroIdentificativo: 155
+        pisosServidos: ["B1", "B2"],
+        numeroIdentificativo: 155,
+        edificio: "B"
     };
 
     const document = {
@@ -42,8 +74,9 @@ describe('elevador map', () => {
         numeroSerie: "11111",
         marca: "Azur",
         modelo: "Otis",
-        pisosServidos: ["1", "2", "3"],
-        numeroIdentificativo: 155
+        pisosServidos: ["B1", "B2"],
+        numeroIdentificativo: 155,
+        edificio: "B"
     }
 
     const expectedDomain = {
@@ -51,8 +84,9 @@ describe('elevador map', () => {
         numeroSerie: "11111",
         marca: "Azur",
         modelo: "Otis",
-        pisosServidos: ["1", "2", "3"],
-        numeroIdentificativo: 155
+        pisosServidos: ["1", "2"],
+        numeroIdentificativo: 155,
+        edificio: "B"
     }
 
 

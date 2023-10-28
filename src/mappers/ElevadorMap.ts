@@ -5,6 +5,9 @@ import { Elevador } from "../domain/elevador";
 
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Piso } from "../domain/piso";
+import Container from "typedi";
+import EdificioRepo from "../repos/edificioRepo";
+import PisoRepo from "../repos/pisoRepo";
 
 export class ElevadorMap extends Mapper<Elevador> {
   

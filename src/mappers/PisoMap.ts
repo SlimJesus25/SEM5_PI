@@ -2,6 +2,7 @@ import { Mapper } from "../core/infra/Mapper";
 import IPisoDTO from "../dto/IPisoDTO";
 import { Piso } from "../domain/piso";
 import { Container } from 'typedi';
+import EdificioRepo from "../repos/edificioRepo";
 
 
 export class PisoMap extends Mapper<Piso> {

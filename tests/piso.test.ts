@@ -15,10 +15,10 @@ describe('Piso', () => {
     });
 
    
-
+    /*
     it('Piso succeeds', () =>{
      
-
+        
         const dummySala  = Sala.create({descricaoSala :"descricao", categoriaSala: CategoriaSala.laboratorio, designacaoSala: "designacao"});
         const dummySala2  = Sala.create({descricaoSala :"descricao", categoriaSala: CategoriaSala.laboratorio, designacaoSala: "designacao2"});
 

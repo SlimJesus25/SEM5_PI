@@ -3,13 +3,36 @@ import { Sala } from '../src/domain/sala';
 
 import { SalaMap } from '../src/mappers/SalaMap'
 import { CategoriaSala } from '../src/domain/categoriaSala';
+import { Piso } from '../src/domain/piso';
+import { CodigoEdificio } from '../src/domain/codigoEdificio';
+import { Edificio } from '../src/domain/edificio';
+import { MapaEdificio } from '../src/domain/mapaEdificio';
 
 describe('sala map', () => {
+
+    const dummyMapaEdificio = MapaEdificio.create({
+        grelha: [["2"], ["4"]]
+    }).getValue();
+
+    const edificio = Edificio.create({
+        dimensaoMaximaPiso: 200,
+        descricaoEdificio: "Edificio Acolhe Malucos",
+        nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+        codigoEdificio: CodigoEdificio.create("B").getValue(),
+        mapaEdificio: dummyMapaEdificio
+    }).getValue();
+
+    const dummyPiso = Piso.create({
+        "descricao": "Piso de gabinetes e aulas teórica-práticas",
+        "designacao": "B3",
+        "edificio": edificio
+    }).getValue();
+
     const body = {
-        id: "t12345",
         descricaoSala: "Anfiteatro para palestras do núcleo de estudantes",
         categoriaSala: CategoriaSala.anfiteatro,
-        designacaoSala: "B401",
+        designacaoSala: "B301",
+        piso: dummyPiso
     };
 
     const sala = Sala.create(body).getValue();
@@ -18,27 +41,31 @@ describe('sala map', () => {
         id: "t12345",
         descricao: "Anfiteatro para palestras do núcleo de estudantes",
         categoria: "anfiteatro",
-        designacao: "B401",
+        designacao: "B301",
+        piso: "B3"
     };
 
     const expectedPersistence = {
         domainId: "t12345",
         descricaoSala: "Anfiteatro para palestras do núcleo de estudantes",
         categoriaSala: "anfiteatro",
-        designacaoSala: "B401",
+        designacaoSala: "B301",
+        piso: "B3"
     };
 
     const document = {
         domainId: "t12345",
         descricaoSala: "Anfiteatro para palestras do núcleo de estudantes",
         categoriaSala: "anfiteatro",
-        designacaoSala: "B401",
+        designacaoSala: "B301",
+        piso: "B3"
     }
 
     const expectedDomain = {
         descricaoSala: "Anfiteatro para palestras do núcleo de estudantes",
         categoriaSala: CategoriaSala.anfiteatro,
-        designacaoSala: "B401",
+        designacaoSala: "B301",
+        piso: dummyPiso
     }
 
 
@@ -53,6 +80,7 @@ describe('sala map', () => {
         sinon.assert.match(actual, expectedDTO);
     });
 
+    // TODO: Verificar como dar stub a um container.
     it("toDomain", async () => {
         sinon.assert.match(await SalaMap.toDomain(document), expectedDomain);
     });

@@ -9,6 +9,10 @@ import SalaController from "../src/controllers/salaController";
 import ISalaDTO from '../src/dto/ISalaDTO';
 import { Sala } from '../src/domain/sala';
 import { CategoriaSala } from '../src/domain/categoriaSala';
+import { MapaEdificio } from '../src/domain/mapaEdificio';
+import { Edificio } from '../src/domain/edificio';
+import { CodigoEdificio } from '../src/domain/codigoEdificio';
+import { Piso } from '../src/domain/piso';
 
 describe('sala controller', function () {
 	const sandbox = sinon.createSandbox();
@@ -25,6 +29,14 @@ describe('sala controller', function () {
 		let salaServiceClass = require("../src/services/salaService").default;
 		let salaServiceInstance = Container.get(salaServiceClass);
 		Container.set("SalaService", salaServiceInstance);
+
+		// PISO
+		let pisoSchemaInstance = require("../src/persistence/schemas/pisoSchema").default;
+		Container.set("pisoSchema", pisoSchemaInstance);
+
+		let pisoRepoClass = require("../src/repos/pisoRepo").default;
+		let pisoRepoInstance = Container.get(pisoRepoClass);
+		Container.set("PisoRepo", pisoRepoInstance);
     });
 
 	afterEach(function() {
@@ -58,7 +70,8 @@ describe('sala controller', function () {
 		req.body = {
 			"descricao": "Anfiteatro para aulas teorico-práticas",
 			"designacao": "B315",
-			"categoria": "anfiteatro"
+			"categoria": "anfiteatro",
+			"piso": "B1"
 		};
 
 		let res: Partial<Response> = {
@@ -104,6 +117,8 @@ describe('sala controller', function () {
 		sinon.assert.calledWith(res.status, 201);
 	});
 
+	*/
+
 	it('salaController + salaService integration test using spy on salaService, success creation case', async function () {		
 		// Arrange
         let body = {
@@ -111,6 +126,7 @@ describe('sala controller', function () {
 			"descricao": "Laboratório aulas prática-laboratoriais",
 			"categoria": CategoriaSala.laboratorio,
 			"designacao": "B302",
+			"piso": "B1"
 			};
         let req: Partial<Request> = {};
 		req.body = body;
@@ -121,17 +137,39 @@ describe('sala controller', function () {
 		let next: Partial<NextFunction> = () => {};
 
 		let salaRepoInstance = Container.get("SalaRepo");
-		sinon.stub(salaRepoInstance, "findByDesignacao").returns(null); // Não existe, logo retorna null.
+		let pisoRepoInstance = Container.get("PisoRepo");
+		let salaServiceInstance = Container.get("SalaService");	
+
+		const dummyMapaEdificio = MapaEdificio.create({
+			grelha: [["2"], ["4"]]
+		}).getValue();
+	
+		const edificio = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+			mapaEdificio: dummyMapaEdificio
+		}).getValue();
+	
+		const dummyPiso = Piso.create({
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B1",
+			"edificio": edificio
+		}).getValue();
+
+		sinon.stub(salaRepoInstance, "findByDesignacao").resolves(null); // Não existe, logo retorna null.
+		sinon.stub(pisoRepoInstance, "findByDesignacao").resolves(dummyPiso);
 
 		sinon.stub(salaRepoInstance, "save").returns(new Promise<Sala>((resolve, reject) => {
 			resolve(Sala.create({
 			"descricaoSala": "Laboratório aulas prática-laboratoriais",
 			"categoriaSala": CategoriaSala.laboratorio,
-			"designacaoSala": "B302",
+			"designacaoSala": "B101",
+			"piso": dummyPiso
 			}).getValue())
 		}));
-
-		let salaServiceInstance = Container.get("SalaService");		
+	
 		const salaServiceSpy = sinon.spy(salaServiceInstance, "createSala");
 
 		const ctrl = new SalaController(salaServiceInstance as ISalaService);
@@ -143,12 +181,13 @@ describe('sala controller', function () {
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({ "descricao": "Laboratório aulas prática-laboratoriais",
 		"categoria": "laboratorio",
-		"designacao": "B302"}));
+		"designacao": "B302",
+		"piso": "B1"}));
 		sinon.assert.calledOnce(salaServiceSpy);
 		//sinon.assert.calledTwice(roleServiceSpy);
 		sinon.assert.calledWith(salaServiceSpy, sinon.match({name: req.body.name}));
 	});
-	*/
+	
 
 
 	it('salaController + salaService integration test using spy on salaService, unsuccess creation test', async function () {		
@@ -176,24 +215,47 @@ describe('sala controller', function () {
 		let next: Partial<NextFunction> = () => {};
 
 		let salaRepoInstance = Container.get("SalaRepo");
-		sinon.stub(salaRepoInstance, "findByDesignacao").returns(new Promise<Sala>((resolve, reject) => {
-			resolve(Sala.create({
-				"descricaoSala": "Laboratório aulas prática-laboratoriais",
-			"categoriaSala": CategoriaSala.laboratorio,
-			"designacaoSala": "B302"
-			}).getValue())
-		}));
+		let pisoRepoInstance = Container.get("PisoRepo");
+		let salaServiceInstance = Container.get("SalaService");	
 
-		// Isto não vai correr porque é suposto falhar na verificação de existência do prédio.
+		const dummyMapaEdificio = MapaEdificio.create({
+			grelha: [["2"], ["4"]]
+		}).getValue();
+	
+		const edificio = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+			mapaEdificio: dummyMapaEdificio
+		}).getValue();
+	
+		const dummyPiso = Piso.create({
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B1",
+			"edificio": edificio
+		}).getValue();
+
+		const sala = Sala.create({
+			"designacaoSala": "B101",
+			"piso": dummyPiso,
+			"categoriaSala": CategoriaSala.laboratorio,
+			"descricaoSala": "Sala para avaliações"
+		});
+
+		sinon.stub(salaRepoInstance, "findByDesignacao").resolves(sala); 
+
+		/*sinon.stub(pisoRepoInstance, "findByDesignacao").resolves(dummyPiso);
+
 		sinon.stub(salaRepoInstance, "save").returns(new Promise<Sala>((resolve, reject) => {
 			resolve(Sala.create({
-				"descricaoSala": "Gabinete professor ABC",
-			"categoriaSala": CategoriaSala.gabinete,
-			"designacaoSala": "B302"
+			"descricaoSala": "Laboratório aulas prática-laboratoriais",
+			"categoriaSala": CategoriaSala.laboratorio,
+			"designacaoSala": "B101",
+			"piso": dummyPiso
 			}).getValue())
-		}));
+		}));*/
 
-		let salaServiceInstance = Container.get("SalaService");		
 		const salaServiceSpy = sinon.spy(salaServiceInstance, "createSala");
 
 		const ctrl = new SalaController(salaServiceInstance as ISalaService);

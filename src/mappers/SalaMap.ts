@@ -6,6 +6,7 @@ import { Sala } from "../domain/sala";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { CategoriaSala } from "../domain/categoriaSala";
 import PisoRepo from "../repos/pisoRepo";
+import Container from "typedi";
 
 export class SalaMap extends Mapper<Sala> {
   

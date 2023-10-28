@@ -46,20 +46,7 @@ describe('Edificio', () => {
         ** ATENÇÃO ** o que identifica as salas é a designação.
        */
 
-        const dummyElevador = Elevador.create(body2).getValue();
-        const dummySala  = Sala.create({descricaoSala :"descricao", categoriaSala: CategoriaSala.laboratorio, designacaoSala: "designacao"});
-        const dummySala2  = Sala.create({descricaoSala :"descricao", categoriaSala: CategoriaSala.laboratorio, designacaoSala: "designacao2"});
 
-
-      const body3 = {
-        "id": "1",
-        "descricao": "gandapiso",
-        "designacao": "gandadesignacao",
-        "salas": [dummySala.getValue(), dummySala2.getValue()]
-      }
-
-      const dummyPiso1 = Piso.create(body3).getValue();
-      const dummyPiso2 = Piso.create(body3).getValue();
 
       const body4 = [["2"], ["4"]];
 
@@ -73,8 +60,6 @@ describe('Edificio', () => {
           descricaoEdificio : body.descricaoEdificio,
           nomeOpcionalEdificio : body.nomeOpcionalEdificio,
           codigoEdificio : CodigoEdificio.create(body.codigoEdificio).getValue(),
-          elevadores : dummyElevador,
-          pisos : [dummyPiso1, dummyPiso2],
           mapaEdificio : dummyMapaEdificio
         });
 
@@ -82,8 +67,6 @@ describe('Edificio', () => {
         sinon.assert.match(edificio.getValue().nomeOpcional, "Edificio Francisco");
         sinon.assert.match(edificio.getValue().descricao, "Edificio Acolhe Malucos");
         sinon.assert.match(edificio.getValue().dimensaoMaxima, 200);
-        sinon.assert.match(edificio.getValue().elevadores, dummyElevador);
-        sinon.assert.match(edificio.getValue().pisos, [dummyPiso1,dummyPiso2]);
         sinon.assert.match(edificio.getValue().mapa, dummyMapaEdificio);
         
     });

@@ -42,7 +42,7 @@ describe('passagem map', () => {
 
     let pisoRepoClass = require("../src/repos/pisoRepo").default;
     let pisoRepoInstance = Container.get(pisoRepoClass);
-    Container.set("PisoRepo", pisoRepoInstance);		
+    Container.set("PisoRepo", pisoRepoInstance);
     ////////////////////////////
 
     let passagemServiceClass = require("../src/services/passagemService").default;
@@ -51,107 +51,83 @@ describe('passagem map', () => {
     /////////////////////////
 
     sinon.stub(Container, 'get')
-    .withArgs('EdificioRepo').returns(edificioRepoInstance)
-    .withArgs('PisoRepo').returns(pisoRepoInstance);
+        .withArgs('EdificioRepo').returns(edificioRepoInstance)
+        .withArgs('PisoRepo').returns(pisoRepoInstance);
 
-    console.log('Aqui: ', edificioRepoInstance);
-
-    const dummyElevador2 = Elevador.create({
-        "descricao": "Elevador super lento",
-        "numeroSerie": "11112",
-         "modelo": "Azal",
-          "marca": "Otis",
-           "pisosServidos": ["J4", "J3"],
-            "numeroIdentificativo": 101
+    const dummyMapaEdificio = MapaEdificio.create({
+        grelha: [["2"], ["4"]]
     }).getValue();
 
-    const dummySala3  = Sala.create({
-        descricaoSala : "Gabinete professor XYZ",
-        categoriaSala: CategoriaSala.gabinete, 
-        designacaoSala: "J409"});
-
-    const dummySala4  = Sala.create({
-        descricaoSala : "Gabinete professor KAL",
-        categoriaSala: CategoriaSala.gabinete, 
-        designacaoSala: "J303"});
-
-    const dummyPiso3 = Piso.create({
-        "descricao": "Piso de gabinetes e aulas práticas laboratoriais",
-        "designacao": "J4",
-        "salas": [dummySala3.getValue()]
+    const edificio = Edificio.create({
+        dimensaoMaximaPiso: 200,
+        descricaoEdificio: "Edificio Acolhe Malucos",
+        nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+        codigoEdificio: CodigoEdificio.create("B").getValue(),
+        mapaEdificio: dummyMapaEdificio
     }).getValue();
 
-    const dummyPiso4 = Piso.create({
+    const dummyPiso = Piso.create({
         "descricao": "Piso de gabinetes e aulas teórica-práticas",
-        "designacao": "J3",
-        "salas": [dummySala4.getValue()]
-    }).getValue();
-
-    const dummyMapaEdificio2 = MapaEdificio.create({
-        grelha :[["2"], ["4"]]
-    }).getValue();
-
-    const dummyElevador = Elevador.create({
-        "descricao": "Elevador super rápido",
-        "numeroSerie": "11111",
-        "modelo": "Azal",
-        "marca": "Otis",
-        "pisosServidos": ["B4", "B3"],
-            "numeroIdentificativo": 100
-    }).getValue();
-
-    const dummySala  = Sala.create({
-        descricaoSala : "Gabinete professor ABC",
-        categoriaSala: CategoriaSala.gabinete, 
-        designacaoSala: "B402"});
-
-    const dummySala2  = Sala.create({
-        descricaoSala : "Gabinete professor CBA",
-        categoriaSala: CategoriaSala.gabinete, 
-        designacaoSala: "B303"});
-
-    const dummyPiso1 = Piso.create({
-    "descricao": "Piso de gabinetes e aulas práticas laboratoriais",
-    "designacao": "B4",
-    "salas": [dummySala.getValue()]
+        "designacao": "B1",
+        "edificio": edificio
     }).getValue();
 
     const dummyPiso2 = Piso.create({
-    "descricao": "Piso de gabinetes e aulas teórica-práticas",
-    "designacao": "B3",
-    "salas": [dummySala2.getValue()]
+        "descricao": "Piso de gabinetes e aulas laboratoriais",
+        "designacao": "B2",
+        "edificio": edificio
     }).getValue();
 
-    const dummyMapaEdificio = MapaEdificio.create({
-    grelha :[["2"], ["4"]]
-    }).getValue();
-
-    const edificio1 = Edificio.create({
-    dimensaoMaximaPiso : 200,
-    descricaoEdificio : "Edificio Acolhe Malucos",
-    nomeOpcionalEdificio : "Departamento de Engenharia Informática",
-    codigoEdificio : CodigoEdificio.create("B").getValue(),
-    elevadores : dummyElevador,
-    pisos : [dummyPiso1, dummyPiso2],
-    mapaEdificio : dummyMapaEdificio
+    const elevador = Elevador.create({
+        descricao: "Elevador super rápido",
+        numeroSerie: "11111",
+        modelo: "Azur",
+        marca: "Otis",
+        pisosServidos: [dummyPiso, dummyPiso2],
+        numeroIdentificativo: 155,
+        edificio: edificio,
     });
 
+    const dummyMapaEdificio2 = MapaEdificio.create({
+        grelha: [["2"], ["4"]]
+    }).getValue();
+
     const edificio2 = Edificio.create({
-      dimensaoMaximaPiso : 200,
-      descricaoEdificio : "Edificio Acolhe Malucos",
-      nomeOpcionalEdificio : "Departamento de Engenharia Civil",
-      codigoEdificio : CodigoEdificio.create("J").getValue(),
-      elevadores : dummyElevador2,
-      pisos : [dummyPiso3, dummyPiso4],
-      mapaEdificio : dummyMapaEdificio2
+        dimensaoMaximaPiso: 200,
+        descricaoEdificio: "Edificio principal de engenharia civil",
+        nomeOpcionalEdificio: "Departamento de Engenharia Civil",
+        codigoEdificio: CodigoEdificio.create("C").getValue(),
+        mapaEdificio: dummyMapaEdificio2
+    }).getValue();
+
+    const dummyPiso3 = Piso.create({
+        "descricao": "Piso de gabinetes e aulas teórica-práticas",
+        "designacao": "C1",
+        "edificio": edificio2
+    }).getValue();
+
+    const dummyPiso4 = Piso.create({
+        "descricao": "Piso de gabinetes e aulas laboratoriais",
+        "designacao": "C2",
+        "edificio": edificio2
+    }).getValue();
+
+    const elevador2 = Elevador.create({
+        descricao: "Elevador super rápido",
+        numeroSerie: "501230",
+        modelo: "Azur",
+        marca: "Otis",
+        pisosServidos: [dummyPiso3, dummyPiso4],
+        numeroIdentificativo: 199,
+        edificio: edificio2,
     });
 
     const passagem = Passagem.create({
-        designacao: "B4_J4",
-        edificioA: edificio1.getValue(),
-        edificioB: edificio2.getValue(),
-        pisoA: dummyPiso1,
-        pisoB: dummyPiso3
+        designacao: "B2_C2",
+        edificioA: edificio,
+        edificioB: edificio2,
+        pisoA: dummyPiso2,
+        pisoB: dummyPiso4
     }).getValue();
 
     const expectedDTO = {
@@ -198,11 +174,11 @@ describe('passagem map', () => {
         // Necessidade de fazer stub.
         let edificioRepoInstace = Container.get("EdificioRepo");
         let pisoRepoInstace = Container.get("PisoRepo");
-         
+
         /*
         const obj1 = sinon.stub(edificioRepoInstace, "findByCodigo")
-			.onCall(0).resolves(edificio1.getValue())
-			.onCall(1).resolves(edificio2.getValue());
+            .onCall(0).resolves(edificio1.getValue())
+            .onCall(1).resolves(edificio2.getValue());
 
         const obj2 = sinon.stub(pisoRepoInstace, "findByDesignacao")
             .onCall(0).resolves(dummyPiso1)
