@@ -58,7 +58,7 @@ describe('passagem controller', function () {
 		sandbox.restore();
 	});
 
-	it('passagemController + passagemService integration test using spy on passagemService, success case', async function () {
+	it('listPassagensBetween: passagemController + passagemService integration test using spy on passagemService, success case', async function () {
 		// Arrange
 		let body = {
 			"codigoEdificioA": "B",
@@ -76,7 +76,7 @@ describe('passagem controller', function () {
 		const dummyMapaEdificio = MapaEdificio.create({
 			grelha: [["2"], ["4"]]
 		}).getValue();
-	
+
 		const edificio1 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
@@ -84,13 +84,13 @@ describe('passagem controller', function () {
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
 			mapaEdificio: dummyMapaEdificio
 		}).getValue();
-	
+
 		const dummyPiso = Piso.create({
 			"descricao": "Piso de gabinetes e aulas teórica-práticas",
 			"designacao": "B1",
 			"edificio": edificio1
 		}).getValue();
-	
+
 		const dummyPiso2 = Piso.create({
 			"descricao": "Piso de gabinetes e aulas laboratoriais",
 			"designacao": "B2",
@@ -98,11 +98,11 @@ describe('passagem controller', function () {
 		}).getValue();
 
 		//
-	
+
 		const dummyMapaEdificio2 = MapaEdificio.create({
 			grelha: [["2"], ["4"]]
 		}).getValue();
-	
+
 		const edificio2 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio principal de engenharia civil",
@@ -110,19 +110,19 @@ describe('passagem controller', function () {
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
 			mapaEdificio: dummyMapaEdificio2
 		}).getValue();
-	
+
 		const dummyPiso3 = Piso.create({
 			"descricao": "Piso de gabinetes e aulas teórica-práticas",
 			"designacao": "C1",
 			"edificio": edificio2
 		}).getValue();
-	
+
 		const dummyPiso4 = Piso.create({
 			"descricao": "Piso de gabinetes e aulas laboratoriais",
 			"designacao": "C2",
 			"edificio": edificio2
 		}).getValue();
-	
+
 		const passagem = Passagem.create({
 			designacao: "B2_C2",
 			edificioA: edificio1,
@@ -136,36 +136,11 @@ describe('passagem controller', function () {
 		let passagemRepoInstance = Container.get("PassagemRepo");
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
-		/*
-			new Promise<Elevador>((resolve, reject) => {
-			resolve(Elevador.create({
-			"descricao": "Elevador super lento",
-			"numeroSerie": "11111",
-			"modelo": "Azal",
-			"marca": "Otis",
-			"pisosServidos": ["1", "2", "3"],
-			"numeroIdentificativo": 100
-			}).getValue())
-		})
-		*/
-
-		//sinon.stub(edificioRepoInstance, "findByCodigo").resolves([edificio1.getValue(), edificio2.getValue()]);
-
-
-		/*sinon.stub(edificioRepoInstance, "findByCodigo")
-			.onCall(0).returns(await new Promise<Edificio>((resolve, reject) => {
-			resolve(edificio1.getValue())}))
-			.onCall(1).returns(await new Promise<Edificio>((resolve, reject) => {
-			resolve(edificio2.getValue())}));*/
 
 		sinon.stub(edificioRepoInstance, "findByCodigo")
 			.onCall(0).resolves(edificio1)
 			.onCall(1).returns(edificio2);
 
-		//sinon.stub(edificioRepoInstance, "findByCodigo").onCall(0).resolves(edificio1.getValue()).onCall(1).resolves(edificio2.getValue());
-
-
-		//sinon.stub(edificioRepoInstance, "findByCodigo").returns(edificio1).onCall(1).returns(edificio2);
 		sinon.stub(passagemRepoInstance, "listPassagensBetween").returns(new Promise<Passagem[]>((resolve, reject) => {
 			resolve(passagens)
 		}));
@@ -192,7 +167,7 @@ describe('passagem controller', function () {
 		sinon.assert.calledWith(passagemServiceSpy, sinon.match({ name: req.body.name }));
 	});
 
-	it('passagemController + passagemService integration test using spy on passagemService, building not found case', async function () {
+	it('listPassagensBetween: passagemController + passagemService integration test using spy on passagemService, building not found case 1', async function () {
 		// Arrange
 		let body = {
 			"codigoEdificioA": "B",
@@ -206,12 +181,10 @@ describe('passagem controller', function () {
 		};
 		let next: Partial<NextFunction> = () => { };
 
-		//	
-		//	
 		const dummyMapaEdificio = MapaEdificio.create({
 			grelha: [["2"], ["4"]]
 		}).getValue();
-	
+
 		const edificio1 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
@@ -219,13 +192,13 @@ describe('passagem controller', function () {
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
 			mapaEdificio: dummyMapaEdificio
 		}).getValue();
-	
+
 		const dummyPiso = Piso.create({
 			"descricao": "Piso de gabinetes e aulas teórica-práticas",
 			"designacao": "B1",
 			"edificio": edificio1
 		}).getValue();
-	
+
 		const dummyPiso2 = Piso.create({
 			"descricao": "Piso de gabinetes e aulas laboratoriais",
 			"designacao": "B2",
@@ -233,11 +206,11 @@ describe('passagem controller', function () {
 		}).getValue();
 
 		//
-	
+
 		const dummyMapaEdificio2 = MapaEdificio.create({
 			grelha: [["2"], ["4"]]
 		}).getValue();
-	
+
 		const edificio2 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio principal de engenharia civil",
@@ -245,19 +218,19 @@ describe('passagem controller', function () {
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
 			mapaEdificio: dummyMapaEdificio2
 		}).getValue();
-	
+
 		const dummyPiso3 = Piso.create({
 			"descricao": "Piso de gabinetes e aulas teórica-práticas",
 			"designacao": "C1",
 			"edificio": edificio2
 		}).getValue();
-	
+
 		const dummyPiso4 = Piso.create({
 			"descricao": "Piso de gabinetes e aulas laboratoriais",
 			"designacao": "C2",
 			"edificio": edificio2
 		}).getValue();
-	
+
 		const passagem = Passagem.create({
 			designacao: "B2_C2",
 			edificioA: edificio1,
@@ -276,6 +249,112 @@ describe('passagem controller', function () {
 		sinon.stub(passagemRepoInstance, "listPassagensBetween").returns(new Promise<Passagem[]>((resolve, reject) => {
 			resolve(passagens)
 		}));
+
+		let passagemServiceInstance = Container.get("PassagemService");
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "listPassagens");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		// Act
+		await ctrl.listPassagens(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 404);
+	});
+
+	it('listPassagensBetween: passagemController + passagemService integration test using spy on passagemService, building not found case 2', async function () {
+		// Arrange
+		let body = {
+			"codigoEdificioA": "B",
+			"codigoEdificioB": "C"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		const dummyMapaEdificio2 = MapaEdificio.create({
+			grelha: [["2"], ["4"]]
+		}).getValue();
+
+		const edificio2 = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio principal de engenharia civil",
+			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
+			codigoEdificio: CodigoEdificio.create("C").getValue(),
+			mapaEdificio: dummyMapaEdificio2
+		}).getValue();
+
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+
+		sinon.stub(edificioRepoInstance, "findByCodigo").onCall(0).resolves(null).onCall(1).resolves(edificio2);
+
+		let passagemServiceInstance = Container.get("PassagemService");
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "listPassagens");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		// Act
+		await ctrl.listPassagens(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 404);
+	});
+
+	it('listPassagensBetween: passagemController + passagemService integration test using spy on passagemService, not found any passagem', async function () {
+		// Arrange
+		let body = {
+			"codigoEdificioA": "B",
+			"codigoEdificioB": "J"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		//	
+		const dummyMapaEdificio = MapaEdificio.create({
+			grelha: [["2"], ["4"]]
+		}).getValue();
+
+		const edificio1 = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+			mapaEdificio: dummyMapaEdificio
+		}).getValue();
+
+		const dummyMapaEdificio2 = MapaEdificio.create({
+			grelha: [["2"], ["4"]]
+		}).getValue();
+
+		const edificio2 = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio principal de engenharia civil",
+			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
+			codigoEdificio: CodigoEdificio.create("C").getValue(),
+			mapaEdificio: dummyMapaEdificio2
+		}).getValue();
+
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+
+
+		sinon.stub(edificioRepoInstance, "findByCodigo")
+			.onCall(0).resolves(edificio1)
+			.onCall(1).returns(edificio2);
+
+		sinon.stub(passagemRepoInstance, "listPassagensBetween").resolves(null);
 
 		let passagemServiceInstance = Container.get("PassagemService");
 		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "listPassagens");
@@ -339,49 +418,49 @@ describe('passagem controller', function () {
 
 	//TODO para list pisos com passagem
 	it('listPisos com passagens entre edificios', async function () {
-        let req: Partial<Request> = {};
+		let req: Partial<Request> = {};
 		req.body = {
 			"codigoEdificio": "B"
 		};
-        let res2: Partial<Response> = {};
-        let response: IPassagemDTO[] = [
-            {
-                "id": "1",
+		let res2: Partial<Response> = {};
+		let response: IPassagemDTO[] = [
+			{
+				"id": "1",
 				"designacao": "ABC",
-                "edificioOrigem": "1",
-                "edificioDestino": "2",
-                "pisoOrigem": "2",
-                "pisoDestino": "1"
-            },
-            {
-                "id": "2",
+				"edificioOrigem": "1",
+				"edificioDestino": "2",
+				"pisoOrigem": "2",
+				"pisoDestino": "1"
+			},
+			{
+				"id": "2",
 				"designacao": "DEF",
-                "edificioOrigem": "1",
-                "edificioDestino": "2",
-                "pisoOrigem": "3",
-                "pisoDestino": "2"
-            }
-        ];
+				"edificioOrigem": "1",
+				"edificioDestino": "2",
+				"pisoOrigem": "3",
+				"pisoDestino": "2"
+			}
+		];
 
-        
+
 
 		let res: Partial<Response> = {
 			status: sinon.spy(),
 		};
 
-		let next: Partial<NextFunction> = () => {};
+		let next: Partial<NextFunction> = () => { };
 
 		let passagemServiceInstance = Container.get("PassagemService");
 
 		const obj = sinon.stub(passagemServiceInstance, "listPisos").returns(Result.ok<IPassagemDTO[]>(response as IPassagemDTO[]));
 
 		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
-		await ctrl.listPisos(<Request>req, <Response> res, <NextFunction> next);
+		await ctrl.listPisos(<Request>req, <Response>res, <NextFunction>next);
 
 		sinon.assert.calledOnce(obj);
 		sinon.assert.calledWith(obj, sinon.match(req.body));
-    });
-	
+	});
+
 
 });
 

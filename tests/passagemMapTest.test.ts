@@ -131,37 +131,37 @@ describe('passagem map', () => {
     }).getValue();
 
     const expectedDTO = {
-        designacao: "B4_J4",
+        designacao: "B2_C2",
         edificioOrigem: "B",
-        edificioDestino: "J",
-        pisoOrigem: "B4",
-        pisoDestino: "J4"
+        edificioDestino: "C",
+        pisoOrigem: "B2",
+        pisoDestino: "C2"
     };
 
     const expectedPersistence = {
         domainId: "t12345",
-        designacao: "B4_J4",
+        designacao: "B2_C2",
         edificioOrigem: "B",
-        edificioDestino: "J",
-        pisoOrigem: "B4",
-        pisoDestino: "J4"
+        edificioDestino: "C",
+        pisoOrigem: "B2",
+        pisoDestino: "C2"
     };
 
     const document = {
         domainId: "t12345",
-        designacao: "B4_J4",
+        designacao: "B2_C2",
         edificio1: "B",
-        edificio2: "J",
-        piso1: "B4",
-        piso2: "J4"
+        edificio2: "C",
+        piso1: "B2",
+        piso2: "J2"
     }
 
     const expectedDomain = {
-        designacao: "B4_J4",
+        designacao: "B2_C2",
         edificio1: "B",
-        edificio2: "J",
-        piso1: "B4",
-        piso2: "J4"
+        edificio2: "C",
+        piso1: "B2",
+        piso2: "C2"
     }
 
 

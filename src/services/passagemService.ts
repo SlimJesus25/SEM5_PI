@@ -20,12 +20,12 @@ import { PisoMap } from '../mappers/PisoMap';
 @Service()
 export default class PassagemService implements IPassagemService {
   constructor(
-      @Inject(config.repos.passagem.name) private passagemRepo : IPassagemRepo,
-      @Inject(config.repos.edificio.name) private edificioRepo : IEdificioRepo,
-      @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo
-  ) {}
+    @Inject(config.repos.passagem.name) private passagemRepo: IPassagemRepo,
+    @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo,
+    @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo
+  ) { }
 
-  public async getPassagem( passagemId: string): Promise<Result<IPassagemDTO>> {
+  public async getPassagem(passagemId: string): Promise<Result<IPassagemDTO>> {
     return null;
   }
 
@@ -35,7 +35,7 @@ export default class PassagemService implements IPassagemService {
 
       const passagemDocument = await this.passagemRepo.findByDesignacao(passagemDTO.id);
 
-      if(!!passagemDocument)
+      if (!!passagemDocument)
         return Result.fail<IPassagemDTO>("Passagem com o id " + passagemDTO.id + " já existe!");
 
       const edificioOrigem = await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem);
@@ -43,9 +43,9 @@ export default class PassagemService implements IPassagemService {
       const pisoOrigem = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
       const pisoDestino = await this.pisoRepo.findByDesignacao(passagemDTO.pisoDestino);
 
-      if(edificioOrigem.id === edificioDestino.id || pisoOrigem.id === pisoDestino.id)
+      if (edificioOrigem.id === edificioDestino.id || pisoOrigem.id === pisoDestino.id)
         return Result.fail<IPassagemDTO>("Origem e destino dos parâmetros não podem ser os mesmos");
-      
+
       // Agora é fazer ao contrário, piso.edificio == edificioOrigem?
       //if(edificioOrigem.pisos.includes(pisoOrigem) && edificioDestino.pisos.includes(pisoDestino))
       //return Result.fail<IPassagemDTO>("Piso A tem de pertencer ao edificio A e o piso B tem de pertencer ao edificio B");
@@ -66,8 +66,8 @@ export default class PassagemService implements IPassagemService {
 
       await this.passagemRepo.save(passagemResult);
 
-      const passagemDTOResult = PassagemMap.toDTO( passagemResult ) as IPassagemDTO;
-      return Result.ok<IPassagemDTO>( passagemDTOResult )
+      const passagemDTOResult = PassagemMap.toDTO(passagemResult) as IPassagemDTO;
+      return Result.ok<IPassagemDTO>(passagemDTOResult)
     } catch (e) {
       throw e;
     }
@@ -91,52 +91,59 @@ export default class PassagemService implements IPassagemService {
         passagem.pisoDois = pisoB;
         await this.passagemRepo.save(passagem);
 
-        const passagemDTOResult = PassagemMap.toDTO( passagem ) as IPassagemDTO;
-        return Result.ok<IPassagemDTO>( passagemDTOResult )
-        }
+        const passagemDTOResult = PassagemMap.toDTO(passagem) as IPassagemDTO;
+        return Result.ok<IPassagemDTO>(passagemDTOResult)
+      }
     } catch (e) {
       throw e;
     }
   }
   // codigoEdificioA: string, codigoEdificioB: string
-  public async listPassagens(edificios : IListPassagensEntreEdificiosDTO): Promise<Result<IPassagemDTO[]>> {
+  public async listPassagens(edificios: IListPassagensEntreEdificiosDTO): Promise<Result<IPassagemDTO[]>> {
     try {
 
-        const edificioADoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioA);
-        const edificioBDoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioB);
-  
-        if(edificioADoc == null || edificioBDoc == null)
-          return Result.fail<IPassagemDTO[]>("Um dos códigos dos edifícios é inválido");
-        
-        const passagensResult = await this.passagemRepo.listPassagensBetween(edificioADoc.codigo, edificioBDoc.codigo);
-  
-        let passagensResultDTO : IPassagemDTO[] = [];
+      const edificioADoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioA);
 
-        (await passagensResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
+      if (edificioADoc == null)
+        return Result.fail<IPassagemDTO[]>("O código " + edificios.codigoEdificioA + " é inválido");
 
-        return Result.ok<IPassagemDTO[]>( passagensResultDTO )
-      } catch (e) {
-        throw e;
-      }
+      const edificioBDoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioB);
+      if (edificioBDoc == null)
+        return Result.fail<IPassagemDTO[]>("O código " + edificios.codigoEdificioB + " é inválido");
+
+      const passagensResult = await this.passagemRepo.listPassagensBetween(edificioADoc.codigo, edificioBDoc.codigo);
+
+      if (passagensResult == null)
+        return Result.fail<IPassagemDTO[]>("Não existem passagens entre o edifício "
+          + edificios.codigoEdificioA + " e o edifício " + edificios.codigoEdificioB);
+
+      let passagensResultDTO: IPassagemDTO[] = [];
+
+      (passagensResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
+
+      return Result.ok<IPassagemDTO[]>(passagensResultDTO)
+    } catch (e) {
+      throw e;
+    }
   }
-  
+
   //codigoEdificioA
-  public async listPisos(edificio: IListPisosComPassagemDTO): Promise<Result<IPisoDTO[]>>{
-    try{
+  public async listPisos(edificio: IListPisosComPassagemDTO): Promise<Result<IPisoDTO[]>> {
+    try {
       const edificioDoc = await this.edificioRepo.findByCodigo(edificio.codigoEdificio);
-      
-      if(!!edificioDoc)
+
+      if (!!edificioDoc)
         return Result.fail<IPisoDTO[]>("Código do edifício é inválido");
-      
+
       const passagemResult = (await this.passagemRepo.listPassagens(edificioDoc.codigo)).map(p => p.pisoUm);
-      
+
       let passagensResultDTO: IPisoDTO[];
-      
+
       (await passagemResult).forEach((p => passagensResultDTO.push(PisoMap.toDTO(p) as IPisoDTO)));
-      
+
       return Result.ok<IPisoDTO[]>(passagensResultDTO)
-  }catch(e) {
-    throw e;
-   }
- }
+    } catch (e) {
+      throw e;
+    }
+  }
 }
