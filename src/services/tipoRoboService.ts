@@ -12,7 +12,8 @@ import { TipoRoboMap } from "../mappers/TipoRoboMap";
 @Service()
 export default class TipoRoboService implements ITipoRoboService {
   constructor(
-      @Inject(config.repos.tipoRobo.name) private tipoRoboRepo : ITipoRoboRepo
+      @Inject(config.repos.tipoRobo.name) private tipoRoboRepo : ITipoRoboRepo,
+      @Inject(config.repos.tarefa.name) private tarefaRepo : ITarefaRepo
   ) {}
 
   public async getTipoRobo(tipoRoboId: string): Promise<Result<ITipoRoboDTO>> {
@@ -89,7 +90,7 @@ export default class TipoRoboService implements ITipoRoboService {
 
   private async getTarefas(idTarefas : string[]): Promise<Result<Tarefa[]>>{
     let tarefas : Tarefa[];
-    idTarefas.forEach(t => tarefas.push(tarefaRepo.findByDomainId(t)));
+    idTarefas.forEach(async t => tarefas.push(await this.tarefaRepo.findByDomainId(t)));
     return Result.ok<Tarefa[]>(tarefas);
   }
 

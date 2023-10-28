@@ -21,9 +21,113 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/roleSchema',
   };
 
+  const edificioSchema = {
+    // compare with the approach followed in repos and services
+    name: 'edificioSchema',
+    schema: '../persistence/schemas/edificioSchema',
+  };
+
+  const elevadorSchema = {
+    // compare with the approach followed in repos and services
+    name: 'elevadorSchema',
+    schema: '../persistence/schemas/elevadorSchema',
+  };
+
+  const passagemSchema = {
+    // compare with the approach followed in repos and services
+    name: 'passagemSchema',
+    schema: '../persistence/schemas/passagemSchema',
+  };
+
+  const mapaEdificioSchema = {
+    // compare with the approach followed in repos and services
+    name: 'mapaEdificioSchema',
+    schema: '../persistence/schemas/mapaEdificioSchema',
+  };
+
+  const pisoSchema = {
+    // compare with the approach followed in repos and services
+    name: 'pisoSchema',
+    schema: '../persistence/schemas/pisoSchema',
+  };
+
+  const roboSchema = {
+    // compare with the approach followed in repos and services
+    name: 'roboSchema',
+    schema: '../persistence/schemas/roboSchema',
+  };
+
+  const tipoRoboSchema = {
+    // compare with the approach followed in repos and services
+    name: 'tipoRoboSchema',
+    schema: '../persistence/schemas/tipoRoboSchema',
+  };
+
+  const salaSchema = {
+    // compare with the approach followed in repos and services
+    name: 'salaSchema',
+    schema: '../persistence/schemas/salaSchema',
+  };
+
+  const tarefaSchema = {
+    // compare with the approach followed in repos and services
+    name: 'tarefaSchema',
+    schema: '../persistence/schemas/tarefaSchema',
+  };
+
   const roleController = {
     name: config.controllers.role.name,
     path: config.controllers.role.path
+  }
+
+  const tarefaController = {
+    name: config.controllers.tarefa.name,
+    path: config.controllers.tarefa.path
+  }
+
+  const mapaEdificioController = {
+    name: config.controllers.mapaEdificio.name,
+    path: config.controllers.mapaEdificio.path
+  }
+
+  const edificioController = {
+    name: config.controllers.edificio.name,
+    path: config.controllers.edificio.path
+  }
+
+  const elevadorController = {
+    name: config.controllers.elevador.name,
+    path: config.controllers.elevador.path
+  }
+
+  const passagemController = {
+    name: config.controllers.passagem.name,
+    path: config.controllers.passagem.path
+  }
+
+  const pisoController = {
+    name: config.controllers.piso.name,
+    path: config.controllers.piso.path
+  }
+
+  const roboController = {
+    name: config.controllers.robo.name,
+    path: config.controllers.robo.path
+  }
+
+  const salaController = {
+    name: config.controllers.sala.name,
+    path: config.controllers.sala.path
+  }
+
+  const tipoRoboController = {
+    name: config.controllers.tipoRobo.name,
+    path: config.controllers.tipoRobo.path
+  }
+
+  const tarefaRepo = {
+    name: config.repos.tarefa.name,
+    path: config.repos.tarefa.path
   }
 
   const roleRepo = {
@@ -36,26 +140,147 @@ export default async ({ expressApp }) => {
     path: config.repos.user.path
   }
 
+  const mapaEdificioRepo = {
+    name: config.repos.mapaEdificio.name,
+    path: config.repos.mapaEdificio.path
+  }
+
+  const edificioRepo = {
+    name: config.repos.edificio.name,
+    path: config.repos.edificio.path
+  }
+
+  const elevadorRepo = {
+    name: config.repos.elevador.name,
+    path: config.repos.elevador.path
+  }
+
+  const passagemRepo = {
+    name: config.repos.passagem.name,
+    path: config.repos.passagem.path
+  }
+
+  const pisoRepo = {
+    name: config.repos.piso.name,
+    path: config.repos.piso.path
+  }
+
+  const roboRepo = {
+    name: config.repos.robo.name,
+    path: config.repos.robo.path
+  }
+
+  const salaRepo = {
+    name: config.repos.sala.name,
+    path: config.repos.sala.path
+  }
+
+  const tipoRoboRepo = {
+    name: config.repos.tipoRobo.name,
+    path: config.repos.tipoRobo.path
+  }
+
+  const tarefaService = {
+    name: config.services.tarefa.name,
+    path: config.services.tarefa.path
+  }
+
   const roleService = {
     name: config.services.role.name,
     path: config.services.role.path
+  }
+
+  const mapaEdificioService = {
+    name: config.services.mapaEdificio.name,
+    path: config.services.mapaEdificio.path
+  }
+
+  const edificioService = {
+    name: config.services.edificio.name,
+    path: config.services.edificio.path
+  }
+
+  const elevadorService = {
+    name: config.services.elevador.name,
+    path: config.services.elevador.path
+  }
+
+  const passagemService = {
+    name: config.services.passagem.name,
+    path: config.services.passagem.path
+  }
+
+  const pisoService = {
+    name: config.services.piso.name,
+    path: config.services.piso.path
+  }
+
+  const roboService = {
+    name: config.services.robo.name,
+    path: config.services.robo.path
+  }
+
+  const salaService = {
+    name: config.services.sala.name,
+    path: config.services.sala.path
+  }
+
+  const tipoRoboService = {
+    name: config.services.tipoRobo.name,
+    path: config.services.tipoRobo.path
   }
 
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
       userSchema,
-      roleSchema
+      roleSchema,
+      edificioSchema,
+      elevadorSchema,
+      passagemSchema,
+      pisoSchema,
+      roboSchema,
+      salaSchema,
+      tipoRoboSchema,
+      mapaEdificioSchema,
+      tarefaSchema
     ],
     controllers: [
-      roleController
+      roleController,
+      edificioController,
+      elevadorController,
+      passagemController,
+      pisoController,
+      roboController,
+      salaController,
+      tipoRoboController,
+      mapaEdificioController,
+      tarefaController
     ],
     repos: [
       roleRepo,
-      userRepo
+      userRepo,
+      edificioRepo,
+      elevadorRepo,
+      passagemRepo,
+      pisoRepo,
+      roboRepo,
+      salaRepo,
+      tipoRoboRepo,
+      mapaEdificioRepo,
+      tarefaRepo
     ],
     services: [
-      roleService
+      roleService,
+      edificioService,
+      elevadorService,
+      passagemService,
+      pisoService,
+      roboService,
+      salaService,
+      tipoRoboService,
+      mapaEdificioService,
+      tarefaService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
