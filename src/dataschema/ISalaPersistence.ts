@@ -4,4 +4,5 @@ export interface ISalaPersistence {
     descricao: string;
     categoria: string;
     designacao: string;
+    piso: string; // Designação piso.
   }

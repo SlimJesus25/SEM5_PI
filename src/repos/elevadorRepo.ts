@@ -45,12 +45,17 @@ export default class ElevadorRepo implements IElevadorRepo {
 
         return ElevadorMap.toDomain(roleCreated);
       } else {
+
+        let pisos : string[] = [];
+        elevador.pisosServidos.forEach(p => pisos.push(p.designacao));
+
         roleDocument.descricao = elevador.descricao;
         roleDocument.numeroSerie = elevador.numeroSerie;
         roleDocument.modelo = elevador.modelo;
         roleDocument.marca = elevador.marca;
-        roleDocument.pisosServidos = elevador.pisosServidos;
+        roleDocument.pisosServidos = pisos;
         roleDocument.numeroIdentificativo = elevador.numeroIdentificativo;
+        roleDocument.edificio = elevador.edificio.codigo;
         await roleDocument.save();
 
         return elevador;

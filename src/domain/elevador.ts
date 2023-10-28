@@ -4,15 +4,17 @@ import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Result } from "../core/logic/Result";
 import { ElevadorId } from "./elevadorId";
 import { Guard } from "../core/logic/Guard";
-import IElevadorDTO from "../dto/IElevadorDTO";
 import { error } from "console";
+import { Piso } from "./piso";
+import { Edificio } from "./edificio";
 
 interface ElevadorProps {
   descricao: string;
   numeroSerie: string;
   modelo: string;
   marca: string;
-  pisosServidos: string[];
+  pisosServidos: Piso[];
+  edificio: Edificio;
   numeroIdentificativo: number;
 }
 
@@ -41,12 +43,16 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
     return this.props.marca;
   }
 
-  get pisosServidos (): string[] {
+  get pisosServidos (): Piso[] {
     return this.props.pisosServidos;
   }
 
   get numeroIdentificativo (): number {
     return this.props.numeroIdentificativo;
+  }
+
+  get edificio (): Edificio {
+    return this.props.edificio;
   }
 
   set numeroIdentificativo ( value: number) {
@@ -69,12 +75,16 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
     this.props.marca = value;
   }
 
-  set pisosServidos ( value: string[]) {
+  set pisosServidos ( value: Piso[]) {
     this.props.pisosServidos = value;
   }
 
   set descricao ( value: string) {
     this.props.descricao = value;
+  }
+
+  set edificio ( value: Edificio) {
+    this.props.edificio = value;
   }
 
   private constructor (props: ElevadorProps, id?: UniqueEntityID) {
@@ -89,7 +99,8 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
       { argument: props.modelo, argumentName: 'modelo' },
       { argument: props.numeroIdentificativo, argumentName: 'numeroIdentificativo' },
       { argument: props.numeroSerie, argumentName: 'numeroSerie' },
-      { argument: props.pisosServidos, argumentName: 'pisosServidos' }
+      { argument: props.pisosServidos, argumentName: 'pisosServidos' },
+      { argument: props.edificio, argumentName: 'edificio' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
@@ -106,19 +117,4 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
     }
   }
 
-  /*public static create (elevadorDTO: IElevadorDTO, id?: UniqueEntityID): Result<Elevador> {
-
-    //if(elevadorDTO.numeroSerie.length() == 0)
-    //  throw Error("Numero série vazio");
-
-    const elevador = new Elevador({ 
-      descricao: elevadorDTO.descricao,
-      numeroIdentificativo: elevadorDTO.numeroIdentificativo,
-      modelo: elevadorDTO.modelo,
-      marca: elevadorDTO.marca,
-      pisosServidos: elevadorDTO.pisosServidos,
-      numeroSerie: elevadorDTO.numeroSerie}, id);
-    return Result.ok<Elevador>( elevador )
-    
-  }*/
 }

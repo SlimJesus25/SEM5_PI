@@ -4,5 +4,6 @@ export default interface ISalaDTO {
     descricao: string;
     categoria: string;
     designacao: string;
+    piso: string; // designação do piso.
   }
   

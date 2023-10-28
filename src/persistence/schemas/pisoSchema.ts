@@ -20,9 +20,9 @@ const Piso = new mongoose.Schema(
       unique: true
     },
 
-    salas: {
+    edificio: {
       type: [String],
-      require: [true, 'Introduza as salas'],
+      required: [true, 'Introduza o edificio'],
     },
   },
   { timestamps: true },

@@ -9,7 +9,8 @@ const ElevadorSchema = new mongoose.Schema(
     marca: { type: String, unique: false },
     modelo: { type: String, unique: false },
     pisosServidos: { type: [String], unique: false},
-    numeroIdentificativo: { type: Number, unique: true}
+    numeroIdentificativo: { type: Number, unique: true},
+    edificio: { type: String, unique: false},
   },
   {
     timestamps: true

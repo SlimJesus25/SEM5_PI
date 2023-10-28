@@ -7,6 +7,9 @@ import IPisoService from '../services/IServices/IPisoService';
 import IPisoDTO from '../dto/IPisoDTO';
 
 import { Result } from "../core/logic/Result";
+import IListMinMaxDTO from '../dto/IListMinMaxDTO';
+import IListPisosDTO from '../dto/IListPisosDTO';
+import IEdificioDTO from '../dto/IEdificioDTO';
 
 @Service()
 export default class PisoController implements IPisoController /* TODO: extends ../core/infra/BaseController */ {
@@ -45,4 +48,37 @@ export default class PisoController implements IPisoController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async listPisos(req: Request, res: Response, next: NextFunction){
+    try {
+      const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
+
+      if (pisoOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const pisoDTO = pisoOrError.getValue();
+      return res.status(200).json( pisoDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async listMinMax(req: Request, res: Response, next: NextFunction){
+    try {
+      const edificioOrError = await this.pisoServiceInstance.listMinMax(req.body as IListMinMaxDTO) as Result<IEdificioDTO[]>;
+
+      if (edificioOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const edificioDTO = edificioOrError.getValue();
+      return res.status(200).json( edificioDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
 }

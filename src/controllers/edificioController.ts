@@ -8,7 +8,6 @@ import IEdificioDTO from '../dto/IEdificioDTO';
 
 import { Result } from "../core/logic/Result";
 import IListElevadoresDTO from '../dto/IListElevadoresDTO';
-import { Elevador } from '../domain/elevador';
 import IElevadorDTO from '../dto/IElevadorDTO';
 import IListPisosDTO from '../dto/IListPisosDTO';
 import IPisoDTO from '../dto/IPisoDTO';
@@ -52,22 +51,6 @@ export default class EdificioController implements IEdificioController /* TODO: 
     }
   };
 
-  public async listElevadores(req: Request, res: Response, next: NextFunction){
-    try {
-      const elevadoresOrError = await this.edificioServiceInstance.listElevadores(req.body as IListElevadoresDTO) as Result<IElevadorDTO[]>;
-
-      if (elevadoresOrError.isFailure) {
-        return res.status(404).send();
-      }
-
-      const elevadoresDTO = elevadoresOrError.getValue();
-      return res.json( elevadoresDTO ).status(200);
-    }
-    catch (e) {
-      return next(e);
-    }
-  };
-
   public async listEdificios(req: Request, res: Response, next: NextFunction){
     try {
       const edificioOrError = await this.edificioServiceInstance.listEdificios() as Result<IEdificioDTO[]>;
@@ -83,39 +66,5 @@ export default class EdificioController implements IEdificioController /* TODO: 
       return next(e);
     }
   }
-
-  public async listPisos(req: Request, res: Response, next: NextFunction){
-    try {
-      const pisoOrError = await this.edificioServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
-
-      if (pisoOrError.isFailure) {
-        return res.status(404).send();
-      }
-
-      const pisoDTO = pisoOrError.getValue();
-      return res.status(200).json( pisoDTO );
-    }
-    catch (e) {
-      return next(e);
-    }
-  };
-
-  public async listMinMax(req: Request, res: Response, next: NextFunction){
-    try {
-      const edificioOrError = await this.edificioServiceInstance.listMinMax(req.body as IListMinMaxDTO) as Result<IEdificioDTO[]>;
-
-      if (edificioOrError.isFailure) {
-        return res.status(404).send();
-      }
-
-      const edificioDTO = edificioOrError.getValue();
-      return res.status(200).json( edificioDTO );
-    }
-    catch (e) {
-      return next(e);
-    }
-  };
-
-
 
 }

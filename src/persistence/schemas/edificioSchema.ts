@@ -34,17 +34,6 @@ const Edificio = new mongoose.Schema(
         index: true,
     },
 
-    elevadores: {
-        type: Number,
-        index: true,
-    },
-
-    pisos: {
-        type: [String],
-        require: [true, 'Introduza pelo menos 1 piso'],
-        index: true,
-    },
-
     mapa: {
         type: String,
         require: [true],

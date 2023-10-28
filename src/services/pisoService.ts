@@ -6,14 +6,17 @@ import IPisoRepo from '../services/IRepos/IPisoRepo';
 import IPisoService from './IServices/IPisoService';
 import { Result } from "../core/logic/Result";
 import { PisoMap } from "../mappers/PisoMap";
-import { Sala } from '../domain/sala';
 import ISalaRepo from '../services/IRepos/ISalaRepo';
+import IListPisosDTO from "../dto/IListPisosDTO"
+import IEdificioRepo from './IRepos/IEdificioRepo';
+import IListMinMaxDTO from '../dto/IListMinMaxDTO';
 
 @Service()
 export default class PisoService implements IPisoService {
   constructor(
       @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo,
-      @Inject(config.repos.sala.name) private salaRepo: ISalaRepo
+      @Inject(config.repos.sala.name) private salaRepo: ISalaRepo,
+      @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo
   ) {}
 
   public async getPiso( pisoId: string): Promise<Result<IPisoDTO>> {
@@ -38,18 +41,18 @@ export default class PisoService implements IPisoService {
 
       const pisoDocument = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
 
-      if(!!pisoDocument)
+      if(pisoDocument != null)
         return Result.fail<IPisoDTO>("Já existe um piso com a designação " + pisoDTO.designacao);
 
-        let salas : Sala[];
+      const edificio = await this.edificioRepo.findByCodigo(pisoDTO.edificio);
 
-        // Venancio: Adicionar forma de verificação de falha.
-        pisoDTO.salas.forEach(async s => salas.push(await this.salaRepo.findByDesignacao(s)));
+      if(edificio == null)
+        return Result.fail<IPisoDTO>("Não foi encontrado um edifício com o código " + pisoDTO.edificio);
 
-      const pisoOrError = await Piso.create({
+      const pisoOrError = Piso.create({
         descricao: pisoDTO.descricao,
         designacao: pisoDTO.designacao,
-        salas: salas
+        edificio: edificio
       });
 
       if (pisoOrError.isFailure) {
@@ -69,16 +72,18 @@ export default class PisoService implements IPisoService {
     try {
       const piso = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
 
-      let salas: Sala[];
-      pisoDTO.salas.forEach(async v => salas.push(await this.salaRepo.findByDesignacao(v)))
-
       if (piso === null) {
         return Result.fail<IPisoDTO>("Piso não encontrado");
-      }
-      else {
+      }else {
+
+        const edificio = await this.edificioRepo.findByCodigo(pisoDTO.edificio);
+
+        if(edificio == null)
+          return Result.fail<IPisoDTO>("Não foi encontrado um edifício com o código " + pisoDTO.edificio);
+
         piso.descricao = pisoDTO.descricao;
         piso.designacao = pisoDTO.designacao;
-        piso.sala = salas;
+        piso.edificio = edificio;
         await this.pisoRepo.save(piso);
 
         const pisoDTOResult = PisoMap.toDTO( piso ) as IPisoDTO;
@@ -87,6 +92,53 @@ export default class PisoService implements IPisoService {
     } catch (e) {
       throw e;
     }
+  }
+
+  public async listPisos(listPisosDTO: IListPisosDTO): Promise<Result<IPisoDTO[]>> {
+    try {
+
+      const edificio = await this.edificioRepo.findByCodigo(listPisosDTO.codigoEdificio);
+
+      if(edificio == null)
+        return Result.fail<IPisoDTO[]>("O código do edifício é inválido");
+      
+      // Query deve retornar todos os pisos que contenham este edificio.
+      const pisos = await this.pisoRepo.findByEdificio(listPisosDTO.codigoEdificio);
+
+      let pisosDTO: IPisoDTO[] = [];
+      pisos.forEach(p => pisosDTO.push(PisoMap.toDTO(p)));
+
+      return Result.ok<IPisoDTO[]>( pisosDTO )
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Esta pode fazer a query direta ou utilizar a listPisos (acima) e filtrar em memória.
+  public async listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>> {
+    try {
+
+      const edificios = await this.edificioRepo.findAll();
+
+      if (!!edificios){
+        return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
+      }
+      
+      let edificiosDTO : IEdificioDTO[];
+
+      (await edificios).forEach((edificio) => {
+        const numPisos = edificio.pisos.length;
+    
+        if (numPisos > minMax.min && numPisos < minMax.max) {
+          edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
+        }
+      });
+
+      return Result.ok<IEdificioDTO[]>( edificiosDTO )
+    } catch (e) {
+      throw e;
+    }
+
   }
 
   public async listPisoPassagem(pisoDTO: IPisoDTO): Promise<Result<Array<IPisoDTO>>> {

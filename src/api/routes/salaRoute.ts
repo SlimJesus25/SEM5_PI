@@ -18,7 +18,8 @@ export default (app: Router) => {
       body: Joi.object({
         descricao: Joi.string().required(),
         categoria: Joi.string().required(),
-        designacao: Joi.string().required()
+        designacao: Joi.string().required(),
+        piso: Joi.string().required()
       })
     }),
     (req, res, next) => ctrl.createSala(req, res, next) );
@@ -26,9 +27,10 @@ export default (app: Router) => {
   route.put('updateSala',
     celebrate({
       body: Joi.object({
-        descricao: Joi.string().required(),
-        categoria: Joi.string().required(),
-        designacao: Joi.string().required()
+        descricao: Joi.string(),
+        categoria: Joi.string(),
+        designacao: Joi.string(),
+        piso: Joi.string()
       }),
     }),
     (req, res, next) => ctrl.updateSala(req, res, next) );

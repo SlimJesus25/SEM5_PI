@@ -6,6 +6,7 @@ export default interface IPisoRepo extends Repo<Piso> {
   save(piso: Piso): Promise<Piso>;
   findByDomainId (pisoId: PisoId | string): Promise<Piso>;
   findByDesignacao(designacao: string): Promise<Piso>
+  findByEdificio(codigoEdificio: string): Promise<Piso[]>
     
   //findByIds (rolesIds: RoleId[]): Promise<Role[]>;
   //saveCollection (roles: Role[]): Promise<Role[]>;

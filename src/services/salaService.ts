@@ -7,11 +7,13 @@ import ISalaService from './IServices/ISalaService';
 import { Result } from "../core/logic/Result";
 import { SalaMap } from "../mappers/SalaMap";
 import { CategoriaSala } from '../domain/categoriaSala';
+import IPisoRepo from './IRepos/IPisoRepo';
 
 @Service()
 export default class SalaService implements ISalaService {
   constructor(
-      @Inject(config.repos.sala.name) private salaRepo : ISalaRepo
+      @Inject(config.repos.sala.name) private salaRepo : ISalaRepo,
+      @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo
   ) {}
 
   public async getSala( salaId: string): Promise<Result<ISalaDTO>> {
@@ -34,17 +36,23 @@ export default class SalaService implements ISalaService {
   public async createSala(salaDTO: ISalaDTO): Promise<Result<ISalaDTO>> {
     try {
 
-      const salaDocument = await this.salaRepo.findByDesignacao(salaDTO.designacao);
+      const sala = await this.salaRepo.findByDesignacao(salaDTO.designacao);
 
-      if(!!salaDocument)
-        return Result.fail<ISalaDTO>("Já existe uma sala com o nome " + salaDocument.designacao);
+      if(sala != null)
+        return Result.fail<ISalaDTO>("Já existe uma sala com o nome " + sala.designacao);
 
       const categoria = Object.keys(CategoriaSala).find(key => CategoriaSala[key] === salaDTO.categoria);
 
-      const salaOrError = await Sala.create( {
+      const piso = await this.pisoRepo.findByDesignacao(salaDTO.piso);
+
+      if(piso == null)
+        return Result.fail<ISalaDTO>("Não existe um piso com a designação " + salaDTO.piso);
+
+      const salaOrError = Sala.create( {
         "descricaoSala": salaDTO.descricao,
         "categoriaSala": CategoriaSala[categoria],
-        "designacaoSala": salaDTO.designacao
+        "designacaoSala": salaDTO.designacao,
+        "piso": piso
       } );
 
       if (salaOrError.isFailure) {
@@ -70,11 +78,17 @@ export default class SalaService implements ISalaService {
 
       if (sala === null) {
         return Result.fail<ISalaDTO>("Sala not found");
-      }
-      else {
+      }else {
+
+        const piso = await this.pisoRepo.findByDesignacao(salaDTO.piso);
+
+        if(piso == null)
+          return Result.fail<ISalaDTO>("Não existe um piso com a designação " + salaDTO.piso);
+
         sala.descricao = salaDTO.descricao;
         sala.categoria = CategoriaSala[categoria];
         sala.designacao = salaDTO.designacao;
+        sala.piso = piso;
         await this.salaRepo.save(sala);
 
         const salaDTOResult = SalaMap.toDTO( sala ) as ISalaDTO;

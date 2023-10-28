@@ -3,15 +3,13 @@ import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 
 import { Result } from "../core/logic/Result";
 import { PisoId } from "./pisoId";
-import { Sala } from "./sala";
 import { Guard } from "../core/logic/Guard";
-import IPisoDTO from "../dto/IPisoDTO";
-import { SalaMap } from "../mappers/SalaMap";
+import { Edificio } from "./edificio";
 
 interface PisoProps {
   descricao: string;
-  salas: Sala[];
   designacao: string;
+  edificio: Edificio; // código edifício
 }
 
 export class Piso extends AggregateRoot<PisoProps> {
@@ -27,8 +25,8 @@ export class Piso extends AggregateRoot<PisoProps> {
     return this.props.descricao;
   }
 
-  get salas (): Sala[] {
-    return this.props.salas;
+  get edificio (): Edificio {
+    return this.props.edificio;
   }
 
   get designacao (): string {
@@ -43,8 +41,8 @@ export class Piso extends AggregateRoot<PisoProps> {
     this.props.designacao = value;
   }
 
-  set sala (value : Sala[]) {
-    this.props.salas = value;
+  set edificio (value : Edificio) {
+    this.props.edificio = value;
   }
 
 
@@ -57,7 +55,7 @@ export class Piso extends AggregateRoot<PisoProps> {
     const guardedProps = [
       { argument: props.designacao, argumentName: 'designacao' },
       { argument: props.descricao, argumentName: 'descricao' },
-      { argument: props.salas, argumentName: 'sala' }
+      { argument: props.edificio, argumentName: 'edificio' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
@@ -74,27 +72,4 @@ export class Piso extends AggregateRoot<PisoProps> {
     }
   }
 
-
-  /*
-  COMENTADO POR JOAO PARA TESTES DE EDIFICIO
-  public static create (pisoDTO: IPisoDTO, id?: UniqueEntityID): Result<Piso> {
-
-    try{
-      const descricao = pisoDTO.descricao;
-      const designacao = pisoDTO.designacao;
-      let salas: Sala[] = [];
-      pisoDTO.sala.forEach(v => salas.push(SalaMap.toDomain(v)));
-
-      const piso = new Piso({ 
-        descricao: descricao,
-        designacao: designacao,
-        sala: salas,
-      }, id);
-        return Result.ok<Piso>( piso )
-  }catch(e){
-    return Result.fail(e);
-  }
-    
-  }
-  */
 }

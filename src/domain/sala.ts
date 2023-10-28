@@ -5,12 +5,13 @@ import { Result } from "../core/logic/Result";
 import { SalaId } from "./salaId";
 import { CategoriaSala } from "./categoriaSala";
 import { Guard } from "../core/logic/Guard";
-import ISalaDTO from "../dto/ISalaDTO";
+import { Piso } from "./piso";
 
 interface SalaProps {
   descricaoSala: string;
   categoriaSala: CategoriaSala;
   designacaoSala: string;
+  piso: Piso
 }
 
 export class Sala extends AggregateRoot<SalaProps> {
@@ -34,6 +35,10 @@ export class Sala extends AggregateRoot<SalaProps> {
     return this.props.designacaoSala;
   }
 
+  get piso (): Piso {
+    return this.props.piso;
+  }
+
   set descricao (value: string){
     this.props.descricaoSala = value;
   }
@@ -46,27 +51,13 @@ export class Sala extends AggregateRoot<SalaProps> {
     this.props.designacaoSala = value;
   }
 
+  set piso (value: Piso){
+    this.props.piso = value;
+  }
+
   private constructor (props: SalaProps, id?: UniqueEntityID) {
     super(props, id);
   }
-
-  /*public static create (salaDTO: ISalaDTO, id?: UniqueEntityID): Result<Sala> {
-
-    const descricao = salaDTO.descricao;
-    const categoria = Sala.getCategoriaValue(salaDTO.categoria);
-    const designacao = salaDTO.designacao;
-
-    if (!!descricao === false || descricao.length === 0) {
-      return Result.fail<Sala>('Must provide sala s description')
-    }else if(!!designacao === false || designacao.length === 0){
-      return Result.fail<Sala>('Must provide sala s designation')
-    } else {
-      const sala = new Sala({ descricaoSala: descricao,
-         categoriaSala: categoria,
-          designacaoSala: designacao}, id);
-      return Result.ok<Sala>( sala )
-    }
-  }*/
 
   public static categoriaValue(categoriaSala : string) : number{
     if(categoriaSala.toLowerCase() == "anfiteatro")
@@ -83,7 +74,8 @@ export class Sala extends AggregateRoot<SalaProps> {
     const guardedProps = [
       { argument: props.designacaoSala, argumentName: 'designacaoSala' },
       { argument: props.descricaoSala, argumentName: 'descricaoSala' },
-      { argument: props.categoriaSala, argumentName: 'categoriaSala' }
+      { argument: props.categoriaSala, argumentName: 'categoriaSala' },
+      { argument: props.piso, argumentName: 'piso' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

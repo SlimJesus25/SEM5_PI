@@ -5,6 +5,7 @@ export interface IElevadorPersistence {
     numeroSerie : string;
     modelo : string;
     marca : string;
-    pisosServidos : string[];
+    pisosServidos : string[]; // Designações dos pisos.
     numeroIdentificativo : number;
+    edificio : string; // Código do edificio.
   }

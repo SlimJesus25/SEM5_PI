@@ -1,9 +1,10 @@
 import { Result } from "../../core/logic/Result";
 import IElevadorDTO from "../../dto/IElevadorDTO";
+import IListElevadoresDTO from "../../dto/IListElevadoresDTO";
 
 export default interface IElevadorService  {
   createElevador(elevadorDTO: IElevadorDTO): Promise<Result<IElevadorDTO>>;
   updateElevador(elevadorDTO: IElevadorDTO): Promise<Result<IElevadorDTO>>;
-
+  listElevadores(codigoEdificio: IListElevadoresDTO): Promise<Result<IElevadorDTO[]>>;
   getElevador (elevadorId: string): Promise<Result<IElevadorDTO>>;
 }

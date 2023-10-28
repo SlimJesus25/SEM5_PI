@@ -47,7 +47,8 @@ export default class SalaRepo implements ISalaRepo {
       } else {
         roleDocument.designacao = sala.designacao;
         roleDocument.descricao = sala.descricao;
-        //roleDocument.categoria = sala.categoria;
+        roleDocument.categoria = sala.categoria;
+        roleDocument.piso = sala.piso.designacao;
         await roleDocument.save();
 
         return sala;

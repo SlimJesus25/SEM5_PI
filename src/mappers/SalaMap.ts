@@ -5,6 +5,7 @@ import { Sala } from "../domain/sala";
 
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { CategoriaSala } from "../domain/categoriaSala";
+import PisoRepo from "../repos/pisoRepo";
 
 export class SalaMap extends Mapper<Sala> {
   
@@ -14,6 +15,7 @@ export class SalaMap extends Mapper<Sala> {
       descricao: sala.descricao,
       categoria: sala.categoria.toString(),
       designacao: sala.designacao,
+      piso: sala.piso.designacao
     } as ISalaDTO;
   }
 
@@ -21,10 +23,15 @@ export class SalaMap extends Mapper<Sala> {
 
     const index = Object.values(CategoriaSala).find(k => CategoriaSala[k] == raw.categoriaSala) as CategoriaSala;
 
+    const pisoRepo = Container.get(PisoRepo);
+
+    const piso = await pisoRepo.findByDesignacao(raw.piso);
+
     const salaOrError = Sala.create({
       descricaoSala: raw.descricaoSala,
       categoriaSala: index,
-      designacaoSala: raw.designacaoSala
+      designacaoSala: raw.designacaoSala,
+      piso: piso
     }, new UniqueEntityID(raw.domainId));
 
     salaOrError.isFailure ? console.log(salaOrError.error) : '';
@@ -37,7 +44,8 @@ export class SalaMap extends Mapper<Sala> {
       domainId: sala.id.toString(),
       descricaoSala: sala.descricao,
       categoriaSala: sala.categoria,
-      designacaoSala: sala.designacao
+      designacaoSala: sala.designacao,
+      piso: sala.piso.designacao
     }
   }
 }

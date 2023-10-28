@@ -45,10 +45,9 @@ export default class PisoRepo implements IPisoRepo {
 
         return PisoMap.toDomain(pisoCreated);
       } else {
-        let salas : string[] = [];
-        piso.sala.forEach(v => salas.push(v.id.toString()));
         pisoDocument.descricao = piso.descricao;
         pisoDocument.designacao = piso.designacao;
+        pisoDocument.edificio = piso.edificio.codigo;
         await pisoDocument.save();
 
         return piso;

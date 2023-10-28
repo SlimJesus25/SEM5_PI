@@ -7,6 +7,7 @@ import IElevadorService from '../services/IServices/IElevadorService';
 import IElevadorDTO from '../dto/IElevadorDTO';
 
 import { Result } from "../core/logic/Result";
+import IListElevadoresDTO from '../dto/IListElevadoresDTO';
 
 @Service()
 export default class ElevadorController implements IElevadorController /* TODO: extends ../core/infra/BaseController */ {
@@ -40,6 +41,22 @@ export default class ElevadorController implements IElevadorController /* TODO: 
 
       const elevadorDTO = elevadorOrError.getValue();
       return res.json( elevadorDTO ).status(201);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async listElevadores(req: Request, res: Response, next: NextFunction){
+    try {
+      const elevadoresOrError = await this.elevadorServiceInstance.listElevadores(req.body as IListElevadoresDTO) as Result<IElevadorDTO[]>;
+
+      if (elevadoresOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const elevadoresDTO = elevadoresOrError.getValue();
+      return res.json( elevadoresDTO ).status(200);
     }
     catch (e) {
       return next(e);
