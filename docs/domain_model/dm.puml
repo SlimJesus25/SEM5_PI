@@ -4,9 +4,50 @@ hide circle
 hide fields
 
 !theme crt-green
-skinparam nodesep 150
+skinparam nodesep 400
 hide empty members
 left to right direction
+
+
+package "<<agr Elevador>>"{
+    class Elevador<<entity>><<root>>{}
+    class NumeroIdentificativo<<vo>>{}
+    class PisosServidos<<vo>>{}
+    class MarcaElevador<<vo>>{}
+    class ModeloElevador<<vo>>{}
+    class NumeroSerieElevador<<vo>>{}
+    class DescricaoElevador<<vo>>{}
+
+    Elevador --> "1" NumeroIdentificativo
+    Elevador --> "*" PisosServidos
+    Elevador --> "1" MarcaElevador
+    Elevador --> "1" ModeloElevador
+    Elevador --> "1" NumeroSerieElevador
+    Elevador --> "1" DescricaoElevador
+}
+
+' Refere-se a Sala/Gabinete
+package "<<agr Sala>>"{
+    class Sala<<entity>><<root>>{}
+    class DesignacaoSala<<vo>>{}
+    class CategoriaSala<<enum>>{} 
+    class DescricaoSala<<vo>>{}
+
+    Sala --> "1" DesignacaoSala
+    Sala --> "1" CategoriaSala
+    Sala --> "1" DescricaoSala
+}
+
+package "<<agr Piso>>"{
+    class Piso<<entity>><<root>>{}
+    class DesignacaoPiso<<vo>>{}
+    class DescricaoPiso<<vo>>{}
+
+    Sala --> "1" Piso
+
+    Piso --> "1" DesignacaoPiso
+    Piso --> "1" DescricaoPiso
+}
 
 'o código do edificio é obrigatório, no máximo 5 caracteres, letras e digitos, podendo conter espaços no meio
 'o nome do edificio é opcional, no máximo 50 caracteres alfanuméricos
@@ -20,28 +61,13 @@ package "<<agr Edificio>>"{
         dimensão máxima de cada piso em termos de células (ex., 10 x 10)
     }
 
+    Elevador --> "1" Edificio
+    Piso --> "1" Edificio : "está contido"
+
     Edificio --> "1" CodigoEdificio
     Edificio --> "1" NomeOpcionalEdificio
     Edificio --> "1" DescricaoEdificio
     Edificio --> "1" DimensaoMaximaPiso
-}
-
-package "<<agr Elevador>>"{
-    class Elevador<<entity>><<root>>{}
-    class NumeroIdentificativo<<vo>>{}
-    class PisosServidos<<vo>>{}
-    class MarcaElevador<<vo>>{}
-    class ModeloElevador<<vo>>{}
-    class NumeroSerieElevador<<vo>>{}
-    class DescricaoElevador<<vo>>{}
-
-    Edificio --> "1" Elevador
-    Elevador --> "1" NumeroIdentificativo
-    Elevador --> "*" PisosServidos
-    Elevador --> "1" MarcaElevador
-    Elevador --> "1" ModeloElevador
-    Elevador --> "1" NumeroSerieElevador
-    Elevador --> "1" DescricaoElevador
 }
 
 ' Faz sentido ser um agregado à parte por estar sujeito a mudanças, obras por exemplo. Confirmar.
@@ -53,28 +79,6 @@ package "<<agr MapaEdificio>>"{
     MapaEdificio --> "1" GrelhaEdificio
 }
 
-package "<<agr Piso>>"{
-    class Piso<<entity>><<root>>{}
-    class DesignacaoPiso<<vo>>{}
-    class DescricaoPiso<<vo>>{}
-
-    Edificio --> "*" Piso : "contém"
-    Piso --> "1" DesignacaoPiso
-    Piso --> "1" DescricaoPiso
-}
-
-' Refere-se a Sala/Gabinete
-package "<<agr Sala>>"{
-    class Sala<<entity>><<root>>{}
-    class DesignacaoSala<<vo>>{}
-    class CategoriaSala<<enum>>{} 
-    class DescricaoSala<<vo>>{}
-
-    Piso --> "*" Sala
-    Sala --> "1" DesignacaoSala
-    Sala --> "1" CategoriaSala
-    Sala --> "1" DescricaoSala
-}
 
 package "<<agr Passagem>>"{
     class Passagem<<entity>><<root>>{}
