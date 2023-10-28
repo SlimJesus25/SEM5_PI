@@ -86,4 +86,8 @@ export default class ElevadorRepo implements IElevadorRepo {
       else
         return null;
   }
+
+  public async findByEdificio(codigoEdificio: string): Promise<Elevador>{
+    return null;
+  }
 }

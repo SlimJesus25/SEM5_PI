@@ -16,7 +16,7 @@ export class ElevadorMap extends Mapper<Elevador> {
     let pisos: string[] = [];
 
     // Vai adicionar as designações dos pisos pisos[].
-    elevador.pisosServidos.forEach(designacao => pisos.push(designacao.toString()));
+    elevador.pisosServidos.forEach(piso => pisos.push(piso.designacao));
 
     return {
       id: elevador.id.toString(),

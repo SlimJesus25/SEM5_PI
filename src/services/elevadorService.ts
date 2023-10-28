@@ -84,6 +84,9 @@ export default class ElevadorService implements IElevadorService {
 
         const edificio = await this.edificioRepo.findByCodigo(elevadorDTO.edificio);
 
+        if(edificio == null)
+          return Result.fail<IElevadorDTO>("Edifício com o código " + elevadorDTO.edificio + " não encontrado");
+
         let pisos: Piso[] = [];
         elevadorDTO.pisosServidos.forEach(async designacao => pisos.push(await this.pisoRepo.findByDesignacao(designacao)));
 
@@ -111,7 +114,7 @@ export default class ElevadorService implements IElevadorService {
       const elevador = await this.elevadorRepo.findByEdificio(listElevadoresDTO.codigoEdificio);
 
       if(elevador == null)
-        return Result.fail<IElevadorDTO[]>("O código do edifício é inválido");
+        return Result.fail<IElevadorDTO[]>("O edifício com o código " + listElevadoresDTO.codigoEdificio + " não tem elevadores.");
 
       let elevadoresDTO : IElevadorDTO[] = [];
 
