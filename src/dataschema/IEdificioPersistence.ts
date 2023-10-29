@@ -4,5 +4,4 @@ export interface IEdificioPersistence {
 	nomeOpcional: string;
 	descricao: string;
 	dimensaoMaxima: number;
-    mapa: string;
   }

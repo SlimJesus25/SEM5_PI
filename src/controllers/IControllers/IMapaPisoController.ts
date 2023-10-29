@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 
-export default interface IMapaEdificioController  {
+export default interface IMapaPisoController  {
 
 }

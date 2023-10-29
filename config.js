@@ -69,9 +69,9 @@ export default {
       name: "PisoController",
       path: "../controllers/pisoController"
     },
-    mapaEdificio: {
-      name: "MapaEdificioController",
-      path: "../controllers/mapaEdificioController"
+    mapaPiso: {
+      name: "MapaPisoController",
+      path: "../controllers/mapaPisoController"
     },
     tipoRobo: {
       name: "TipoRoboController",
@@ -116,9 +116,9 @@ export default {
       name: "PisoRepo",
       path: "../repos/pisoRepo"
     },
-    mapaEdificio: {
-      name: "MapaEdificioRepo",
-      path: "../repos/mapaEdificioRepo"
+    mapaPiso: {
+      name: "MapaPisoRepo",
+      path: "../repos/mapaPisoRepo"
     },
     tipoRobo: {
       name: "TipoRoboRepo",
@@ -159,9 +159,9 @@ export default {
       name: "PisoService",
       path: "../services/pisoService"
     },
-    mapaEdificio: {
-      name: "MapaEdificioService",
-      path: "../services/mapaEdificioService"
+    mapaPiso: {
+      name: "MapaPisoService",
+      path: "../services/mapaPisoService"
     },
     tipoRobo: {
       name: "TipoRoboService",

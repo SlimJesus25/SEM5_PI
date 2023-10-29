@@ -21,7 +21,6 @@ export default (app: Router) => {
       nomeOpcionalEdificio: Joi.string(),
       descricaoEdificio: Joi.string(),
       codigoEdificio: Joi.string().required(),
-      mapaEdificio: Joi.string()
     })
   }),
   (req, res, next) => ctrl.createEdificio(req, res, next));
@@ -30,10 +29,10 @@ export default (app: Router) => {
   route.put('/updateEdificio',
   celebrate({
     body: Joi.object({
-        dimensaoMaxima: Joi.number().required(),
-        nomeOpcional: Joi.string(),
-        codigo: Joi.string().required(),
-        mapaEdificio: Joi.string()
+        dimensaoMaximaEdificio: Joi.number(),
+        nomeOpcionalEdificio: Joi.string(),
+        codigoEdificio: Joi.string().required(),
+        descricaoEdificio: Joi.string()
     }),
   }),
   (req, res, next) => ctrl.updateEdificio(req, res, next));

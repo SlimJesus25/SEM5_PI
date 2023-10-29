@@ -39,10 +39,10 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/passagemSchema',
   };
 
-  const mapaEdificioSchema = {
+  const mapaPisoSchema = {
     // compare with the approach followed in repos and services
-    name: 'mapaEdificioSchema',
-    schema: '../persistence/schemas/mapaEdificioSchema',
+    name: 'mapaPisoSchema',
+    schema: '../persistence/schemas/mapaPisoSchema',
   };
 
   const pisoSchema = {
@@ -85,9 +85,9 @@ export default async ({ expressApp }) => {
     path: config.controllers.tarefa.path
   }
 
-  const mapaEdificioController = {
-    name: config.controllers.mapaEdificio.name,
-    path: config.controllers.mapaEdificio.path
+  const mapaPisoController = {
+    name: config.controllers.mapaPiso.name,
+    path: config.controllers.mapaPiso.path
   }
 
   const edificioController = {
@@ -140,9 +140,9 @@ export default async ({ expressApp }) => {
     path: config.repos.user.path
   }
 
-  const mapaEdificioRepo = {
-    name: config.repos.mapaEdificio.name,
-    path: config.repos.mapaEdificio.path
+  const mapaPisoRepo = {
+    name: config.repos.mapaPiso.name,
+    path: config.repos.mapaPiso.path
   }
 
   const edificioRepo = {
@@ -190,9 +190,9 @@ export default async ({ expressApp }) => {
     path: config.services.role.path
   }
 
-  const mapaEdificioService = {
-    name: config.services.mapaEdificio.name,
-    path: config.services.mapaEdificio.path
+  const mapaPisoService = {
+    name: config.services.mapaPiso.name,
+    path: config.services.mapaPiso.path
   }
 
   const edificioService = {
@@ -242,7 +242,7 @@ export default async ({ expressApp }) => {
       roboSchema,
       salaSchema,
       tipoRoboSchema,
-      mapaEdificioSchema,
+      mapaPisoSchema,
       tarefaSchema
     ],
     controllers: [
@@ -254,7 +254,7 @@ export default async ({ expressApp }) => {
       roboController,
       salaController,
       tipoRoboController,
-      mapaEdificioController,
+      mapaPisoController,
       tarefaController
     ],
     repos: [
@@ -267,7 +267,7 @@ export default async ({ expressApp }) => {
       roboRepo,
       salaRepo,
       tipoRoboRepo,
-      mapaEdificioRepo,
+      mapaPisoRepo,
       tarefaRepo
     ],
     services: [
@@ -279,7 +279,7 @@ export default async ({ expressApp }) => {
       roboService,
       salaService,
       tipoRoboService,
-      mapaEdificioService,
+      mapaPisoService,
       tarefaService
     ]
   });
