@@ -7,6 +7,7 @@ import {PisoMap } from "../mappers/PisoMap";
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IPisoPersistence } from '../dataschema/IPisoPersistence';
+import { CodigoEdificio } from '../domain/codigoEdificio';
 
 @Service()
 export default class PisoRepo implements IPisoRepo {
@@ -79,8 +80,19 @@ export default class PisoRepo implements IPisoRepo {
         return null;
   }
 
-  public async findByEdificio(codigoEdificio: string): Promise<Piso[]>{
-    return null;
+  public async findByEdificio(value: string): Promise<Piso[]>{
+    const query = { 'edificio.codigoEdificio.value' : value.toString()};
+    const pisoSchema = await this.pisoSchema.find(query);
+    try {
+      if (pisoSchema === null) {
+          return null;
+      } else {
+          let pisoArray: Piso[] = [];
+          pisoSchema.forEach(async v => pisoArray.push(await PisoMap.toDomain(v)));
+          return pisoArray;
+      }
+  } catch (err) {
+      throw err;
   }
-
+  }
 }
