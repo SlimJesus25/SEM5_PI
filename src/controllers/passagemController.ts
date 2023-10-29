@@ -24,7 +24,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
       const passagemOrError = await this.passagemServiceInstance.createPassagem(req.body as IPassagemDTO) as Result<IPassagemDTO>;
         
       if (passagemOrError.isFailure) {
-        return res.status(404).send("Erro: " + passagemOrError.errorValue());
+        return res.status(403).send("Erro: " + passagemOrError.errorValue());
       }
 
       const passagemDTO = passagemOrError.getValue();
