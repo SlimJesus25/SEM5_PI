@@ -1,0 +1,91 @@
+@startuml sd
+
+participant Route as route
+participant InterfaceEdificioController as ictrl
+participant EdificioController as ctrl
+participant InterfaceEdificioService as isvc
+participant EdificioService as svc
+participant InterfaceEdificioRepo as irepo
+participant EdificioRepo as repo
+participant EdificioMapper as mapper
+participant InterfaceEdificioPersistence as ischema
+participant EdificioSchema as schema
+participant ConfigurationFile as conf
+participant Edificio as model
+
+activate route
+route -> ictrl : /loadFloorMap
+activate ictrl
+ictrl -> ctrl : loadFloorMap(req, res, next)
+activate ctrl
+ctrl -> conf : injeta o serviço do edificio
+activate conf
+conf --> ctrl
+deactivate conf
+ctrl -> isvc : loadFloorMap(IPisoDTO)
+activate isvc
+isvc -> svc : loadFloorMap(IPisoDTO)
+activate svc
+svc -> conf : injeta o repositório do piso
+activate conf
+conf --> svc
+deactivate conf
+svc -> repo : piso = findByDesignacao(designacao)
+activate repo
+repo --> svc
+deactivate repo
+alt piso não existe
+    svc --> isvc : Piso não encontrado
+    isvc --> ctrl
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+    ictrl --> route
+end
+svc -> model : piso carrega mapa
+activate model
+model --> svc
+deactivate model
+svc -> irepo : piso = save(piso)
+activate irepo
+irepo -> repo : save(piso)
+activate repo
+repo -> conf : injeta o schema do piso
+activate conf
+conf --> repo
+deactivate conf
+repo -> mapper : toPersistence(piso)
+activate mapper
+mapper --> repo
+deactivate mapper
+repo -> ischema : create(piso)
+activate ischema 
+ischema -> schema : create(piso)
+activate schema
+schema --> ischema
+deactivate schema
+ischema --> repo
+deactivate ischema
+repo -> mapper : toDomain(pisoCreated)
+activate mapper
+mapper --> repo
+deactivate mapper
+repo --> irepo
+deactivate repo
+irepo --> svc
+deactivate irepo
+svc -> mapper : toDTO(piso)
+activate mapper
+mapper --> svc
+deactivate mapper
+svc --> isvc
+deactivate svc
+isvc --> ctrl
+deactivate isvc
+ctrl --> ictrl : Envia um código 201 (POST)
+deactivate ctrl
+ictrl --> route
+deactivate ictrl
+deactivate route
+
+
+
+@enduml
