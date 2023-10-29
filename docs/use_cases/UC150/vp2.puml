@@ -7,7 +7,7 @@ ParticipantBackgroundColor white
 
 box "<<System(C4)>>\n SistemaRobDroneGo"
 participant MasterDataLogistics as mdl <<Container(C4)>>
-mdl -> mdl: POST createEdificio(codigoEdificio,descricaoEdificio,dimensaoMaximaPiso,nomeOpcionalEdificio,elevadores,pisos,mapaEdificio)
+mdl -> mdl: POST createEdificio(codigoEdificio,descricaoEdificio,dimensaoMaximaPiso,nomeOpcionalEdificio,mapaEdificio)
 alt não existe erros durante a operação
 mdl --> mdl: 201 edificio criado
 else existe erros durante a operação

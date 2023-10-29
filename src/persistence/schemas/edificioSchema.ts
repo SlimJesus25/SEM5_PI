@@ -33,12 +33,6 @@ const Edificio = new mongoose.Schema(
         required: [true, 'Introduza a dimensão máxima do piso'],
         index: true,
     },
-
-    mapa: {
-        type: String,
-        require: [true],
-        index: true,
-    },
   },
   { timestamps: true },
 );

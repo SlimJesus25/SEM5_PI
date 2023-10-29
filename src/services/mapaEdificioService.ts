@@ -1,12 +1,12 @@
 import { Service, Inject } from 'typedi';
 import config from "../../config";
-import IMapaEdificioRepo from './IRepos/IMapaEdificioRepo';
-import IMapaEdificioService from './IServices/IMapaEdificioService';
+import IMapaPisoRepo from './IRepos/IMapaPisoRepo';
+import IMapaPisoService from './IServices/IMapaPisoService';
 
 @Service()
-export default class MapaEdificioService implements IMapaEdificioService {
+export default class MapaPisoService implements IMapaPisoService {
   constructor(
-      @Inject(config.repos.mapaEdificio.name) private mapaEdificioRepo : IMapaEdificioRepo
+      @Inject(config.repos.mapaPiso.name) private mapaPisoRepo : IMapaPisoRepo
   ) {}
 
   

@@ -4,7 +4,7 @@ hide circle
 hide fields
 
 !theme crt-green
-skinparam nodesep 400
+skinparam nodesep 150
 hide empty members
 left to right direction
 
@@ -70,13 +70,22 @@ package "<<agr Edificio>>"{
     Edificio --> "1" DimensaoMaximaPiso
 }
 
-' Faz sentido ser um agregado à parte por estar sujeito a mudanças, obras por exemplo. Confirmar.
-package "<<agr MapaEdificio>>"{
-    class MapaEdificio<<entity>><<root>>{}
-    class GrelhaEdificio<<vo>>{}
+package "<<agr Mapa>>"{
+    class Mapa<<entity>><<root>>{}
+    class MapaPiso<<vo>>{}
+    class MapaLargura<<vo>>{}
+    class MapaProfunidade<<vo>>{}
+    class MapaSaidas<<vo>>{}
+    class MapaElevador<<vo>>{}
+    class MapaSaidaLocalização<<vo>>{}
 
-    Edificio --> "1" MapaEdificio : "tem"
-    MapaEdificio --> "1" GrelhaEdificio
+    Piso "1" <-- Mapa
+    Mapa --> "1" MapaPiso
+    Mapa --> "1" MapaLargura
+    Mapa --> "1" MapaProfunidade
+    Mapa --> "1" MapaSaidas
+    Mapa --> "1" MapaElevador
+    Mapa --> "1" MapaSaidaLocalização
 }
 
 
@@ -122,10 +131,6 @@ package "<<agr Utente>>"{
     Utente --|> Utilizador
 }
 
-' Faz sentido o drone e o robo existirem por si só?
-package "<<agr Drone>>"{
-
-}
 package "<<agr Robo>>"{
     class Robo<<root>><<entity>>{}
     class NicknameRobo<<vo>>{}

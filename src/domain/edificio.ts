@@ -4,7 +4,6 @@ import { Result } from "../core/logic/Result";
 import { EdificioId } from "./edificioId";
 import { CodigoEdificio } from "./codigoEdificio";
 import { Guard } from "../core/logic/Guard";
-import { MapaEdificio } from "./mapaEdificio"
 
 
 interface EdificioProps {
@@ -12,7 +11,6 @@ interface EdificioProps {
   nomeOpcionalEdificio: string;
   descricaoEdificio: string;
   dimensaoMaximaPiso: number;
-  mapaEdificio: MapaEdificio;
 }
 
 export class Edificio extends AggregateRoot<EdificioProps> {
@@ -40,10 +38,6 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return this.props.dimensaoMaximaPiso;
   }
 
-  get mapa (): MapaEdificio {
-    return this.props.mapaEdificio;
-  }
-
   set codigo (value : string) {
     this.props.codigoEdificio = CodigoEdificio.create(value).getValue();
   }
@@ -60,10 +54,6 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     this.props.dimensaoMaximaPiso = value;
   }
 
-  set mapa (value : MapaEdificio) {
-    this.props.mapaEdificio = value;
-  }
-
   private constructor (props: EdificioProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -77,7 +67,6 @@ export class Edificio extends AggregateRoot<EdificioProps> {
       { argument: props.descricaoEdificio, argumentName: 'descricaoEdificio' },
       { argument: props.dimensaoMaximaPiso, argumentName: 'dimensaoMaximaEdificio' },
       { argument: props.nomeOpcionalEdificio, argumentName: 'nomeOpcionalEdificio' },
-      { argument: props.mapaEdificio, argumentName: 'mapaEdificio' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

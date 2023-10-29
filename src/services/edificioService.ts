@@ -4,13 +4,11 @@ import IEdificioDTO from '../dto/IEdificioDTO';
 import { Edificio } from "../domain/edificio";
 import { Piso } from "../domain/piso";
 import IEdificioRepo from '../services/IRepos/IEdificioRepo';
-import IMapaEdificioRepo from '../services/IRepos/IMapaEdificioRepo';
+import IMapaEdificioRepo from './IRepos/IMapaPisoRepo';
 import IEdificioService from './IServices/IEdificioService';
 import { Result } from "../core/logic/Result";
 import { EdificioMap } from "../mappers/EdificioMap";
 import { CodigoEdificio } from '../domain/codigoEdificio';
-import { MapaEdificio } from '../domain/mapaEdificio';
-
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -56,7 +54,6 @@ export default class EdificioService implements IEdificioService {
         descricaoEdificio: edificioDTO.descricao,
         dimensaoMaximaPiso: edificioDTO.dimensaoMaxima,
         nomeOpcionalEdificio: edificioDTO.nomeOpcional,
-        mapaEdificio: mapa
       });
 
       if (edificioOrError.isFailure) {
@@ -77,7 +74,6 @@ export default class EdificioService implements IEdificioService {
   public async updateEdificio(edificioDTO: IEdificioDTO): Promise<Result<IEdificioDTO>> {
     try {
       const edificio = await this.edificioRepo.findByCodigo(edificioDTO.codigoEdificio);
-      const mapa = await this.mapaRepo.findByDomainId(edificioDTO.mapaEdificio); // Alterar esta pesquisa por algo que o identifique para além do ID.
 
       if (edificio === null) {
         return Result.fail<IEdificioDTO>("Edificio não encontrado");
@@ -85,7 +81,6 @@ export default class EdificioService implements IEdificioService {
         edificio.codigo = edificioDTO.codigoEdificio;
         edificio.descricao = edificioDTO.descricao;
         edificio.dimensaoMaxima = edificioDTO.dimensaoMaxima;
-        edificio.mapa = mapa;
         await this.edificioRepo.save(edificio);
 
         const edificioDTOResult = EdificioMap.toDTO( edificio ) as IEdificioDTO;

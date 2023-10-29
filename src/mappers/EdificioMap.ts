@@ -16,7 +16,6 @@ export class EdificioMap extends Mapper<Edificio> {
       nomeOpcional: edificio.nomeOpcional,
       descricao: edificio.descricao,
       dimensaoMaxima: edificio.dimensaoMaxima,
-      mapaEdificio: edificio.mapa.id.toString(),
     } as IEdificioDTO;
   }
 
@@ -27,7 +26,6 @@ export class EdificioMap extends Mapper<Edificio> {
       nomeOpcionalEdificio: raw.nomeOpcional,
       descricaoEdificio: raw.descricao,
       dimensaoMaximaPiso: raw.dimensaoMaxima,
-      mapaEdificio: raw.mapa,
     }, new UniqueEntityID(raw.domainId));
 
     edificioOrError.isFailure ? console.log(edificioOrError.error) : '';
@@ -43,7 +41,6 @@ export class EdificioMap extends Mapper<Edificio> {
       nomeOpcional: edificio.nomeOpcional,
       descricao: edificio.descricao,
       dimensao: edificio.dimensaoMaxima,
-      mapaEdificio: edificio.mapa.id.toValue()
     }
   }
 }
