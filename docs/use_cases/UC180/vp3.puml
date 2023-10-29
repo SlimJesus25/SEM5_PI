@@ -1,0 +1,119 @@
+@startuml sd
+
+
+participant PisoRoute as route
+participant InterfacePisoController as ictrl
+participant PisoController as ctrl
+participant InterfacePisoService as isvc
+participant PisoService as svc
+participant InterfaceEdificioRepo as ierepo
+participant InterfacePisoRepo as irepo
+participant PisoRepo as repo
+participant EdificioRepo as erepo
+participant PisoMapper as mapper
+participant EdificioMapper as emapper
+participant InterfacePisoPersistence as ischema
+participant InterfaceEdificioPersistence as ieschema
+participant PisoSchema as schema
+participant EdificioSchema as eschema
+participant ConfigurationFile as conf
+
+
+route -> ictrl++ : listMinMax(req,res,next)
+route++
+ictrl -> ctrl : listMinMax(req,res,next)
+ctrl++
+ctrl -> conf : injeta o serviço do piso
+conf++
+conf --> ctrl
+conf--
+ctrl -> isvc : listMinMax(listMinMaxDTO)
+isvc++
+isvc -> svc : listMinMax(listMinMaxDTO)
+svc++
+svc -> conf : injeta o repositório do piso
+conf++
+conf --> svc
+conf--
+svc -> conf : injeta o repositório do edificio
+conf++
+conf --> svc
+conf--
+
+svc -> ierepo: findAll()
+ierepo++
+ierepo -> erepo : findAll()
+
+
+erepo++
+erepo -> conf : injeta o schema do edificio
+conf++
+conf --> erepo
+conf--
+erepo -> ieschema : find(query)
+ieschema++
+ieschema -> eschema : find(query)
+eschema++
+eschema --> ieschema
+eschema--
+ieschema --> erepo
+ieschema--
+loop preencher array de edificios 
+erepo -> emapper : toDomain(edificioRecord)
+emapper++
+emapper --> erepo
+end
+emapper--
+erepo--> ierepo
+erepo--
+ierepo --> svc
+ierepo--
+
+
+
+loop percorrer todos os edificios
+svc -> irepo : findByEdificio(codigo)
+irepo++
+irepo -> repo : findByEdificio(codigo)
+repo++
+repo -> conf : injeta o schema do piso
+conf++
+conf --> repo
+conf--
+repo -> ischema : find(query)
+ischema++
+ischema -> schema : find(query)
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+ischema--
+loop preencher array de pisos
+repo -> mapper : toDomain(pisoRecord)
+mapper++
+mapper --> repo
+end
+mapper--
+repo--> irepo
+repo--
+irepo --> svc
+irepo--
+svc -> mapper : toDTO(pisoResult)
+mapper++
+mapper --> svc
+mapper--
+svc --> isvc 
+svc--
+isvc --> ctrl
+isvc--
+ctrl --> ictrl
+end
+
+
+alt caso de sucesso
+    ctrl --> ictrl : Envia um código 200 (GET)
+else caso de insucesso
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+end
+ctrl--
+ictrl --> route
