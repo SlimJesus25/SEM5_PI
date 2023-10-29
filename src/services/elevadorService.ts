@@ -47,7 +47,12 @@ export default class ElevadorService implements IElevadorService {
       const edificio = await this.edificioRepo.findByCodigo(elevadorDTO.edificio);
 
       let pisos: Piso[] = [];
-      elevadorDTO.pisosServidos.forEach(async designacao => pisos.push(await this.pisoRepo.findByDesignacao(designacao)));
+      elevadorDTO.pisosServidos.forEach(async designacao => {
+        const piso = await this.pisoRepo.findByDesignacao(designacao);
+        if(piso == null)
+          return Result.fail<IElevadorDTO>("Não foi encontrado nenhum piso com a designação " + designacao);
+        pisos.push(piso)
+      });
 
       const elevadorOrError = Elevador.create({
         descricao: elevadorDTO.descricao,

@@ -3,6 +3,7 @@ import { Mapper } from "../core/infra/Mapper";
 import IEdificioDTO from "../dto/IEdificioDTO";
 import { Edificio } from "../domain/edificio";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+import { CodigoEdificio } from "../domain/codigoEdificio";
 
 
 
@@ -21,8 +22,10 @@ export class EdificioMap extends Mapper<Edificio> {
 
   public static async toDomain (raw: any): Promise<Edificio> {
     
+    const codigo = CodigoEdificio.create(raw.codigo).getValue();
+
     const edificioOrError = Edificio.create({
-      codigoEdificio: raw.codigo,
+      codigoEdificio: codigo,
       nomeOpcionalEdificio: raw.nomeOpcional,
       descricaoEdificio: raw.descricao,
       dimensaoMaximaPiso: raw.dimensaoMaxima,

@@ -78,7 +78,7 @@ export default class ElevadorRepo implements IElevadorRepo {
   
 
   public async findByNumeroIdentificativo(value: number): Promise<Elevador> {
-      const query = { codigo: value.toString() };
+      const query = { numeroIdentificativo: value };
       const elevadorRecord = await this.elevadorSchema.findOne(query as FilterQuery<IElevadorPersistence & Document>);
 
       if(elevadorRecord != null)

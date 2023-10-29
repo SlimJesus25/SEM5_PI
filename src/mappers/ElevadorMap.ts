@@ -36,7 +36,7 @@ export class ElevadorMap extends Mapper<Elevador> {
     const pisoRepo = Container.get(PisoRepo);
 
     let pisoArray : Piso[] = [];
-    raw.pisos.forEach(async v => pisoArray.push( await pisoRepo.findByDesignacao(v)));
+    raw.pisosServidos.forEach(async v => pisoArray.push( await pisoRepo.findByDesignacao(v)));
 
     const edificio = await edificioRepo.findByCodigo(raw.edificio);
     

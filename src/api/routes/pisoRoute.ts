@@ -17,8 +17,8 @@ export default (app: Router) => {
   route.post('/createPiso',
   celebrate({
     body: Joi.object({
-      descricaoPiso: Joi.string(),
-      designacaoPiso: Joi.string().required(),
+      descricao: Joi.string(),
+      designacao: Joi.string().required(),
       edificio: Joi.string().required()
     })
   }),
