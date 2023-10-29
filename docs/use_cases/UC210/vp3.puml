@@ -95,13 +95,14 @@ svc -> mapper : toDTO(pisoResult)
 mapper++
 mapper --> svc
 mapper--
+end
 svc --> isvc 
 svc--
 isvc --> ctrl
 isvc--
 ctrl --> ictrl
 ctrl--
-end
+
 
 alt caso de sucesso
     ctrl --> ictrl : Envia um código 200 (GET)
