@@ -4,7 +4,6 @@ import { error } from 'console';
 import { Elevador } from '../src/domain/elevador';
 import { Piso } from '../src/domain/piso';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Sala } from '../src/domain/sala';
 import { CategoriaSala } from '../src/domain/categoriaSala';
 

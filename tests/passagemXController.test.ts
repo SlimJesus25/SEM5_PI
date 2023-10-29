@@ -13,7 +13,6 @@ import { Piso } from '../src/domain/piso';
 import { Sala } from '../src/domain/sala';
 import { Elevador } from '../src/domain/elevador';
 import { CategoriaSala } from '../src/domain/categoriaSala';
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Passagem } from '../src/domain/passagem';
 
 
@@ -73,16 +72,12 @@ describe('passagem controller', function () {
 		let next: Partial<NextFunction> = () => { };
 
 		//	
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
 
 		const edificio1 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -99,16 +94,11 @@ describe('passagem controller', function () {
 
 		//
 
-		const dummyMapaEdificio2 = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio2 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
-			mapaEdificio: dummyMapaEdificio2
 		}).getValue();
 
 		const dummyPiso3 = Piso.create({
@@ -181,16 +171,12 @@ describe('passagem controller', function () {
 		};
 		let next: Partial<NextFunction> = () => { };
 
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
 
 		const edificio1 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -207,16 +193,12 @@ describe('passagem controller', function () {
 
 		//
 
-		const dummyMapaEdificio2 = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
 
 		const edificio2 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
-			mapaEdificio: dummyMapaEdificio2
 		}).getValue();
 
 		const dummyPiso3 = Piso.create({
@@ -277,16 +259,11 @@ describe('passagem controller', function () {
 		};
 		let next: Partial<NextFunction> = () => { };
 
-		const dummyMapaEdificio2 = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio2 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
-			mapaEdificio: dummyMapaEdificio2
 		}).getValue();
 
 		let passagemRepoInstance = Container.get("PassagemRepo");
@@ -322,28 +299,20 @@ describe('passagem controller', function () {
 		let next: Partial<NextFunction> = () => { };
 
 		//	
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
 
 		const edificio1 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
-		const dummyMapaEdificio2 = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
 
 		const edificio2 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
-			mapaEdificio: dummyMapaEdificio2
 		}).getValue();
 
 		let passagemRepoInstance = Container.get("PassagemRepo");

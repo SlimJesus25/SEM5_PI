@@ -6,7 +6,6 @@ import { Piso } from '../src/domain/piso';
 import { Sala } from '../src/domain/sala';
 import { Edificio } from '../src/domain/edificio';
 import { CategoriaSala } from '../src/domain/categoriaSala';
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Container } from 'typedi';
 
@@ -54,16 +53,11 @@ describe('passagem map', () => {
         .withArgs('EdificioRepo').returns(edificioRepoInstance)
         .withArgs('PisoRepo').returns(pisoRepoInstance);
 
-    const dummyMapaEdificio = MapaEdificio.create({
-        grelha: [["2"], ["4"]]
-    }).getValue();
-
     const edificio = Edificio.create({
         dimensaoMaximaPiso: 200,
         descricaoEdificio: "Edificio Acolhe Malucos",
         nomeOpcionalEdificio: "Departamento de Engenharia Informática",
         codigoEdificio: CodigoEdificio.create("B").getValue(),
-        mapaEdificio: dummyMapaEdificio
     }).getValue();
 
     const dummyPiso = Piso.create({
@@ -88,16 +82,11 @@ describe('passagem map', () => {
         edificio: edificio,
     });
 
-    const dummyMapaEdificio2 = MapaEdificio.create({
-        grelha: [["2"], ["4"]]
-    }).getValue();
-
     const edificio2 = Edificio.create({
         dimensaoMaximaPiso: 200,
         descricaoEdificio: "Edificio principal de engenharia civil",
         nomeOpcionalEdificio: "Departamento de Engenharia Civil",
         codigoEdificio: CodigoEdificio.create("C").getValue(),
-        mapaEdificio: dummyMapaEdificio2
     }).getValue();
 
     const dummyPiso3 = Piso.create({

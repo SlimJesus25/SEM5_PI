@@ -2,23 +2,19 @@ import * as sinon from 'sinon';
 import { Elevador } from '../src/domain/elevador';
 
 import { ElevadorMap } from '../src/mappers/ElevadorMap'
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Edificio } from '../src/domain/edificio';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Piso } from '../src/domain/piso';
 
 describe('elevador map', () => {
 
-    const dummyMapaEdificio = MapaEdificio.create({
-        grelha: [["2"], ["4"]]
-    }).getValue();
+
 
     const edificio = Edificio.create({
         dimensaoMaximaPiso: 200,
         descricaoEdificio: "Edificio Acolhe Malucos",
         nomeOpcionalEdificio: "Departamento de Engenharia Informática",
         codigoEdificio: CodigoEdificio.create("B").getValue(),
-        mapaEdificio: dummyMapaEdificio
     }).getValue();
 
     const dummyPiso = Piso.create({
