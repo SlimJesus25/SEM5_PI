@@ -40,13 +40,19 @@ export default class EdificioService implements IEdificioService {
       const edificio = await this.edificioRepo.findByCodigo(edificioDTO.codigoEdificio);
 
       if(edificio != null)
-      return Result.fail<IEdificioDTO>("Edifício com o código " + edificioDTO.codigoEdificio + " já existe!");
+        return Result.fail<IEdificioDTO>("Edifício com o código " + edificioDTO.codigoEdificio + " já existe!");
+
+      const codigo = CodigoEdificio.create(edificioDTO.codigoEdificio).getValue();
+      const descricao = edificioDTO.descricaoEdificio;
+      const dimensao = edificioDTO.dimensaoMaximaEdificio;
+      const nomeOpcional = edificioDTO.nomeOpcionalEdificio;
+
 
       const edificioOrError = Edificio.create({
-        codigoEdificio: CodigoEdificio.create(edificioDTO.codigoEdificio).getValue(),
-        descricaoEdificio: edificioDTO.descricao,
-        dimensaoMaximaPiso: edificioDTO.dimensaoMaxima,
-        nomeOpcionalEdificio: edificioDTO.nomeOpcional,
+        codigoEdificio: codigo,
+        descricaoEdificio: descricao,
+        dimensaoMaximaPiso: dimensao,
+        nomeOpcionalEdificio: nomeOpcional
       });
 
       if (edificioOrError.isFailure) {
@@ -72,8 +78,8 @@ export default class EdificioService implements IEdificioService {
         return Result.fail<IEdificioDTO>("Edificio não encontrado");
       }else {
         edificio.codigo = edificioDTO.codigoEdificio;
-        edificio.descricao = edificioDTO.descricao;
-        edificio.dimensaoMaxima = edificioDTO.dimensaoMaxima;
+        edificio.descricao = edificioDTO.descricaoEdificio;
+        edificio.dimensaoMaxima = edificioDTO.dimensaoMaximaEdificio;
         await this.edificioRepo.save(edificio);
 
         const edificioDTOResult = EdificioMap.toDTO( edificio ) as IEdificioDTO;

@@ -13,9 +13,9 @@ export class EdificioMap extends Mapper<Edificio> {
     return {
       id: edificio.id.toString(),
       codigoEdificio: edificio.codigo,
-      nomeOpcional: edificio.nomeOpcional,
-      descricao: edificio.descricao,
-      dimensaoMaxima: edificio.dimensaoMaxima,
+      nomeOpcionalEdificio: edificio.nomeOpcional,
+      descricaoEdificio: edificio.descricao,
+      dimensaoMaximaEdificio: edificio.dimensaoMaxima,
     } as IEdificioDTO;
   }
 
@@ -40,7 +40,7 @@ export class EdificioMap extends Mapper<Edificio> {
       codigo: edificio.codigo,
       nomeOpcional: edificio.nomeOpcional,
       descricao: edificio.descricao,
-      dimensao: edificio.dimensaoMaxima,
+      dimensaoMaxima: edificio.dimensaoMaxima,
     }
   }
 }

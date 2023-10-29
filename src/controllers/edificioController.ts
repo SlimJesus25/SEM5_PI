@@ -16,6 +16,7 @@ export default class EdificioController implements IEdificioController /* TODO: 
 
   public async createEdificio(req: Request, res: Response, next: NextFunction) {
     try {
+      const a = req.body as IEdificioDTO;
       const edificioOrError = await this.edificioServiceInstance.createEdificio(req.body as IEdificioDTO) as Result<IEdificioDTO>;
         
       if (edificioOrError.isFailure) {

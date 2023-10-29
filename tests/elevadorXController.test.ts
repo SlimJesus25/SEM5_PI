@@ -8,7 +8,6 @@ import IElevadorService from "../src/services/IServices/IElevadorService";
 import ElevadorController from "../src/controllers/elevadorController";
 import IElevadorDTO from '../src/dto/IElevadorDTO';
 import { Elevador } from '../src/domain/elevador'
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Edificio } from '../src/domain/edificio';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Piso } from '../src/domain/piso';
@@ -201,17 +200,11 @@ describe('elevador controller', function () {
 		let pisoRepoInstance = Container.get("PisoRepo");
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
-
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -298,17 +291,11 @@ describe('elevador controller', function () {
 		let pisoRepoInstance = Container.get("PisoRepo");
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
-
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -415,17 +402,11 @@ describe('elevador controller', function () {
 		let pisoRepoInstance = Container.get("PisoRepo");
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
-
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -558,16 +539,12 @@ describe('elevador controller', function () {
 		};
 		let next: Partial<NextFunction> = () => { };
 
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
 
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -633,17 +610,11 @@ describe('elevador controller', function () {
 		let elevadorRepoInstance = Container.get("ElevadorRepo");
 		let elevadorServiceInstance = Container.get("ElevadorService");
 
-
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({

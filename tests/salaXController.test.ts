@@ -9,7 +9,6 @@ import SalaController from "../src/controllers/salaController";
 import ISalaDTO from '../src/dto/ISalaDTO';
 import { Sala } from '../src/domain/sala';
 import { CategoriaSala } from '../src/domain/categoriaSala';
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Edificio } from '../src/domain/edificio';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Piso } from '../src/domain/piso';
@@ -140,16 +139,11 @@ describe('sala controller', function () {
 		let pisoRepoInstance = Container.get("PisoRepo");
 		let salaServiceInstance = Container.get("SalaService");
 
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -220,16 +214,11 @@ describe('sala controller', function () {
 		let pisoRepoInstance = Container.get("PisoRepo");
 		let salaServiceInstance = Container.get("SalaService");
 
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({
@@ -287,16 +276,11 @@ describe('sala controller', function () {
 		let pisoRepoInstance = Container.get("PisoRepo");
 		let salaServiceInstance = Container.get("SalaService");
 
-		const dummyMapaEdificio = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
-
 		const edificio = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
-			mapaEdificio: dummyMapaEdificio
 		}).getValue();
 
 		const dummyPiso = Piso.create({

@@ -6,20 +6,15 @@ import { CategoriaSala } from '../src/domain/categoriaSala';
 import { Piso } from '../src/domain/piso';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Edificio } from '../src/domain/edificio';
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 
 describe('sala map', () => {
 
-    const dummyMapaEdificio = MapaEdificio.create({
-        grelha: [["2"], ["4"]]
-    }).getValue();
 
     const edificio = Edificio.create({
         dimensaoMaximaPiso: 200,
         descricaoEdificio: "Edificio Acolhe Malucos",
         nomeOpcionalEdificio: "Departamento de Engenharia Informática",
         codigoEdificio: CodigoEdificio.create("B").getValue(),
-        mapaEdificio: dummyMapaEdificio
     }).getValue();
 
     const dummyPiso = Piso.create({
