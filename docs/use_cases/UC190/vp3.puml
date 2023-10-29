@@ -72,10 +72,9 @@ mapper--
 repo--> irepo
 repo--
 irepo --> svc
-irepo--
+
 
 svc -> ierepo : findByCodigo(edificio)
-irepo++
 ierepo -> erepo : findByCodigo(edificio)
 erepo++
 erepo -> conf : injeta o schema dos edificios
@@ -104,7 +103,6 @@ model++
 model --> svc
 model--
 svc -> irepo: save(piso)
-irepo++
 irepo -> repo :save(piso)
 repo++
 repo -> ischema : findOne(query)
