@@ -123,7 +123,7 @@ isvc --> ctrl
 isvc--
 ctrl --> ictrl
 alt caso de sucesso
-    ctrl --> ictrl : Envia um código 201 (GET)
+    ctrl --> ictrl : Envia um código 201 (PUT)
 else caso de insucesso
     ctrl --> ictrl : Envia um código 404 (NOT FOUND)
 end
