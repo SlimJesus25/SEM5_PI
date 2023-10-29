@@ -8,14 +8,19 @@ participant InterfacePisoService as isvc
 participant PisoService as svc
 participant InterfacePisoRepo as irepo
 participant InterfaceSalaRepo as isrepo
+participant InterfaceEdificioRepo as ierepo
 participant PisoRepo as repo
 participant SalaRepo as srepo
+participant EdificioRepo as erepo
 participant PisoMapper as mapper
-participant InterfacePisoPersistence as ischema
-participant PisoSchema as schema
 participant SalaMapper as smapper
+participant EdificioMapper as emapper
+participant InterfacePisoPersistence as ischema
 participant InterfaceSalaPersistence as isschema
+participant InterfaceEdificioPersistence as ieschema
+participant PisoSchema as schema
 participant SalaSchema as sschema
+participant EdificioSchema as eschema
 participant ConfigurationFile as conf
 participant Piso as model
 
@@ -37,6 +42,10 @@ conf++
 conf --> svc
 conf--
 svc -> conf : injeta o repositório da sala
+conf++
+conf --> svc
+conf--
+svc -> conf : injeta o repositório do edificio
 conf++
 conf --> svc
 conf--
@@ -64,32 +73,32 @@ repo--> irepo
 repo--
 irepo --> svc
 irepo--
-loop
-svc -> isrepo : findByDesignacao(designacao)
-isrepo++
-isrepo -> srepo : findByDesignacao(designacao)
-srepo++
-srepo -> conf : injeta o schema das salas
+
+svc -> ierepo : findByCodigo(edificio)
+irepo++
+ierepo -> erepo : findByCodigo(edificio)
+erepo++
+erepo -> conf : injeta o schema dos edificios
 conf++
-conf --> srepo
+conf --> erepo
 conf--
-srepo -> isschema : findOne(query)
-isschema++
-isschema -> sschema : findOne(query)
-sschema++
-sschema --> isschema
-sschema--
-isschema --> srepo
-isschema--
-srepo -> smapper : toDomain(salaRecord)
-smapper++
-smapper --> srepo
-smapper--
-srepo --> isrepo
-srepo--
-isrepo --> svc
-isrepo--
-end
+erepo -> ieschema : findOne(query)
+ieschema++
+ieschema -> eschema : findOne(query)
+eschema++
+eschema --> ieschema
+eschema--
+ieschema --> erepo
+ieschema--
+erepo -> emapper : toDomain(edificioRecord)
+emapper++
+emapper --> erepo
+emapper--
+erepo--> ierepo
+erepo--
+ierepo --> svc
+ierepo--
+
 svc -> model : create()
 model++
 model --> svc
