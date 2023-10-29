@@ -1,7 +1,6 @@
 import * as sinon from 'sinon';
 import { Edificio } from '../src/domain/edificio';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { EdificioMap } from '../src/mappers/EdificioMap'
 
 
@@ -14,7 +13,6 @@ describe('edificio map', () => {
             "mapaEdificio": "1"
           };
         
-      const dummyMapaEdificio = MapaEdificio.create({grelha :[["2"], ["4"]]}).getValue();
 
 
       const edificio = Edificio.create({
@@ -22,7 +20,6 @@ describe('edificio map', () => {
         descricaoEdificio : body.descricaoEdificio,
         nomeOpcionalEdificio : body.nomeOpcionalEdificio,
         codigoEdificio : CodigoEdificio.create(body.codigoEdificio).getValue(),
-        mapaEdificio : dummyMapaEdificio
       }).getValue();
 
 
@@ -42,7 +39,6 @@ describe('edificio map', () => {
         dimensao: 200,
         domainId: "123".toString(),
         id: "1",
-        mapaEdificio: dummyMapaEdificio.id.toString(), 
         nomeOpcional: "Edificio Francisco",
     };
 
@@ -52,7 +48,6 @@ describe('edificio map', () => {
         descricao: "Edificio Acolhe Malucos",
         nomeOpcional: "Edificio Francisco",
         codigoEdificio: "2324",
-        mapaEdificio: dummyMapaEdificio.id.toString()
     }
 
     const expectedDomain = {
@@ -61,7 +56,6 @@ describe('edificio map', () => {
         descricao: "Edificio Acolhe Malucos",
         nomeOpcional: "Edificio Francisco",
         codigoEdificio: "2324",
-        mapaEdificio: dummyMapaEdificio.id.toString()
     }
 
 
