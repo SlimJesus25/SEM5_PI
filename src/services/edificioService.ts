@@ -15,7 +15,6 @@ export default class EdificioService implements IEdificioService {
   constructor(
       //@Inject(config.repos.role.name) private edificioRepo : IEdificioRepo, // joao :repos.edificio ?
       @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo,
-      @Inject(config.repos.mapaEdificio.name) private mapaRepo: IMapaEdificioRepo // joao: alterado para mapaEdifico
   ) {}
 
   public async getEdificio( edificioId: string): Promise<Result<IEdificioDTO>> {
@@ -43,12 +42,6 @@ export default class EdificioService implements IEdificioService {
       if(edificio != null)
       return Result.fail<IEdificioDTO>("Edifício com o código " + edificioDTO.codigoEdificio + " já existe!");
 
-      // Venancio: Substituir isto por algo que o identifique para além do ID.
-      const mapa = await this.mapaRepo.findByDomainId(edificioDTO.mapaEdificio);
-    
-      if (mapa == null){
-        return Result.fail<IEdificioDTO>('O mapa informado nao existe');
-      }
       const edificioOrError = Edificio.create({
         codigoEdificio: CodigoEdificio.create(edificioDTO.codigoEdificio).getValue(),
         descricaoEdificio: edificioDTO.descricao,
