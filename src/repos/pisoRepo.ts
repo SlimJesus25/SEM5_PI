@@ -80,8 +80,8 @@ export default class PisoRepo implements IPisoRepo {
         return null;
   }
 
-  public async findByEdificio(value: string): Promise<Piso[]>{
-    const query = { 'edificio.codigoEdificio.value' : value.toString()};
+  public async findByEdificio(codigoEdificio: string): Promise<Piso[]>{
+    const query = { edificio : codigoEdificio};
     const pisoSchema = await this.pisoSchema.find(query);
     try {
       if (pisoSchema === null) {
