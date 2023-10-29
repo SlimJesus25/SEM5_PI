@@ -307,13 +307,11 @@ describe('edificio controller', function () {
 	it('edificioController + edificioService integration test using spy on edificioService, success creation case', async function () {
 		// Arrange
 		let body = {
-			"dimensaoMaximaPiso": 200,
-			"descricaoEdificio": "Edificio Acolhe Malucos",
-			"nomeOpcionalEdificio": "Edificio Francisco",
-			"codigoEdificio": "2324",
-			"elevadores": "1",
-			"pisos": ["1", "2", "3"],
-			"mapaEdificio": "1"
+			dimensaoMaximaPiso: 200,
+			descricao: "Edificio Acolhe Malucos",
+			nomeOpcional: "Edificio Francisco",
+			codigoEdificio: "2324",
+			mapaEdificio: "1",
 		};
 
 		let req: Partial<Request> = {};
@@ -325,22 +323,24 @@ describe('edificio controller', function () {
 		let next: Partial<NextFunction> = () => { };
 
 		let edificioRepoInstance = Container.get("EdificioRepo");
-		sinon.stub(edificioRepoInstance, "findByCodigo").returns(null);
+		let mapaEdificioRepoInstance = Container.get("MapaEdificioRepo");
+		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(null);
+		const dummyMapaEdificio2 = MapaEdificio.create({
+			grelha: [["2"], ["4"]]
+		}).getValue();
+
+		const edificio2 = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Edificio Francisco",
+			codigoEdificio: CodigoEdificio.create("2324").getValue(),
+			mapaEdificio: dummyMapaEdificio2
+		}).getValue();
+		sinon.stub(mapaEdificioRepoInstance, "findByDomainId").resolves(dummyMapaEdificio2);
 
 
+		sinon.stub(edificioRepoInstance, "save").resolves(edificio2);
 
-		const dummyMapaEdificio = MapaEdificio.create({ grelha: [["2"], ["4"]] }).getValue();
-
-
-		sinon.stub(edificioRepoInstance, "save").returns(new Promise<Edificio>((resolve, reject) => {
-			resolve(Edificio.create({
-				dimensaoMaximaPiso: body.dimensaoMaximaPiso,
-				descricaoEdificio: body.descricaoEdificio,
-				nomeOpcionalEdificio: body.nomeOpcionalEdificio,
-				codigoEdificio: CodigoEdificio.create(body.codigoEdificio).getValue(),
-				mapaEdificio: dummyMapaEdificio
-			}).getValue())
-		}));
 
 		let edificioServiceInstance = Container.get("EdificioService");
 		const edificioServiceSpy = sinon.spy(edificioServiceInstance, "createEdificio");
@@ -357,8 +357,6 @@ describe('edificio controller', function () {
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Edificio Francisco",
 			"codigoEdificio": "2324",
-			"elevadores": "1",
-			"pisos": ["1", "2", "3"],
 			"mapaEdificio": "1"
 		}));
 		sinon.assert.calledOnce(edificioServiceSpy);
@@ -374,8 +372,6 @@ describe('edificio controller', function () {
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Edificio Francisco",
 			"codigoEdificio": "2324",
-			"elevadores": "1",
-			"pisos": ["1", "2", "3"],
 			"mapaEdificio": "1"
 		};
 		let req: Partial<Request> = {};

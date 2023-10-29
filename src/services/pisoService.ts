@@ -10,6 +10,8 @@ import ISalaRepo from '../services/IRepos/ISalaRepo';
 import IListPisosDTO from "../dto/IListPisosDTO"
 import IEdificioRepo from './IRepos/IEdificioRepo';
 import IListMinMaxDTO from '../dto/IListMinMaxDTO';
+import IEdificioDTO from '../dto/IEdificioDTO';
+import { EdificioMap } from '../mappers/EdificioMap';
 
 @Service()
 export default class PisoService implements IPisoService {
@@ -124,7 +126,8 @@ export default class PisoService implements IPisoService {
         return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
       }
       
-      let edificiosDTO : IEdificioDTO[];
+      let edificiosDTO : IEdificioDTO[] = [];
+      /*
 
       (await edificios).forEach((edificio) => {
         const numPisos = edificio.pisos.length;
@@ -132,8 +135,9 @@ export default class PisoService implements IPisoService {
         if (numPisos > minMax.min && numPisos < minMax.max) {
           edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
         }
+        
       });
-
+      */
       return Result.ok<IEdificioDTO[]>( edificiosDTO )
     } catch (e) {
       throw e;
