@@ -24,7 +24,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
       const passagemOrError = await this.passagemServiceInstance.createPassagem(req.body as IPassagemDTO) as Result<IPassagemDTO>;
         
       if (passagemOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + passagemOrError.errorValue());
       }
 
       const passagemDTO = passagemOrError.getValue();
@@ -40,7 +40,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
       const passagemOrError = await this.passagemServiceInstance.updatePassagem(req.body as IPassagemDTO) as Result<IPassagemDTO>;
 
       if (passagemOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + passagemOrError.errorValue());
       }
 
       const passagemDTO = passagemOrError.getValue();
@@ -56,7 +56,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
       const passagemOrError = await this.passagemServiceInstance.listPassagens(req.body as IListPassagensEntreEdificiosDTO) as Result<IPassagemDTO[]>;
 
       if (passagemOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + passagemOrError.errorValue());
       }
 
       const passagemDTO = passagemOrError.getValue();
@@ -72,7 +72,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
         const passagemOrError = await this.passagemServiceInstance.listPisos(req.body as IListPisosComPassagemDTO) as Result<IPisoDTO[]>;
         
         if(passagemOrError.isFailure){
-          return res.status(404).send();
+          return res.status(404).send("Erro: " + passagemOrError.errorValue());
         }
         
         const passagemDTO = passagemOrError.getValue();

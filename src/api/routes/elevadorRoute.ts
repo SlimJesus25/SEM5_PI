@@ -42,7 +42,7 @@ export default (app: Router) => {
   celebrate({
     body: Joi.object({
       descricao: Joi.string(),
-      numeroIdentificativo: Joi.number(),
+      numeroIdentificativo: Joi.number().required(),
       modelo: Joi.string(),
       marca: Joi.string(),
       pisosServidos: Joi.array().items(Joi.string()).min(1).max(20),

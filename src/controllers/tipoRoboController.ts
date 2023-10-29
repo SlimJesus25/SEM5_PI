@@ -19,7 +19,7 @@ export default class TipoRoboController implements ITipoRoboController /* TODO: 
       const tipoRoboOrError = await this.tipoRoboServiceInstance.createTipoRobo(req.body as ITipoRoboDTO) as Result<ITipoRoboDTO>;
         
       if (tipoRoboOrError.isFailure) {
-        return res.status(403).send();
+        return res.status(403).send("Erro: " + tipoRoboOrError.errorValue());
       }
 
       const elevadorDTO = tipoRoboOrError.getValue();
@@ -35,7 +35,7 @@ export default class TipoRoboController implements ITipoRoboController /* TODO: 
       const tipoRoboOrError = await this.tipoRoboServiceInstance.updateTipoRobo(req.body as ITipoRoboDTO) as Result<ITipoRoboDTO>;
 
       if (tipoRoboOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + tipoRoboOrError.errorValue());
       }
 
       const elevadorDTO = tipoRoboOrError.getValue();

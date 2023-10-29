@@ -20,7 +20,7 @@ export default class ElevadorController implements IElevadorController /* TODO: 
       const elevadorOrError = await this.elevadorServiceInstance.createElevador(req.body as IElevadorDTO) as Result<IElevadorDTO>;
         
       if (elevadorOrError.isFailure) {
-        return res.status(403).send();
+        return res.status(403).send("Erro: " + elevadorOrError.errorValue());
       }
 
       const elevadorDTO = elevadorOrError.getValue();
@@ -36,7 +36,7 @@ export default class ElevadorController implements IElevadorController /* TODO: 
       const elevadorOrError = await this.elevadorServiceInstance.updateElevador(req.body as IElevadorDTO) as Result<IElevadorDTO>;
 
       if (elevadorOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + elevadorOrError.errorValue());
       }
 
       const elevadorDTO = elevadorOrError.getValue();
@@ -52,7 +52,7 @@ export default class ElevadorController implements IElevadorController /* TODO: 
       const elevadoresOrError = await this.elevadorServiceInstance.listElevadores(req.body as IListElevadoresDTO) as Result<IElevadorDTO[]>;
 
       if (elevadoresOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + elevadoresOrError.errorValue());
       }
 
       const elevadoresDTO = elevadoresOrError.getValue();

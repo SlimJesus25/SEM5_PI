@@ -19,7 +19,7 @@ export default class RoboController implements IRoboController /* TODO: extends 
       const roboOrError = await this.roboServiceInstance.createRobo(req.body as IRoboDTO) as Result<IRoboDTO>;
         
       if (roboOrError.isFailure) {
-        return res.status(403).send();
+        return res.status(403).send("Erro: " + roboOrError.errorValue());
       }
 
       const roboDTO = roboOrError.getValue();
@@ -35,7 +35,7 @@ export default class RoboController implements IRoboController /* TODO: extends 
       const roboOrError = await this.roboServiceInstance.updateRobo(req.body as IRoboDTO) as Result<IRoboDTO>;
 
       if (roboOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + roboOrError.errorValue());
       }
 
       const roboDTO = roboOrError.getValue();
@@ -51,7 +51,7 @@ export default class RoboController implements IRoboController /* TODO: extends 
       const roboOrError = await this.roboServiceInstance.listRobos() as Result<IRoboDTO[]>;
 
       if (roboOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + roboOrError.errorValue());
       }
 
       const roboDTO = roboOrError.getValue();
@@ -68,7 +68,7 @@ export default class RoboController implements IRoboController /* TODO: extends 
       const roboOrError = await this.roboServiceInstance.inhibitRobo(req.body as IRoboDTO) as Result<IRoboDTO>;
 
       if (roboOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + roboOrError.errorValue());
       }
 
       const roboDTO = roboOrError.getValue();
