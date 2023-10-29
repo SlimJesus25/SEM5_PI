@@ -38,8 +38,8 @@ export default class EdificioController implements IEdificioController /* TODO: 
         return res.status(404).send("Erro: " + edificioOrError.errorValue());
       }
 
-      const elevadorDTO = edificioOrError.getValue();
-      return res.status(201).json( elevadorDTO );
+      const edificioDTO = edificioOrError.getValue();
+      return res.status(201).json( edificioDTO );
     }
     catch (e) {
       return next(e);
