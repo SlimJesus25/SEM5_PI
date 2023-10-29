@@ -22,7 +22,7 @@ export default class PisoController implements IPisoController /* TODO: extends 
       const pisoOrError = await this.pisoServiceInstance.createPiso(req.body as IPisoDTO) as Result<IPisoDTO>;
         
       if (pisoOrError.isFailure) {
-        return res.status(403).send();
+        return res.status(403).send("Erro: " + pisoOrError.errorValue());
       }
 
       const pisoDTO = pisoOrError.getValue();
@@ -38,7 +38,7 @@ export default class PisoController implements IPisoController /* TODO: extends 
       const pisoOrError = await this.pisoServiceInstance.updatePiso(req.body as IPisoDTO) as Result<IPisoDTO>;
 
       if (pisoOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + pisoOrError.errorValue());
       }
 
       const pisoDTO = pisoOrError.getValue();
@@ -54,7 +54,7 @@ export default class PisoController implements IPisoController /* TODO: extends 
       const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
 
       if (pisoOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + pisoOrError.errorValue());
       }
 
       const pisoDTO = pisoOrError.getValue();
@@ -70,7 +70,7 @@ export default class PisoController implements IPisoController /* TODO: extends 
       const edificioOrError = await this.pisoServiceInstance.listMinMax(req.body as IListMinMaxDTO) as Result<IEdificioDTO[]>;
 
       if (edificioOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send("Erro: " + edificioOrError.errorValue());
       }
 
       const edificioDTO = edificioOrError.getValue();

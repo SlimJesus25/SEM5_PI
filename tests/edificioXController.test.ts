@@ -8,7 +8,6 @@ import IElevadorDTO from '../src/dto/IElevadorDTO';
 import IEdificioDTO from '../src/dto/IEdificioDTO';
 import IEdificioService from "../src/services/IServices/IEdificioService";
 import EdificioController from "../src/controllers/edificioController";
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Edificio } from '../src/domain/edificio';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Piso } from '../src/domain/piso';
@@ -65,7 +64,6 @@ describe('edificio controller', function () {
 				"descricao": "Edificio Acolhe Malucos",
 				"nomeOpcional": "Edificio Francisco",
 				"codigoEdificio": "2324",
-				"mapaEdificio": "1"
 			},
 
 		];
@@ -325,18 +323,13 @@ describe('edificio controller', function () {
 		let edificioRepoInstance = Container.get("EdificioRepo");
 		let mapaEdificioRepoInstance = Container.get("MapaEdificioRepo");
 		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(null);
-		const dummyMapaEdificio2 = MapaEdificio.create({
-			grelha: [["2"], ["4"]]
-		}).getValue();
 
 		const edificio2 = Edificio.create({
 			dimensaoMaximaPiso: 200,
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Edificio Francisco",
 			codigoEdificio: CodigoEdificio.create("2324").getValue(),
-			mapaEdificio: dummyMapaEdificio2
 		}).getValue();
-		sinon.stub(mapaEdificioRepoInstance, "findByDomainId").resolves(dummyMapaEdificio2);
 
 
 		sinon.stub(edificioRepoInstance, "save").resolves(edificio2);
@@ -382,7 +375,6 @@ describe('edificio controller', function () {
 		};
 		let next: Partial<NextFunction> = () => { };
 
-		const dummyMapaEdificio = MapaEdificio.create({ grelha: [["2"], ["4"]] }).getValue();
 
 		let edificioRepoInstance = Container.get("EdificioRepo");
 		sinon.stub(edificioRepoInstance, "findByCodigo").returns(new Promise<Edificio>((resolve, reject) => {
@@ -391,7 +383,6 @@ describe('edificio controller', function () {
 				descricaoEdificio: body.descricaoEdificio,
 				nomeOpcionalEdificio: body.nomeOpcionalEdificio,
 				codigoEdificio: CodigoEdificio.create(body.codigoEdificio).getValue(),
-				mapaEdificio: dummyMapaEdificio
 			}).getValue())
 		}));
 
@@ -402,7 +393,6 @@ describe('edificio controller', function () {
 				descricaoEdificio: body.descricaoEdificio,
 				nomeOpcionalEdificio: body.nomeOpcionalEdificio,
 				codigoEdificio: CodigoEdificio.create(body.codigoEdificio).getValue(),
-				mapaEdificio: dummyMapaEdificio
 			}).getValue())
 		}));
 

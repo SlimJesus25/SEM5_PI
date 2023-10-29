@@ -4,7 +4,6 @@ import { error } from 'console';
 import { Elevador } from '../src/domain/elevador';
 import { Piso } from '../src/domain/piso';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
-import { MapaEdificio } from '../src/domain/mapaEdificio';
 import { Sala } from '../src/domain/sala';
 import { CategoriaSala } from '../src/domain/categoriaSala';
 
@@ -51,23 +50,18 @@ describe('Edificio', () => {
       const body4 = [["2"], ["4"]];
 
 
-
-
-      const dummyMapaEdificio = MapaEdificio.create({grelha :[["2"], ["4"]]}).getValue();
       // Venancio: Comentei isto para conseguir correr os testes.
         const edificio = Edificio.create({
           dimensaoMaximaPiso : body.dimensaoMaximaPiso,
           descricaoEdificio : body.descricaoEdificio,
           nomeOpcionalEdificio : body.nomeOpcionalEdificio,
           codigoEdificio : CodigoEdificio.create(body.codigoEdificio).getValue(),
-          mapaEdificio : dummyMapaEdificio
         });
 
         sinon.assert.match(edificio.getValue().codigo, "2324");
         sinon.assert.match(edificio.getValue().nomeOpcional, "Edificio Francisco");
         sinon.assert.match(edificio.getValue().descricao, "Edificio Acolhe Malucos");
         sinon.assert.match(edificio.getValue().dimensaoMaxima, 200);
-        sinon.assert.match(edificio.getValue().mapa, dummyMapaEdificio);
         
     });
 /*
