@@ -146,7 +146,7 @@ ctrl --> ictrl
 alt caso de sucesso
     ctrl --> ictrl : Envia um código 201 (POST)
 else caso de insucesso
-    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+    ctrl --> ictrl : Envia um código 403 (NOT FOUND)
 end
 ctrl--
 ictrl --> route
