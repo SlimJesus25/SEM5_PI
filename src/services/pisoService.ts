@@ -119,25 +119,19 @@ export default class PisoService implements IPisoService {
   // Esta pode fazer a query direta ou utilizar a listPisos (acima) e filtrar em memória.
   public async listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>> {
     try {
-
       const edificios = await this.edificioRepo.findAll();
-
       if (!!edificios){
         return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
       }
-      
-      let edificiosDTO : IEdificioDTO[] = [];
-      /*
-
-      (await edificios).forEach((edificio) => {
-        const numPisos = edificio.pisos.length;
     
+      let edificiosDTO : IEdificioDTO[];
+      edificios.forEach(async (edificio) => {
+        const pisos = await this.pisoRepo.findByEdificio(edificio.codigo);
+        const numPisos = pisos.length;
         if (numPisos > minMax.min && numPisos < minMax.max) {
           edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
         }
-        
       });
-      */
       return Result.ok<IEdificioDTO[]>( edificiosDTO )
     } catch (e) {
       throw e;
