@@ -7,17 +7,16 @@ participant PisoController as ctrl
 participant InterfacePisoService as isvc
 participant PisoService as svc
 participant InterfacePisoRepo as irepo
-participant InterfaceSalaRepo as isrepo
+participant InterfaceEdificioRepo as ierepo
 participant PisoRepo as repo
-participant SalaRepo as srepo
+participant EdificioRepo as erepo
 participant PisoMapper as mapper
 participant InterfacePisoPersistence as ischema
 participant PisoSchema as schema
-participant SalaMapper as smapper
-participant InterfaceSalaPersistence as isschema
-participant SalaSchema as sschema
+participant EdificioMapper as emapper
+participant InterfaceEdificioPersistence as ieschema
+participant EdificioSchema as eschema
 participant ConfigurationFile as conf
-participant Piso as model
 
 
 route -> ictrl++ : updatePiso(req,res,next)
@@ -36,7 +35,7 @@ svc -> conf : injeta o repositório do piso
 conf++
 conf --> svc
 conf--
-svc -> conf : injeta o repositório da sala
+svc -> conf : injeta o repositório do edificio
 conf++
 conf --> svc
 conf--
@@ -63,41 +62,34 @@ mapper--
 repo--> irepo
 repo--
 irepo --> svc
-irepo--
-loop
-svc -> isrepo : findByDesignacao(designacao)
-isrepo++
-isrepo -> srepo : findByDesignacao(designacao)
-srepo++
-srepo -> conf : injeta o schema das salas
+
+svc -> ierepo : findByCodigo(edificio)
+ierepo++
+ierepo -> erepo : findByCodigo(edificio)
+erepo++
+erepo -> conf : injeta o schema dos edificios
 conf++
-conf --> srepo
+conf --> erepo
 conf--
-srepo -> isschema : findOne(query)
-isschema++
-isschema -> sschema : findOne(query)
-sschema++
-sschema --> isschema
-sschema--
-isschema --> srepo
-isschema--
-srepo -> smapper : toDomain(salaRecord)
-smapper++
-smapper --> srepo
-smapper--
-srepo --> isrepo
-srepo--
-isrepo --> svc
-isrepo--
-end
-
-
-
-
-
+erepo -> ieschema : findOne(query)
+ieschema++
+ieschema -> eschema : findOne(query)
+eschema++
+eschema --> ieschema
+eschema--
+ieschema --> erepo
+ieschema--
+erepo -> emapper : toDomain(edificioRecord)
+emapper++
+emapper --> erepo
+emapper--
+erepo--> ierepo
+erepo--
+ierepo --> svc
+ierepo--
 
 svc -> irepo: save(piso)
-irepo++
+
 irepo -> repo :save(piso)
 repo++
 repo -> ischema : findOne(query)
@@ -133,7 +125,7 @@ ctrl --> ictrl
 alt caso de sucesso
     ctrl --> ictrl : Envia um código 201 (GET)
 else caso de insucesso
-    ctrl --> ictrl : Envia um código 403 (NOT FOUND)
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
 end
 ctrl--
 ictrl --> route
