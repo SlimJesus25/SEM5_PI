@@ -1,0 +1,94 @@
+@startuml sd
+
+
+participant RoboRoute as route
+participant InterfaceRoboController as ictrl
+participant RoboController as ctrl
+participant InterfaceRoboService as isvc
+participant RoboService as svc
+participant InterfaceTipoRoboRepo as ierepo
+participant InterfaceRoboRepo as irepo
+participant RoboRepo as repo
+participant TipoRoboRepo as erepo
+participant RoboMapper as mapper
+participant TipoRoboMapper as emapper
+participant InterfaceRoboPersistence as ischema
+participant InterfaceTipoRoboPersistence as ieschema
+participant RoboSchema as schema
+participant TipoRoboSchema as eschema
+participant ConfigurationFile as conf
+
+
+route -> ictrl++ : listRobos(req,res,next)
+route++
+ictrl -> ctrl : listRobos(req,res,next)
+ctrl++
+ctrl -> conf : injeta o serviço do robo
+conf++
+conf --> ctrl
+conf--
+ctrl -> isvc : listRobos()
+isvc++
+isvc -> svc : listRobos()
+svc++
+svc -> conf : injeta o repositório do robo
+conf++
+conf --> svc
+conf--
+svc -> conf : injeta o repositório do tipoRobo
+conf++
+conf --> svc
+conf--
+
+
+
+svc --> irepo : findAll()
+irepo++
+irepo --> repo : findAll()
+repo++
+
+repo -> conf : injeta o schema do robo
+conf++
+conf --> repo
+conf--
+repo -> ischema : find(query)
+ischema++
+ischema -> schema : find(query)
+schema++
+schema --> ischema
+schema--
+ischema --> repo
+ischema--
+loop preencher array de robos
+repo -> mapper : toDomain(roboRecord)
+mapper++
+mapper --> repo
+end
+mapper--
+repo--> irepo
+repo--
+irepo --> svc
+irepo--
+
+loop preencher array de robos
+svc -> mapper : toDTO(roboResult)
+mapper++
+mapper --> svc
+mapper--
+end
+svc --> isvc 
+svc--
+
+isvc --> ctrl
+isvc--
+ctrl --> ictrl
+ctrl--
+
+
+alt caso de sucesso
+    ctrl --> ictrl : Envia um código 200 (GET)
+else caso de insucesso
+    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+end
+ctrl--
+ictrl --> route
