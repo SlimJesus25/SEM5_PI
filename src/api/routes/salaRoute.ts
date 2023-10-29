@@ -16,8 +16,8 @@ export default (app: Router) => {
   route.post('/createSala',
     celebrate({
       body: Joi.object({
-        descricao: Joi.string().required(),
-        categoria: Joi.string().required(),
+        descricao: Joi.string(),
+        categoria: Joi.string(),
         designacao: Joi.string().required(),
         piso: Joi.string().required()
       })
@@ -29,7 +29,7 @@ export default (app: Router) => {
       body: Joi.object({
         descricao: Joi.string(),
         categoria: Joi.string(),
-        designacao: Joi.string(),
+        designacao: Joi.string().required(),
         piso: Joi.string()
       }),
     }),

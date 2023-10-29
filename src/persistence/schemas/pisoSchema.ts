@@ -21,7 +21,7 @@ const Piso = new mongoose.Schema(
     },
 
     edificio: {
-      type: [String],
+      type: String,
       required: [true, 'Introduza o edificio'],
     },
   },

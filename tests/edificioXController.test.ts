@@ -60,9 +60,9 @@ describe('edificio controller', function () {
 		let response: IEdificioDTO[] = [
 			{
 				"id": "1",
-				"dimensaoMaxima": 200,
-				"descricao": "Edificio Acolhe Malucos",
-				"nomeOpcional": "Edificio Francisco",
+				"dimensaoMaximaEdificio": 200,
+				"descricaoEdificio": "Edificio Acolhe Malucos",
+				"nomeOpcionalEdificio": "Edificio Francisco",
 				"codigoEdificio": "2324",
 			},
 
