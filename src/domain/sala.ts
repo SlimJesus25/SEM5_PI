@@ -9,7 +9,7 @@ import { Piso } from "./piso";
 
 interface SalaProps {
   descricaoSala: string;
-  categoriaSala: CategoriaSala;
+  categoriaSala: string;
   designacaoSala: string;
   piso: Piso
 }
@@ -27,8 +27,8 @@ export class Sala extends AggregateRoot<SalaProps> {
     return this.props.descricaoSala;
   }
 
-  get categoria (): CategoriaSala {
-    return Object.values(CategoriaSala)[this.props.categoriaSala.toString()];
+  get categoria (): string {
+    return this.props.categoriaSala;
   }
 
   get designacao (): string {
@@ -43,7 +43,7 @@ export class Sala extends AggregateRoot<SalaProps> {
     this.props.descricaoSala = value;
   }
 
-  set categoria (value: CategoriaSala){
+  set categoria (value: string){
     this.props.categoriaSala = value;
   }
 
@@ -59,14 +59,12 @@ export class Sala extends AggregateRoot<SalaProps> {
     super(props, id);
   }
 
-  public static categoriaValue(categoriaSala : string) : number{
-    if(categoriaSala.toLowerCase() == "anfiteatro")
-      return 1;
-    else if(categoriaSala.toLowerCase() == "gabinete")
-      return 2;
-    else
-      return 0;
-
+  private static categoriaValue(categoriaSala : string) : boolean{
+    Object.keys(CategoriaSala).forEach(v => {
+      if(v.toLowerCase() == categoriaSala)
+        return true;
+    });
+    return false;
   }
 
   public static create (props: SalaProps, id?: UniqueEntityID): Result<Sala> {
@@ -77,6 +75,9 @@ export class Sala extends AggregateRoot<SalaProps> {
       { argument: props.categoriaSala, argumentName: 'categoriaSala' },
       { argument: props.piso, argumentName: 'piso' }
     ];
+
+    if(this.categoriaValue(props.categoriaSala))
+      return Result.fail<Sala>("Categoria inválida!");
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 

@@ -7,6 +7,7 @@ import { SalaMap } from "../mappers/SalaMap";
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { ISalaPersistence } from '../dataschema/ISalaPersistence';
+import { CategoriaSala } from '../domain/categoriaSala';
 
 @Service()
 export default class SalaRepo implements ISalaRepo {
@@ -47,7 +48,7 @@ export default class SalaRepo implements ISalaRepo {
       } else {
         roleDocument.designacao = sala.designacao;
         roleDocument.descricao = sala.descricao;
-        roleDocument.categoria = sala.categoria.toString();
+        roleDocument.categoria = sala.categoria;
         roleDocument.piso = sala.piso.designacao;
         await roleDocument.save();
 
@@ -59,7 +60,7 @@ export default class SalaRepo implements ISalaRepo {
   }
 
   public async findByDesignacao (designacao: string): Promise<Sala>{
-    const query = { designacao: designacao};
+    const query = { designacaoSala: designacao};
     const salaRecord = await this.salaSchema.findOne(query as FilterQuery<ISalaPersistence & Document>);
 
     return salaRecord != null ? SalaMap.toDomain(salaRecord) : null;

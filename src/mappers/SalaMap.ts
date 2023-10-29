@@ -22,15 +22,13 @@ export class SalaMap extends Mapper<Sala> {
 
   public static async toDomain (raw: any): Promise<Sala> {
 
-    const index = Object.values(CategoriaSala).find(k => CategoriaSala[k] == raw.categoriaSala) as CategoriaSala;
-
     const pisoRepo = Container.get(PisoRepo);
 
     const piso = await pisoRepo.findByDesignacao(raw.piso);
 
     const salaOrError = Sala.create({
       descricaoSala: raw.descricaoSala,
-      categoriaSala: index,
+      categoriaSala: raw.categoriaSala,
       designacaoSala: raw.designacaoSala,
       piso: piso
     }, new UniqueEntityID(raw.domainId));
@@ -41,6 +39,7 @@ export class SalaMap extends Mapper<Sala> {
   }
 
   public static toPersistence (sala: Sala): any {
+
     return {
       domainId: sala.id.toString(),
       descricaoSala: sala.descricao,

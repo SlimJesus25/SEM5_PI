@@ -38,6 +38,7 @@ export class PisoMap extends Mapper<Piso> {
   public static toPersistence (piso: Piso): any {
 
     return {
+      domainId: piso.id,
       descricao: piso.descricao,
       designacao: piso.designacao,
       edificio: piso.edificio.codigo,

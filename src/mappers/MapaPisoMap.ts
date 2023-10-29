@@ -1,7 +1,7 @@
 import { Mapper } from "../core/infra/Mapper";
 
 import { Document, Model } from 'mongoose';
-import { IMapaEdificioPersistence } from '../dataschema/IMapaPisoPersistence';
+import { IMapaPisoPersistence } from '../dataschema/IMapaPisoPersistence';
 
 import IMapaEdificioDTO from "../dto/IMapaPisoDTO";
 import { Piso } from "../domain/piso";
@@ -27,7 +27,7 @@ export class MapaPisoMap extends Mapper<MapaPiso> {
     } as IMapaPisoDTO;
   }
 
-  public static toDomain (mapaEdificio: any | Model<IMapaEdificioPersistence & Document> ): MapaPiso {
+  public static toDomain (mapaEdificio: any | Model<IMapaPisoPersistence & Document> ): MapaPiso {
     return null;
   }
 

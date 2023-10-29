@@ -41,8 +41,6 @@ export default class SalaService implements ISalaService {
       if (sala != null)
         return Result.fail<ISalaDTO>("Já existe uma sala com o nome " + sala.designacao);
 
-      const categoria = Object.keys(CategoriaSala).find(key => CategoriaSala[key] === salaDTO.categoria);
-
       const piso = await this.pisoRepo.findByDesignacao(salaDTO.piso);
 
       if (piso == null)
@@ -50,7 +48,7 @@ export default class SalaService implements ISalaService {
 
       const salaOrError = Sala.create({
         "descricaoSala": salaDTO.descricao,
-        "categoriaSala": CategoriaSala[categoria],
+        "categoriaSala": salaDTO.categoria,
         "designacaoSala": salaDTO.designacao,
         "piso": piso
       });
@@ -63,8 +61,8 @@ export default class SalaService implements ISalaService {
 
       await this.salaRepo.save(salaResult);
 
-      const roleDTOResult = SalaMap.toDTO(salaResult) as ISalaDTO;
-      return Result.ok<ISalaDTO>(roleDTOResult)
+      const salaDTOResult = SalaMap.toDTO(salaResult) as ISalaDTO;
+      return Result.ok<ISalaDTO>(salaDTOResult)
     } catch (e) {
       throw e;
     }

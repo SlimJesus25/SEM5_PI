@@ -6,7 +6,6 @@ import IPisoRepo from '../services/IRepos/IPisoRepo';
 import IPisoService from './IServices/IPisoService';
 import { Result } from "../core/logic/Result";
 import { PisoMap } from "../mappers/PisoMap";
-import ISalaRepo from '../services/IRepos/ISalaRepo';
 import IListPisosDTO from "../dto/IListPisosDTO"
 import IEdificioRepo from './IRepos/IEdificioRepo';
 import IListMinMaxDTO from '../dto/IListMinMaxDTO';
@@ -17,7 +16,6 @@ import { EdificioMap } from '../mappers/EdificioMap';
 export default class PisoService implements IPisoService {
   constructor(
       @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo,
-      @Inject(config.repos.sala.name) private salaRepo: ISalaRepo,
       @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo
   ) {}
 

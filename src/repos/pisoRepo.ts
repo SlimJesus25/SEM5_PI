@@ -34,7 +34,7 @@ export default class PisoRepo implements IPisoRepo {
   }
 
   public async save (piso: Piso): Promise<Piso> {
-    const query = { domainId: piso.id.toString()}; 
+    const query = { designacao: piso.designacao}; 
 
     const pisoDocument = await this.pisoSchema.findOne( query );
 

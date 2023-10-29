@@ -5,7 +5,7 @@ const Piso = new mongoose.Schema(
   {
     domainId: { 
       type: String,
-      unique: true
+      unique: false
     },
 
     descricao: {
