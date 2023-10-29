@@ -11,7 +11,7 @@ const route = Router();
 export default (app: Router) => {
   app.use('/sala', route);
 
-  const ctrl = Container.get(config.controllers.role.name) as ISalaController;
+  const ctrl = Container.get(config.controllers.sala.name) as ISalaController;
 
   route.post('/createSala',
     celebrate({
