@@ -71,7 +71,7 @@ export default class PisoRepo implements IPisoRepo {
   
 
   public async findByDesignacao(value: string): Promise<Piso> {
-      const query = { designacao: value.toString() };
+      const query = { designacao: value };
       const pisoRecord = await this.pisoSchema.findOne(query);
 
       if(pisoRecord != null)
@@ -88,7 +88,11 @@ export default class PisoRepo implements IPisoRepo {
           return null;
       } else {
           let pisoArray: Piso[] = [];
-          pisoSchema.forEach(async v => pisoArray.push(await PisoMap.toDomain(v)));
+          for(const piso of pisoSchema){
+            const p = await PisoMap.toDomain(piso);
+            pisoArray.push(p);
+          }
+          
           return pisoArray;
       }
   } catch (err) {

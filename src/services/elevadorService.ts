@@ -14,12 +14,12 @@ import { Piso } from '../domain/piso';
 @Service()
 export default class ElevadorService implements IElevadorService {
   constructor(
-      @Inject(config.repos.elevador.name) private elevadorRepo : IElevadorRepo,
-      @Inject(config.repos.edificio.name) private edificioRepo : IEdificioRepo,
-      @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo
-  ) {}
+    @Inject(config.repos.elevador.name) private elevadorRepo: IElevadorRepo,
+    @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo,
+    @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo
+  ) { }
 
-  public async getElevador( elevadorId: string): Promise<Result<IElevadorDTO>> {
+  public async getElevador(elevadorId: string): Promise<Result<IElevadorDTO>> {
     try {
       const elevador = await this.elevadorRepo.findByDomainId(elevadorId);
 
@@ -27,9 +27,9 @@ export default class ElevadorService implements IElevadorService {
         return Result.fail<IElevadorDTO>("Elevador não encontrado");
       }
       else {
-        const elevadorDTOResult = ElevadorMap.toDTO( elevador ) as IElevadorDTO;
-        return Result.ok<IElevadorDTO>( elevadorDTOResult )
-        }
+        const elevadorDTOResult = ElevadorMap.toDTO(elevador) as IElevadorDTO;
+        return Result.ok<IElevadorDTO>(elevadorDTOResult)
+      }
     } catch (e) {
       throw e;
     }
@@ -39,19 +39,31 @@ export default class ElevadorService implements IElevadorService {
   public async createElevador(elevadorDTO: IElevadorDTO): Promise<Result<IElevadorDTO>> {
     try {
 
-      const elevadorDocument = await this.elevadorRepo.findByNumeroIdentificativo(elevadorDTO.numeroIdentificativo);
+      const elevador = await this.elevadorRepo.findByNumeroIdentificativo(elevadorDTO.numeroIdentificativo);
 
-      if(elevadorDocument != null)
+      if (elevador != null)
         return Result.fail<IElevadorDTO>("Já existe um elevador com o código " + elevadorDTO.numeroIdentificativo);
 
       const edificio = await this.edificioRepo.findByCodigo(elevadorDTO.edificio);
 
-      let pisos: Piso[] = [];
-      elevadorDTO.pisosServidos.forEach(async designacao => {
-        const piso = await this.pisoRepo.findByDesignacao(designacao);
-        if(piso == null)
-          return Result.fail<IElevadorDTO>("Não foi encontrado nenhum piso com a designação " + designacao);
-        pisos.push(piso)
+      const pisos = await this.pisoRepo.findByEdificio(elevadorDTO.edificio);
+
+      if (pisos.length == 0)
+        return Result.fail<IElevadorDTO>("O edificio " + elevadorDTO.edificio + " não tem pisos.");
+
+      let pisosServidos: Piso[] = [];
+
+      elevadorDTO.pisosServidos.forEach(p => {
+        let b = false;
+        for (const p2 of pisos) {
+          if (p2.designacao == p) {
+            pisosServidos.push(p2);
+            b = true;
+            break;
+          }
+        }
+        if (!b)
+          return Result.fail<IElevadorDTO>("O piso " + p + " não pertence ao edifício " + elevadorDTO.edificio + " ou não existe.");
       });
 
       const elevadorOrError = Elevador.create({
@@ -60,9 +72,9 @@ export default class ElevadorService implements IElevadorService {
         marca: elevadorDTO.marca,
         numeroIdentificativo: elevadorDTO.numeroIdentificativo,
         numeroSerie: elevadorDTO.numeroSerie,
-        pisosServidos: pisos,
+        pisosServidos: pisosServidos,
         edificio: edificio
-      })
+      });
 
       if (elevadorOrError.isFailure) {
         return Result.fail<IElevadorDTO>(elevadorOrError.errorValue());
@@ -71,8 +83,8 @@ export default class ElevadorService implements IElevadorService {
       const elevadorResult = elevadorOrError.getValue();
       await this.elevadorRepo.save(elevadorResult);
 
-      const elevadorDTOResult = ElevadorMap.toDTO( elevadorResult ) as IElevadorDTO;
-      return Result.ok<IElevadorDTO>( elevadorDTOResult )
+      const elevadorDTOResult = ElevadorMap.toDTO(elevadorResult) as IElevadorDTO;
+      return Result.ok<IElevadorDTO>(elevadorDTOResult)
     } catch (e) {
       throw e;
     }
@@ -89,24 +101,39 @@ export default class ElevadorService implements IElevadorService {
 
         const edificio = await this.edificioRepo.findByCodigo(elevadorDTO.edificio);
 
-        if(edificio == null)
+        if (edificio == null)
           return Result.fail<IElevadorDTO>("Edifício com o código " + elevadorDTO.edificio + " não encontrado");
 
-        let pisos: Piso[] = [];
-        elevadorDTO.pisosServidos.forEach(async designacao => pisos.push(await this.pisoRepo.findByDesignacao(designacao)));
+
+        const pisos = await this.pisoRepo.findByEdificio(elevadorDTO.edificio);
+
+        let pisosServidos: Piso[] = [];
+
+        elevadorDTO.pisosServidos.forEach(p => {
+          let b = false;
+          for (const p2 of pisos) {
+            if (p2.designacao == p) {
+              pisosServidos.push(p2);
+              b = true;
+              break;
+            }
+          }
+          if (!b)
+            return Result.fail<IElevadorDTO>("O piso " + p + " não pertence ao edifício " + elevadorDTO.edificio + " ou não existe.");
+        });
 
         elevador.descricao = elevadorDTO.descricao;
         elevador.marca = elevadorDTO.marca;
         elevador.modelo = elevadorDTO.modelo;
-        elevador.pisosServidos = pisos;
+        elevador.pisosServidos = pisosServidos;
         elevador.numeroSerie = elevadorDTO.numeroSerie;
         elevador.numeroIdentificativo = elevadorDTO.numeroIdentificativo;
         elevador.edificio = edificio;
         await this.elevadorRepo.save(elevador);
 
-        const elevadorDTOResult = ElevadorMap.toDTO( elevador ) as IElevadorDTO;
-        return Result.ok<IElevadorDTO>( elevadorDTOResult )
-        }
+        const elevadorDTOResult = ElevadorMap.toDTO(elevador) as IElevadorDTO;
+        return Result.ok<IElevadorDTO>(elevadorDTOResult)
+      }
     } catch (e) {
       throw e;
     }
@@ -118,16 +145,16 @@ export default class ElevadorService implements IElevadorService {
 
       const elevador = await this.elevadorRepo.findByEdificio(listElevadoresDTO.codigoEdificio);
 
-      if(elevador == null)
+      if (elevador == null)
         return Result.fail<IElevadorDTO[]>("O edifício com o código " + listElevadoresDTO.codigoEdificio + " não tem elevadores.");
 
-      let elevadoresDTO : IElevadorDTO[] = [];
+      let elevadoresDTO: IElevadorDTO[] = [];
 
       // O UC pede para listar os elevadorES, porém, no sprint A é pedido para assumir que no máximo existe apenas 1 elevador por edifício.
       // Como tal, esta solução adiciona só 1 elemento ao array. Se no futuro for necessário alterar, basta meter um foreach.
       elevadoresDTO.push(ElevadorMap.toDTO(elevador));
 
-      return Result.ok<IElevadorDTO[]>( elevadoresDTO )
+      return Result.ok<IElevadorDTO[]>(elevadoresDTO)
     } catch (e) {
       throw e;
     }
