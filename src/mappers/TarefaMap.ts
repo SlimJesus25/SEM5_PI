@@ -16,17 +16,17 @@ export class TarefaMap extends Mapper<Tarefa> {
   public static toDTO( tarefa: Tarefa): ITarefaDTO {
 
     return {
-      
+      tipoTarefa: tarefa.tipoTarefa
     } as ITarefaDTO;
   }
 
   public static async toDomain (raw: any): Promise<Tarefa> {
 
-    const elevadorOrError = Tarefa.create({tipoTarefa : TipoTarefa.transporte});
+    const tarefaOrError = Tarefa.create({tipoTarefa : raw.tipoTarefa});
 
-    elevadorOrError.isFailure ? console.log(elevadorOrError.error) : '';
+    tarefaOrError.isFailure ? console.log(tarefaOrError.error) : '';
 
-    return elevadorOrError.isSuccess ? elevadorOrError.getValue() : null;
+    return tarefaOrError.isSuccess ? tarefaOrError.getValue() : null;
   }
 
   public static toPersistence (tarefa: Tarefa): any {

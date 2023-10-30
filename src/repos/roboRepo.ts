@@ -91,7 +91,11 @@ export default class RoboRepo implements IRoboRepo {
           return null;
       } else {
           let roboArray: Robo[] = [];
-          roboSchema.forEach(async v => roboArray.push(await RoboMap.toDomain(v)));
+          //roboSchema.forEach(async v => roboArray.push(await RoboMap.toDomain(v)));
+          for(const roboDoc of roboSchema){
+            const robo = await RoboMap.toDomain(roboDoc);
+            roboArray.push(robo);
+          }
           return roboArray;
       }
   } catch (err) {

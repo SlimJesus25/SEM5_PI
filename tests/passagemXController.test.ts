@@ -10,9 +10,6 @@ import IPassagemDTO from '../src/dto/IPassagemDTO';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Edificio } from '../src/domain/edificio';
 import { Piso } from '../src/domain/piso';
-import { Sala } from '../src/domain/sala';
-import { Elevador } from '../src/domain/elevador';
-import { CategoriaSala } from '../src/domain/categoriaSala';
 import { Passagem } from '../src/domain/passagem';
 
 
@@ -129,11 +126,9 @@ describe('passagem controller', function () {
 
 		sinon.stub(edificioRepoInstance, "findByCodigo")
 			.onCall(0).resolves(edificio1)
-			.onCall(1).returns(edificio2);
+			.onCall(1).resolves(edificio2);
 
-		sinon.stub(passagemRepoInstance, "listPassagensBetween").returns(new Promise<Passagem[]>((resolve, reject) => {
-			resolve(passagens)
-		}));
+		sinon.stub(passagemRepoInstance, "listPassagensBetween").resolves(passagens);
 
 		let passagemServiceInstance = Container.get("PassagemService");
 		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "listPassagens");
@@ -321,7 +316,7 @@ describe('passagem controller', function () {
 
 		sinon.stub(edificioRepoInstance, "findByCodigo")
 			.onCall(0).resolves(edificio1)
-			.onCall(1).returns(edificio2);
+			.onCall(1).resolves(edificio2);
 
 		sinon.stub(passagemRepoInstance, "listPassagensBetween").resolves(null);
 

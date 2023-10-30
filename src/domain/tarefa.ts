@@ -7,7 +7,7 @@ import { Guard } from "../core/logic/Guard";
 import { TipoTarefa } from "./tipoTarefa";
 
 interface TarefaProps {
-  tipoTarefa: TipoTarefa;
+  tipoTarefa: string;
 }
 
 export class Tarefa extends AggregateRoot<TarefaProps> {
@@ -19,12 +19,12 @@ export class Tarefa extends AggregateRoot<TarefaProps> {
     return TarefaId.caller(this.id)
   }
 
-  get tipoTarefa (): TipoTarefa {
+  get tipoTarefa (): string {
     return this.props.tipoTarefa;
   }
 
   set tipoTarefa (tipoTarefa: string){
-    this.props.tipoTarefa = Tarefa.getTipoTarefaValue(tipoTarefa);
+    this.props.tipoTarefa = tipoTarefa;
   }
 
   private static getTipoTarefaValue(tipoTarefa : string) : number{
@@ -40,11 +40,22 @@ export class Tarefa extends AggregateRoot<TarefaProps> {
     super(props, id);
   }
 
+  private static tarefaValue(tarefa : string) : boolean{
+    Object.keys(TipoTarefa).forEach(v => {
+      if(v.toLowerCase() == tarefa)
+        return true;
+    });
+    return false;
+  }
+
   public static create (props: TarefaProps, id?: UniqueEntityID): Result<Tarefa> {
 
     const guardedProps = [
       { argument: props.tipoTarefa, argumentName: 'tipoTarefa' },
     ];
+    
+    if(this.tarefaValue(props.tipoTarefa))
+      return Result.fail<Tarefa>("Tarefa inválida!");
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 

@@ -8,10 +8,9 @@ import { MarcaRobo } from "./marcaRobo";
 import { RoboId } from "./roboId";
 import { EstadoRobo } from "./estadoRobo";
 import { TipoRobo } from "./tipoRobo";
-import IRoboDTO from "../dto/IRoboDTO";
 
 interface RoboProps {
-  estado: EstadoRobo;
+  estado: string;
   marca: MarcaRobo;
   codigo: CodigoRobo;
   numeroSerie: NumeroSerieRobo;
@@ -28,7 +27,7 @@ export class Robo extends AggregateRoot<RoboProps> {
     return RoboId.caller(this.id)
   }
 
-  get estado (): EstadoRobo {
+  get estado (): string {
     return this.props.estado;
   }
 
@@ -53,11 +52,11 @@ export class Robo extends AggregateRoot<RoboProps> {
   }
 
   public inibir(){
-    this.props.estado = EstadoRobo.inibido;
+    this.props.estado = "inibido";
   }
 
   public desinibir(){
-    this.props.estado = EstadoRobo.desinibido;
+    this.props.estado = "desinibido";
   }
 
   set nickname(value:string){
@@ -76,8 +75,20 @@ export class Robo extends AggregateRoot<RoboProps> {
     this.props.marca = value;
   }
 
+  set estado(value:string){
+    this.props.estado = value;
+  }
+
   private constructor (props: RoboProps, id?: UniqueEntityID) {
     super(props, id);
+  }
+
+  private static estadoRoboValue(estado : string) : boolean{
+    Object.keys(EstadoRobo).forEach(v => {
+      if(v.toLowerCase() == estado)
+        return true;
+    });
+    return false;
   }
 
   public static create (props: RoboProps, id?: UniqueEntityID): Result<Robo> {
@@ -90,6 +101,9 @@ export class Robo extends AggregateRoot<RoboProps> {
       { argument: props.nickname, argumentName: 'nickname' },
       { argument: props.tipoRobo, argumentName: 'tipoRobo' }
     ];
+
+    if(this.estadoRoboValue(props.estado))
+      return Result.fail<Robo>("Estado inválido!");
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 

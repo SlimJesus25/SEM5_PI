@@ -17,21 +17,21 @@ import IRoboRepo from './IRepos/IRoboRepo';
 @Service()
 export default class RoboService implements IRoboService {
   constructor(
-      @Inject(config.repos.robo.name) private roboRepo : IRoboRepo,
-      @Inject(config.repos.tipoRobo.name) private tipoRoboRepo : ITipoRoboRepo
-  ) {}
+    @Inject(config.repos.robo.name) private roboRepo: IRoboRepo,
+    @Inject(config.repos.tipoRobo.name) private tipoRoboRepo: ITipoRoboRepo
+  ) { }
 
   public async createRobo(roboDTO: IRoboDTO): Promise<Result<IRoboDTO>> {
     try {
 
       const roboDocument = await this.roboRepo.findByCodigo(roboDTO.codigo);
 
-    if(!!roboDocument)
+      if (!!roboDocument)
         return Result.fail<IRoboDTO>("Já existe um robo com o código " + roboDTO.codigo);
 
-    const estado = Object.keys(EstadoRobo).find(key => EstadoRobo[key] === roboDTO.estado);
-    const tipo = await this.tipoRoboRepo.findByDesignacao(roboDTO.tipoRobo);
-        
+      const estado = Object.keys(EstadoRobo).find(key => EstadoRobo[key] === roboDTO.estado);
+      const tipo = await this.tipoRoboRepo.findByDesignacao(roboDTO.codigo);
+
       const roboOrError = Robo.create({
         estado: EstadoRobo[estado],
         marca: MarcaRobo.create(roboDTO.marca).getValue(),
@@ -48,8 +48,8 @@ export default class RoboService implements IRoboService {
       const roboResult = roboOrError.getValue();
       await this.roboRepo.save(roboResult);
 
-      const roboDTOResult = RoboMap.toDTO( roboResult ) as IRoboDTO;
-      return Result.ok<IRoboDTO>( roboDTOResult )
+      const roboDTOResult = RoboMap.toDTO(roboResult) as IRoboDTO;
+      return Result.ok<IRoboDTO>(roboDTOResult)
     } catch (e) {
       throw e;
     }
@@ -58,33 +58,33 @@ export default class RoboService implements IRoboService {
   public async listRobos(): Promise<Result<IRoboDTO[]>> {
     try {
 
-        const robos = await this.roboRepo.findAll();
+      const robos = await this.roboRepo.findAll();
 
-        if (!!robos){
-          return Result.fail<IRoboDTO[]>("Não existem registos de robos");
-        }
-        
-        let robosDTO : IRoboDTO[];
-
-        (await robos).forEach(p => robosDTO.push(RoboMap.toDTO(p) as IRoboDTO));
-
-        return Result.ok<IRoboDTO[]>( robosDTO )
-      } catch (e) {
-        throw e;
+      if (robos.length == 0) {
+        return Result.fail<IRoboDTO[]>("Não existem registos de robos");
       }
+
+      let robosDTO: IRoboDTO[] = [];
+
+      robos.forEach(p => robosDTO.push(RoboMap.toDTO(p) as IRoboDTO));
+
+      return Result.ok<IRoboDTO[]>(robosDTO)
+    } catch (e) {
+      throw e;
+    }
   }
 
   // joao: isto também estava em falta, falta depois atualizar
 
   public async updateRobo(roboDTO: IRoboDTO): Promise<Result<IRoboDTO>> {
     return null;
-    
+
   }
 
   public async inhibitRobo(roboDTO: IRoboDTO): Promise<Result<IRoboDTO>> {
     try {
       const robo = await this.roboRepo.findByCodigo(roboDTO.codigo);
-      
+
       if (robo === null) {
         return Result.fail<IRoboDTO>("Robo não encontrado");
       }
@@ -92,9 +92,9 @@ export default class RoboService implements IRoboService {
         robo.inibir;
         await this.roboRepo.save(robo);
 
-        const roboDTOResult = RoboMap.toDTO( robo ) as IRoboDTO;
-        return Result.ok<IRoboDTO>( roboDTOResult )
-        }
+        const roboDTOResult = RoboMap.toDTO(robo) as IRoboDTO;
+        return Result.ok<IRoboDTO>(roboDTOResult)
+      }
     } catch (e) {
       throw e;
     }
