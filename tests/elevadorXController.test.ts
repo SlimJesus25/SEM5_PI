@@ -434,6 +434,8 @@ describe('elevador controller', function () {
 		sinon.stub(elevadorRepoInstance, "findByNumeroIdentificativo").resolves(null);
 		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
 		sinon.stub(pisoRepoInstance, "findByEdificio").resolves([dummyPiso, dummyPiso2]);
+		// Não interessa o que retorna o null, o serviço não dá uso e desta forma é possível assegurar que funciona corretamente.
+		sinon.stub(elevadorRepoInstance, "save").resolves(null);
 
 		let elevadorServiceInstance = Container.get("ElevadorService");
 		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "createElevador");
@@ -520,11 +522,9 @@ describe('elevador controller', function () {
 
 		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
 
-		sinon.stub(pisoRepoInstance, "findByDesignacao").onCall(0).resolves(dummyPiso).onCall(1).resolves(dummyPiso2);
+		sinon.stub(pisoRepoInstance, "findByEdificio").resolves([dummyPiso, dummyPiso2]);
 
-		sinon.stub(elevadorRepoInstance, "save").returns(new Promise<Elevador>((resolve, reject) => {
-			resolve(newElevador)
-		}));
+		sinon.stub(elevadorRepoInstance, "save").resolves(null);
 
 		let elevadorServiceInstance = Container.get("ElevadorService");
 		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "updateElevador");
@@ -647,6 +647,84 @@ describe('elevador controller', function () {
 
 		sinon.stub(elevadorRepoInstance, "findByNumeroIdentificativo").resolves(elevador);
 		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(null);
+
+		let elevadorServiceInstance = Container.get("ElevadorService");
+		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "updateElevador");
+
+		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
+
+		// Act
+		await ctrl.updateElevador(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 404);
+		sinon.assert.calledOnce(elevadorServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({ name: req.body.name }));
+	});
+
+	it('updateElevador: elevadorController + elevadorService integration test using spy on elevadorService, unsuccess new pisos dont belong to the new (or not) edificio', async function () {
+		// Arrange
+		let body = {
+			"id": "123",
+			"descricao": "Elevador super RÁPIDO",
+			"numeroSerie": "11111",
+			"modelo": "Azal",
+			"marca": "Otis",
+			"pisosServidos": ["NON1", "NON2"],
+			"numeroIdentificativo": 100,
+			"edificio": "B"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+
+		const edificio = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+		}).getValue();
+
+		const dummyPiso = Piso.create({
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B1",
+			"edificio": edificio
+		}).getValue();
+
+		const dummyPiso2 = Piso.create({
+			"descricao": "Piso de gabinetes e aulas laboratoriais",
+			"designacao": "B2",
+			"edificio": edificio
+		}).getValue();
+
+		const b = {
+			id: 't12345',
+			descricao: "Elevador super rápido",
+			numeroSerie: "11111",
+			modelo: "Azur",
+			marca: "Otis",
+			pisosServidos: [dummyPiso, dummyPiso2],
+			numeroIdentificativo: 155,
+			edificio: edificio,
+		};
+
+		const elevador = Elevador.create(b).getValue();
+
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let elevadorRepoInstance = Container.get("ElevadorRepo");
+		let pisoRepoInstance = Container.get("PisoRepo");
+
+		sinon.stub(elevadorRepoInstance, "findByNumeroIdentificativo").resolves(elevador);
+		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
+		sinon.stub(pisoRepoInstance, "findByEdificio").resolves([dummyPiso, dummyPiso2]);
+
 
 		let elevadorServiceInstance = Container.get("ElevadorService");
 		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "updateElevador");

@@ -123,7 +123,7 @@ describe('sala controller', function () {
 		let body = {
 			"id": "123",
 			"descricao": "Laboratório aulas prática-laboratoriais",
-			"categoria": CategoriaSala.laboratorio,
+			"categoria": "laboratorio",
 			"designacao": "B302",
 			"piso": "B1"
 		};
@@ -162,7 +162,7 @@ describe('sala controller', function () {
 		sinon.stub(salaRepoInstance, "findByDesignacao").resolves(null); // Não existe, logo retorna null.
 		sinon.stub(pisoRepoInstance, "findByDesignacao").resolves(dummyPiso);
 
-		sinon.stub(salaRepoInstance, "save").resolves(sala);
+		sinon.stub(salaRepoInstance, "save").resolves(null);
 
 		const salaServiceSpy = sinon.spy(salaServiceInstance, "createSala");
 
