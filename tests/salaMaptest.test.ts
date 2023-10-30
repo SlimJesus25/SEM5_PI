@@ -25,7 +25,7 @@ describe('sala map', () => {
 
     const body = {
         descricaoSala: "Anfiteatro para palestras do núcleo de estudantes",
-        categoriaSala: CategoriaSala.anfiteatro,
+        categoriaSala: "anfiteatro",
         designacaoSala: "B301",
         piso: dummyPiso
     };
@@ -58,7 +58,7 @@ describe('sala map', () => {
 
     const expectedDomain = {
         descricaoSala: "Anfiteatro para palestras do núcleo de estudantes",
-        categoriaSala: CategoriaSala.anfiteatro,
+        categoriaSala: "anfiteatro",
         designacaoSala: "B301",
         piso: dummyPiso
     }

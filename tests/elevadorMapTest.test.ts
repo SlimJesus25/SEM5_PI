@@ -12,7 +12,7 @@ describe('elevador map', () => {
 
     const edificio = Edificio.create({
         dimensaoMaximaPiso: 200,
-        descricaoEdificio: "Edificio Acolhe Malucos",
+        descricaoEdificio: "Edifício para aulas, seminários e reuniões",
         nomeOpcionalEdificio: "Departamento de Engenharia Informática",
         codigoEdificio: CodigoEdificio.create("B").getValue(),
     }).getValue();

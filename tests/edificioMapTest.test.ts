@@ -10,7 +10,6 @@ describe('edificio map', () => {
             "descricaoEdificio": "Edificio Acolhe Malucos",
             "nomeOpcionalEdificio": "Edificio Francisco",
             "codigoEdificio": "2324",
-            "mapaEdificio": "1"
           };
         
 
@@ -30,7 +29,6 @@ describe('edificio map', () => {
         descricao: "Edificio Acolhe Malucos",
         nomeOpcional: "Edificio Francisco",
         codigoEdificio: "2324",
-        mapaEdificio: "mapa".toString()
     };
 
     const expectedPersistence = {

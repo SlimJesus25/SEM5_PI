@@ -46,6 +46,9 @@ export default class ElevadorService implements IElevadorService {
 
       const edificio = await this.edificioRepo.findByCodigo(elevadorDTO.edificio);
 
+      if (elevador == null)
+        return Result.fail<IElevadorDTO>("Não existe nenhum edifício com o código " + elevadorDTO.edificio);
+
       const pisos = await this.pisoRepo.findByEdificio(elevadorDTO.edificio);
 
       if (pisos.length == 0)

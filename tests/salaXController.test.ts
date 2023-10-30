@@ -154,7 +154,7 @@ describe('sala controller', function () {
 
 		const sala = Sala.create({
 			"descricaoSala": "Aula Teorico Pratica",
-			"categoriaSala": CategoriaSala.laboratorio,
+			"categoriaSala": "laboratorio",
 			"designacaoSala": "B105",
 			"piso": dummyPiso
 		}).getValue();
@@ -230,7 +230,7 @@ describe('sala controller', function () {
 		const sala = Sala.create({
 			"designacaoSala": "B101",
 			"piso": dummyPiso,
-			"categoriaSala": CategoriaSala.laboratorio,
+			"categoriaSala": "laboratorio",
 			"descricaoSala": "Sala para avaliações"
 		});
 
@@ -292,7 +292,7 @@ describe('sala controller', function () {
 		const sala = Sala.create({
 			"designacaoSala": "B101",
 			"piso": dummyPiso,
-			"categoriaSala": CategoriaSala.laboratorio,
+			"categoriaSala": "laboratorio",
 			"descricaoSala": "Sala para avaliações"
 		});
 
