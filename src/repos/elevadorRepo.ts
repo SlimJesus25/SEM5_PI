@@ -88,6 +88,12 @@ export default class ElevadorRepo implements IElevadorRepo {
   }
 
   public async findByEdificio(codigoEdificio: string): Promise<Elevador>{
-    return null;
+    const query = { edificio: codigoEdificio };
+      const elevadorRecord = await this.elevadorSchema.findOne(query as FilterQuery<IElevadorPersistence & Document>);
+
+      if(elevadorRecord != null)
+        return ElevadorMap.toDomain(elevadorRecord);
+      else
+        return null;
   }
 }
