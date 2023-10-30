@@ -35,8 +35,14 @@ export default class TipoRoboRepo implements ITipoRoboRepo {
     return null;
   }
 
-  public async findByDesignacao(value: string): Promise<TipoRobo>{
-    return null;
-  }
+  public async findByDesignacao(value: string): Promise<TipoRobo> {
+    const query = { designacao: value.toString() };
+    const tipoRoboRecord = await this.tipoRoboSchema.findOne(query);
+
+    if(tipoRoboRecord != null)
+      return TipoRoboMap.toDomain(tipoRoboRecord);
+    else
+      return null;
+}
   
 }
