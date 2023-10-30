@@ -46,7 +46,7 @@ export default class ElevadorService implements IElevadorService {
 
       const edificio = await this.edificioRepo.findByCodigo(elevadorDTO.edificio);
 
-      if (elevador == null)
+      if (edificio == null)
         return Result.fail<IElevadorDTO>("Não existe nenhum edifício com o código " + elevadorDTO.edificio);
 
       const pisos = await this.pisoRepo.findByEdificio(elevadorDTO.edificio);
@@ -55,6 +55,8 @@ export default class ElevadorService implements IElevadorService {
         return Result.fail<IElevadorDTO>("O edificio " + elevadorDTO.edificio + " não tem pisos.");
 
       let pisosServidos: Piso[] = [];
+      let error = false;
+      let wrongPiso: string;
 
       elevadorDTO.pisosServidos.forEach(p => {
         let b = false;
@@ -65,9 +67,15 @@ export default class ElevadorService implements IElevadorService {
             break;
           }
         }
-        if (!b)
-          return Result.fail<IElevadorDTO>("O piso " + p + " não pertence ao edifício " + elevadorDTO.edificio + " ou não existe.");
+        if (!b) {
+          error = true;
+          wrongPiso = p;
+          return;
+        }
       });
+
+      if (error)
+        return Result.fail<IElevadorDTO>("O piso " + wrongPiso + " não pertence ao edifício " + elevadorDTO.edificio + " ou não existe.");
 
       const elevadorOrError = Elevador.create({
         descricao: elevadorDTO.descricao,
@@ -111,6 +119,8 @@ export default class ElevadorService implements IElevadorService {
         const pisos = await this.pisoRepo.findByEdificio(elevadorDTO.edificio);
 
         let pisosServidos: Piso[] = [];
+        let error = false;
+        let wrongPiso: string;
 
         elevadorDTO.pisosServidos.forEach(p => {
           let b = false;
@@ -121,9 +131,15 @@ export default class ElevadorService implements IElevadorService {
               break;
             }
           }
-          if (!b)
-            return Result.fail<IElevadorDTO>("O piso " + p + " não pertence ao edifício " + elevadorDTO.edificio + " ou não existe.");
+          if (!b) {
+            error = true;
+            wrongPiso = p;
+            return;
+          }
         });
+
+        if (error)
+          return Result.fail<IElevadorDTO>("O piso " + wrongPiso + " não pertence ao edifício " + elevadorDTO.edificio + " ou não existe.");
 
         elevador.descricao = elevadorDTO.descricao;
         elevador.marca = elevadorDTO.marca;
