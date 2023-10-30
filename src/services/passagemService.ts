@@ -102,6 +102,9 @@ export default class PassagemService implements IPassagemService {
   public async listPassagens(edificios: IListPassagensEntreEdificiosDTO): Promise<Result<IPassagemDTO[]>> {
     try {
 
+      if(edificios.codigoEdificioA == edificios.codigoEdificioB)
+        return Result.fail<IPassagemDTO[]>("Não existem passagens para o próprio edifício.");
+
       const edificioADoc = await this.edificioRepo.findByCodigo(edificios.codigoEdificioA);
 
       if (edificioADoc == null)
@@ -113,13 +116,13 @@ export default class PassagemService implements IPassagemService {
 
       const passagensResult = await this.passagemRepo.listPassagensBetween(edificioADoc.codigo, edificioBDoc.codigo);
 
-      if (passagensResult == null)
+      if (passagensResult.length == 0)
         return Result.fail<IPassagemDTO[]>("Não existem passagens entre o edifício "
           + edificios.codigoEdificioA + " e o edifício " + edificios.codigoEdificioB);
 
       let passagensResultDTO: IPassagemDTO[] = [];
 
-      (passagensResult).forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
+      passagensResult.forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
 
       return Result.ok<IPassagemDTO[]>(passagensResultDTO)
     } catch (e) {
