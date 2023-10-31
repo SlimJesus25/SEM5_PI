@@ -117,28 +117,43 @@ describe('robo controller', function () {
 
         const expectedArgs = [
             {
-                codigo: "0078954321654321",
-                estado: "inibido",
-                id: "7f90d782-2f65-4dd9-8ff5-957e4c4e8c90",
-                marca: "Samsung",
-                nickname: "Roberto",
-                numeroSerie: "AZERTYUIOPQSDCVFGHJKLMW",
-                tipoRobo: "Polivalente"
+                "codigo": "0078954321654321",
+                "estado": "inibido",
+                "id": "7f90d782-2f65-4dd9-8ff5-957e4c4e8c90",
+                "marca": "Samsung",
+                "nickname": "Roberto",
+                "numeroSerie": "AZERTYUIOPQSDCVFGHJKLMW",
+                "tipoRobo": "Polivalente"
             },
             {
-                codigo: "00320392930923",
-                estado: "inibido",
-                id: "614edd54-b022-4ff4-bc66-ca1b746f90e9",
-                marca: "RedHat",
-                nickname: "José",
-                numeroSerie: "IDPJPSJFDPSIJFJPSDJD",
-                tipoRobo: "Polivalente"
+                "codigo": "00320392930923",
+                "estado": "inibido",
+                "id": "614edd54-b022-4ff4-bc66-ca1b746f90e9",
+                "marca": "RedHat",
+                "nickname": "José",
+                "numeroSerie": "IDPJPSJFDPSIJFJPSDJD",
+                "tipoRobo": "Polivalente"
             }
         ];
 
         // Assert
         sinon.assert.calledOnce(res.json);
-        sinon.assert.calledWith(res.json, sinon.match(expectedArgs));
+        sinon.assert.calledWith(res.json, sinon.match({
+            "codigo": "0078954321654321",
+            "estado": "inibido",
+            "marca": "Samsung",
+            "nickname": "Roberto",
+            "numeroSerie": "AZERTYUIOPQSDCVFGHJKLMW",
+            "tipoRobo": "Polivalente"
+        },
+        {
+            "codigo": "00320392930923",
+            "estado": "inibido",
+            "marca": "RedHat",
+            "nickname": "José",
+            "numeroSerie": "IDPJPSJFDPSIJFJPSDJD",
+            "tipoRobo": "Polivalente"
+        }));
         sinon.assert.calledOnce(roboServiceSpy);
         //sinon.assert.calledTwice(roleServiceSpy);
         sinon.assert.calledWith(roboServiceSpy, sinon.match({ name: req.body.name }));

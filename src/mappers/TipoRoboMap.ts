@@ -19,7 +19,7 @@ export class TipoRoboMap extends Mapper<TipoRobo> {
 
     let tarefas : string[]=[];
 
-    tipoRobo.tarefas.forEach(v => tarefas.push(v.id.toString()));
+    tipoRobo.tarefas.forEach(v => tarefas.push(v.tipoTarefa));
 
     return {
       "designacao": tipoRobo.designacao,
@@ -30,13 +30,18 @@ export class TipoRoboMap extends Mapper<TipoRobo> {
     } as ITipoRoboDTO;
   }
 
-  public static toDomain (raw: any): TipoRobo {
+  public static async toDomain (raw: any): Promise<TipoRobo> {
 
     let tarefas : Tarefa[]=[];
 
     const repoTarefa = Container.get(TarefaRepo);
 
-    raw.tarefas.forEach(async tarefa => tarefas.push(await repoTarefa.findByDomainId(tarefa)));
+    //raw.tarefas.forEach(async tarefa => tarefas.push(await repoTarefa.findByDomainId(tarefa)));
+
+    for(const t of raw.tarefas){
+      const objectTarefa = await repoTarefa.findByDesignacao(t);
+      tarefas.push(objectTarefa);
+    }
 
     const passagemOrError = TipoRobo.create({
       designacao: raw.designacao,
@@ -55,7 +60,7 @@ export class TipoRoboMap extends Mapper<TipoRobo> {
 
     let tarefas : string[]=[];
 
-    tipoRobo.tarefas.forEach(v => tarefas.push(v.id.toString()));
+    tipoRobo.tarefas.forEach(v => tarefas.push(v.tipoTarefa));
 
     return {
       domainId: tipoRobo.id,
