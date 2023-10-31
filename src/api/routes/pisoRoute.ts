@@ -55,31 +55,4 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.listMinMax(req, res, next));
-
-    route.post('/createMapaPiso',
-  celebrate({
-    body: Joi.object({
-      mapaProfundidade: Joi.number(),
-      mapaPiso : Joi.number(),
-      mapaSaidaLocalizacao : Joi.number(),
-      mapaElevador : Joi.number(),
-      mapaSaidas : Joi.number()
-    }),
-  }),
-  (req, res, next) => ctrl2.createMapaPiso(req, res, next));
-  
-
-  route.patch('/LoadMapaPiso',
-    celebrate({
-      body: Joi.object({
-        mapaProfundidade: Joi.number(),
-        mapaPiso : Joi.number(),
-        mapaSaidaLocalizacao : Joi.number(),
-        mapaElevador : Joi.number(),
-        mapaSaidas : Joi.number()
-      }),
-    }),
-    (req, res, next) => ctrl2.loadMapaPiso(req, res, next));
-
-
 };

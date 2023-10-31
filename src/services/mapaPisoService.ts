@@ -25,6 +25,13 @@ export default class MapaPisoService implements IMapaPisoService {
       if (mapaPiso != null)
         return Result.fail<IMapaPisoDTO>("Já existe um mapa de piso com o código " + mapaPisoDTO.id);
 
+      
+      const piso = await this.pisoRepo.findByDesignacao(mapaPisoDTO.piso);
+
+      if (piso == null){
+        return Result.fail<IMapaPisoDTO>("O mapa de piso" + mapaPisoDTO.id + "não tem nenhum piso associado.")
+      }
+
       const mapaPisoOrError = MapaPiso.create({
         piso : mapaPiso.piso,
         mapaLargura : mapaPisoDTO.mapaLargura,
@@ -56,6 +63,13 @@ export default class MapaPisoService implements IMapaPisoService {
 
       if (mapaPiso === null) {
         return Result.fail<IMapaPisoDTO>("Mapa de Piso não encontrado");
+      }
+
+      const piso = await this.pisoRepo.findByDesignacao(mapaPisoDTO.piso);
+
+      if (piso == null){
+        return Result.fail<IMapaPisoDTO>("O mapa de piso" + mapaPisoDTO.id + "não tem nenhum piso associado.");
+
       }else {
         mapaPiso.largura = mapaPisoDTO.mapaLargura;
         mapaPiso.profundidade = mapaPisoDTO.mapaProfundidade;
