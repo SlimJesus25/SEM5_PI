@@ -54,6 +54,17 @@ export default class TarefaRepo implements ITarefaRepo {
       return null;
   }
 
+  public async findByDesignacao(designacao: string): Promise<Tarefa> {
+    const query = { designacao: designacao};
+    const tarefaRecord = await this.tarefaSchema.findOne(query as FilterQuery<ITarefaPersistence & Document>);
+
+    if(tarefaRecord != null){
+      return TarefaMap.toDomain(tarefaRecord);
+    }else{
+      return null;
+    }
+  }
+
   public async exists(tarefa: Tarefa): Promise<boolean> {
     
     const idX = tarefa.id instanceof TarefaId ? (<TarefaId>tarefa.id) : tarefa.id;

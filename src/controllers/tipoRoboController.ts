@@ -22,8 +22,8 @@ export default class TipoRoboController implements ITipoRoboController /* TODO: 
         return res.status(403).send("Erro: " + tipoRoboOrError.errorValue());
       }
 
-      const elevadorDTO = tipoRoboOrError.getValue();
-      return res.json( elevadorDTO ).status(201);
+      const tipoRoboDTO = tipoRoboOrError.getValue();
+      return res.json( tipoRoboDTO ).status(201);
     }
     catch (e) {
       return next(e);
