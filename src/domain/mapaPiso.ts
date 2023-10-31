@@ -53,6 +53,10 @@ export class MapaPiso extends AggregateRoot<MapaPisoProps> {
     return this.props.mapaSaidas;
   }
 
+  set profundidade (value : number){
+    this.props.mapaProfundidade = value;
+  }
+
   set mapa (value : number[][]){
     this.props.mapaPiso = value;
   }
