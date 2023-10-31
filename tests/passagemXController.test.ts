@@ -318,7 +318,8 @@ describe('passagem controller', function () {
 			.onCall(0).resolves(edificio1)
 			.onCall(1).resolves(edificio2);
 
-		sinon.stub(passagemRepoInstance, "listPassagensBetween").resolves(null);
+		let empty: Piso[] = [];
+		sinon.stub(passagemRepoInstance, "listPassagensBetween").resolves(empty);
 
 		let passagemServiceInstance = Container.get("PassagemService");
 		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "listPassagens");

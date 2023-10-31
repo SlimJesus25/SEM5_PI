@@ -23,7 +23,7 @@ export default class RoboController implements IRoboController /* TODO: extends 
       }
 
       const roboDTO = roboOrError.getValue();
-      return res.status(201).json( roboDTO );
+      return res.json( roboDTO ).status(201);
     }
     catch (e) {
       return next(e);
