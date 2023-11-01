@@ -34,7 +34,7 @@ Criar uma sala é necessário para os pisos que vão ter várias salas.
 
 **Teste 3:** *Criar sala com sucesso (controlador + serviço, 201 POST)*
 
-**Teste 4:** *Criar sala com insucesso (controlador + serviço, 403 FORBIDDEN)*
+**Teste 4:** *Criar sala com insucesso, piso não existe (controlador + serviço, 403 FORBIDDEN)*
 
 **Teste 5:** *Designação da sala segue regras de negócio.*
 

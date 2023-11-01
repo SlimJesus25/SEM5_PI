@@ -30,6 +30,11 @@ Editar um elevador é um requisito relevante do domínio que deve ser capaz de a
 
 **Teste 4:** *Editar elevador com insucesso (controlador + serviço, 404 NOT FOUND)*
 
+**Teste 5:** *Editar elevador com insucesso, novo edificio não existe (controlador + serviço, 404 NOT FOUND)*
+
+**Teste 6:** *Editar elevador com insucesso, novos pisos servidos não existem/não pertecem ao edifício (controlador + serviço, 404 NOT FOUND)*
+
+
 ## 3. Desenho
 
 Para resolver o problema da edição de elevadores foi criado um agregado com a entidade "Elevador" e os respetivos value objects. Requisitos como este e o UC270, levaram a equipa a decidir que um agregado seria a melhor solução para garantir manutenabilidade e expansibilidade.
