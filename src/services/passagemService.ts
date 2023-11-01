@@ -36,7 +36,7 @@ export default class PassagemService implements IPassagemService {
       const passagemDocument = await this.passagemRepo.findByDesignacao(passagemDTO.id);
 
       if (!!passagemDocument)
-        return Result.fail<IPassagemDTO>("Passagem com o id " + passagemDTO.id + " já existe!");
+        return Result.fail<IPassagemDTO>("Passagem com a designacao " + passagemDTO.designacao + " já existe!");
 
       const edificioOrigem = await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem);
       const edificioDestino = await this.edificioRepo.findByCodigo(passagemDTO.edificioDestino);
