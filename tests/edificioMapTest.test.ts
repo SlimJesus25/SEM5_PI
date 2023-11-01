@@ -25,16 +25,16 @@ describe('edificio map', () => {
 
     const expectedDTO = {
         id: "1",
-        dimensaoMaxima: 200,
-        descricao: "Edificio Acolhe Malucos",
-        nomeOpcional: "Edificio Francisco",
+        dimensaoMaximaEdificio: 200,
+        descricaoEdificio: "Edificio Acolhe Malucos",
+        nomeOpcionalEdificio: "Edificio Francisco",
         codigoEdificio: "2324",
     };
 
     const expectedPersistence = {
         codigo: "2324",
         descricao: "Edificio Acolhe Malucos",
-        dimensao: 200,
+        dimensaoMaxima: 200,
         domainId: "123".toString(),
         id: "1",
         nomeOpcional: "Edificio Francisco",
@@ -75,6 +75,7 @@ describe('edificio map', () => {
     it("toPersistence", () => {
         let actual = EdificioMap.toPersistence(edificio);
         actual.domainId = "123";
+        actual.id = "1";
         sinon.assert.match(actual, expectedPersistence);
     });
 })
