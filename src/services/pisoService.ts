@@ -113,7 +113,7 @@ export default class PisoService implements IPisoService {
      for (let i = 0; i < pisos.length; i++){
       pisosDTO[i] = PisoMap.toDTO(pisos[i]);
     }
-  
+    
 
       return Result.ok<IPisoDTO[]>( pisosDTO )
     } catch (e) {
@@ -125,10 +125,11 @@ export default class PisoService implements IPisoService {
   public async listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>> {
     try {
       const edificios = await this.edificioRepo.findAll();
-      if (!!edificios){
+      if (edificios == null){
         return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
       }
     
+      /*
       let edificiosDTO : IEdificioDTO[];
       edificios.forEach(async (edificio) => {
         const pisos = await this.pisoRepo.findByEdificio(edificio.codigo);
@@ -137,6 +138,16 @@ export default class PisoService implements IPisoService {
           edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
         }
       });
+      */
+     let edificiosDTO = [];
+     for (let i = 0; i < edificios.length; i++){
+      const pisos = await this.pisoRepo.findByEdificio(edificios[i].codigo);
+      const numPisos = pisos.length;
+      if (numPisos > minMax.min && numPisos < minMax.max){
+        edificiosDTO[i] = EdificioMap.toDTO(edificios[i])
+      }
+     }
+
       return Result.ok<IEdificioDTO[]>( edificiosDTO )
     } catch (e) {
       throw e;

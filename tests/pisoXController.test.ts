@@ -71,7 +71,7 @@ describe('piso controller', function () {
 	});
 
 
-	it("updateElevador returns elevador json", async function () {
+	it("updatePiso returns piso json", async function () {
 		let body = {
 			"descricaoPiso": "Piso aulas praticas",
 			"designacaoPiso": "B1",
@@ -361,7 +361,111 @@ describe('piso controller', function () {
 		sinon.assert.calledOnce(res.status);
 		sinon.assert.calledWith(res.status, 404);
 		sinon.assert.calledOnce(pisoServiceSpy);
-		sinon.assert.calledWith(pisoServiceSpy, sinon.match({ codigoEdificio: req.body.codigoEdificio }));
+		sinon.assert.calledWith(pisoServiceSpy, sinon.match({ name: req.body.name }));
+
+	});
+
+	/*it('listPisosMinMax: pisoController + pisoService integration test using spy on pisoService, success case', async function () {
+		// Arrange
+		let body = {
+			"codigoEdificio": "B",
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			json: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		//	
+
+		const dummyEdificio = Edificio.create({
+			"dimensaoMaximaPiso": 200,
+			"descricaoEdificio": "Edificio Acolhe Malucos",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
+			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+		}).getValue();
+
+		const piso1 = {
+			id: 't12345',
+			descricao: "Piso de gabinetes e aulas teórica-práticas",
+			designacao: "B1",
+			edificio: dummyEdificio
+		};
+
+		const piso2 = {
+			id: 't12345',
+			descricao: "Piso de gabinetes e aulas laboratoriais",
+			designacao: "B2",
+			edificio: dummyEdificio
+		};
+
+		let pisos: Piso[] = [Piso.create(piso1).getValue(), Piso.create(piso2).getValue()];
+
+		let pisoRepoInstance = Container.get("PisoRepo");
+
+		sinon.stub(pisoRepoInstance, "findByEdificio").resolves(pisos);
+
+		let pisoServiceInstance = Container.get("PisoService");
+		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "listPisos");
+
+		const ctrl = new PisoController(pisoServiceInstance as IPisoService);
+
+		// Act
+		await ctrl.listPisos(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.json);
+		sinon.assert.calledWith(res.json, sinon.match(
+			[sinon.match({
+				descricao: "Piso de gabinetes e aulas teórica-práticas",
+				designacao: "B1",
+				edificio: "B"
+			}), sinon.match({
+				descricao: "Piso de gabinetes e aulas laboratoriais",
+				designacao: "B2",
+				edificio: "B"
+			}
+			)])
+		);
+		sinon.assert.calledOnce(pisoServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(pisoServiceSpy, sinon.match({ name: req.body.name }));
+	});*/
+
+
+	it('listPisosMinMax: pisoController + pisoService integration test using spy on pisoService, unsuccess case no edificios', async function () {
+		// Arrange
+		let body = {
+			"min": 1,
+			"max": 2
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let pisoServiceInstance = Container.get("PisoService");
+
+		sinon.stub(edificioRepoInstance, "findAll").resolves(null);
+
+		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "listMinMax");
+
+		const ctrl = new PisoController(pisoServiceInstance as IPisoService);
+
+		// Act
+		await ctrl.listMinMax(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 404);
+		sinon.assert.calledOnce(pisoServiceSpy);
+		sinon.assert.calledWith(pisoServiceSpy, sinon.match({ name: req.body.name }));
 
 	});
 
