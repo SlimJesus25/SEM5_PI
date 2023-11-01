@@ -33,17 +33,19 @@ o número indeitifcativo do elevador deve ser gerado sequencialmente pelo sistem
 
 **Teste 3:** *Criar elevador com sucesso (controlador + serviço, 201 POST)*
 
-**Teste 4:** *Criar elevador com insucesso (controlador + serviço, 403 FORBIDDEN)*
+**Teste 4:** *Criar elevador com insucesso, edificio não existe (controlador + serviço, 403 FORBIDDEN)*
 
-**Teste 5:** *Número indentificativo da elevador segue regras de negócio.*
+**Teste 5:** *Criar elevador com insucesso, pisos servidos não pertecem ao edifício/não existem (controlador + serviço, 403 FORBIDDEN)*
 
-**Teste 6:** *Marca segue regras de negócio.*
+**Teste 6:** *Número indentificativo da elevador segue regras de negócio.*
 
-**Teste 7:** *Modelo segue regras de negócio.*
+**Teste 7:** *Marca segue regras de negócio.*
 
-**Teste 8:** *Número de série segue regras de negócio.*
+**Teste 8:** *Modelo segue regras de negócio.*
 
-**Teste 9:** *Descrição segue regras de negócio.*
+**Teste 9:** *Número de série segue regras de negócio.*
+
+**Teste 10:** *Descrição segue regras de negócio.*
 
 ## 3. Desenho
 
