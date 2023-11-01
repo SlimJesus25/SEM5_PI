@@ -58,7 +58,7 @@ export default class PisoController implements IPisoController /* TODO: extends 
       }
 
       const pisoDTO = pisoOrError.getValue();
-      return res.status(200).json( pisoDTO );
+      return res.json( pisoDTO ).status(200);
     }
     catch (e) {
       return next(e);

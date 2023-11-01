@@ -96,17 +96,24 @@ export default class PisoService implements IPisoService {
 
   public async listPisos(listPisosDTO: IListPisosDTO): Promise<Result<IPisoDTO[]>> {
     try {
-
-      const edificio = await this.edificioRepo.findByCodigo(listPisosDTO.codigoEdificio);
-
-      if(edificio == null)
-        return Result.fail<IPisoDTO[]>("O código do edifício é inválido");
       
-      // Query deve retornar todos os pisos que contenham este edificio.
       const pisos = await this.pisoRepo.findByEdificio(listPisosDTO.codigoEdificio);
 
+      if (pisos == null)
+        return Result.fail<IPisoDTO[]>("O edifício com o código " + listPisosDTO.codigoEdificio + " não tem pisos.");
+
+      // Query deve retornar todos os pisos que contenham este edificio.
+    
+      /*
       let pisosDTO: IPisoDTO[] = [];
       pisos.forEach(p => pisosDTO.push(PisoMap.toDTO(p)));
+      */
+     
+     let pisosDTO = [];
+     for (let i = 0; i < pisos.length; i++){
+      pisosDTO[i] = PisoMap.toDTO(pisos[i]);
+    }
+  
 
       return Result.ok<IPisoDTO[]>( pisosDTO )
     } catch (e) {
