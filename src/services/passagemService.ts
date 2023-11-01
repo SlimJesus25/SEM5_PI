@@ -43,8 +43,11 @@ export default class PassagemService implements IPassagemService {
       const pisoOrigem = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
       const pisoDestino = await this.pisoRepo.findByDesignacao(passagemDTO.pisoDestino);
 
-      if (edificioOrigem.id === edificioDestino.id || pisoOrigem.id === pisoDestino.id)
+      if (edificioOrigem.codigo === edificioDestino.codigo || pisoOrigem.designacao === pisoDestino.designacao)
         return Result.fail<IPassagemDTO>("Origem e destino dos parâmetros não podem ser os mesmos");
+
+      if (pisoOrigem.edificio.codigo === edificioOrigem.codigo || pisoDestino.edificio.codigo === edificioDestino.codigo)
+      return Result.fail<IPassagemDTO>("Piso A tem de pertencer ao edificio A e o piso B tem de pertencer ao edificio B");
 
       // Agora é fazer ao contrário, piso.edificio == edificioOrigem?
       //if(edificioOrigem.pisos.includes(pisoOrigem) && edificioDestino.pisos.includes(pisoDestino))
