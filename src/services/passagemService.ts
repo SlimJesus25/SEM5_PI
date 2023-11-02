@@ -145,7 +145,7 @@ export default class PassagemService implements IPassagemService {
 
       let passagensResultDTO: IPisoDTO[];
 
-      (await passagemResult).forEach((p => passagensResultDTO.push(PisoMap.toDTO(p) as IPisoDTO)));
+      passagemResult.forEach(p => passagensResultDTO.push(PisoMap.toDTO(p) as IPisoDTO));
 
       return Result.ok<IPisoDTO[]>(passagensResultDTO)
     } catch (e) {
