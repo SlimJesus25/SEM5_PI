@@ -10,7 +10,10 @@
 
 Listar passagens entre 2 edifícios deve apresentar todas as passagens que conectem um edificio A a um edificio B (todas as passagens são bidirecionais).
 
-### 2.2 Testes ao requisito
+### 2.2 Excerto de Domínio
+![excerto dominio](ed260.svg "ed260.svg")
+
+### 2.3 Testes ao requisito
 
 **Teste 1:** *Listar passagens com sucesso (controlador, 200 GET)*
 
@@ -28,15 +31,19 @@ Nota de detalhe técnico: Tabela de dupla entrada.
 
 ### 3.1. Realização
 
-#### 3.3.1 Excerto de domínio
+#### 3.3.1 Vista de processo - nível 1
 
-![excerto dominio](ed260.svg "ed260.svg")
+![vista processo 3](../UC260/Nível%201/vp1.svg "vp_260.svg")
 
-#### 3.3.1 Vista de processo - nível 3
+#### 3.3.1 Vista de processo - nível 2
 
-![vista processo 3](vp260.svg "vp_260.svg")
+![vista processo 3](../UC260/Nível%202/vp2.svg "vp_260.svg")
 
-#### 3.3.2 Vista lógica - nível 3
+#### 3.3.3 Vista de processo - nível 3
+
+![vista processo 3](../UC260/Nível%203/vp260.svg "vp_260.svg")
+
+#### 3.3.4 Vista lógica - nível 3
 
 ![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
 
