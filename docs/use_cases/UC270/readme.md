@@ -37,7 +37,7 @@ o número indeitifcativo do elevador deve ser gerado sequencialmente pelo sistem
 
 **Teste 5:** *Criar elevador com insucesso, pisos servidos não pertecem ao edifício/não existem (controlador + serviço, 403 FORBIDDEN)*
 
-**Teste 6:** *Número indentificativo da elevador segue regras de negócio.*
+**Teste 6:** *Número identificativo da elevador segue regras de negócio.*
 
 **Teste 7:** *Marca segue regras de negócio.*
 
@@ -63,9 +63,11 @@ Para resolver o problema de criação de elevadores foi criado um agregado com a
 
 ##### 3.1.2.2 Nível 2
 
+![vista processo 2](vp2.svg "Vista processo - nível 2")
+
 ##### 3.1.2.3 Nível 3
 
-![vista processo 3](vp270.svg "vp_270.svg")
+![vista processo 3](vp270.svg "Vista processo - nível 3")
 
 #### 3.1.3 Vista lógica
 

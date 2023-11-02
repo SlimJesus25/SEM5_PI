@@ -1,34 +1,14 @@
-# US 1001
+# UC 380
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
-
-**Critérios de aceitação** - This US has no specific acceptance criteria
+**UC380** -  Como gestor de frota pretendo consultar todos os robots da frota.
 
 ## 2. Análise
 
-### 2.1 Indentificar o problema
-In order to implement this functionality, we divided the documentation in 3 parts:
+### 2.1 Identificação do problema
 
-#### US1001_1 Add User
-
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
-
-#### US1001_2 Deactivate User
-
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
-
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
-
-### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
+Este requisito trata de listar robos persistidos, sem parâmetros.
 
 ### 2.3 Testes de Unidade - Teste de regras de negócio
 
@@ -50,46 +30,75 @@ In order to implement this functionality, we divided the documentation in 3 part
 
 ## 3. Design
 
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+
 
 ### 3.1. Realização
 
-### US1001_1 Add User
-* **Sequence Diagram**
+### 3.1.1 Excerto do MD
 
-![sequence diagram](us1001_1/sequence_diagram_addUser.svg "sequence_diagram_1001_1")
+![excerpt diagram](ed.svg "ed.svg")
 
-* **Class Diagram**
+#### 3.1.2 Vista de processo
 
-![class diagram](us1001_1/class_diagram_addUser.svg "class_diagram_1001_1")
+##### 3.1.2.1 Nível 1
 
-### US1001_2 Deactivate  User
+![vp](vp1.svg "vp1.svg")
 
-* **Sequence Diagram**
- 
-![sequence diagram](us1001_2/sequence_diagram_deactivateUser.svg "sequence_diagram_1001_2")
+#### 3.1.2.2 Nível 2
 
-* **Class Diagram**
+![vp](vp2.svg "vp2.svg")
 
-![class diagram](us1001_2/class_diagram_deactivateUser.svg "class_diagram_1001_2")
+#### 3.1.2.3 Nível 3
 
-#### US1001_3 List User
+![vp](vp3.svg "vp3.svg")
 
-* **Sequence Diagram**
+#### 3.1.3 Vista lógica
 
-![sequence diagram](us1001_3/sequence_diagram_listUser.svg "sequence_diagram_1001_3")
+##### 3.1.3.1 Nível 1
 
-* **Class Diagram**
+![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
 
-![class diagram](us1001_3/class_diagram_listUser.svg "class_diagram_1001_3")
+##### 3.1.3.2 Nível 2
+
+![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+
+##### 3.1.3.3 Nível 3
+
+![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+#### 3.1.3 Vista de cenários
+
+##### 3.1.3.1 Nível 1
+
+a
+
+#### 3.1.4 Vista de implementação
+
+##### 3.1.3.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+##### 3.1.3.1 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+#### 3.1.5 Vista física
+
+##### 3.1.5.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
-The applied patters are:
-* DTO;
-* Persistence;
-* Application;
-* Controller;
-* Service;
-* Domain;
-* UI;
+
+Os padrões aplicados são:
+
+- REST + ONION (padrões arquiteturais);
+- DTO;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
+- Modelo.

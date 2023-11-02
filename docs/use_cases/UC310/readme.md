@@ -18,13 +18,9 @@
 
 ## 2. Análise
 
-### 2.1 Identificar o problema
+### 2.1 Identificação do problema
 
 Criar uma sala é necessário para os pisos que vão ter várias salas.
-
-### 2.2 Excerto do MD
-
-![excerpt diagram](ed310.svg "ed310.svg")
 
 ### 2.3 Testes ao requisito
 
@@ -46,21 +42,59 @@ Para resolver o problema de sala de piso foi criado um agregado com a entidade "
 
 ### 3.1. Realização
 
-#### 3.3.1 Vista de processo - nível 1
+### 3.1.1 Excerto do MD
+
+![excerpt diagram](ed310.svg "ed310.svg")
+
+#### 3.1.2 Vista de processo
+
+##### 3.1.2.1 Nível 1
 
 ![vp](../UC310/Nível%201/vp1.svg "vp1.svg")
 
-#### 3.3.1 Vista de processo - nível 2
+#### 3.1.2.2 Nível 2
 
 ![vp](../UC310/Nível%202/vp2.svg "vp2.svg")
 
-#### 3.3.1 Vista de processo - nível 3
+#### 3.1.2.3 Nível 3
 
 ![vp](../UC310/Nível%203/vp310.svg "vp3.svg")
 
-#### 3.3.2 Vista lógica - nível 3
+#### 3.1.3 Vista lógica
+
+##### 3.1.3.1 Nível 1
+
+![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
+
+##### 3.1.3.2 Nível 2
+
+![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+
+##### 3.1.3.3 Nível 3
 
 ![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+#### 3.1.3 Vista de cenários
+
+##### 3.1.3.1 Nível 1
+
+a
+
+#### 3.1.4 Vista de implementação
+
+##### 3.1.3.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+##### 3.1.3.1 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+#### 3.1.5 Vista física
+
+##### 3.1.5.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
 
