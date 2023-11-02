@@ -111,7 +111,7 @@ describe('piso controller', function () {
 		let pisoServiceInstance = Container.get("PisoService");
 
 		const e = {
-			"dimensaoMaximaPiso": 200,
+			"dimensaoMaximaPiso": [200, 200],
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
 			"codigoEdificio": CodigoEdificio.create("B").getValue(),
@@ -170,7 +170,7 @@ describe('piso controller', function () {
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
 		const edificio = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [200, 200],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
