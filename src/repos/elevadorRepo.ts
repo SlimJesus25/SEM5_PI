@@ -77,8 +77,8 @@ export default class ElevadorRepo implements IElevadorRepo {
   }
   
 
-  public async findByNumeroIdentificativo(value: number): Promise<Elevador> {
-      const query = { numeroIdentificativo: value };
+  public async findByNumeroIdentificativo(codigo: number): Promise<Elevador> {
+      const query = { numeroIdentificativo : codigo };
       const elevadorRecord = await this.elevadorSchema.findOne(query as FilterQuery<IElevadorPersistence & Document>);
 
       if(elevadorRecord != null)
@@ -95,5 +95,16 @@ export default class ElevadorRepo implements IElevadorRepo {
         return ElevadorMap.toDomain(elevadorRecord);
       else
         return null;
+  }
+
+  public async delete(elevador: Elevador) : Promise<Elevador>{
+    try{
+      const query = { numeroIdentificativo: elevador.numeroIdentificativo}; 
+      const elevadorRecord = this.elevadorSchema.deleteOne(query as FilterQuery<IElevadorPersistence & Document>);
+      
+      return elevador;
+    }catch(err){
+      throw err;
+    }
   }
 }

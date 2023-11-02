@@ -10,6 +10,7 @@ import IListElevadoresDTO from '../dto/IListElevadoresDTO';
 import IEdificioRepo from './IRepos/IEdificioRepo';
 import IPisoRepo from './IRepos/IPisoRepo';
 import { Piso } from '../domain/piso';
+import IDeleteElevador from '../dto/IDeleteElevador';
 
 @Service()
 export default class ElevadorService implements IElevadorService {
@@ -176,6 +177,21 @@ export default class ElevadorService implements IElevadorService {
       return Result.ok<IElevadorDTO[]>(elevadoresDTO)
     } catch (e) {
       throw e;
+    }
+  }
+
+  public async deleteElevador(elevadorDTO: IDeleteElevador): Promise<Result<IElevadorDTO>> {
+    try {
+      const elevador = await this.elevadorRepo.findByNumeroIdentificativo(elevadorDTO.numeroIdentificativo);
+
+      if (elevador == null)
+        return Result.fail<IElevadorDTO>("Não existe qualquer elevador com o numero identificativo " + elevadorDTO.numeroIdentificativo);
+
+      await this.elevadorRepo.delete(elevador);
+
+      return Result.ok<IElevadorDTO>(ElevadorMap.toDTO(elevador));
+    } catch (err) {
+      throw err;
     }
   }
 
