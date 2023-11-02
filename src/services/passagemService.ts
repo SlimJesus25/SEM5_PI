@@ -140,7 +140,7 @@ export default class PassagemService implements IPassagemService {
       const edificioP = await this.edificioRepo.findByCodigo(edificio.codigoEdificio);
 
       if (edificioP == null)
-        return Result.fail<IPisoDTO[]>("O código do edifício " + edificioP.codigo + " é inválido");
+        return Result.fail<IPisoDTO[]>("O código do edifício " + edificio.codigoEdificio + " é inválido");
         
       const passagemResult = await this.passagemRepo.listPassagens(edificioP.codigo);
       if (passagemResult.length == 0)
