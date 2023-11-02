@@ -3,5 +3,5 @@ export interface IEdificioPersistence {
 	codigo: string;
 	nomeOpcional: string;
 	descricao: string;
-	dimensaoMaxima: number[];
+	dimensaoMaximaPiso: number[];
   }

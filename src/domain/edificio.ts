@@ -65,7 +65,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     const guardedProps = [
       { argument: props.codigoEdificio, argumentName: 'codigoEdificio' },
       { argument: props.descricaoEdificio, argumentName: 'descricao' },
-      { argument: props.dimensaoMaximaPiso, argumentName: 'dimensaoMaxima' },
+      { argument: props.dimensaoMaximaPiso, argumentName: 'dimensaoMaximaPiso' },
       { argument: props.nomeOpcionalEdificio, argumentName: 'nomeOpcional' },
     ];
 
