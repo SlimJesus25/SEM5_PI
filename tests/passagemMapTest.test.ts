@@ -121,10 +121,10 @@ describe('passagem map', () => {
 
     const expectedDTO = {
         designacao: "B2_C2",
-        edificioOrigem: "B",
-        edificioDestino: "C",
-        pisoOrigem: "B2",
-        pisoDestino: "C2"
+        edificioA: "B",
+        edificioB: "C",
+        pisoA: "B2",
+        pisoB: "C2"
     };
 
     const expectedPersistence = {
