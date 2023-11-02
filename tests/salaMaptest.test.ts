@@ -11,7 +11,7 @@ describe('sala map', () => {
 
 
     const edificio = Edificio.create({
-        dimensaoMaximaPiso: 200,
+        dimensaoMaximaPiso: [100,100],
         descricaoEdificio: "Edificio Acolhe Malucos",
         nomeOpcionalEdificio: "Departamento de Engenharia Informática",
         codigoEdificio: CodigoEdificio.create("B").getValue(),

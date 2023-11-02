@@ -71,7 +71,7 @@ describe('passagem controller', function () {
 		//	
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -92,7 +92,7 @@ describe('passagem controller', function () {
 		//
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -168,7 +168,7 @@ describe('passagem controller', function () {
 
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -190,7 +190,7 @@ describe('passagem controller', function () {
 
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -255,7 +255,7 @@ describe('passagem controller', function () {
 		let next: Partial<NextFunction> = () => { };
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -296,7 +296,7 @@ describe('passagem controller', function () {
 		//	
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -304,7 +304,7 @@ describe('passagem controller', function () {
 
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -379,9 +379,8 @@ describe('passagem controller', function () {
 		sinon.assert.calledOnce(obj);
 		sinon.assert.calledWith(obj, sinon.match(req.body));
 	});
-
 	
-	//Tentativa de teste: AssertError: expected spy to be called once but was called 0 times
+	//Teste US220 Caso de Sucesso
 	it('listPisos com passagens:  passagemController + passagemService integration test using spy on passagemService, success case ', async function() {
 		let body = {
 			"codigoEdificio":"B"
@@ -397,7 +396,7 @@ describe('passagem controller', function () {
 		//	
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -408,17 +407,18 @@ describe('passagem controller', function () {
 			"designacao": "B1",
 			"edificio": edificio1
 		}).getValue();
-
+		
 		const dummyPiso2 = Piso.create({
 			"descricao": "Piso de gabinetes e aulas laboratoriais",
 			"designacao": "B2",
 			"edificio": edificio1
+
 		}).getValue();
 
 		//
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -464,16 +464,151 @@ describe('passagem controller', function () {
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match([sinon.match({
-			"id": dummyPiso2.id,
 			"descricao": "Piso de gabinetes e aulas laboratoriais",
 			"designacao": "B2",
-			"edificio": edificio1
+			"edificio": edificio1.codigo,
 		})]));
 		sinon.assert.calledOnce(passagemServiceSpy);
 		sinon.assert.calledWith(passagemServiceSpy, sinon.match({ name: req.body.name }));
 	})
 	
-	//TODO para list pisos com passagem
+	//Teste para US220 Building Not Found
+	it('listPisos com Passagem: passagemController + passagemService integration test using spy on passagemService, building not found', async function () {
+		let body = {
+			"codigoEdificio": "B",
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+
+		const edificio1 = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+		}).getValue();
+
+		const dummyPiso = Piso.create({
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B1",
+			"edificio": edificio1
+		}).getValue();
+
+		const dummyPiso2 = Piso.create({
+			"descricao": "Piso de gabinetes e aulas laboratoriais",
+			"designacao": "B2",
+			"edificio": edificio1
+		}).getValue();
+
+		//
+
+
+		const edificio2 = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio principal de engenharia civil",
+			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
+			codigoEdificio: CodigoEdificio.create("C").getValue(),
+		}).getValue();
+
+		const dummyPiso3 = Piso.create({
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "C1",
+			"edificio": edificio2
+		}).getValue();
+
+		const dummyPiso4 = Piso.create({
+			"descricao": "Piso de gabinetes e aulas laboratoriais",
+			"designacao": "C2",
+			"edificio": edificio2
+		}).getValue();
+
+		const passagem = Passagem.create({
+			designacao: "B2_C2",
+			edificioA: edificio1,
+			edificioB: edificio2,
+			pisoA: dummyPiso2,
+			pisoB: dummyPiso4
+		}).getValue();
+
+		let passagens: Passagem[] = [passagem];
+
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+
+		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(null);
+
+		sinon.stub(passagemRepoInstance, "listPassagens").returns(new Promise<Passagem[]>((resolve, reject) => {
+			resolve(passagens)
+		}));
+
+		let passagemServiceInstance = Container.get("PassagemService");
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "listPisos");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		// Act
+		await ctrl.listPisos(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 404);
+	});
+	
+	//Teste para US220 passagem not found 
+	it('listPisos com Passagem: passagemController + passagemService integration test using spy on passagemService, passagem not found', async function () {
+	let body = {
+		"codigoEdificio": "B"
+	};
+	let req: Partial<Request> = {};
+	req.body = body;
+
+	let res: Partial<Response> = {
+		status: sinon.spy()
+	};
+	let next: Partial<NextFunction> = () => { };
+
+	const edificio1 = Edificio.create({
+		dimensaoMaximaPiso: 200,
+		descricaoEdificio: "Edificio Acolhe Malucos",
+		nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+		codigoEdificio: CodigoEdificio.create("B").getValue(),
+	}).getValue();
+
+	const edificio2 = Edificio.create({
+		dimensaoMaximaPiso: 200,
+		descricaoEdificio: "Edificio principal de engenharia civil",
+		nomeOpcionalEdificio: "Departamento de Engenharia Civil",
+		codigoEdificio: CodigoEdificio.create("C").getValue(),
+	}).getValue();
+
+	let passagemRepoInstance = Container.get("PassagemRepo");
+	let edificioRepoInstance = Container.get("EdificioRepo");
+
+
+	sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio1);
+
+	let empty: Piso[] = [];
+	sinon.stub(passagemRepoInstance, "listPassagens").resolves(empty);
+
+	let passagemServiceInstance = Container.get("PassagemService");
+	const passagemServiceSpy = sinon.spy(passagemServiceInstance, "listPisos");
+
+	const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+	// Act
+	await ctrl.listPisos(<Request>req, <Response>res, <NextFunction>next);
+
+	// Assert
+	sinon.assert.calledOnce(res.status);
+	sinon.assert.calledWith(res.status, 404);
+	});
+	
+	//list pisos com passagem US220
 	it('listPisos com passagens entre edificios', async function () {
 		let req: Partial<Request> = {};
 		req.body = {

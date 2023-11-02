@@ -9,6 +9,7 @@ import IEdificioService from './IServices/IEdificioService';
 import { Result } from "../core/logic/Result";
 import { EdificioMap } from "../mappers/EdificioMap";
 import { CodigoEdificio } from '../domain/codigoEdificio';
+import { resolve } from 'path';
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -44,7 +45,7 @@ export default class EdificioService implements IEdificioService {
 
       const codigo = CodigoEdificio.create(edificioDTO.codigoEdificio).getValue();
       const descricao = edificioDTO.descricaoEdificio;
-      const dimensao = edificioDTO.dimensaoMaximaEdificio;
+      const dimensao = edificioDTO.dimensaoMaximaPiso;
       const nomeOpcional = edificioDTO.nomeOpcionalEdificio;
 
 
@@ -79,7 +80,7 @@ export default class EdificioService implements IEdificioService {
       }else {
         edificio.codigo = edificioDTO.codigoEdificio;
         edificio.descricao = edificioDTO.descricaoEdificio;
-        edificio.dimensaoMaxima = edificioDTO.dimensaoMaximaEdificio;
+        edificio.dimensaoMaximaPiso = edificioDTO.dimensaoMaximaPiso;
         await this.edificioRepo.save(edificio);
 
         const edificioDTOResult = EdificioMap.toDTO( edificio ) as IEdificioDTO;
@@ -95,13 +96,16 @@ export default class EdificioService implements IEdificioService {
 
         const edificios = await this.edificioRepo.findAll();
 
-        if (!!edificios){
+        if (edificios == null){
           return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
         }
         
-        let edificiosDTO : IEdificioDTO[];
+        let edificiosDTO : IEdificioDTO[] = [];
 
-        (await edificios).forEach(p => edificiosDTO.push(EdificioMap.toDTO(p) as IEdificioDTO));
+        for(const edificio of edificios){
+          const p = EdificioMap.toDTO(edificio) as IEdificioDTO;
+          edificiosDTO.push(p);
+        }
 
         return Result.ok<IEdificioDTO[]>( edificiosDTO )
       } catch (e) {

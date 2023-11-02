@@ -10,7 +10,7 @@ interface EdificioProps {
   codigoEdificio: CodigoEdificio;
   nomeOpcionalEdificio: string;
   descricaoEdificio: string;
-  dimensaoMaximaPiso: number;
+  dimensaoMaximaPiso: number[];
 }
 
 export class Edificio extends AggregateRoot<EdificioProps> {
@@ -34,7 +34,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     return this.props.descricaoEdificio;
   }
 
-  get dimensaoMaxima (): number {
+  get dimensaoMaximaPiso (): number[] {
     return this.props.dimensaoMaximaPiso;
   }
 
@@ -50,7 +50,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     this.props.descricaoEdificio = value;
   }
 
-  set dimensaoMaxima (value : number) {
+  set dimensaoMaximaPiso (value : number[]) {
     this.props.dimensaoMaximaPiso = value;
   }
 
@@ -65,7 +65,7 @@ export class Edificio extends AggregateRoot<EdificioProps> {
     const guardedProps = [
       { argument: props.codigoEdificio, argumentName: 'codigoEdificio' },
       { argument: props.descricaoEdificio, argumentName: 'descricao' },
-      { argument: props.dimensaoMaximaPiso, argumentName: 'dimensaoMaxima' },
+      { argument: props.dimensaoMaximaPiso, argumentName: 'dimensaoMaximaPiso' },
       { argument: props.nomeOpcionalEdificio, argumentName: 'nomeOpcional' },
     ];
 

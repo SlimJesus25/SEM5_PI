@@ -50,7 +50,7 @@ export default class EdificioRepo implements IEdificioRepo {
         edificioDocument.codigo = edificio.codigo;
         edificioDocument.nomeOpcional = edificio.nomeOpcional;
         edificioDocument.descricao = edificio.descricao;
-        edificioDocument.dimensaoMaxima = edificio.dimensaoMaxima;
+        edificioDocument.dimensaoMaximaPiso = edificio.dimensaoMaximaPiso;
         await edificioDocument.save();
 
         return edificio;

@@ -136,18 +136,22 @@ export default class PassagemService implements IPassagemService {
   //codigoEdificioA
   public async listPisos(edificio: IListPisosComPassagemDTO): Promise<Result<IPisoDTO[]>> {
     try {
-      const edificioDoc = await this.edificioRepo.findByCodigo(edificio.codigoEdificio);
+      
+      const edificioP = await this.edificioRepo.findByCodigo(edificio.codigoEdificio);
 
-      if (!!edificioDoc)
-        return Result.fail<IPisoDTO[]>("Código do edifício é inválido");
+      if (edificioP == null)
+        return Result.fail<IPisoDTO[]>("O código do edifício " + edificioP.codigo + " é inválido");
+        
+      const passagemResult = await this.passagemRepo.listPassagens(edificioP.codigo);
+      if (passagemResult.length == 0)
+        return Result.fail<IPisoDTO[]>("Não existem passagens para o edifício "
+          + edificio.codigoEdificio);
+      const pisoUmValues = passagemResult.map(passagem => passagem.pisoUm);
+      let pisoResultDTO: IPisoDTO[] = [];
 
-      const passagemResult = (await this.passagemRepo.listPassagens(edificioDoc.codigo)).map(p => p.pisoUm);
+      pisoUmValues.forEach(p => pisoResultDTO.push(PisoMap.toDTO(p) as IPisoDTO));
 
-      let passagensResultDTO: IPisoDTO[];
-
-      passagemResult.forEach(p => passagensResultDTO.push(PisoMap.toDTO(p) as IPisoDTO));
-
-      return Result.ok<IPisoDTO[]>(passagensResultDTO)
+      return Result.ok<IPisoDTO[]>(pisoResultDTO)
     } catch (e) {
       throw e;
     }
