@@ -16,10 +16,10 @@ export class PassagemMap extends Mapper<Passagem> {
     return {
       id: passagem.id.toString(),
       designacao: passagem.designacao,
-      edificioOrigem: passagem.edificioUm.codigo.toString(),
-      edificioDestino: passagem.edificioDois.codigo.toString(),
-      pisoOrigem: passagem.pisoUm.designacao.toString(),
-      pisoDestino: passagem.pisoDois.designacao.toString(),
+      edificioA: passagem.edificioUm.codigo.toString(),
+      edificioB: passagem.edificioDois.codigo.toString(),
+      pisoA: passagem.pisoUm.designacao.toString(),
+      pisoB: passagem.pisoDois.designacao.toString(),
     } as IPassagemDTO;
   }
 

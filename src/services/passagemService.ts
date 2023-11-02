@@ -38,10 +38,10 @@ export default class PassagemService implements IPassagemService {
       if (passagem != null)
         return Result.fail<IPassagemDTO>("Passagem com a designacao " + passagemDTO.designacao + " já existe!");
 
-      const edificioOrigem = await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem);
-      const edificioDestino = await this.edificioRepo.findByCodigo(passagemDTO.edificioDestino);
-      const pisoOrigem = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
-      const pisoDestino = await this.pisoRepo.findByDesignacao(passagemDTO.pisoDestino);
+      const edificioOrigem = await this.edificioRepo.findByCodigo(passagemDTO.edificioA);
+      const edificioDestino = await this.edificioRepo.findByCodigo(passagemDTO.edificioB);
+      const pisoOrigem = await this.pisoRepo.findByDesignacao(passagemDTO.pisoA);
+      const pisoDestino = await this.pisoRepo.findByDesignacao(passagemDTO.pisoB);
 
       if (edificioOrigem.codigo === edificioDestino.codigo || pisoOrigem.designacao === pisoDestino.designacao)
         return Result.fail<IPassagemDTO>("Origem e destino dos parâmetros não podem ser os mesmos");
@@ -79,10 +79,10 @@ export default class PassagemService implements IPassagemService {
   public async updatePassagem(passagemDTO: IPassagemDTO): Promise<Result<IPassagemDTO>> {
     try {
       const passagem = await this.passagemRepo.findByDomainId(passagemDTO.id);
-      const edificioA = await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem);
-      const edificioB = await this.edificioRepo.findByCodigo(passagemDTO.edificioDestino);
-      const pisoA = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
-      const pisoB = await this.pisoRepo.findByDesignacao(passagemDTO.pisoOrigem);
+      const edificioA = await this.edificioRepo.findByCodigo(passagemDTO.edificioA);
+      const edificioB = await this.edificioRepo.findByCodigo(passagemDTO.edificioB);
+      const pisoA = await this.pisoRepo.findByDesignacao(passagemDTO.pisoA);
+      const pisoB = await this.pisoRepo.findByDesignacao(passagemDTO.pisoB);
 
       if (passagem === null) {
         return Result.fail<IPassagemDTO>("Passagem não encontrada");
