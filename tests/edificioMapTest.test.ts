@@ -6,7 +6,7 @@ import { EdificioMap } from '../src/mappers/EdificioMap'
 
 describe('edificio map', () => {
         const body = {
-            "dimensaoMaximaPiso": 200,
+            "dimensaoMaximaPiso": [100, 100],
             "descricaoEdificio": "Edificio Acolhe Malucos",
             "nomeOpcionalEdificio": "Edificio Francisco",
             "codigoEdificio": "2324",
@@ -25,7 +25,7 @@ describe('edificio map', () => {
 
     const expectedDTO = {
         id: "1",
-        dimensaoMaximaEdificio: 200,
+        dimensaoMaximaPiso: [100, 100],
         descricaoEdificio: "Edificio Acolhe Malucos",
         nomeOpcionalEdificio: "Edificio Francisco",
         codigoEdificio: "2324",
@@ -34,7 +34,7 @@ describe('edificio map', () => {
     const expectedPersistence = {
         codigo: "2324",
         descricao: "Edificio Acolhe Malucos",
-        dimensaoMaxima: 200,
+        dimensaoMaximaPiso: [100, 100],
         domainId: "123".toString(),
         id: "1",
         nomeOpcional: "Edificio Francisco",
@@ -42,7 +42,7 @@ describe('edificio map', () => {
 
     const document = {
         id: "1",
-        dimensaoMaxima: 200,
+        dimensaoMaximaPiso: [100, 100],
         descricao: "Edificio Acolhe Malucos",
         nomeOpcional: "Edificio Francisco",
         codigoEdificio: "2324",
@@ -50,7 +50,7 @@ describe('edificio map', () => {
 
     const expectedDomain = {
         id: "1",
-        dimensaoMaxima: 200,
+        dimensaoMaximaPiso: [100, 100],
         descricao: "Edificio Acolhe Malucos",
         nomeOpcional: "Edificio Francisco",
         codigoEdificio: "2324",

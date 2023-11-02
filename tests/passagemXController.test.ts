@@ -71,7 +71,7 @@ describe('passagem controller', function () {
 		//	
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -92,7 +92,7 @@ describe('passagem controller', function () {
 		//
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -168,7 +168,7 @@ describe('passagem controller', function () {
 
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -190,7 +190,7 @@ describe('passagem controller', function () {
 
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -255,7 +255,7 @@ describe('passagem controller', function () {
 		let next: Partial<NextFunction> = () => { };
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -296,7 +296,7 @@ describe('passagem controller', function () {
 		//	
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -304,7 +304,7 @@ describe('passagem controller', function () {
 
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),
@@ -397,7 +397,7 @@ describe('passagem controller', function () {
 		//	
 
 		const edificio1 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -418,7 +418,7 @@ describe('passagem controller', function () {
 		//
 
 		const edificio2 = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio principal de engenharia civil",
 			nomeOpcionalEdificio: "Departamento de Engenharia Civil",
 			codigoEdificio: CodigoEdificio.create("C").getValue(),

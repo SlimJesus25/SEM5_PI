@@ -1,7 +1,7 @@
 
 export default interface IEdificioDTO {
     id: string;
-    dimensaoMaximaEdificio: number;
+    dimensaoMaximaPiso: number[];
     descricaoEdificio: string;
     nomeOpcionalEdificio: string;
     codigoEdificio: string;

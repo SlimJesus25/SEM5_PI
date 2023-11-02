@@ -140,7 +140,7 @@ describe('sala controller', function () {
 		let salaServiceInstance = Container.get("SalaService");
 
 		const edificio = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -215,7 +215,7 @@ describe('sala controller', function () {
 		let salaServiceInstance = Container.get("SalaService");
 
 		const edificio = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -277,7 +277,7 @@ describe('sala controller', function () {
 		let salaServiceInstance = Container.get("SalaService");
 
 		const edificio = Edificio.create({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100,100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),

@@ -120,7 +120,7 @@ describe('edificio controller', function () {
 		let req: Partial<Request> = {};
 
 		req.body = {
-			"dimensaoMaximaPiso": 200,
+			"dimensaoMaximaPiso": [100, 100],
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Edificio Francisco",
 			"codigoEdificio": "2324",
@@ -175,7 +175,7 @@ describe('edificio controller', function () {
 
 	it("updateEdificio returns elevador json", async function () {
 		let body = {
-			"dimensaoMaximaPiso": 200,
+			"dimensaoMaximaPiso": [100, 100],
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Edificio Francisco",
 			"codigoEdificio": "2324",
@@ -203,7 +203,7 @@ describe('edificio controller', function () {
 
 		sinon.assert.calledOnce(obj);
 		sinon.assert.calledWith(obj, sinon.match({
-			"dimensaoMaximaPiso": 200,
+			"dimensaoMaximaPiso": [100, 100],
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Edificio Francisco",
 			"codigoEdificio": "2324",
@@ -217,7 +217,7 @@ describe('edificio controller', function () {
 	it('edificioController + edificioService integration test using spy on edificioService, success creation case', async function () {
 		// Arrange
 		let body = {
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100, 100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Edificio Francisco",
 			codigoEdificio: "2324",
@@ -256,7 +256,7 @@ describe('edificio controller', function () {
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({
-			dimensaoMaximaPiso: 200,
+			dimensaoMaximaPiso: [100, 100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Edificio Francisco",
 			codigoEdificio: "2324",
@@ -270,7 +270,7 @@ describe('edificio controller', function () {
 	it('edificioController + edificioService integration test using spy on elevadorService, unsuccess creation test', async function () {
 		// Arrange
 		let body = {
-			"dimensaoMaximaPiso": 200,
+			"dimensaoMaximaPiso": [100, 100],
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Edificio Francisco",
 			"codigoEdificio": "2324",
@@ -318,10 +318,71 @@ describe('edificio controller', function () {
 		sinon.assert.calledWith(res.status, 403);
 	});
 
+	
+
+
+	it('listEdificios: edificioController + edificioService integration test using spy on edificioService, success case', async function () {
+        // Arrange
+        let body = {
+        };
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            json: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+		const edificio = Edificio.create({
+			dimensaoMaximaPiso: [100,100],
+			descricaoEdificio: "Edificio de Mecânica",
+			nomeOpcionalEdificio: "Edificio G",
+			codigoEdificio: CodigoEdificio.create("G").getValue()
+		}).getValue();
+
+		const edificio2 = Edificio.create({
+			dimensaoMaximaPiso: [200,200],
+			descricaoEdificio: "Edificio de Química",
+			nomeOpcionalEdificio: "Edificio L",
+			codigoEdificio: CodigoEdificio.create("L").getValue()
+		}).getValue();
+
+        let edificioRepoInstance = Container.get("EdificioRepo");
+
+        sinon.stub(edificioRepoInstance, "findAll").resolves([edificio, edificio2]);
+
+        let edificioServiceInstance = Container.get("EdificioService");
+        const edificioServiceSpy = sinon.spy(edificioServiceInstance, "listEdificios");
+
+        const ctrl = new EdificioController(edificioServiceInstance as IEdificioService);
+
+        // Act
+        await ctrl.listEdificios(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        sinon.assert.calledOnce(res.json);
+        sinon.assert.calledWith(res.json, 
+            [{
+				"dimensaoMaximaPiso" : [100,100],
+				"descricaoEdificio" : "Edificio de Mecânica",
+				"nomeOpcionalEdificio" : "Edificio G",
+				"codigoEdificio" : "G"
+			},
+            {
+				"dimensaoMaximaPiso" : [200,200],
+				"descricaoEdificio" : "Edificio de Química",
+				"nomeOpcionalEdificio" : "Edificio L",
+				"codigoEdificio" : "L"
+            }]
+          );
+        sinon.assert.calledOnce(edificioServiceSpy);
+        //sinon.assert.calledTwice(roleServiceSpy);
+        sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
+	});
+
 	it('listEdificios: edificioController + edificioService integration test using spy on edificioService, unsuccess case no edifico created', async function () {
 		// Arrange
 		let body = {
-			"codigoEdificio": "B",
 		};
 		let req: Partial<Request> = {};
 		req.body = body;
@@ -334,7 +395,7 @@ describe('edificio controller', function () {
 		let edificioRepoInstance = Container.get("EdificioRepo");
 		let edificioServiceInstance = Container.get("EdificioService");
 
-		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(null);
+		await sinon.stub(edificioRepoInstance, "findAll").resolves(null);
 
 		const edificioServiceSpy = sinon.spy(edificioServiceInstance, "listEdificios");
 
@@ -346,57 +407,6 @@ describe('edificio controller', function () {
 		// Assert
 		sinon.assert.calledOnce(res.status);
 		sinon.assert.calledWith(res.status, 404);
-		sinon.assert.calledOnce(edificioServiceSpy);
-		sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
-	});
-
-
-	it('listEdificios: edificioController + edificioService integration test using spy on edificioService, success case', async function () {
-		// Arrange
-		let body = {
-			"dimensaoMaximaPiso": 200,
-			"descricaoEdificio": "Edificio Acolhe Malucos",
-			"nomeOpcionalEdificio": "Edificio Francisco",
-			"codigoEdificio": "2324"
-		};
-		let req: Partial<Request> = {};
-		req.body = body;
-
-		let res: Partial<Response> = {
-			json: sinon.spy()
-		};
-		let next: Partial<NextFunction> = () => { };
-
-		let edificioRepoInstance = Container.get("EdificioRepo");
-		let edificioServiceInstance = Container.get("EdificioService");
-
-		const edificio = Edificio.create({
-			dimensaoMaximaPiso: 200,
-			descricaoEdificio: "Edificio Acolhe Malucos",
-			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
-			codigoEdificio: CodigoEdificio.create("2324").getValue(),
-		}).getValue();
-
-
-		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio.codigo);
-
-		const edificioServiceSpy = sinon.spy(edificioServiceInstance, "listEdificios");
-
-		const ctrl = new EdificioController(edificioServiceInstance as IEdificioService);
-
-		// Act
-		await ctrl.listEdificios(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match([sinon.match({
-			dimensaoMaximaPiso : 200,
-			descricaoEdificio : "Edificio Acolhe Malucos",
-			nomeOpcionalEdificio: "Edificio Francisco",
-			codigoEdificio: "2324"
-		})]));
-		sinon.assert.calledOnce(edificioServiceSpy);
-		sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
 		sinon.assert.calledOnce(edificioServiceSpy);
 		sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
 	});
