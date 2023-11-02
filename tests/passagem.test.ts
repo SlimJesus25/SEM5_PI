@@ -16,14 +16,14 @@ describe('Passagem', () => {
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
 			nomeOpcionalEdificio: "Informatica",
 			descricaoEdificio: "Grande",
-			dimensaoMaximaPiso: 100
+			dimensaoMaximaPiso: [100,100]
 		}).getValue();
 
         const dummyEdificio2 = Edificio.create({
 			codigoEdificio: CodigoEdificio.create("H").getValue(),
 			nomeOpcionalEdificio: "Fisica",
 			descricaoEdificio: "Grande",
-			dimensaoMaximaPiso: 200
+			dimensaoMaximaPiso: [100,100]
 		}).getValue();
 	
 		const dummyPiso = Piso.create({

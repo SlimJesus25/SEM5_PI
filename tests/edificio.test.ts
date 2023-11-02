@@ -17,7 +17,7 @@ describe('Edificio', () => {
 
     it('Edificio succeeds', () =>{
       const body = {
-        "dimensaoMaximaPiso": 200,
+        "dimensaoMaximaPiso": [100, 100],
         "descricaoEdificio": "Edificio Acolhe Malucos",
         "nomeOpcionalEdificio": "Edificio Francisco",
         "codigoEdificio": "2324",
@@ -61,7 +61,7 @@ describe('Edificio', () => {
         sinon.assert.match(edificio.getValue().codigo, "2324");
         sinon.assert.match(edificio.getValue().nomeOpcional, "Edificio Francisco");
         sinon.assert.match(edificio.getValue().descricao, "Edificio Acolhe Malucos");
-        sinon.assert.match(edificio.getValue().dimensaoMaxima, 200);
+        sinon.assert.match(edificio.getValue().dimensaoMaximaPiso, [100, 100]);
         
     });
 /*

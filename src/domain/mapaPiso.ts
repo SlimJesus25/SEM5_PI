@@ -99,7 +99,7 @@ export class MapaPiso extends AggregateRoot<MapaPisoProps> {
     if(props.mapaLargura <= 0 || props.mapaProfundidade <= 0)
       return Result.fail<MapaPiso>("A largura e a profundidade devem ser superiores a 0.");
 
-    if(props.mapaProfundidade != props.mapaPiso.length || props.mapaLargura != props.mapaPiso[0].length)
+    if(props.mapaProfundidade != props.mapaPiso[1].length || props.mapaLargura != props.mapaPiso[0].length)
       return Result.fail<MapaPiso>("A largura e a profundidade devem ser coincidentes com o mapa.");
     
     // Fazer verificações para as restantes restrições...

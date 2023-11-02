@@ -17,7 +17,7 @@ export default (app: Router) => {
   route.post('/createEdificio',
   celebrate({
     body: Joi.object({
-      dimensaoMaximaEdificio: Joi.number().required(),
+      dimensaoMaximaPiso: Joi.array().items(Joi.number()).min(2).max(2).required(),
       nomeOpcionalEdificio: Joi.string(),
       descricaoEdificio: Joi.string(),
       codigoEdificio: Joi.string().required(),
@@ -29,7 +29,7 @@ export default (app: Router) => {
   route.put('/updateEdificio',
   celebrate({
     body: Joi.object({
-        dimensaoMaximaEdificio: Joi.number(),
+        dimensaoMaximaPiso: Joi.array().items(Joi.number()).min(2).max(2),
         nomeOpcionalEdificio: Joi.string(),
         codigoEdificio: Joi.string().required(),
         descricaoEdificio: Joi.string()

@@ -15,7 +15,7 @@ describe('Piso', () => {
       codigoEdificio: CodigoEdificio.create("B").getValue(),
       nomeOpcionalEdificio: "Informatica",
       descricaoEdificio: "Grande",
-      dimensaoMaximaPiso: 100
+      dimensaoMaximaPiso: [100,100]
     }).getValue();
 
     const p = {
