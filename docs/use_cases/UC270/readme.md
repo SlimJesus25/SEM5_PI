@@ -6,9 +6,9 @@
 
 ## 2. Análise
 
-### 2.1 Identificar o problema
+### 2.1 Identificação do problema
 
-Criar um elevador é uma entidade relevante do domínio que existe em edifícios e transporta pessoas de um piso para outro.
+Criar um elevador é uma entidade relevante do domínio que existe em edifícios e transporta pessoas/robos/drones de um piso para outro.
 
 > Questão: há alguma restrição para o ID do elevador?
 >esse número identificativo tem alguma especificação? era isso que queria perguntar
@@ -53,17 +53,57 @@ Para resolver o problema de criação de elevadores foi criado um agregado com a
 
 ### 3.1. Realização
 
-#### 3.3.1 Excerto de domínio
+#### 3.1.1 Excerto de domínio
 
 ![excerto dominio](ed270.svg "ed_270.svg")
 
-#### 3.3.1 Vista de processo - nível 3
+#### 3.1.2 Vista de processo
+
+##### 3.1.2.1 Nível 1
+
+##### 3.1.2.2 Nível 2
+
+##### 3.1.2.3 Nível 3
 
 ![vista processo 3](vp270.svg "vp_270.svg")
 
-#### 3.3.2 Vista lógica - nível 3
+#### 3.1.3 Vista lógica
+
+##### 3.1.3.1 Nível 1
+
+![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
+
+##### 3.1.3.2 Nível 2
+
+![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+
+##### 3.1.3.3 Nível 3
 
 ![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+#### 3.1.3 Vista de cenários
+
+a
+
+##### 3.1.3.1 Nível 1
+
+a
+
+#### 3.1.4 Vista de implementação
+
+##### 3.1.3.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+##### 3.1.3.1 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+#### 3.1.5 Vista física
+
+##### 3.1.5.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
 
