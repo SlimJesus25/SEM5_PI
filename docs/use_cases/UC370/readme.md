@@ -2,35 +2,29 @@
 
 ## 1. Requisitos
 
-**UC370** -  Inibir um robô
+**UC370** -  Como gestor de frota quero inibir um robô
 
 
 ## 2. Análise
 
 ### 2.1 Indentificar o problema
-Como gestor de frota quero inibir um robô. Feito através do uso de um método PATCH
+Como gestor de frota quero inibir um robô, sendo que tem de se alterar o estado do robô, através do uso de um método PATCH
 
 
 ### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_370.svg "domain_excerpt_370.svg")
+![excerpt diagram](ed370.svg "domain_excerpt_370.svg")
 
-### 2.3 Testes de Unidade - Teste de regras de negócio
+### 2.3 Testes
 
-**Test 1:** *Ensure Username can't be null*
+#### 2.3.1 Testes de Unidade
 
-**Test 2:** *Ensure Password can't be null*
+**Test 1:** - Assegurar que robô existe
 
-**Test 3:** *Ensure FirstName can't be null*
+**Test 2:** - Assegurar que código de robô é válido
 
-**Test 4:** *Ensure LastName can't be null*
+#### 2.3.2 Testes de Integração
 
-**Test 5:** *Ensure Email can't be null*
-
-**Test 6:** *Ensure User can't be null*
-
-**Test 7:** *Ensure list of users can't be null*
-
-
+**Test 1** - 
 
 ## 3. Design
 
