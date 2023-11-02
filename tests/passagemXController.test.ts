@@ -54,6 +54,56 @@ describe('passagem controller', function () {
 		sandbox.restore();
 	});
 
+	it('createPassagem returns status 403 forbidden', async function () {
+		let req: Partial<Request> = {};
+		req.body = "Já existe uma passagem com a designaçao B2_H2"
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemServiceInstace = Container.get("PassagemService");
+
+		const obj = sinon.stub(passagemServiceInstace, "createPassagem").returns(Result.fail<IPassagemDTO>("Já existe uma passagem com a designaçao B2_H2"));
+
+		const ctrl = new PassagemController(passagemServiceInstace as IPassagemService);
+		await ctrl.createPassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+		sinon.assert.calledWith(obj, "Já existe uma passagem com a designaçao B2_H2");
+	});
+
+	it('createPassagem returns piso json', async function () {
+		let req: Partial<Request> = {};
+		req.body = {
+			"designacao": "Passagem B2_H2",
+      		"edificioA": "B",
+      		"edificioB": "H",
+      		"pisoA": "Piso 2",
+      		"pisoB": "Piso 2"
+		};
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemServiceInstace = Container.get("PassagemService");
+
+		const obj = sinon.stub(passagemServiceInstace, "createPassagem").returns(Result.ok<IPassagemDTO>(req.body as IPassagemDTO));
+
+		const ctrl = new PassagemController(passagemServiceInstace as IPassagemService);
+		await ctrl.createPassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(obj);
+		sinon.assert.calledWith(obj, sinon.match(req.body));
+	});
+
+
 	it('listPassagensBetween: passagemController + passagemService integration test using spy on passagemService, success case', async function () {
 		// Arrange
 		let body = {

@@ -33,9 +33,9 @@ export default class PassagemService implements IPassagemService {
   public async createPassagem(passagemDTO: IPassagemDTO): Promise<Result<IPassagemDTO>> {
     try {
 
-      const passagemDocument = await this.passagemRepo.findByDesignacao(passagemDTO.id);
+      const passagem = await this.passagemRepo.findByDesignacao(passagemDTO.designacao);
 
-      if (!!passagemDocument)
+      if (passagem != null)
         return Result.fail<IPassagemDTO>("Passagem com a designacao " + passagemDTO.designacao + " já existe!");
 
       const edificioOrigem = await this.edificioRepo.findByCodigo(passagemDTO.edificioOrigem);
