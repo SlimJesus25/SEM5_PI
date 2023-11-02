@@ -170,11 +170,7 @@ describe('piso controller', function () {
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
 		const edificio = Edificio.create({
-<<<<<<< HEAD
 			dimensaoMaximaPiso: [100,100],
-=======
-			dimensaoMaximaPiso: [200, 200],
->>>>>>> 4c766a05a4bc1b1fe56c47660a52ce0d3e53b6ec
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
