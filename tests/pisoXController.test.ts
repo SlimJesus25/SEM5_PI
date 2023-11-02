@@ -44,6 +44,197 @@ describe('piso controller', function () {
 		sandbox.restore();
 	});
 
+	it('createPiso returns status 403 forbidden', async function () {
+		let req: Partial<Request> = {};
+		req.body = "Já existe um piso com a designaçao B1"
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let pisoServiceInstace = Container.get("PisoService");
+
+		const obj = sinon.stub(pisoServiceInstace, "createPiso").returns(Result.fail<IPisoDTO>("Já existe um piso com a designaçao B1"));
+
+		const ctrl = new PisoController(pisoServiceInstace as IPisoService);
+		await ctrl.createPiso(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+		sinon.assert.calledWith(obj, "Já existe um piso com a designaçao B1");
+	});
+
+	it('createPiso returns piso json', async function () {
+		let req: Partial<Request> = {};
+		req.body = {
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
+			"edificio": "B"
+		};
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let pisoServiceInstace = Container.get("PisoService");
+
+		const obj = sinon.stub(pisoServiceInstace, "createPiso").returns(Result.ok<IPisoDTO>(req.body as IPisoDTO));
+
+		const ctrl = new PisoController(pisoServiceInstace as IPisoService);
+		await ctrl.createPiso(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(obj);
+		sinon.assert.calledWith(obj, sinon.match(req.body));
+	});
+
+	it('createPiso: pisoController + pisoService integration test using spy on pisoService, success', async function () {
+		// Arrange
+		let body = {
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
+			"edificio": "B"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			json: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let pisoRepoInstance = Container.get("PisoRepo");
+		let pisoServiceInstance = Container.get("PisoService");
+
+		const e = {
+			"dimensaoMaximaPiso": 200,
+			"descricaoEdificio": "Edificio Acolhe Malucos",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
+			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+		}
+
+		let dummyEdificio = Edificio.create(e).getValue();
+
+		const p = {
+			descricao: "Piso de gabinetes e aulas teórica-práticas",
+			designacao: "B1",
+			edificio: dummyEdificio,
+		}
+
+		let piso = Piso.create(p).getValue();
+
+		sinon.stub(pisoRepoInstance, "findByDesignacao").resolves(null); // Não existe, logo retorna null.
+		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(dummyEdificio);
+
+		sinon.stub(pisoRepoInstance, "save").resolves(null);
+
+		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "createPiso");
+
+		const ctrl = new PisoController(pisoServiceInstance as IPisoService);
+
+		// Act
+		await ctrl.createPiso(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.json);
+		sinon.assert.calledWith(res.json, sinon.match({
+			descricao: "Piso aulas praticas",
+			designacao: "B1",
+			edificio: "B"
+		}));
+		sinon.assert.calledOnce(pisoServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(pisoServiceSpy, sinon.match({ name: req.body.name }));
+	});
+
+	it('createPiso: pisoController + pisoService integration test using spy on pisoService, unsuccess case piso already exists', async function () {
+		// Arrange
+		let body = {
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
+			"edificio": "B"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let pisoRepoInstance = Container.get("PisoRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+
+		const edificio = Edificio.create({
+			dimensaoMaximaPiso: 200,
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+		}).getValue();
+
+		const p = {
+			id: 't12345',
+			descricao: "Piso de gabinetes e aulas teórica-práticas",
+			designacao: "B1",
+			edificio: edificio
+		};
+
+		const piso = Piso.create(p).getValue();
+
+		sinon.stub(pisoRepoInstance, "findByDesignacao").resolves(piso);
+
+		let pisoServiceInstance = Container.get("PisoService");
+		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "createPiso");
+
+		const ctrl = new PisoController(pisoServiceInstance as IPisoService);
+
+		// Act
+		await ctrl.createPiso(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+	});
+
+	it('createPiso: pisoController + pisoService integration test using spy on pisoService, unsuccess case edificio doesnt exist', async function () {
+		// Arrange
+		let body = {
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
+			"edificio": "B"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let pisoRepoInstance = Container.get("PisoRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+
+		sinon.stub(pisoRepoInstance, "findByDesignacao").resolves(null);
+
+		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(null);
+
+		let pisoServiceInstance = Container.get("PisoService");
+		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "createPiso");
+
+		const ctrl = new PisoController(pisoServiceInstance as IPisoService);
+
+		// Act
+		await ctrl.createPiso(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+	});
+
 	it("updatePiso returns status 404", async function () {
 		let body = "Piso não encontrado";
 
@@ -73,8 +264,8 @@ describe('piso controller', function () {
 
 	it("updatePiso returns piso json", async function () {
 		let body = {
-			"descricaoPiso": "Piso aulas praticas",
-			"designacaoPiso": "B1",
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
 			"edificio": "B"
 		};
 
@@ -97,8 +288,8 @@ describe('piso controller', function () {
 
 		sinon.assert.calledOnce(obj);
 		sinon.assert.calledWith(obj, sinon.match({
-			"descricaoPiso": "Piso aulas praticas",
-			"designacaoPiso": "B1",
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
 			"edificio": "B"
 		}))
 	});
@@ -106,8 +297,8 @@ describe('piso controller', function () {
 	it('updatePiso: pisoController +pisoService integration test using spy on pisoService, success', async function () {
 		// Arrange
 		let body = {
-			"descricaoPiso": "Piso aulas praticas",
-			"designacaoPiso": "B1",
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
 			"edificio": "B"
 		};
 		let req: Partial<Request> = {};
@@ -129,12 +320,14 @@ describe('piso controller', function () {
 		}).getValue();
 
 		const b = {
+			id: "t12345",
 			descricao: "Piso de gabinetes e aulas teórica-práticas",
 			designacao: "B1",
 			edificio: edificio
 		};
 
 		const b1 = {
+			id: "t12345",
 			descricao: "Piso aulas praticas",
 			designacao: "B1",
 			edificio: edificio
@@ -143,9 +336,9 @@ describe('piso controller', function () {
 		const piso = Piso.create(b).getValue();
 		const newPiso = Piso.create(b1).getValue();
 
-		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
+		sinon.stub(pisoRepoInstance, "findByDesignacao").resolves(piso);
 
-		sinon.stub(pisoRepoInstance, "findByEdificio").resolves(piso);
+		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
 
 		sinon.stub(pisoRepoInstance, "save").resolves(newPiso);
 
@@ -160,8 +353,8 @@ describe('piso controller', function () {
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({
-			"descricaoPiso": "Piso aulas praticas",
-			"designacaoPiso": "B1",
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
 			"edificio": "B"
 		}));
 		sinon.assert.calledOnce(pisoServiceSpy);
@@ -172,8 +365,8 @@ describe('piso controller', function () {
 	it('updatePiso: pisoController + pisoService integration test using spy on pisoService, unsuccess piso already exists', async function () {
 		// Arrange
 		let body = {
-			"descricaoPiso": "Piso aulas praticas",
-			"designacaoPiso": "B1",
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
 			"edificio": "B"
 		};
 		let req: Partial<Request> = {};
@@ -206,8 +399,8 @@ describe('piso controller', function () {
 	it('updatePiso: pisoController + pisoService integration test using spy on pisoService, unsuccess edificio doesnt exist', async function () {
 		// Arrange
 		let body = {
-			"descricaoPiso": "Piso aulas praticas",
-			"designacaoPiso": "B1",
+			"descricao": "Piso aulas praticas",
+			"designacao": "B1",
 			"edificio": "J"
 		};
 		let req: Partial<Request> = {};

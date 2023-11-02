@@ -39,9 +39,9 @@ export default class PisoService implements IPisoService {
   public async createPiso(pisoDTO: IPisoDTO): Promise<Result<IPisoDTO>> {
     try {
 
-      const pisoDocument = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
+      const piso = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
 
-      if(pisoDocument != null)
+      if(piso != null)
         return Result.fail<IPisoDTO>("Já existe um piso com a designação " + pisoDTO.designacao);
 
       const edificio = await this.edificioRepo.findByCodigo(pisoDTO.edificio);
@@ -50,9 +50,9 @@ export default class PisoService implements IPisoService {
         return Result.fail<IPisoDTO>("Não foi encontrado um edifício com o código " + pisoDTO.edificio);
 
       const pisoOrError = Piso.create({
-        descricao: pisoDTO.descricao,
-        designacao: pisoDTO.designacao,
-        edificio: edificio
+        "descricao": pisoDTO.descricao,
+        "designacao": pisoDTO.designacao,
+        "edificio": edificio
       });
 
       if (pisoOrError.isFailure) {

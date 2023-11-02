@@ -39,8 +39,8 @@ export default (app: Router) => {
   route.put('/updatePiso',
   celebrate({
     body: Joi.object({
-      descricaoPiso: Joi.string(),
-      designacaoPiso: Joi.string(),
+      descricao: Joi.string(),
+      designacao: Joi.string(),
       edificio: Joi.string()
     }),
   }),

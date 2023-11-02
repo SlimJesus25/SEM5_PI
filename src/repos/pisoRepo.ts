@@ -34,7 +34,7 @@ export default class PisoRepo implements IPisoRepo {
   }
 
   public async save (piso: Piso): Promise<Piso> {
-    const query = { designacao: piso.designacao}; 
+    const query = { domainId: piso.id.toString()}; 
 
     const pisoDocument = await this.pisoSchema.findOne( query );
 
@@ -70,6 +70,7 @@ export default class PisoRepo implements IPisoRepo {
   }
   
 
+  /*
   public async findByDesignacao(value: string): Promise<Piso> {
       const query = { designacao: value };
       const pisoRecord = await this.pisoSchema.findOne(query);
@@ -79,6 +80,19 @@ export default class PisoRepo implements IPisoRepo {
       else
         return null;
   }
+  */
+
+  public async findByDesignacao(value: string): Promise<Piso> {
+    const query = { designacao: value };
+    const pisoRecord = await this.pisoSchema.findOne(query as FilterQuery<IPisoPersistence & Document>);
+
+    if(pisoRecord != null)
+      return PisoMap.toDomain(pisoRecord);
+    else
+      return null;
+}
+
+
 
   public async findByEdificio(codigoEdificio: string): Promise<Piso[]>{
     const query = { edificio : codigoEdificio};
