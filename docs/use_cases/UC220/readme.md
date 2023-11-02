@@ -12,17 +12,17 @@ Listar pisos de um edifício que tenha passagem para outros edifícios é obtido
 
 ### 2.2 Excerto do MD
 
-![excerpt diagram](ed270.svg "ed270.svg")
+![excerpt diagram](ed220.svg "ed270.svg")
 
-### 2.3 Testes de Unidade - Teste de regras de negócio
+### 2.3 Testes ao Requisito
 
-**Test 1:** *Listar passagem.*
+**Teste 1:** *Listar pisos de edificio com passagem para outros edifícios com sucesso (controlador, 200 GET)*
 
-**Test 2:** *Edifico A tem que existir.*
+**Teste 2:** *Listar pisos de edificio com passagem para outros edifícios com insucesso (controlador, 404 NOT FOUND)*
 
-### 2.4 Testes de Integração
+**Teste 3:** *Listar pisos de edificio com passagem para outros edifícios com sucesso (controlador + serviço, 200 GET)*
 
-**Test 1:** 
+**Teste 4:** *Listar pisos de edificio com passagem para outros edifícios com insucesso (controlador + serviço, 404 NOT FOUND)*
 
 ## 3. Desenho
 
@@ -30,19 +30,13 @@ Para solucionar este problema, existe um agregado designado por Passagem que tem
 
 ### 3.1. Realização
 
-#### 3.3.1 Diagrama de vista de processos de nível 1
+#### 3.3.1 Vista de processo - nível 3
 
-![vp](vp1.svg "vp1.svg")
+![vista processo 3](../UC220/Nível%203/vp3.svg "vp3.svg")
 
-#### 3.3.1 Diagrama de vista de processos de nível 2
+#### 3.3.2 Vista lógica - nível 3
 
-![vp](vp2.svg "vp2.svg")
-
-#### 3.3.1 Diagrama de vista de processos de nível 3
-
-![vp](vp3.svg "vp3.svg")
-
-#### 3.3.4 Vista lógica nível (3 ou 4 (verificar))
+![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
 
 
 ### 3.2. Padrões aplicados
