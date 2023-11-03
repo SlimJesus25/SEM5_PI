@@ -102,7 +102,7 @@ describe('passagem controller', function () {
 		sinon.assert.calledOnce(obj);
 		sinon.assert.calledWith(obj, sinon.match(req.body));
 	});
-/*
+
 	it('createPassagem: passagemController + passagemService integration test using spy on passagemService, success', async function () {
 		// Arrange
 		let body = {
@@ -194,7 +194,7 @@ describe('passagem controller', function () {
 		//sinon.assert.calledTwice(roleServiceSpy);
 		sinon.assert.calledWith(passagemServiceSpy, sinon.match({ name: req.body.name }));
 	});
-*/
+
 	it('createPassagem: passagemController + passagemService integration test using spy on passagemService, unsuccess case passagem already exists', async function () {
 		// Arrange
 		let body = {

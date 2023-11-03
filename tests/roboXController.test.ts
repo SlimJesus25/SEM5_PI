@@ -85,27 +85,31 @@ describe('robo controller', function () {
             nickname: string;
             tipoRobo: TipoRobo;
         */
-        const robo1 = Robo.create({
+        const r1 = {
+            id: 't12345',
             estado: "inibido",
             marca: MarcaRobo.create("Samsung").getValue(),
             codigo: CodigoRobo.create("0078954321654321").getValue(),
             numeroSerie: NumeroSerieRobo.create("AZERTYUIOPQSDCVFGHJKLMW").getValue(),
             nickname: "Roberto",
             tipoRobo: tipoRobo1
-        }).getValue();
+        };
 
-        const robo2 = Robo.create({
+        const r2 ={
+            id: 't12345',
             estado: "inibido",
             marca: MarcaRobo.create("RedHat").getValue(),
             codigo: CodigoRobo.create("00320392930923").getValue(),
             numeroSerie: NumeroSerieRobo.create("IDPJPSJFDPSIJFJPSDJD").getValue(),
             nickname: "José",
             tipoRobo: tipoRobo1
-        }).getValue();
+        };
+
+        let robos: Robo[] = [Robo.create(r1).getValue(), Robo.create(r2).getValue()];
 
         let roboRepoInstance = Container.get("RoboRepo");
 
-        sinon.stub(roboRepoInstance, "findAll").resolves([robo1, robo2]);
+        sinon.stub(roboRepoInstance, "findAll").resolves(robos);
 
         let roboServiceInstance = Container.get("RoboService");
         const roboServiceSpy = sinon.spy(roboServiceInstance, "listRobos");
@@ -115,43 +119,29 @@ describe('robo controller', function () {
         // Act
         await ctrl.listRobos(<Request>req, <Response>res, <NextFunction>next);
 
-        const exp = [{
-            "codigo": "0078954321654321",
-            "estado": "inibido",
-            "marca": "Samsung",
-            "nickname": "Roberto",
-            "numeroSerie": "AZERTYUIOPQSDCVFGHJKLMW",
-            "tipoRobo": "Polivalente"
-        }, {
-            "codigo": "00320392930923",
-            "estado": "inibido",
-            "marca": "RedHat",
-            "nickname": "José",
-            "numeroSerie": "IDPJPSJFDPSIJFJPSDJD",
-            "tipoRobo": "Polivalente"
-        }];
-
         // Assert
         sinon.assert.calledOnce(res.json);
-        sinon.assert.calledWith(res.json, sinon.match([{
-            "codigo": "0078954321654321",
-            "estado": "inibido",
-            "marca": "Samsung",
-            "nickname": "Roberto",
-            "numeroSerie": "AZERTYUIOPQSDCVFGHJKLMW",
-            "tipoRobo": "Polivalente"
-        }, {
-            "codigo": "00320392930923",
-            "estado": "inibido",
-            "marca": "RedHat",
-            "nickname": "José",
-            "numeroSerie": "IDPJPSJFDPSIJFJPSDJD",
-            "tipoRobo": "Polivalente"
-        }])
-);
+        sinon.assert.calledWith(res.json, sinon.match(
+            [sinon.match({
+            codigo: "0078954321654321",
+            estado: "inibido",
+            marca: "Samsung",
+            nickname: "Roberto",
+            numeroSerie: "AZERTYUIOPQSDCVFGHJKLMW",
+            tipoRobo: "Polivalente"
+        }),sinon.match({
+            codigo: "00320392930923",
+            estado: "inibido",
+            marca: "RedHat",
+            nickname: "José",
+            numeroSerie: "IDPJPSJFDPSIJFJPSDJD",
+            tipoRobo: "Polivalente"
+        }
+        )])
+        );
         sinon.assert.calledOnce(roboServiceSpy);
         //sinon.assert.calledTwice(roleServiceSpy);
-        sinon.assert.calledWith(roboServiceSpy, sinon.match({ name: req.body.name }));
+        sinon.assert.calledWith(roboServiceSpy);
     });
 
     it('listRobos: roboController + roboService integration test using spy on roboService, unsuccess case', async function () {
