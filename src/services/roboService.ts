@@ -88,13 +88,12 @@ export default class RoboService implements IRoboService {
       if (robo === null) {
         return Result.fail<IRoboDTO>("Robo não encontrado");
       }
-      else {
-        robo.inibir;
+        robo.inibir();
         await this.roboRepo.save(robo);
 
         const roboDTOResult = RoboMap.toDTO(robo) as IRoboDTO;
         return Result.ok<IRoboDTO>(roboDTOResult)
-      }
+      
     } catch (e) {
       throw e;
     }
