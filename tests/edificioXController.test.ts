@@ -415,7 +415,8 @@ describe('edificio controller', function () {
 			"codigoEdificio": "L",
 			"descricaoEdificio": "Edificio de Culinária",
 			"dimensaoMaximaPiso": [200, 200],
-			"nomeOpcionalEdificio": "Edificio de Culinária"
+			"nomeOpcionalEdificio": "Edificio de Culinária",
+			"id" : "14fe3d7c-d963-4fbb-a556-874f22440d5c"
 		};
 		let req: Partial<Request> = {};
 		req.body = body;
@@ -427,26 +428,27 @@ describe('edificio controller', function () {
 	
 		let edificioRepoInstance = Container.get("EdificioRepo");
 	
-		const edificio = Edificio.create({
+		const m = {
 			codigoEdificio: CodigoEdificio.create("L").getValue(),
 			descricaoEdificio: "Edificio de Química",
 			dimensaoMaximaPiso: [200, 200],
-			nomeOpcionalEdificio: "Edificio L"
-		}).getValue();
+			nomeOpcionalEdificio: "Edificio L",
+			id : "12345"
+		};
 	
 		const n = {
 			codigoEdificio: CodigoEdificio.create("L").getValue(),
 			descricaoEdificio: "Edificio de Culinária",
 			dimensaoMaximaPiso: [200, 200],
-			nomeOpcionalEdificio: "Edificio de Culinária"
+			nomeOpcionalEdificio: "Edificio de Culinária",
+			id : "12345"
 		};
-	
+		const edificio = Edificio.create(m).getValue();
 		const newEdificio = Edificio.create(n).getValue();
 	
 		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
-
+	
 		sinon.stub(edificioRepoInstance, "save").resolves(newEdificio);
-
 	
 		let edificioServiceInstance = Container.get("EdificioService");
 		const edificioServiceSpy = sinon.spy(edificioServiceInstance, "updateEdificio");
@@ -459,21 +461,22 @@ describe('edificio controller', function () {
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({
-			"codigoEdificio": "L",
-			"descricaoEdificio": "Edificio de Culinária",
-			"dimensaoMaximaPiso": [200, 200],
-			"nomeOpcionalEdificio": "Edificio de Culinária"
+			codigoEdificio: "L",
+			descricaoEdificio: "Edificio de Culinária",
+			dimensaoMaximaPiso: "[200, 200]",
+			nomeOpcionalEdificio: "Edificio de Culinária",
 		}));
 	
 		// Ensure that the service method is called.
 		sinon.assert.calledOnce(edificioServiceSpy);
 		sinon.assert.calledWith(edificioServiceSpy, sinon.match({
-			"codigoEdificio": "L",
-			"descricaoEdificio": "Edificio de Culinária",
-			"dimensaoMaximaPiso": [200, 200],
-			"nomeOpcionalEdificio": "Edificio de Culinária"
+			codigoEdificio: "L",
+			descricaoEdificio: "Edificio de Culinária",
+			dimensaoMaximaPiso: "[200, 200]",
+			nomeOpcionalEdificio: "Edificio de Culinária",
 		}));
 	});
+	
 	
 	
 	
@@ -514,11 +517,4 @@ describe('edificio controller', function () {
 		//sinon.assert.calledTwice(roleServiceSpy);
 		sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
 	});
-
-
-	
-
-	
-
-	
 });
