@@ -18,6 +18,10 @@ export class NumeroSerieRobo extends ValueObject<NumeroSerieRoboProps> {
 
   public static create (numeroSerie: string): Result<NumeroSerieRobo> {
     const guardResult = Guard.againstNullOrUndefined(numeroSerie, 'numeroSerie');
+
+    if(numeroSerie.length > 50)
+      return Result.fail<NumeroSerieRobo>("Número de série excede 50 caracteres");
+
     if (!guardResult.succeeded) {
       return Result.fail<NumeroSerieRobo>(guardResult.message);
     } else {

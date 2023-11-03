@@ -94,7 +94,7 @@ export class Robo extends AggregateRoot<RoboProps> {
   public static create (props: RoboProps, id?: UniqueEntityID): Result<Robo> {
 
     const guardedProps = [
-      { argument: props.estado, argumentName: 'estado' },
+      { argument: "desinibido", argumentName: 'estado' },
       { argument: props.marca, argumentName: 'marca' },
       { argument: props.codigo, argumentName: 'codigo' },
       { argument: props.numeroSerie, argumentName: 'numeroSerie' },

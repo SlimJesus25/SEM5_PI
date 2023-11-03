@@ -18,6 +18,10 @@ export class CodigoRobo extends ValueObject<CodigoRoboProps> {
 
   public static create (codigo: string): Result<CodigoRobo> {
     const guardResult = Guard.againstNullOrUndefined(codigo, 'codigo');
+
+    if(codigo.length > 30)
+      return Result.fail<CodigoRobo>("Código excedeu 30 caracteres");
+
     if (!guardResult.succeeded) {
       return Result.fail<CodigoRobo>(guardResult.message);
     } else {
