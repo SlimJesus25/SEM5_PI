@@ -18,7 +18,7 @@ Para inibir um robô temos de alterar o seu estado de ativo para inativo, e ter 
 
 **Test 3:** - Inibir robô com sucesso (controlador + service, 201, PATCH)
 
-**Test 4:** - Inibir robô com insucesso (controlador + service , 201, PATCH)
+**Test 4:** - Inibir robô com insucesso (controlador + service , 404, PATCH)
 
 **Test 5:** - Estado não pode ser nulo
 
