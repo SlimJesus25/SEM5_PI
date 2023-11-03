@@ -81,6 +81,7 @@ export default class EdificioService implements IEdificioService {
         edificio.codigo = edificioDTO.codigoEdificio;
         edificio.descricao = edificioDTO.descricaoEdificio;
         edificio.dimensaoMaximaPiso = edificioDTO.dimensaoMaximaPiso;
+        edificio.nomeOpcional = edificioDTO.nomeOpcionalEdificio;
         await this.edificioRepo.save(edificio);
 
         const edificioDTOResult = EdificioMap.toDTO( edificio ) as IEdificioDTO;

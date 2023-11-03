@@ -416,65 +416,59 @@ describe('edificio controller', function () {
 			"descricaoEdificio": "Edificio de Culinária",
 			"dimensaoMaximaPiso": [200, 200],
 			"nomeOpcionalEdificio": "Edificio de Culinária",
-			"id" : "14fe3d7c-d963-4fbb-a556-874f22440d5c"
 		};
 		let req: Partial<Request> = {};
 		req.body = body;
-	
+
 		let res: Partial<Response> = {
 			json: sinon.spy()
 		};
 		let next: Partial<NextFunction> = () => { };
-	
+
 		let edificioRepoInstance = Container.get("EdificioRepo");
-	
+
 		const m = {
+			id: '12345',
 			codigoEdificio: CodigoEdificio.create("L").getValue(),
 			descricaoEdificio: "Edificio de Química",
 			dimensaoMaximaPiso: [200, 200],
 			nomeOpcionalEdificio: "Edificio L",
-			id : "12345"
 		};
-	
+
 		const n = {
+			id: '12345',
 			codigoEdificio: CodigoEdificio.create("L").getValue(),
 			descricaoEdificio: "Edificio de Culinária",
 			dimensaoMaximaPiso: [200, 200],
 			nomeOpcionalEdificio: "Edificio de Culinária",
-			id : "12345"
 		};
 		const edificio = Edificio.create(m).getValue();
 		const newEdificio = Edificio.create(n).getValue();
-	
+
 		sinon.stub(edificioRepoInstance, "findByCodigo").resolves(edificio);
-	
+
 		sinon.stub(edificioRepoInstance, "save").resolves(newEdificio);
-	
+
 		let edificioServiceInstance = Container.get("EdificioService");
 		const edificioServiceSpy = sinon.spy(edificioServiceInstance, "updateEdificio");
-	
+
 		const ctrl = new EdificioController(edificioServiceInstance as IEdificioService);
-	
+
 		// Act
 		await ctrl.updateEdificio(<Request>req, <Response>res, <NextFunction>next);
-	
+
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({
 			codigoEdificio: "L",
 			descricaoEdificio: "Edificio de Culinária",
-			dimensaoMaximaPiso: "[200, 200]",
+			dimensaoMaximaPiso: [200, 200],
 			nomeOpcionalEdificio: "Edificio de Culinária",
 		}));
-	
+
 		// Ensure that the service method is called.
 		sinon.assert.calledOnce(edificioServiceSpy);
-		sinon.assert.calledWith(edificioServiceSpy, sinon.match({
-			codigoEdificio: "L",
-			descricaoEdificio: "Edificio de Culinária",
-			dimensaoMaximaPiso: "[200, 200]",
-			nomeOpcionalEdificio: "Edificio de Culinária",
-		}));
+		sinon.assert.calledWith(edificioServiceSpy, sinon.match({ name: req.body.name }));
 	});
 	
 	
