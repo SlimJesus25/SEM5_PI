@@ -1,7 +1,6 @@
 import { Result } from "../../core/logic/Result";
-import IMapaEdificioDTO from "../../dto/IMapaPisoDTO";
-import IListElevadoresDTO from "../../dto/IListElevadoresDTO";
+import ITarefaDTO from "../../dto/ITarefaDTO";
 
 export default interface ITarefaService {
-  
+    createTarefa(tarefaDTO: ITarefaDTO): Promise<Result<ITarefaDTO>>;
 }

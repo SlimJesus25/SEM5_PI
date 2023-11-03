@@ -742,7 +742,7 @@ describe('elevador controller', function () {
 		sinon.assert.calledWith(elevadorServiceSpy, sinon.match({ name: req.body.name }));
 	});
 
-	it('listElevadores: elevadorController + elevadorService integration test using spy on elevadorService, success case', async function () {
+	it('listElevadoresEdificio: elevadorController + elevadorService integration test using spy on elevadorService, success case', async function () {
 		// Arrange
 		let body = {
 			"codigoEdificio": "B",
@@ -790,12 +790,12 @@ describe('elevador controller', function () {
 
 		sinon.stub(elevadorRepoInstance, "findByEdificio").resolves(Elevador.create(b).getValue());
 
-		const edificioServiceSpy = sinon.spy(elevadorServiceInstance, "listElevadores");
+		const edificioServiceSpy = sinon.spy(elevadorServiceInstance, "listElevadoresEdificio");
 
 		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
 
 		// Act
-		await ctrl.listElevadores(<Request>req, <Response>res, <NextFunction>next);
+		await ctrl.listElevadoresEdificio(<Request>req, <Response>res, <NextFunction>next);
 
 		// Assert
 		sinon.assert.calledOnce(res.json);
@@ -832,12 +832,12 @@ describe('elevador controller', function () {
 
 		sinon.stub(elevadorRepoInstance, "findByEdificio").resolves(null);
 
-		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "listElevadores");
+		const elevadorServiceSpy = sinon.spy(elevadorServiceInstance, "listElevadoresEdificio");
 
 		const ctrl = new ElevadorController(elevadorServiceInstance as IElevadorService);
 
 		// Act
-		await ctrl.listElevadores(<Request>req, <Response>res, <NextFunction>next);
+		await ctrl.listElevadoresEdificio(<Request>req, <Response>res, <NextFunction>next);
 
 		// Assert
 		sinon.assert.calledOnce(res.status);
