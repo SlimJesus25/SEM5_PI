@@ -4,51 +4,98 @@
 
 **UC160** -  Editar edificio
 
-
 ## 2. Análise
 
 ### 2.1 Indentificar o problema
 Editar um edificio, através de um método PUT/PATCH.
 
+> Questão : Em relação às User Stories de edição, temos já uma ideia das informações que são opcionais, mas queremos ter a certeza daquilo que é editável ou não. Posto isto, poderia indicar que informações pretende editar nas US160, US200, US250 e US280?
+>
+>Resposta: requisito 160 - editar edificio - todas as informações à exceção do código do edificio
 
-### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_160.svg "domain_excerpt_160.svg")
+### 2.2 Testes ao requisito
 
-### 2.3 Testes de Unidade - Teste de regras de negócio
+**Test 1:** *Modificar edficio com sucesso (controlador, 201 PUT)*
 
-**Test 1:** *Ensure Username can't be null*
+**Test 2:** *Modificar edificio com insucesso (controlador, 403 FORBIDDEN)*
 
-**Test 2:** *Ensure Password can't be null*
+**Test 3:** *Modificar edificio com sucesso (controlador + serviço, 201 PUT)*
 
-**Test 3:** *Ensure FirstName can't be null*
+**Test 4:** *Modificar edificio com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
 
-**Test 4:** *Ensure LastName can't be null*
+## 3. Desenho
 
-**Test 5:** *Ensure Email can't be null*
-
-**Test 6:** *Ensure User can't be null*
-
-**Test 7:** *Ensure list of users can't be null*
-
-
-
-## 3. Design
-
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+Para resolver este problema, é pedido ao utilizador os parametros a atualizar do edificio. O único parametro que nao pode ser atualizado é o código por ser unico.
 
 ### 3.1. Realização
 
-### 3.3.1 Diagrama de Sequência
+#### 3.1.1 Excerto de domínio
 
-![sequence diagram](uc160/sequence_diagram.svg "sequence_diagram")
+![excerto dominio](ed270.svg "ed_270.svg")
 
+#### 3.1.2 Vista de processo
+
+##### 3.1.2.1 Nível 1
+
+![vista processo 1](vp1.svg "Vista processo - nível 2")
+
+##### 3.1.2.2 Nível 2
+
+![vista processo 2](vp2.svg "Vista processo - nível 2")
+
+##### 3.1.2.3 Nível 3
+
+![vista processo 3](vp3.svg "Vista processo - nível 3")
+
+#### 3.1.3 Vista lógica
+
+##### 3.1.3.1 Nível 1
+
+![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
+
+##### 3.1.3.2 Nível 2
+
+![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+
+##### 3.1.3.3 Nível 3
+
+![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+#### 3.1.3 Vista de cenários
+
+a
+
+##### 3.1.3.1 Nível 1
+
+a
+
+#### 3.1.4 Vista de implementação
+
+##### 3.1.3.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+##### 3.1.3.1 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+#### 3.1.5 Vista física
+
+##### 3.1.5.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
+
 Os padrões aplicados são:
+
+- REST + ONION (padrões arquiteturais);
 - DTO;
-- Persistência;
-- Aplicação;
-- Controlador;
-- Serviço;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
 - Modelo.

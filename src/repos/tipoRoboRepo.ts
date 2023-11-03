@@ -27,8 +27,38 @@ export default class TipoRoboRepo implements ITipoRoboRepo {
     return null;
   }
 
-  public async save (elevador: TipoRobo): Promise<TipoRobo> {
-    return null;
+  public async save (tipoRobo: TipoRobo): Promise<TipoRobo> {
+    const query = { domainId: tipoRobo.id.toString()}; 
+
+    const tipoRoboDocument = await this.tipoRoboSchema.findOne( query );
+
+    try {
+      if (tipoRoboDocument === null ) {
+        const rawTipoRobo: any = TipoRoboMap.toPersistence(tipoRobo);
+
+        const tipoRoboCreated = await this.tipoRoboSchema.create(rawTipoRobo);
+
+        return TipoRoboMap.toDomain(tipoRoboCreated);
+      } else {
+
+        let tarefas : string[] = [];
+
+        tipoRobo.tarefas.forEach(v => {
+          tarefas.push(v.tipoTarefa);
+        });
+
+        tipoRoboDocument.designacao = tipoRobo.designacao;
+        tipoRoboDocument.modelo = tipoRobo.modelo
+        tipoRoboDocument.marca = tipoRobo.marca;
+        tipoRoboDocument.tarefas = tarefas;
+
+        await tipoRoboDocument.save();
+
+        return tipoRobo;
+      }
+    } catch (err) {
+      throw err;
+    }
   }
 
   public async findByDomainId (roleId: TipoRobo | string): Promise<TipoRobo> {
