@@ -160,7 +160,7 @@ export default class ElevadorService implements IElevadorService {
   }
 
   // Só precisa de uma query ao repo de elevadores onde o edificio seja igual ao do dto.
-  public async listElevadores(listElevadoresDTO: IListElevadoresDTO): Promise<Result<IElevadorDTO[]>> {
+  public async listElevadoresEdificio(listElevadoresDTO: IListElevadoresDTO): Promise<Result<IElevadorDTO[]>> {
     try {
 
       const elevador = await this.elevadorRepo.findByEdificio(listElevadoresDTO.codigoEdificio);
@@ -173,6 +173,26 @@ export default class ElevadorService implements IElevadorService {
       // O UC pede para listar os elevadorES, porém, no sprint A é pedido para assumir que no máximo existe apenas 1 elevador por edifício.
       // Como tal, esta solução adiciona só 1 elemento ao array. Se no futuro for necessário alterar, basta meter um foreach.
       elevadoresDTO.push(ElevadorMap.toDTO(elevador));
+
+      return Result.ok<IElevadorDTO[]>(elevadoresDTO)
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async listElevadores(): Promise<Result<IElevadorDTO[]>> {
+    try {
+
+      const elevadores = await this.elevadorRepo.findAll();
+
+      if (elevadores.length == 0)
+        return Result.fail<IElevadorDTO[]>("Não foram encontrados elevadores");
+
+      let elevadoresDTO: IElevadorDTO[] = [];
+
+      elevadores.forEach(element => {
+        elevadoresDTO.push(ElevadorMap.toDTO(element));
+      });
 
       return Result.ok<IElevadorDTO[]>(elevadoresDTO)
     } catch (e) {
