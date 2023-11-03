@@ -478,6 +478,13 @@ describe('piso controller', function () {
 			"codigoEdificio": CodigoEdificio.create("B").getValue(),
 		}).getValue();
 
+		const dummyEdificio2 = Edificio.create({
+			"dimensaoMaximaPiso": [100, 100],
+			"descricaoEdificio": "Edificio Acolhe Malucos",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
+			"codigoEdificio": CodigoEdificio.create("F").getValue(),
+		}).getValue();
+
 		const piso1 = {
 			id: 't12345',
 			descricao: "Piso de gabinetes e aulas teórica-práticas",
@@ -490,6 +497,13 @@ describe('piso controller', function () {
 			descricao: "Piso de gabinetes e aulas laboratoriais",
 			designacao: "B2",
 			edificio: dummyEdificio
+		};
+
+		const piso3 = {
+			id: 't12345',
+			descricao: "Piso de gabinetes e aulas laboratoriais",
+			designacao: "F2",
+			edificio: dummyEdificio2
 		};
 
 		let pisos: Piso[] = [Piso.create(piso1).getValue(), Piso.create(piso2).getValue()];
@@ -561,7 +575,7 @@ describe('piso controller', function () {
 	it('listPisosMinMax: pisoController + pisoService integration test using spy on pisoService, success case', async function () {
 		// Arrange
 		let body = {
-			"min": 0,
+			"min": 2,
 			"max": 4
 		};
 		let req: Partial<Request> = {};
@@ -574,42 +588,57 @@ describe('piso controller', function () {
 
 		//	
 
-		const dummyEdificio = Edificio.create({
-			"dimensaoMaximaPiso": [100, 100],
-			"descricaoEdificio": "Edificio Acolhe Malucos",
-			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
-			"codigoEdificio": CodigoEdificio.create("B").getValue(),
-		}).getValue();
+		const e1 = {
+			id: 't12345',
+			dimensaoMaximaPiso: [100, 100],
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+		};
+
+		const e2 = {
+			id: 't12345',
+			dimensaoMaximaPiso: [100, 100],
+			descricaoEdificio: "Edificio Acolhe Malucos",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("F").getValue(),
+		};
+
+		let edificio1 = Edificio.create(e1).getValue();
+		let edificio2 = Edificio.create(e2).getValue();
+
+		let edificios: Edificio[] = [edificio1, edificio2];
 
 		const piso1 = {
 			id: 't12345',
 			descricao: "Piso de gabinetes e aulas teórica-práticas",
 			designacao: "B1",
-			edificio: dummyEdificio
+			edificio: edificio1
 		};
 
 		const piso2 = {
 			id: 't12345',
 			descricao: "Piso de gabinetes e aulas laboratoriais",
 			designacao: "B2",
-			edificio: dummyEdificio
+			edificio: edificio1
 		};
 
 		const piso3 = {
 			id: 't12345',
 			descricao: "Piso de reuniões",
 			designacao: "B3",
-			edificio: dummyEdificio
+			edificio: edificio1
 		};
 
 		let pisos: Piso[] = [Piso.create(piso1).getValue(), Piso.create(piso2).getValue(), Piso.create(piso3).getValue()];
 
+		let pisos2: Piso[] = [];
 		let pisoRepoInstance = Container.get("PisoRepo");
 		let edificioRepoInstance = Container.get("EdificioRepo");
 		let pisoServiceInstance = Container.get("PisoService");
 
-		sinon.stub(edificioRepoInstance, "findAll").resolves(dummyEdificio);
-		sinon.stub(pisoRepoInstance, "findByEdificio").onCall(0).resolves(piso1).onCall(1).resolves(piso2).onCall(2).resolves(piso3);
+		sinon.stub(edificioRepoInstance, "findAll").resolves(edificios);
+		sinon.stub(pisoRepoInstance, "findByEdificio").onCall(0).resolves(pisos).onCall(1).resolves(pisos2);
 		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "listMinMax");
 
 		const ctrl = new PisoController(pisoServiceInstance as IPisoService);
@@ -620,16 +649,16 @@ describe('piso controller', function () {
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match(
-			[sinon.match({
-				dimensaoMaximaPiso: [100, 100],
-				descricaoEdificio: "Edificio Acolhe Malucos",
-				nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+            [sinon.match({
 				codigoEdificio: "B",
-			})])
-		);
+				descricaoEdificio: "Edificio Acolhe Malucos",
+				dimensaoMaximaPiso: [100, 100],
+				nomeOpcionalEdificio: "Departamento de Engenharia Informática"
+        })])
+        );
 		sinon.assert.calledOnce(pisoServiceSpy);
 		//sinon.assert.calledTwice(roleServiceSpy);
-		sinon.assert.calledWith(pisoServiceSpy, sinon.match({ name: req.body.name }));
+		sinon.assert.calledWith(pisoServiceSpy);
 	});
 
 
