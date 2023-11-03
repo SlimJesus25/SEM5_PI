@@ -84,6 +84,8 @@ describe('robo controller', function () {
 
         sinon.stub(tarefaRepoInstance, "findByDesignacao").onCall(0).resolves(tarefa1).onCall(1).resolves(tarefa2);
 
+        sinon.stub(tipoRoboRepoInstance, "save").resolves(null);
+
         let tipoRoboServiceInstance = Container.get("TipoRoboService");
         const roboServiceSpy = sinon.spy(tipoRoboServiceInstance, "createTipoRobo");
 
