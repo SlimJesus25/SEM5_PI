@@ -13,32 +13,32 @@ export default class PassagemRepo implements IPassagemRepo {
   private models: any;
 
   constructor(
-    @Inject('passagemSchema') private passagemSchema : Model<IPassagemPersistence & Document>,
-  ) {}
+    @Inject('passagemSchema') private passagemSchema: Model<IPassagemPersistence & Document>,
+  ) { }
 
-  private createBaseQuery (): any {
+  private createBaseQuery(): any {
     return {
       where: {},
     }
   }
 
   public async exists(passagem: Passagem): Promise<boolean> {
-    
+
     const idX = passagem.id instanceof PassagemId ? (<PassagemId>passagem.id).toValue() : passagem.id;
 
-    const query = { domainId: idX}; 
-    const roleDocument = await this.passagemSchema.findOne( query as FilterQuery<IPassagemPersistence & Document>);
+    const query = { domainId: idX };
+    const roleDocument = await this.passagemSchema.findOne(query as FilterQuery<IPassagemPersistence & Document>);
 
     return !!roleDocument === true;
   }
 
-  public async save (passagem: Passagem): Promise<Passagem> {
-    const query = { domainId: passagem.id.toString()}; 
+  public async save(passagem: Passagem): Promise<Passagem> {
+    const query = { domainId: passagem.id.toString() };
 
-    const passagemDocument = await this.passagemSchema.findOne( query );
+    const passagemDocument = await this.passagemSchema.findOne(query);
 
     try {
-      if (passagemDocument === null ) {
+      if (passagemDocument === null) {
         const rawPassagem: any = PassagemMap.toPersistence(passagem);
 
         const passagemCreated = await this.passagemSchema.create(rawPassagem);
@@ -58,11 +58,11 @@ export default class PassagemRepo implements IPassagemRepo {
     }
   }
 
-  public async findByDomainId (passagemId: PassagemId | string): Promise<Passagem> {
-    const query = { domainId: passagemId};
-    const passagemRecord = await this.passagemSchema.findOne( query as FilterQuery<IPassagemPersistence & Document> );
+  public async findByDomainId(passagemId: PassagemId | string): Promise<Passagem> {
+    const query = { domainId: passagemId };
+    const passagemRecord = await this.passagemSchema.findOne(query as FilterQuery<IPassagemPersistence & Document>);
 
-    if( passagemRecord != null) {
+    if (passagemRecord != null) {
       return PassagemMap.toDomain(passagemRecord);
     }
     else
@@ -70,50 +70,50 @@ export default class PassagemRepo implements IPassagemRepo {
   }
 
   public async listPassagensBetween(idEdificioA: string, idEdificioB: string): Promise<Passagem[]> {
-    const query = { codigoEdificioA: idEdificioA, codigoEdificioB: idEdificioB}
+    const query = { codigoEdificioA: idEdificioA, codigoEdificioB: idEdificioB }
     const passagemSchema = await this.passagemSchema.find(query);
 
     try {
-        if (passagemSchema === null) {
-            return null;
-        } else {
-            let passagemArray = [];
-            for (let i = 0; i < passagemSchema.length; i++) {
-                passagemArray[i] = PassagemMap.toDomain(passagemSchema[i]);
-            }
-            return passagemArray;
+      if (passagemSchema === null) {
+        return null;
+      } else {
+        let passagemArray = [];
+        for (let i = 0; i < passagemSchema.length; i++) {
+          passagemArray[i] = PassagemMap.toDomain(passagemSchema[i]);
         }
+        return passagemArray;
+      }
     } catch (err) {
-        throw err;
+      throw err;
     }
   }
-  
+
   public async listPassagens(idEdificio: string): Promise<Passagem[]> {
-      const query = {codigoEdificioA: idEdificio}
-      const passagemSchema = await this.passagemSchema.find(query);
-      try {
-        if (passagemSchema === null) {
-            return null;
-        } else {
-            let passagemArray = [];
-            for (let i = 0; i < passagemSchema.length; i++) {
-                passagemArray[i] = PassagemMap.toDomain(passagemSchema[i]);
-            }
-            return passagemArray;
+    const query = { codigoEdificioA: idEdificio }
+    const passagemSchema = await this.passagemSchema.find(query);
+    try {
+      if (passagemSchema === null) {
+        return null;
+      } else {
+        let passagemArray = [];
+        for (let i = 0; i < passagemSchema.length; i++) {
+          passagemArray[i] = PassagemMap.toDomain(passagemSchema[i]);
         }
+        return passagemArray;
+      }
     } catch (err) {
-        throw err;
+      throw err;
     }
-      
+
   }
 
   public async findByDesignacao(value: string): Promise<Passagem> {
     const query = { designacao: value.toString() };
-    const passagemRecord = await this.passagemSchema.findOne(query);
+    const passagemRecord = await this.passagemSchema.findOne(query as FilterQuery<IPassagemPersistence & Document>);
 
-    if(passagemRecord != null)
+    if (passagemRecord != null)
       return PassagemMap.toDomain(passagemRecord);
     else
       return null;
-}
+  }
 }
