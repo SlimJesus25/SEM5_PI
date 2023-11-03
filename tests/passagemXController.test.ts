@@ -107,10 +107,10 @@ describe('passagem controller', function () {
 		// Arrange
 		let body = {
 			"designacao": "Passagem B2_H2",
-			"edificioA": "B",
-			"edificioB": "H",
-			"pisoA": "Piso 2",
-			"pisoB": "Piso 2"
+			"edificioA": "H",
+			"edificioB": "B",
+			"pisoA": "H2",
+			"pisoB": "B2"
 		};
 		let req: Partial<Request> = {};
 		req.body = body;
@@ -158,6 +158,7 @@ describe('passagem controller', function () {
 		let dummyPiso2 = Piso.create(p2).getValue();
 
 		const pa = {
+			id:"t123",
 			designacao: "Passagem B2_H2",
 			edificioA: dummyEdificio,
 			edificioB: dummyEdificio2,
@@ -185,10 +186,10 @@ describe('passagem controller', function () {
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({
 			designacao: "Passagem B2_H2",
-			edificioA: "B",
-			edificioB: "H",
-			pisoA: "Piso 2",
-			pisoB: "Piso 2"
+			edificioA: "H",
+			edificioB: "B",
+			pisoA: "H2",
+			pisoB: "B2"
 		}));
 		sinon.assert.calledOnce(passagemServiceSpy);
 		//sinon.assert.calledTwice(roleServiceSpy);

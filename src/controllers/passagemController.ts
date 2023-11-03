@@ -28,7 +28,7 @@ export default class PassagemController implements IPassagemController /* TODO: 
       }
 
       const passagemDTO = passagemOrError.getValue();
-      return res.status(201).json( passagemDTO );
+      return res.json( passagemDTO ).status(201);
     }
     catch (e) {
       return next(e);
