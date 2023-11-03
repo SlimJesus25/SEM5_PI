@@ -24,8 +24,8 @@ describe('robo controller', function () {
         let tipoRoboRepoClass = require("../src/repos/tipoRoboRepo").default;
         let tipoRoboRepoInstance = Container.get(tipoRoboRepoClass);
         Container.set("TipoRoboRepo", tipoRoboRepoInstance);
-
-
+        
+        
         ////////////////////////////
 
         let roboSchemaInstance = require("../src/persistence/schemas/roboSchema").default;
