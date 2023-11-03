@@ -104,7 +104,8 @@ export default class PisoRepo implements IPisoRepo {
         
           let pisoArray = [];
           for (let i = 0; i < pisoSchema.length; i++){
-              pisoArray[i] = PisoMap.toDomain(pisoSchema[i]);
+            const p = await PisoMap.toDomain(pisoSchema[i]);
+            pisoArray[i] = p;
           }
           
       /*
