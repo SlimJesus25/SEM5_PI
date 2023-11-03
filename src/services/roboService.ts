@@ -26,12 +26,14 @@ export default class RoboService implements IRoboService {
 
       const roboDocument = await this.roboRepo.findByCodigo(roboDTO.codigo);
 
-      if (!!roboDocument)
+      if (roboDocument != null)
         return Result.fail<IRoboDTO>("Já existe um robo com o código " + roboDTO.codigo);
 
       const estado = Object.keys(EstadoRobo).find(key => EstadoRobo[key] === roboDTO.estado);
-      const tipo = await this.tipoRoboRepo.findByDesignacao(roboDTO.codigo);
-
+      const tipo = await this.tipoRoboRepo.findByDesignacao(roboDTO.tipoRobo);
+      
+      if(tipo == null)
+        return Result.fail<IRoboDTO>("Não existe tipo de robo com esse código " + roboDTO.tipoRobo);
       const roboOrError = Robo.create({
         estado: EstadoRobo[estado],
         marca: MarcaRobo.create(roboDTO.marca).getValue(),
