@@ -4,88 +4,114 @@
 
 **US360** -  Como gestor de frota pretendo adicionar um novo robot à frota indicando o seu tipo, designação, etc.
 
-**Critérios de aceitação** - This US has no specific acceptance criteria
-
 ## 2. Análise
 
 ### 2.1 Indentificar o problema
-In order to implement this functionality, we divided the documentation in 3 parts:
+Para podermos adicionar um robô à frota, temos de indicar os dados necessários para a criação do mesmo. Iremos recorrer ao POST para esse mesmo efeito.
 
 **Respostas do cliente:**
 
-Pergunta: Os atributos do robot têm algum tipo de formatação/restrição?
+>Pergunta: 
+Os atributos do robot têm algum tipo de formatação/restrição? <br>
 
-Resposta: código identificativo, obrigatório, alfanumerico, max 30 caracteres, único no sistema
-nickname, obrigatório, obrigatório, alfanumerico, max 30 caracteres, único no sistema 
-tipo de robot, obrigatório
-número de série, obrigatório, alfanumerico, max 50 caracteres, único para um dado tipo de robot
-descrição, opcional, alfanumerico, max. 250 caracteres
+>Resposta: 
+>- **código**: identificativo, obrigatório, alfanumerico, max 30 caracteres, único no sistema
+>- **nickname**: obrigatório, alfanumerico, max 30 caracteres, único no sistema 
+>- **tipo de robot**: obrigatório
+>- **número de série**: obrigatório, alfanumerico, max 50 caracteres, único para um dado tipo de robot
+>- **descrição**: opcional, alfanumerico, max. 250 caracteres
 
+### 2.2 Testes ao requisito
 
+**Test 1:** - Criar robô com sucesso (controlador, 201, POST)
 
-### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
+**Test 2:** - Criar robô com insucesso (controlador, 403)
 
-### 2.3 Testes de Unidade - Teste de regras de negócio
+**Test 3:** - Criar robô com sucesso (controlador + service, 201, POST)
 
-**Test 1:** *Ensure Username can't be null*
+**Test 4:** - Cirar robô com insucesso (controlador + service , 403, POST)
 
-**Test 2:** *Ensure Password can't be null*
+**Test 5:** Código do robo segue regras de negocio
 
-**Test 3:** *Ensure FirstName can't be null*
+**Test 6:** Nickname segue regras de negócio
 
-**Test 4:** *Ensure LastName can't be null*
+**Test 7:** Tipo de robot segue regras de negócio
 
-**Test 5:** *Ensure Email can't be null*
+**Test 8:** Número de série segue regras de negócio
 
-**Test 6:** *Ensure User can't be null*
-
-**Test 7:** *Ensure list of users can't be null*
-
+**Test 9:** Descricao segue regras de negócio
 
 
 ## 3. Design
 
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+Para resolvermos este problema o grupo decidiu tratar do robô como um único agregado com os seus respetivos value objects para obedecer às regras de negócio e para manter a manutentabilidade e expansibilidade.
 
 ### 3.1. Realização
 
-### US1001_1 Add User
-* **Sequence Diagram**
+### 3.1.1 Excerto do Modelo de Domínio
 
-![sequence diagram](us1001_1/sequence_diagram_addUser.svg "sequence_diagram_1001_1")
+![excerpt diagram](ed360.svg "ed360.svg")
 
-* **Class Diagram**
+### 3.1.2 Vista de processos
 
-![class diagram](us1001_1/class_diagram_addUser.svg "class_diagram_1001_1")
+#### 3.1.2.1 Nível 1
 
-### US1001_2 Deactivate  User
+![vista processo 1](../UC360/Nivel%201/vp1.svg "Vista de processos - nível 1")
 
-* **Sequence Diagram**
- 
-![sequence diagram](us1001_2/sequence_diagram_deactivateUser.svg "sequence_diagram_1001_2")
+#### 3.1.2.2 Nível 2
 
-* **Class Diagram**
+![vista processo 2](../UC360/Nivel%202/vp2.svg "Vista de processos - nível 2")
 
-![class diagram](us1001_2/class_diagram_deactivateUser.svg "class_diagram_1001_2")
+#### 3.1.2.3 Nível 3
 
-#### US1001_3 List User
+![vista processo 3](../UC360/Nivel%203/vp3.svg "Vista de processos - nível 3")
 
-* **Sequence Diagram**
+### 3.1.3 Vista lógica
 
-![sequence diagram](us1001_3/sequence_diagram_listUser.svg "sequence_diagram_1001_3")
+##### 3.1.3.1 Nível 1
 
-* **Class Diagram**
+![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
 
-![class diagram](us1001_3/class_diagram_listUser.svg "class_diagram_1001_3")
+##### 3.1.3.2 Nível 2
+
+![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+
+##### 3.1.3.3 Nível 3
+
+![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+### 3.1.4 Vista de cenários
+
+#### 3.1.4.1 Nível 1
+
+![vista cenarios 1](//todo "Vista de pcenários - nível 1")
+
+### 3.1.5 Vista de implementação
+
+#### 3.1.5.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+#### 3.1.5.2 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+### 3.1.6 Vista física
+
+##### 3.1.6.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
-The applied patters are:
-* DTO;
-* Persistence;
-* Application;
-* Controller;
-* Service;
-* Domain;
-* UI;
+Os padrões aplicados foram:
+
+- REST + ONION (padrões arquiteturais);
+- DTO;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
+- Modelo.
