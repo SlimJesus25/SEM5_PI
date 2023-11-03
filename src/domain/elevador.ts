@@ -103,6 +103,9 @@ export class Elevador extends AggregateRoot<ElevadorProps> {
       { argument: props.edificio, argumentName: 'edificio' }
     ];
 
+    if(props.descricao.length > 250)
+      return Result.fail<Elevador>("Descrição excede 250 carateres");
+
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 
     if (!guardResult.succeeded) {
