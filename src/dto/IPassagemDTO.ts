@@ -2,9 +2,9 @@
 export default interface IPassagemDTO {
     id: string;
     designacao: string; // identificador de passagem.
-    edificioOrigem: string; // string: código edificio
-    edificioDestino: string; // string: código edificio
-    pisoOrigem: string; // string: designação (única) 
-    pisoDestino: string; // string: designação (única) edificio
+    edificioA: string; // string: código edificio
+    edificioB: string; // string: código edificio
+    pisoA: string; // string: designação (única) 
+    pisoB: string; // string: designação (única) edificio
   }
   

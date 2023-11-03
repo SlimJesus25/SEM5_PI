@@ -54,6 +54,153 @@ describe('passagem controller', function () {
 		sandbox.restore();
 	});
 
+	it('createPassagem returns status 403 forbidden', async function () {
+		let req: Partial<Request> = {};
+		req.body = "Já existe uma passagem com a designaçao B2_H2"
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemServiceInstace = Container.get("PassagemService");
+
+		const obj = sinon.stub(passagemServiceInstace, "createPassagem").returns(Result.fail<IPassagemDTO>("Já existe uma passagem com a designaçao B2_H2"));
+
+		const ctrl = new PassagemController(passagemServiceInstace as IPassagemService);
+		await ctrl.createPassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+		sinon.assert.calledWith(obj, "Já existe uma passagem com a designaçao B2_H2");
+	});
+
+	it('createPassagem returns piso json', async function () {
+		let req: Partial<Request> = {};
+		req.body = {
+			"designacao": "Passagem B2_H2",
+      		"edificioA": "B",
+      		"edificioB": "H",
+      		"pisoA": "Piso 2",
+      		"pisoB": "Piso 2"
+		};
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemServiceInstace = Container.get("PassagemService");
+
+		const obj = sinon.stub(passagemServiceInstace, "createPassagem").returns(Result.ok<IPassagemDTO>(req.body as IPassagemDTO));
+
+		const ctrl = new PassagemController(passagemServiceInstace as IPassagemService);
+		await ctrl.createPassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(obj);
+		sinon.assert.calledWith(obj, sinon.match(req.body));
+	});
+
+	it('createPassagem: passagemController + passagemService integration test using spy on passagemService, success', async function () {
+		// Arrange
+		let body = {
+			"designacao": "Passagem B2_H2",
+      		"edificioA": "B",
+      		"edificioB": "H",
+      		"pisoA": "Piso 2",
+      		"pisoB": "Piso 2"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			json: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let pisoRepoInstance = Container.get("PisoRepo");
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let passagemServiceInstance = Container.get("PassagemService");
+
+		const eOrigem = {
+			id: "t12345",
+			dimensaoMaximaPiso: [200, 200],
+			descricaoEdificio: "Edificio Quimica",
+			nomeOpcionalEdificio: "Departamento de Engenharia Quimica",
+			codigoEdificio: CodigoEdificio.create("H").getValue(),
+		}
+
+		const eDestino = {
+			id: "t12345",
+			dimensaoMaximaPiso: [200, 200],
+			descricaoEdificio: "Edificio Informatica",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
+		}
+
+		let dummyEdificio = Edificio.create(eOrigem).getValue();
+		let dummyEdificio2 = Edificio.create(eDestino).getValue();
+
+		const pOrigem = {
+			id: "t12345",
+			descricao: "Piso de gabinetes e aulas teórica-práticas",
+			designacao: "H2",
+			edificio: dummyEdificio,
+		}
+
+		const pDestino = {
+			id: "t12345",
+			descricao: "Piso de gabinetes e aulas teórica-práticas",
+			designacao: "B2",
+			edificio: dummyEdificio2,
+		}
+
+		let dummyPiso = Piso.create(pOrigem).getValue();
+		let dummyPiso2 = Piso.create(pDestino).getValue();
+
+		const p = {
+			id: "t12345",
+			designacao: "Passagem B2_H2",
+      		edificioA: dummyEdificio,
+      		edificioB: dummyEdificio2,
+      		pisoA: dummyPiso,
+      		pisoB: dummyPiso2,
+		}
+
+		let passagem = Passagem.create(p).getValue();
+
+		sinon.stub(passagemRepoInstance, "findByDesignacao").resolves(null); // Não existe, logo retorna null.
+		sinon.stub(edificioRepoInstance, "findByCodigo").onCall(0).resolves(dummyEdificio).onCall(1).resolves(dummyEdificio2);;
+		sinon.stub(pisoRepoInstance, "findByDesignacao").onCall(0).resolves(dummyPiso).onCall(1).resolves(dummyPiso2);
+
+
+		sinon.stub(passagemRepoInstance, "save").resolves(null);
+
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "createPassagem");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		await ctrl.createPassagem(<Request>req, <Response>res, <NextFunction>next);
+
+
+		// Assert
+		sinon.assert.calledOnce(res.json);
+		sinon.assert.calledWith(res.json, sinon.match({
+			designacao: "Passagem B2_H2",
+      		edificioA: "B",
+      		edificioB: "H",
+      		pisoA: "Piso 2",
+      		pisoB: "Piso 2"
+		}));
+		sinon.assert.calledOnce(passagemServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(passagemServiceSpy, sinon.match({ name: req.body.name }));
+	});
+
+
 	it('listPassagensBetween: passagemController + passagemService integration test using spy on passagemService, success case', async function () {
 		// Arrange
 		let body = {
@@ -142,10 +289,10 @@ describe('passagem controller', function () {
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match([sinon.match({
 			"designacao": "B2_C2",
-			"edificioDestino": "C",
-			"edificioOrigem": "B",
-			"pisoDestino": "C2",
-			"pisoOrigem": "B2"
+			"edificioB": "C",
+			"edificioA": "B",
+			"pisoB": "C2",
+			"pisoA": "B2"
 		})]));
 		sinon.assert.calledOnce(passagemServiceSpy);
 		//sinon.assert.calledTwice(roleServiceSpy);
@@ -346,18 +493,18 @@ describe('passagem controller', function () {
 			{
 				"id": "1",
 				"designacao": "ABC",
-				"edificioOrigem": "1",
-				"edificioDestino": "2",
-				"pisoOrigem": "2",
-				"pisoDestino": "1"
+				"edificioA": "1",
+				"edificioB": "2",
+				"pisoA": "2",
+				"pisoB": "1"
 			},
 			{
 				"id": "2",
 				"designacao": "DEF",
-				"edificioOrigem": "1",
-				"edificioDestino": "2",
-				"pisoOrigem": "3",
-				"pisoDestino": "2"
+				"edificioA": "1",
+				"edificioB": "2",
+				"pisoA": "3",
+				"pisoB": "2"
 			}
 		];
 
@@ -619,18 +766,18 @@ describe('passagem controller', function () {
 			{
 				"id": "1",
 				"designacao": "ABC",
-				"edificioOrigem": "1",
-				"edificioDestino": "2",
-				"pisoOrigem": "2",
-				"pisoDestino": "1"
+				"edificioA": "1",
+				"edificioB": "2",
+				"pisoA": "2",
+				"pisoB": "1"
 			},
 			{
 				"id": "2",
 				"designacao": "DEF",
-				"edificioOrigem": "1",
-				"edificioDestino": "2",
-				"pisoOrigem": "3",
-				"pisoDestino": "2"
+				"edificioA": "1",
+				"edificioB": "2",
+				"pisoA": "3",
+				"pisoB": "2"
 			}
 		];
 

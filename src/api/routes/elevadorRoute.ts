@@ -51,4 +51,12 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.updateElevador(req, res, next));
+
+  route.delete('/deleteElevador',
+  celebrate({
+    body: Joi.object({
+      numeroIdentificativo: Joi.number().required(),
+    }),
+  }),
+  (req, res, next) => ctrl.deleteElevador(req, res, next));
 };

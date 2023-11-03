@@ -50,10 +50,10 @@ describe('Passagem', () => {
         const passagem = Passagem.create(p);
 
         sinon.assert.match(passagem.getValue().designacao,"Passagem B para H");
-		sinon.assert.match(passagem.getValue().edificioUm.codigo,"B");
-		sinon.assert.match(passagem.getValue().edificioDois.codigo,"H");
-		sinon.assert.match(passagem.getValue().pisoUm.designacao,"B3");
-		sinon.assert.match(passagem.getValue().pisoDois.designacao,"H2");
+		sinon.assert.match(passagem.getValue().edificioA.codigo,"B");
+		sinon.assert.match(passagem.getValue().edificioB.codigo,"H");
+		sinon.assert.match(passagem.getValue().pisoA.designacao,"B3");
+		sinon.assert.match(passagem.getValue().pisoB.designacao,"H2");
 
     });
 });
