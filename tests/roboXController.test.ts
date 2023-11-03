@@ -115,28 +115,71 @@ describe('robo controller', function () {
         // Act
         await ctrl.listRobos(<Request>req, <Response>res, <NextFunction>next);
 
+        const exp = [{
+            "codigo": "0078954321654321",
+            "estado": "inibido",
+            "marca": "Samsung",
+            "nickname": "Roberto",
+            "numeroSerie": "AZERTYUIOPQSDCVFGHJKLMW",
+            "tipoRobo": "Polivalente"
+        }, {
+            "codigo": "00320392930923",
+            "estado": "inibido",
+            "marca": "RedHat",
+            "nickname": "José",
+            "numeroSerie": "IDPJPSJFDPSIJFJPSDJD",
+            "tipoRobo": "Polivalente"
+        }];
+
         // Assert
         sinon.assert.calledOnce(res.json);
-        sinon.assert.calledWith(res.json, 
-            sinon.match({
-              "codigo": "0078954321654321",
-              "estado": "inibido",
-              "marca": "Samsung",
-              "nickname": "Roberto",
-              "numeroSerie": "AZERTYUIOPQSDCVFGHJKLMW",
-              "tipoRobo": "Polivalente"
-            }),
-            sinon.match({
-              "codigo": "00320392930923",
-              "estado": "inibido",
-              "marca": "RedHat",
-              "nickname": "José",
-              "numeroSerie": "IDPJPSJFDPSIJFJPSDJD",
-              "tipoRobo": "Polivalente"
-            })
-          );
+        sinon.assert.calledWith(res.json, sinon.match([{
+            "codigo": "0078954321654321",
+            "estado": "inibido",
+            "marca": "Samsung",
+            "nickname": "Roberto",
+            "numeroSerie": "AZERTYUIOPQSDCVFGHJKLMW",
+            "tipoRobo": "Polivalente"
+        }, {
+            "codigo": "00320392930923",
+            "estado": "inibido",
+            "marca": "RedHat",
+            "nickname": "José",
+            "numeroSerie": "IDPJPSJFDPSIJFJPSDJD",
+            "tipoRobo": "Polivalente"
+        }])
+);
         sinon.assert.calledOnce(roboServiceSpy);
         //sinon.assert.calledTwice(roleServiceSpy);
         sinon.assert.calledWith(roboServiceSpy, sinon.match({ name: req.body.name }));
+    });
+
+    it('listRobos: roboController + roboService integration test using spy on roboService, unsuccess case', async function () {
+        // Arrange
+        let body = {
+        };
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+        let roboRepoInstance = Container.get("RoboRepo");
+
+        sinon.stub(roboRepoInstance, "findAll").resolves([]);
+
+        let roboServiceInstance = Container.get("RoboService");
+        const roboServiceSpy = sinon.spy(roboServiceInstance, "listRobos");
+
+        const ctrl = new RoboController(roboServiceInstance as IRoboService);
+
+        // Act
+        await ctrl.listRobos(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 404);
     });
 });
