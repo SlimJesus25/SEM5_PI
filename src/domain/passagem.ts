@@ -23,19 +23,19 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     return PassagemId.caller(this.id)
   }
 
-  get edificioUm (): Edificio {
+  get edificioA (): Edificio {
     return this.props.edificioA;
   }
 
-  get edificioDois (): Edificio {
+  get edificioB (): Edificio {
     return this.props.edificioB
   }
 
-  get pisoUm (): Piso {
+  get pisoA (): Piso {
     return this.props.pisoA;
   }
 
-  get pisoDois (): Piso {
+  get pisoB (): Piso {
     return this.props.pisoB;
   }
 
@@ -47,19 +47,19 @@ export class Passagem extends AggregateRoot<PassagemProps> {
     this.props.designacao = value;
   }
 
-  set edificioUm (value : Edificio) {
+  set edificioA (value : Edificio) {
     this.props.edificioA = value;
   }
   
-  set edificioDois (value : Edificio) {
+  set edificioB (value : Edificio) {
     this.props.edificioB = value;
   }
 
-  set pisoUm (value : Piso) {
+  set pisoA (value : Piso) {
     this.props.pisoA = value;
   }
 
-  set pisoDois (value : Piso) {
+  set pisoB (value : Piso) {
     this.props.pisoB = value;
   }
 

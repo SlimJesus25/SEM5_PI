@@ -126,38 +126,43 @@ describe('passagem controller', function () {
 		let passagemServiceInstance = Container.get("PassagemService");
 
 		const eOrigem = {
-			"dimensaoMaximaPiso": [200, 200],
-			"descricaoEdificio": "Edificio Quimica",
-			"nomeOpcionalEdificio": "Departamento de Engenharia Quimica",
-			"codigoEdificio": CodigoEdificio.create("H").getValue(),
+			id: "t12345",
+			dimensaoMaximaPiso: [200, 200],
+			descricaoEdificio: "Edificio Quimica",
+			nomeOpcionalEdificio: "Departamento de Engenharia Quimica",
+			codigoEdificio: CodigoEdificio.create("H").getValue(),
 		}
 
 		const eDestino = {
-			"dimensaoMaximaPiso": [200, 200],
-			"descricaoEdificio": "Edificio Informatica",
-			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
-			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+			id: "t12345",
+			dimensaoMaximaPiso: [200, 200],
+			descricaoEdificio: "Edificio Informatica",
+			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+			codigoEdificio: CodigoEdificio.create("B").getValue(),
 		}
 
 		let dummyEdificio = Edificio.create(eOrigem).getValue();
 		let dummyEdificio2 = Edificio.create(eDestino).getValue();
 
 		const pOrigem = {
-			"descricao": "Piso de gabinetes e aulas teórica-práticas",
-			"designacao": "H2",
-			"edificio": dummyEdificio,
+			id: "t12345",
+			descricao: "Piso de gabinetes e aulas teórica-práticas",
+			designacao: "H2",
+			edificio: dummyEdificio,
 		}
 
 		const pDestino = {
-			"descricao": "Piso de gabinetes e aulas teórica-práticas",
-			"designacao": "B2",
-			"edificio": dummyEdificio2,
+			id: "t12345",
+			descricao: "Piso de gabinetes e aulas teórica-práticas",
+			designacao: "B2",
+			edificio: dummyEdificio2,
 		}
 
 		let dummyPiso = Piso.create(pOrigem).getValue();
 		let dummyPiso2 = Piso.create(pDestino).getValue();
 
 		const p = {
+			id: "t12345",
 			designacao: "Passagem B2_H2",
       		edificioA: dummyEdificio,
       		edificioB: dummyEdificio2,
@@ -178,8 +183,8 @@ describe('passagem controller', function () {
 
 		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
 
-		// Act
 		await ctrl.createPassagem(<Request>req, <Response>res, <NextFunction>next);
+
 
 		// Assert
 		sinon.assert.calledOnce(res.json);

@@ -130,10 +130,10 @@ describe('passagem map', () => {
     const expectedPersistence = {
         domainId: "t12345",
         designacao: "B2_C2",
-        edificioOrigem: "B",
-        edificioDestino: "C",
-        pisoOrigem: "B2",
-        pisoDestino: "C2"
+        edificioA: "B",
+        edificioB: "C",
+        pisoA: "B2",
+        pisoB: "C2"
     };
 
     const document = {

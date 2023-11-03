@@ -38,15 +38,15 @@ export default class PassagemService implements IPassagemService {
       if (passagem != null)
         return Result.fail<IPassagemDTO>("Passagem com a designacao " + passagemDTO.designacao + " já existe!");
 
-      const edificioOrigem = await this.edificioRepo.findByCodigo(passagemDTO.edificioA);
-      const edificioDestino = await this.edificioRepo.findByCodigo(passagemDTO.edificioB);
-      const pisoOrigem = await this.pisoRepo.findByDesignacao(passagemDTO.pisoA);
-      const pisoDestino = await this.pisoRepo.findByDesignacao(passagemDTO.pisoB);
+      const edificioA = await this.edificioRepo.findByCodigo(passagemDTO.edificioA);
+      const edificioB = await this.edificioRepo.findByCodigo(passagemDTO.edificioB);
+      const pisoA = await this.pisoRepo.findByDesignacao(passagemDTO.pisoA);
+      const pisoB = await this.pisoRepo.findByDesignacao(passagemDTO.pisoB);
 
-      if (edificioOrigem.codigo === edificioDestino.codigo || pisoOrigem.designacao === pisoDestino.designacao)
+      if (edificioA.codigo === edificioB.codigo || pisoA.designacao === pisoB.designacao)
         return Result.fail<IPassagemDTO>("Origem e destino dos parâmetros não podem ser os mesmos");
 
-      if (pisoOrigem.edificio.codigo === edificioOrigem.codigo || pisoDestino.edificio.codigo === edificioDestino.codigo)
+      if (pisoA.edificio.codigo != edificioA.codigo || pisoB.edificio.codigo != edificioB.codigo)
       return Result.fail<IPassagemDTO>("Piso A tem de pertencer ao edificio A e o piso B tem de pertencer ao edificio B");
 
       // Agora é fazer ao contrário, piso.edificio == edificioOrigem?
@@ -55,10 +55,10 @@ export default class PassagemService implements IPassagemService {
 
       const passagemOrError = Passagem.create({
         designacao: passagemDTO.designacao,
-        edificioA: edificioOrigem,
-        edificioB: edificioDestino,
-        pisoA: pisoOrigem,
-        pisoB: pisoDestino
+        edificioA: edificioA,
+        edificioB: edificioB,
+        pisoA: pisoA,
+        pisoB: pisoB
       });// await Passagem.create( passagemDTO ); // Venancio: alterei o create do passagem, vamos tentar utilizar o que está neste momento em todas as classes (pelo menos as que tenham atributos objetos).
 
       if (passagemOrError.isFailure) {
@@ -88,10 +88,10 @@ export default class PassagemService implements IPassagemService {
         return Result.fail<IPassagemDTO>("Passagem não encontrada");
       }
       else {
-        passagem.edificioUm = edificioA;
-        passagem.edificioDois = edificioB;
-        passagem.pisoUm = pisoA;
-        passagem.pisoDois = pisoB;
+        passagem.edificioA = edificioA;
+        passagem.edificioB = edificioB;
+        passagem.pisoA = pisoA;
+        passagem.pisoB = pisoB;
         await this.passagemRepo.save(passagem);
 
         const passagemDTOResult = PassagemMap.toDTO(passagem) as IPassagemDTO;
@@ -146,10 +146,10 @@ export default class PassagemService implements IPassagemService {
       if (passagemResult.length == 0)
         return Result.fail<IPisoDTO[]>("Não existem passagens para o edifício "
           + edificio.codigoEdificio);
-      const pisoUmValues = passagemResult.map(passagem => passagem.pisoUm);
+      const pisoAValues = passagemResult.map(passagem => passagem.pisoA);
       let pisoResultDTO: IPisoDTO[] = [];
 
-      pisoUmValues.forEach(p => pisoResultDTO.push(PisoMap.toDTO(p) as IPisoDTO));
+      pisoAValues.forEach(p => pisoResultDTO.push(PisoMap.toDTO(p) as IPisoDTO));
 
       return Result.ok<IPisoDTO[]>(pisoResultDTO)
     } catch (e) {

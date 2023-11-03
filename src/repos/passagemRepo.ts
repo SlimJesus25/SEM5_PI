@@ -45,10 +45,10 @@ export default class PassagemRepo implements IPassagemRepo {
 
         return PassagemMap.toDomain(passagemCreated);
       } else {
-        passagemDocument.edificioA = passagem.edificioUm.id.toString();
-        passagemDocument.edificioB = passagem.edificioDois.id.toString();
-        passagemDocument.pisoA = passagem.pisoUm.id.toString();
-        passagemDocument.pisoB = passagem.pisoDois.id.toString();
+        passagemDocument.edificioA = passagem.edificioA.id.toString();
+        passagemDocument.edificioB = passagem.edificioB.id.toString();
+        passagemDocument.pisoA = passagem.pisoA.id.toString();
+        passagemDocument.pisoB = passagem.pisoB.id.toString();
         await passagemDocument.save();
 
         return passagem;
