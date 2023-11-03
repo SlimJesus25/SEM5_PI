@@ -107,4 +107,21 @@ export default class ElevadorRepo implements IElevadorRepo {
       throw err;
     }
   }
+
+  public async findAll(): Promise<Elevador[]> {
+      try{
+        const query = {};
+        const elevadorRecords = await this.elevadorSchema.find(query as FilterQuery<IElevadorPersistence & Document>);
+
+        let elevadores : Elevador[] = [];
+        for(const elevador of elevadorRecords){
+          const e = await ElevadorMap.toDomain(elevador);
+          elevadores.push(e);
+        }
+
+        return elevadores;
+      }catch(err){
+        throw err;
+      }
+  }
 }
