@@ -170,7 +170,7 @@ describe('piso controller', function () {
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
 		const edificio = Edificio.create({
-			dimensaoMaximaPiso: [100,100],
+			dimensaoMaximaPiso: [100, 100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -313,7 +313,7 @@ describe('piso controller', function () {
 		let edificioRepoInstance = Container.get("EdificioRepo");
 
 		const edificio = Edificio.create({
-			dimensaoMaximaPiso: [100,100],
+			dimensaoMaximaPiso: [100, 100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -413,7 +413,7 @@ describe('piso controller', function () {
 
 
 		const edificio = Edificio.create({
-			dimensaoMaximaPiso: [100,100],
+			dimensaoMaximaPiso: [100, 100],
 			descricaoEdificio: "Edificio Acolhe Malucos",
 			nomeOpcionalEdificio: "Departamento de Engenharia Informática",
 			codigoEdificio: CodigoEdificio.create("B").getValue(),
@@ -472,7 +472,7 @@ describe('piso controller', function () {
 		//	
 
 		const dummyEdificio = Edificio.create({
-			"dimensaoMaximaPiso": [100,100],
+			"dimensaoMaximaPiso": [100, 100],
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
 			"codigoEdificio": CodigoEdificio.create("B").getValue(),
@@ -558,10 +558,11 @@ describe('piso controller', function () {
 
 	});
 
-	/*it('listPisosMinMax: pisoController + pisoService integration test using spy on pisoService, success case', async function () {
+	it('listPisosMinMax: pisoController + pisoService integration test using spy on pisoService, success case', async function () {
 		// Arrange
 		let body = {
-			"codigoEdificio": "B",
+			"min": 0,
+			"max": 4
 		};
 		let req: Partial<Request> = {};
 		req.body = body;
@@ -574,7 +575,7 @@ describe('piso controller', function () {
 		//	
 
 		const dummyEdificio = Edificio.create({
-			"dimensaoMaximaPiso": [100,100],
+			"dimensaoMaximaPiso": [100, 100],
 			"descricaoEdificio": "Edificio Acolhe Malucos",
 			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
 			"codigoEdificio": CodigoEdificio.create("B").getValue(),
@@ -594,38 +595,42 @@ describe('piso controller', function () {
 			edificio: dummyEdificio
 		};
 
-		let pisos: Piso[] = [Piso.create(piso1).getValue(), Piso.create(piso2).getValue()];
+		const piso3 = {
+			id: 't12345',
+			descricao: "Piso de reuniões",
+			designacao: "B3",
+			edificio: dummyEdificio
+		};
+
+		let pisos: Piso[] = [Piso.create(piso1).getValue(), Piso.create(piso2).getValue(), Piso.create(piso3).getValue()];
 
 		let pisoRepoInstance = Container.get("PisoRepo");
-
-		sinon.stub(pisoRepoInstance, "findByEdificio").resolves(pisos);
-
+		let edificioRepoInstance = Container.get("EdificioRepo");
 		let pisoServiceInstance = Container.get("PisoService");
-		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "listPisos");
+
+		sinon.stub(edificioRepoInstance, "findAll").resolves(dummyEdificio);
+		sinon.stub(pisoRepoInstance, "findByEdificio").onCall(0).resolves(piso1).onCall(1).resolves(piso2).onCall(2).resolves(piso3);
+		const pisoServiceSpy = sinon.spy(pisoServiceInstance, "listMinMax");
 
 		const ctrl = new PisoController(pisoServiceInstance as IPisoService);
 
 		// Act
-		await ctrl.listPisos(<Request>req, <Response>res, <NextFunction>next);
+		await ctrl.listMinMax(<Request>req, <Response>res, <NextFunction>next);
 
 		// Assert
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match(
 			[sinon.match({
-				descricao: "Piso de gabinetes e aulas teórica-práticas",
-				designacao: "B1",
-				edificio: "B"
-			}), sinon.match({
-				descricao: "Piso de gabinetes e aulas laboratoriais",
-				designacao: "B2",
-				edificio: "B"
-			}
-			)])
+				dimensaoMaximaPiso: [100, 100],
+				descricaoEdificio: "Edificio Acolhe Malucos",
+				nomeOpcionalEdificio: "Departamento de Engenharia Informática",
+				codigoEdificio: "B",
+			})])
 		);
 		sinon.assert.calledOnce(pisoServiceSpy);
 		//sinon.assert.calledTwice(roleServiceSpy);
 		sinon.assert.calledWith(pisoServiceSpy, sinon.match({ name: req.body.name }));
-	});*/
+	});
 
 
 	it('listPisosMinMax: pisoController + pisoService integration test using spy on pisoService, unsuccess case no edificios', async function () {

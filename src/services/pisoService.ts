@@ -129,24 +129,16 @@ export default class PisoService implements IPisoService {
         return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
       }
     
-      /*
-      let edificiosDTO : IEdificioDTO[];
-      edificios.forEach(async (edificio) => {
-        const pisos = await this.pisoRepo.findByEdificio(edificio.codigo);
-        const numPisos = pisos.length;
-        if (numPisos > minMax.min && numPisos < minMax.max) {
-          edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
-        }
-      });
-      */
-     let edificiosDTO = [];
-     for (let i = 0; i < edificios.length; i++){
-      const pisos = await this.pisoRepo.findByEdificio(edificios[i].codigo);
+      
+      let edificiosDTO = [];
+     for (let i = 0; i < edificios.length; i++) {
+      const edificio = edificios[i];
+      const pisos = await this.pisoRepo.findByEdificio(edificio.codigo);
       const numPisos = pisos.length;
-      if (numPisos > minMax.min && numPisos < minMax.max){
-        edificiosDTO[i] = EdificioMap.toDTO(edificios[i])
+      if (numPisos > minMax.min && numPisos < minMax.max) {
+        edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
       }
-     }
+    }
 
       return Result.ok<IEdificioDTO[]>( edificiosDTO )
     } catch (e) {
