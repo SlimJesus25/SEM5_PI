@@ -24,6 +24,7 @@ export class EdificioMap extends Mapper<Edificio> {
     
     const codigo = CodigoEdificio.create(raw.codigo).getValue();
 
+
     const edificioOrError = Edificio.create({
       codigoEdificio: codigo,
       nomeOpcionalEdificio: raw.nomeOpcional,

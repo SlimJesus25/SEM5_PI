@@ -28,7 +28,7 @@ const Edificio = new mongoose.Schema(
       index: true,
     },
 
-    dimensaoMaxima: {
+    dimensaoMaximaPiso: {
         type: [Number],
         required: [true, 'Introduza a dimensão máxima do piso'],
         index: true,
