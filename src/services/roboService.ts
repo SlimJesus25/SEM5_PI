@@ -13,6 +13,7 @@ import { CodigoRobo } from '../domain/codigoRobo';
 import { TipoRobo } from '../domain/tipoRobo';
 import ITipoRoboRepo from './IRepos/ITipoRoboRepo';
 import IRoboRepo from './IRepos/IRoboRepo';
+import IEnableRoboDTO from '../dto/IEnableRoboDTO';
 
 @Service()
 export default class RoboService implements IRoboService {
@@ -83,9 +84,9 @@ export default class RoboService implements IRoboService {
 
   }
 
-  public async inhibitRobo(roboDTO: IRoboDTO): Promise<Result<IRoboDTO>> {
+  public async inhibitRobo(enableRoboDTO: IEnableRoboDTO): Promise<Result<IRoboDTO>> {
     try {
-      const robo = await this.roboRepo.findByCodigo(roboDTO.codigo);
+      const robo = await this.roboRepo.findByCodigo(enableRoboDTO.codigo);
 
       if (robo === null) {
         return Result.fail<IRoboDTO>("Robo não encontrado");
