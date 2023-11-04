@@ -1,6 +1,15 @@
-@startuml
+@startuml vp1
 actor Actor as actor
-participant SistemaRobDroneGo as srdg
-actor -> srdg: Carregar mapa de piso
-srdg --> actor
+participant SistemaRobDroneGO as srdg <<System(C4)>>
+
+activate actor
+actor -> srdg: Criar mapa de piso
+activate srdg
+alt 
+srdg --> actor : ok
+else
+srdg --> actor : erro
+end
+deactivate srdg
+deactivate actor
 @enduml

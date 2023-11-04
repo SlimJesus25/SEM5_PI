@@ -6,13 +6,18 @@ ParticipantBackgroundColor white
 }
 
 box "<<System(C4)>>\n SistemaRobDroneGo"
+participant UI as ui <<Container(C4)>>
 participant MasterDataLogistics as mdl <<Container(C4)>>
-mdl -> mdl: GET listEdificios()
-alt não existe erros durante a operação
-mdl --> mdl: 200 devolve dados com lista de edificios
-else existe erros durante a operação
-mdl --> mdl: 404 não encontrou edificios registados
+activate ui
+ui -> mdl: GET /listEdificios()
+activate mdl
+alt sucesso
+mdl --> ui: devolve status 201
+else insucesso
+mdl --> ui: devolve status 404
+deactivate mdl
 end 
+deactivate ui
 
 end box
 

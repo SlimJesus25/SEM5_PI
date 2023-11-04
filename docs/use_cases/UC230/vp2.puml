@@ -9,7 +9,7 @@ box "<<System(C4)>>\n SistemaRobDroneGo"
 participant UI as ui <<Container(C4)>>
 participant MasterDataLogistics as mdl <<Container(C4)>>
 activate ui
-ui -> mdl: PUT /updateEdificio(corpo)
+ui -> mdl: PUT /createMapaPiso(corpo)
 activate mdl
 alt sucesso
 mdl --> ui: devolve status 201
