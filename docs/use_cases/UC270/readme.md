@@ -27,11 +27,11 @@ o número indeitifcativo do elevador deve ser gerado sequencialmente pelo sistem
 
 ### 2.2 Testes ao requisito
 
-**Teste 1:** *Criar elevador com sucesso (controlador, 201 POST)*
+**Teste 1:** *Criar elevador com sucesso (controlador, 201 OK)*
 
 **Teste 2:** *Criar elevador com insucesso (controlador, 403 FORBIDDEN)*
 
-**Teste 3:** *Criar elevador com sucesso (controlador + serviço, 201 POST)*
+**Teste 3:** *Criar elevador com sucesso (controlador + serviço, 201 OK)*
 
 **Teste 4:** *Criar elevador com insucesso, edificio não existe (controlador + serviço, 403 FORBIDDEN)*
 
@@ -60,6 +60,8 @@ Para resolver o problema de criação de elevadores foi criado um agregado com a
 #### 3.1.2 Vista de processo
 
 ##### 3.1.2.1 Nível 1
+
+![vista processo 1](vp1.svg "Vista processo - nível 1")
 
 ##### 3.1.2.2 Nível 2
 

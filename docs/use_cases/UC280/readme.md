@@ -16,17 +16,17 @@
 
 ## 2. Análise
 
-### 2.1 Identificar o problema
+### 2.1 Identificação do problema
 
 Editar um elevador é um requisito relevante do domínio que deve ser capaz de atualizar informação de um elevador já existente.
 
-### 2.3 Testes ao requisito
+### 2.2 Testes ao requisito
 
-**Teste 1:** *Editar elevador com sucesso (controlador, 201 PUT/PATCH)*
+**Teste 1:** *Editar elevador com sucesso (controlador, 201 OK)*
 
 **Teste 2:** *Editar elevador com insucesso (controlador, 404 NOT FOUND)*
 
-**Teste 3:** *Editar elevador com sucesso (controlador + serviço, 201 PUT/PATCH)*
+**Teste 3:** *Editar elevador com sucesso (controlador + serviço, 201 OK)*
 
 **Teste 4:** *Editar elevador com insucesso (controlador + serviço, 404 NOT FOUND)*
 
@@ -34,20 +34,21 @@ Editar um elevador é um requisito relevante do domínio que deve ser capaz de a
 
 **Teste 6:** *Editar elevador com insucesso, novos pisos servidos não existem/não pertecem ao edifício (controlador + serviço, 404 NOT FOUND)*
 
-
 ## 3. Desenho
 
 Para resolver o problema da edição de elevadores foi criado um agregado com a entidade "Elevador" e os respetivos value objects. Requisitos como este e o UC270, levaram a equipa a decidir que um agregado seria a melhor solução para garantir manutenabilidade e expansibilidade.
 
 ### 3.1. Realização
 
-#### 3.3.1 Excerto de domínio
+#### 3.1.1 Excerto de domínio
 
 ![excerto dominio](ed280.svg "ed_280.svg")
 
 #### 3.1.2 Vista de processo
 
 ##### 3.1.2.1 Nível 1
+
+![vista processo 1](vp1.svg "Vista processo - nível 1")
 
 ##### 3.1.2.2 Nível 2
 
