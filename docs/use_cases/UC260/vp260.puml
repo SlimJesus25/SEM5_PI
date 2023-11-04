@@ -1,69 +1,50 @@
 @startuml sd
 
 participant Route as route
-participant InterfacePassagemController as ictrl
 participant PassagemController as ctrl
-participant InterfacePassagemService as isvc
 participant PassagemService as svc
-participant InterfacePassagemRepo as irepo
 participant PassagemRepo as repo
 participant PassagemMapper as mapper
-participant InterfacePassagemPersistence as ischema
 participant PassagemSchema as schema
 participant ConfigurationFile as conf
-participant Passagem as model
 
 activate route
-route -> ictrl : /listPassagens
-activate ictrl
-ictrl -> ctrl : listPassagens(req, res, next)
+route -> ctrl : /listPassagens
 activate ctrl
 ctrl -> conf : injeta o serviço da Passagem
 activate conf
 conf --> ctrl
 deactivate conf
-ctrl -> isvc : listPassagens(IEdificioDTOA, IEdificioDTOB)
-activate isvc
-isvc -> svc : listPassagem(IEdificioDTOA, IEdificioDTOB)
+ctrl -> svc : listPassagens(edificios)
 activate svc
 svc -> conf : injeta o repositório do sala
 activate conf
 conf --> svc
 deactivate conf
-svc -> irepo : documentList = listPassagensBetween(edificioAId, edificioBId)
-activate irepo
-irepo -> repo : listPassagensBetween(edificioAId, edificioBId)
-activate repo
-repo -> ischema : listPassagensBetween(edificioAId, edificioBId)
-activate ischema
-ischema -> schema : listPassagensBetween(edificioAId, edificioBId)
-activate schema
-schema --> ischema
-deactivate schema
-ischema --> repo
-deactivate ischema
-repo --> irepo
-deactivate repo
-irepo --> svc
-deactivate irepo
-alt nao existem passagens ou edifícios são inválidos
-    svc --> isvc
-    'deactivate svc
-    isvc --> ctrl
-    'deactivate isvc
-    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
-    'deactivate ctrl
-    ictrl --> route
+alt os edificios são iguais
+    svc --> ctrl : Retorna erro com a mensagem: Não existem passagens para o próprio edifício.
+    ctrl --> route : Envia status 404 NOT FOUND
 end
-svc --> isvc
+alt o(s) edificio(s) é/são inválido(s)
+    svc --> ctrl : Retorna erro com a mensagem: O código X é inválido.
+    ctrl --> route : Envia status 404 NOT FOUND
+end
+svc -> repo : passagens = listPassagensBetween(edificioA, edificioB)
+activate repo
+repo -> schema : listPassagensBetween(codigoEdificioA, codigoEdificioB)
+activate schema
+schema --> repo
+deactivate schema
+repo --> svc
+deactivate repo
+alt não existem passagens entre os edificios
+    svc --> ctrl : Retorna erro com a mensagem: Não existem passagens entre o edifício X e o edifício Y.
+    ctrl --> route : Envia status 404 NOT FOUND
+end
+svc --> ctrl
 deactivate svc
-isvc --> ctrl
-deactivate isvc
-ctrl --> ictrl : Envia um código 200 (GET)
-
+ctrl --> route : Envia um status 200 OK com o json da lista de pisos
 deactivate ctrl
-ictrl --> route
-deactivate ictrl
 deactivate route
 
 @enduml
