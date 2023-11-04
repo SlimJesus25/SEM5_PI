@@ -87,11 +87,9 @@ Para resolver o problema de criação de elevadores foi criado um agregado com a
 
 #### 3.1.3 Vista de cenários
 
-a
-
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenario 1](/docs/scenario_view/level1/sv1.svg "Vista cenário - nível 1")
 
 #### 3.1.4 Vista de implementação
 
