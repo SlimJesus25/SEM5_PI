@@ -33,8 +33,8 @@ export default class MapaPisoService implements IMapaPisoService {
       }
 
       const mapaPisoOrError = MapaPiso.create({
-        piso : mapaPiso.piso,
-        mapa: mapaPisoDTO.mapa
+        mapa: mapaPisoDTO.mapa,
+        piso : piso,
       });
 
 

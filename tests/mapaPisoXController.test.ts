@@ -231,28 +231,49 @@ describe('mapaPiso controller', function () {
             designacao: "Piso 4",
             edificio: dummyEdificio
         }
+       
+    
     
         const pisodummy = Piso.create(bodypiso).getValue();
 
-        const mapaPiso = MapaPiso.create({
-            mapa: "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2",
+        const mapaPiso3 = {
+            mapa : "Mapa Teste",
+            piso : pisodummy
+        }
+
+        const mapaPiso4 = {
+            mapa : "Mapa Teste 2",
+            piso : pisodummy
+        }
+
+        const mapapisodummy1 = MapaPiso.create(mapaPiso3).getValue();
+        const mapapisodummy2 = MapaPiso.create(mapaPiso4).getValue();
+        /*
+
+        const mapaPiso1 = MapaPiso.create({
+            mapa : "MAPA DE PISO 230 X 340 COM 2 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 3",
             piso : pisodummy
         }).getValue();
 
-		sinon.stub(mapaPisoRepoInstance, "findByDomainId").resolves(mapaPiso);
+        const mapaPiso2 = MapaPiso.create({
+            mapa: "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2",
+            piso : pisodummy
+        }).getValue();
+        */
+
+		sinon.stub(mapaPisoRepoInstance, "findByDomainId").resolves(mapapisodummy2); //insucesso porque o mapaPiso1 ja utiliza o mesmo piso
 
 		let mapaPisoServiceInstance = Container.get("MapaPisoService");
 		const mapaPisoServiceSpy = sinon.spy(mapaPisoServiceInstance, "createMapaPiso");
 
-		const ctrl = new EdificioController(mapaPisoServiceInstance as IEdificioService);
+		const ctrl = new MapaPisoController(mapaPisoServiceInstance as IMapaPisoService);
 
 		// Act
-		await ctrl.createEdificio(<Request>req, <Response>res, <NextFunction>next);
+		await ctrl.createMapaPiso(<Request>req, <Response>res, <NextFunction>next);
 
 		// Assert
 		sinon.assert.calledOnce(res.status);
 		sinon.assert.calledWith(res.status, 403);
 	});
-    
     
 });
