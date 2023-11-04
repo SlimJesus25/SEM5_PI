@@ -23,7 +23,7 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       }
 
       const mapaPisoDTO = mapaPisoOrError.getValue();
-      return res.status(201).json( mapaPisoDTO );
+      return res.json( mapaPisoDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -40,7 +40,7 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       }
 
       const mapaPisoDTO = mapaPisoOrError.getValue();
-      return res.status(201).json( mapaPisoDTO );
+      return res.json( mapaPisoDTO ).status(201);
     }
     catch (e) {
       return next(e);

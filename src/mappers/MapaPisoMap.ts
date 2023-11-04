@@ -22,14 +22,25 @@ export class MapaPisoMap extends Mapper<MapaPiso> {
     } as IMapaPisoDTO;
   }
 
-  public static toDomain (mapaPiso: any | Model<IMapaPisoPersistence & Document> ): MapaPiso {
-    return null;
+  public static toDomain (raw: any): MapaPiso {
+
+    const piso = Piso.create(raw.designacao).getValue();
+
+    const mapaPisoOrError =  MapaPiso.create({
+      mapa : raw.mapa,
+      piso : piso,
+
+    }, new UniqueEntityID(raw.domainId));
+
+    mapaPisoOrError.isFailure ? console.log(mapaPisoOrError.error) : '';
+
+    return mapaPisoOrError.isSuccess ? mapaPisoOrError.getValue() : null;
   }
 
   public static toPersistence (mapaPiso: MapaPiso): any {
     return {
       domainId: mapaPiso.id.toString(),
-      piso : mapaPiso.piso,
+      piso : mapaPiso.piso.designacao,
       mapa : mapaPiso.mapa,
     }
   }

@@ -7,6 +7,7 @@ import { MapaPisoMap } from "../mappers/MapaPisoMap";
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IMapaPisoPersistence } from '../dataschema/IMapaPisoPersistence';
+import { IPisoPersistence } from '../dataschema/IPisoPersistence';
 
 @Service()
 export default class MapaPisoRepo implements IMapaPisoRepo {
@@ -14,6 +15,7 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
 
   constructor(
     @Inject('mapaPisoSchema') private mapaPisoSchema : Model<IMapaPisoPersistence & Document>,
+    @Inject ("pisoSchema") private pisoSchema : Model<IPisoPersistence & Document>
   ) {}
 
   private createBaseQuery (): any {

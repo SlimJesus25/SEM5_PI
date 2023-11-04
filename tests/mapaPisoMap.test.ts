@@ -1,4 +1,4 @@
-/*
+
 import * as sinon from 'sinon';
 import { Passagem } from '../src/domain/passagem';
 import { PassagemMap } from '../src/mappers/PassagemMap'
@@ -10,10 +10,10 @@ import { CategoriaSala } from '../src/domain/categoriaSala';
 import { CodigoEdificio } from '../src/domain/codigoEdificio';
 import { Container } from 'typedi';
 import { PisoMap } from '../src/mappers/PisoMap';
-import {MapaPisoMap} from "../src/mappers/MapaPisoMap";
 import { MapaPiso } from '../src/domain/mapaPiso';
+import {MapaPisoMap} from '../src/mappers/MapaPisoMap';
 
-describe('piso map', () => {
+describe('mapaPiso Map', () => {
 
     const dummyEdificio = Edificio.create({
         dimensaoMaximaPiso: [100,100],
@@ -31,7 +31,7 @@ describe('piso map', () => {
     const mapaPiso = MapaPiso.create({
         mapa: "mapa do piso",
         piso : piso
-    })
+    }).getValue();
 
     const expectedDTO = {
         id: 't12345',
@@ -75,4 +75,3 @@ describe('piso map', () => {
         sinon.assert.match(actual, expectedPersistence);
     });
 })
-*/
