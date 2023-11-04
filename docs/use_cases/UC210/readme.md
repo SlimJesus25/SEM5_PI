@@ -1,82 +1,88 @@
-# US 210
+# UC 210
 
 ## 1. Requisitos
 
-**US210** -  Listar todos os pisos de um edifício
-
-**Critérios de aceitação** - This US has no specific acceptance criteria
+**UC210** - Listar todos os pisos de um edifício.
 
 ## 2. Análise
 
-### 2.1 Indentificar o problema
-In order to implement this functionality, we divided the documentation in 3 parts:
+### 2.1 Identificação do problema
 
-**Respostas do cliente:**
+### 2.2 Testes ao requisito
 
+**Teste 1:** *listPisos: pisoController + pisoService integration test using spy on pisoService, success case*
 
-### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
+**Teste 2:** *listPisos: pisoController + pisoService integration test using spy on pisoService, unsuccess case edificio without pisos*
 
-### 2.3 Testes de Unidade - Teste de regras de negócio
-
-**Test 1:** *Ensure Username can't be null*
-
-**Test 2:** *Ensure Password can't be null*
-
-**Test 3:** *Ensure FirstName can't be null*
-
-**Test 4:** *Ensure LastName can't be null*
-
-**Test 5:** *Ensure Email can't be null*
-
-**Test 6:** *Ensure User can't be null*
-
-**Test 7:** *Ensure list of users can't be null*
-
-
-
-## 3. Design
-
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+## 3. Desenho
 
 ### 3.1. Realização
 
-### US1001_1 Add User
-* **Sequence Diagram**
+#### 3.1.1 Excerto de domínio
 
-![sequence diagram](us1001_1/sequence_diagram_addUser.svg "sequence_diagram_1001_1")
+![excerto dominio](ed210.svg "ed_210.svg")
 
-* **Class Diagram**
+#### 3.1.2 Vista de processo
 
-![class diagram](us1001_1/class_diagram_addUser.svg "class_diagram_1001_1")
+##### 3.1.2.1 Nível 1
 
-### US1001_2 Deactivate  User
+![vista processo 1](/docs/use_cases/UC210/Nivel%201/vp1.svg "Vista processo - nível 1")
 
-* **Sequence Diagram**
- 
-![sequence diagram](us1001_2/sequence_diagram_deactivateUser.svg "sequence_diagram_1001_2")
+##### 3.1.2.2 Nível 2
 
-* **Class Diagram**
+![vista processo 2](/docs/use_cases/UC210/Nivel%202/vp2.svg "Vista processo - nível 2")
 
-![class diagram](us1001_2/class_diagram_deactivateUser.svg "class_diagram_1001_2")
+##### 3.1.2.3 Nível 3
 
-#### US1001_3 List User
+![vista processo 3](/docs/use_cases/UC210/Nivel%203/vp3.svg "Vista processo - nível 3")
 
-* **Sequence Diagram**
+#### 3.1.3 Vista lógica
 
-![sequence diagram](us1001_3/sequence_diagram_listUser.svg "sequence_diagram_1001_3")
+##### 3.1.3.1 Nível 1
 
-* **Class Diagram**
+![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
 
-![class diagram](us1001_3/class_diagram_listUser.svg "class_diagram_1001_3")
+##### 3.1.3.2 Nível 2
+
+![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+
+##### 3.1.3.3 Nível 3
+
+![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+#### 3.1.3 Vista de cenários
+
+##### 3.1.3.1 Nível 1
+
+![vista cenario 1](/docs/VC1.svg "Vista cenário - nível 1")
+
+#### 3.1.4 Vista de implementação
+
+##### 3.1.3.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+##### 3.1.3.1 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+#### 3.1.5 Vista física
+
+##### 3.1.5.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
-The applied patters are:
-* DTO;
-* Persistence;
-* Application;
-* Controller;
-* Service;
-* Domain;
-* UI;
+
+Os padrões aplicados são:
+
+- REST + ONION (padrões arquiteturais);
+- DTO;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
+- Modelo.
