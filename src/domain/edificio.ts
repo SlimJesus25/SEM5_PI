@@ -39,6 +39,9 @@ export class Edificio extends AggregateRoot<EdificioProps> {
   }
 
   set codigo (value : string) {
+    if (value == null){
+      throw new Error("Código de Edificio vazio");
+    }
     this.props.codigoEdificio = CodigoEdificio.create(value).getValue();
   }
 
@@ -68,6 +71,17 @@ export class Edificio extends AggregateRoot<EdificioProps> {
       { argument: props.dimensaoMaximaPiso, argumentName: 'dimensaoMaximaPiso' },
       { argument: props.nomeOpcionalEdificio, argumentName: 'nomeOpcional' },
     ];
+
+    if(props.codigoEdificio.length > 5){
+      return Result.fail<Edificio>("Codigo edificio excede 5 caracteres");
+    }
+
+    if (props.nomeOpcionalEdificio.length > 50){
+      return Result.fail<Edificio>("Nome opcional do edificio excede 50 caracteres");
+    }
+
+    if(props.descricaoEdificio.length > 250)
+      return Result.fail<Edificio>("Descrição excede 250 carateres");
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 
