@@ -36,30 +36,29 @@ modelo: obrigatório, máximo 100 caracteres
 
 ### 2.1 Identificação do problema
 
-Este requisito levanta a questão de criação de tipos de robôs.
+Este requisito levanta a questão de criação de tipos de robos.
 
-### 2.3 Testes de Unidade - Teste de regras de negócio
+### 2.2 Testes ao requisito
 
-**Teste 1:** *Ensure Username can't be null*
+**Teste 1:** *Adicionar tipo de robo com sucesso (controlador, 201 POST)*
 
-**Teste 2:** *Ensure Password can't be null*
+**Teste 2:** *Adicionar tipo de robo com insucesso (controlador, 403 FORBIDDEN)*
 
-**Teste 3:** *Ensure FirstName can't be null*
+**Teste 3:** *Adicionar tipo de robo com sucesso (controlador + serviço, 201 POST)*
 
-**Test 4:** *Ensure LastName can't be null*
+**Teste 4:** *Adicionar tipo de robo com insucesso, tarefa(s) não existe(m) (controlador + serviço, 403 FORBIDDEN)*
 
-**Test 5:** *Ensure Email can't be null*
+**Teste 5:** *Designação da sala segue regras de negócio.*
 
-**Test 6:** *Ensure User can't be null*
+**Teste 6:** *Marca segue regras de negócio.*
 
-**Test 7:** *Ensure list of users can't be null*
+**Teste 7:** *Modelo segue regras de negócio.*
 
 
 
 ## 3. Design
 
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+Para solucionar este problema, a equipa optou por criar um agregado para TipoRobo garantindo assim expansibilidade 
 
 ### 3.1. Realização
 
