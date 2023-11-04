@@ -17,11 +17,7 @@ export default (app: Router) => {
     route.post('/createMapaPiso',
   celebrate({
     body: Joi.object({
-      mapaProfundidade: Joi.number(),
-      mapaPiso : Joi.number(),
-      mapaSaidaLocalizacao : Joi.number(),
-      mapaElevador : Joi.number(),
-      mapaSaidas : Joi.number()
+      mapaPiso : Joi.string()
     }),
   }),
   (req, res, next) => ctrl2.createMapaPiso(req, res, next));
@@ -30,11 +26,7 @@ export default (app: Router) => {
   route.patch('/LoadMapaPiso',
     celebrate({
       body: Joi.object({
-        mapaProfundidade: Joi.number(),
-        mapaPiso : Joi.number(),
-        mapaSaidaLocalizacao : Joi.number(),
-        mapaElevador : Joi.number(),
-        mapaSaidas : Joi.number()
+        mapaPiso : Joi.number()
       }),
     }),
     (req, res, next) => ctrl2.loadMapaPiso(req, res, next));

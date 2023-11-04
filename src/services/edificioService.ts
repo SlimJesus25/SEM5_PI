@@ -10,6 +10,7 @@ import { Result } from "../core/logic/Result";
 import { EdificioMap } from "../mappers/EdificioMap";
 import { CodigoEdificio } from '../domain/codigoEdificio';
 import { resolve } from 'path';
+import IDeleteEdificio from '../dto/IDeleteEdificio';
 
 @Service()
 export default class EdificioService implements IEdificioService {
@@ -112,6 +113,21 @@ export default class EdificioService implements IEdificioService {
       } catch (e) {
         throw e;
       }
+  }
+
+  public async deleteEdificio(edificioDTO: IDeleteEdificio): Promise<Result<IEdificioDTO>> {
+    try {
+      const edificio = await this.edificioRepo.findByCodigo(edificioDTO.codigoEdificio);
+
+      if (edificio == null)
+        return Result.fail<IEdificioDTO>("Não existe qualquer edificio com o código " + edificioDTO.codigoEdificio);
+
+      await this.edificioRepo.delete(edificio);
+
+      return Result.ok<IEdificioDTO>(EdificioMap.toDTO(edificio));
+    } catch (err) {
+      throw err;
+    }
   }
 
 

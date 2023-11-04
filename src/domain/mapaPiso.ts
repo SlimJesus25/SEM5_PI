@@ -8,12 +8,7 @@ import { Piso } from "./piso";
 
 interface MapaPisoProps {
   piso: Piso;
-  mapaLargura: number;
-  mapaProfundidade: number;
-  mapaPiso: number[][]; // Deve coincidir com a largura e a profunidade.
-  mapaSaidaLocalizacao: number[]; // Deve estar dentro das medidas.
-  mapaElevador: number[];
-  mapaSaidas: number[][];
+  mapa: string;
 }
 
 export class MapaPiso extends AggregateRoot<MapaPisoProps> {
@@ -25,62 +20,23 @@ export class MapaPiso extends AggregateRoot<MapaPisoProps> {
     return MapaPisoId.caller(this.id)
   }
 
+  get mapa (): string {
+    return this.props.mapa;
+  }
+
   get piso (): Piso {
     return this.props.piso;
   }
 
-  get largura (): number {
-    return this.props.mapaLargura;
-  }
-
-  get profundidade (): number {
-    return this.props.mapaProfundidade;
-  }
-
-  get mapa (): number[][] {
-    return this.props.mapaPiso;
-  }
-
-  get elevador (): number[] {
-    return this.props.mapaElevador;
-  }
-
-  get saidaLocalizacao (): number[] {
-    return this.props.mapaSaidaLocalizacao;
-  }
-
-  get saidas (): number[][] {
-    return this.props.mapaSaidas;
-  }
-
-  set profundidade (value : number){
-    this.props.mapaProfundidade = value;
-  }
-
-  set mapa (value : number[][]){
-    this.props.mapaPiso = value;
-  }
-
-  set piso (value : Piso){
+  set piso (value: Piso){
     this.props.piso = value;
   }
-
-  set largura (value : number){
-    this.props.mapaLargura = value;
+  
+  set mapa (value : string){
+    this.props.mapa = value;
   }
 
-  set saidaLocalizacao (value : number[]){
-    this.props.mapaSaidaLocalizacao = value;
-  }
-
-  set elevador (value : number[]){
-    this.props.mapaElevador = value;
-  }
-
-  set saidas (value : number[][]){
-    this.props.mapaSaidas = value;
-  }
-
+  
   private constructor (props: MapaPisoProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -88,19 +44,9 @@ export class MapaPiso extends AggregateRoot<MapaPisoProps> {
   public static create (props: MapaPisoProps, id?: UniqueEntityID): Result<MapaPiso> {
 
     const guardedProps = [
-      { argument: props.mapaProfundidade, argumentName: 'mapaProfundidade' },
-      { argument: props.mapaLargura, argumentName: 'mapaLargura' },
-      { argument: props.mapaPiso, argumentName: 'mapaPiso' },
-      { argument: props.mapaSaidaLocalizacao, argumentName: 'mapaSaidaLocalizacao' },
-      { argument: props.mapaElevador, argumentName: 'mapaElevador' },
-      { argument: props.mapaSaidas, argumentName: 'mapaSaidas' }
+      {argument: props.piso, argumentName: 'piso'},
+      { argument: props.mapa, argumentName: 'mapa' },
     ];
-
-    if(props.mapaLargura <= 0 || props.mapaProfundidade <= 0)
-      return Result.fail<MapaPiso>("A largura e a profundidade devem ser superiores a 0.");
-
-    if(props.mapaProfundidade != props.mapaPiso[1].length || props.mapaLargura != props.mapaPiso[0].length)
-      return Result.fail<MapaPiso>("A largura e a profundidade devem ser coincidentes com o mapa.");
     
     // Fazer verificações para as restantes restrições...
     
