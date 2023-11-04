@@ -107,7 +107,7 @@ mapper --> svc
 mapper--
 svc --> ctrl
 svc--
-ctrl --> route
+
 alt caso de sucesso
     ctrl --> route : Envia um código 201 (POST)
 else caso de insucesso
