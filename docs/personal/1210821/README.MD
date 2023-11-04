@@ -5,7 +5,8 @@
 | Sprint | Task                                                                                                                                |
 |--------|-------------------------------------------------------------------------------------------------------------------------------------|
 | **A**  | [UC 180 - Listar edifícios com min e max de pisos](..\..\use_cases\UC180\readme.md)                                                                                                        |
-| **A**  | [UC 200 - 	Editar informação de piso de edifício](..\..\use_cases\UC206\readme.md)                                                                                                        |
+| **A**  | [UC 190 - Criar piso de edificio](..\..\use_cases\UC190\readme.md)                                                                                                        |
+| **A**  | [UC 200 - 	Editar informação de piso de edifício](..\..\use_cases\UC200\readme.md)                                                                                                        |
 | **A**  | [UC 210 - Listar todos os pisos de um edifício](..\..\use_cases\UC210\readme.md)                                                                                                        |
 | **A**  | [UC 240 - Criar passagem entre edifícios](..\..\use_cases\UC240\readme.md)                                                                                                        |
 | **A**  | [UC 270 - Criar elevador em edifício](..\..\use_cases\UC270\readme.md)                                                                                                        |

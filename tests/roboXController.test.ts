@@ -348,6 +348,139 @@ describe('robo controller', function () {
         sinon.assert.calledOnce(res.status);
         sinon.assert.calledWith(res.status, 404);
     });
+    it('inibirRobo: returns status 403 forbidden', async function () {
+        let req: Partial<Request> = {};
+		req.body = 'Robo não encontrado'
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { }; 
+		let roboServiceInstance = Container.get("RoboService");
+
+		const obj = sinon.stub(roboServiceInstance, "inhibitRobo").resolves(Result.fail<IRoboDTO>(res as IRoboDTO));
+
+
+		const ctrl = new RoboController(roboServiceInstance as IRoboService);
+		await ctrl.inhibitRobo(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 404);
+		sinon.assert.calledWith(obj, "Robo não encontrado");
+    }
+    );
+    it('inibirRobo: returns json ', async function () {
+        let req: Partial<Request> = {};
+
+		req.body = {
+            "codigo": "2B2",
+		};
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let roboServiceInstance = Container.get("RoboService");
+
+		const obj = sinon.stub(roboServiceInstance, "inhibitRobo").returns(Result.ok<IRoboDTO>(req.body as IRoboDTO));
+
+		const ctrl = new RoboController(roboServiceInstance as IRoboService);
+		await ctrl.inhibitRobo(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(obj);
+		sinon.assert.calledWith(obj, sinon.match(req.body));
+    }
+    );
+    it('inibirRobo: roboController + roboService integration test using spy on roboService, success case', async function () {
+         const tipoRobo = {
+			"tarefas" : [],
+			"designacao": "lmao",
+			"marca": "Cookies",
+			"modelo": "Sem Pepitas"
+		}
+		let t = TipoRobo.create(tipoRobo).getValue();
+		const r1 = {
+            estado: "desinibido",
+            marca: MarcaRobo.create("Cookies").getValue(),
+            codigo: CodigoRobo.create("2B2").getValue(),
+            numeroSerie: NumeroSerieRobo.create("2324").getValue(),
+            nickname: "Roberto",
+            tipoRobo: t
+        };
+		
+        let robo = Robo.create(r1).getValue();
+        
+        let body = {
+            "codigo": "2B2"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			json: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let roboRepoInstance = Container.get("RoboRepo");
+		let roboServiceInstance = Container.get("RoboService");
+		sinon.stub(roboRepoInstance, "findByCodigo").resolves(robo);
+		robo.inibir();
+		sinon.stub(roboRepoInstance, "save").resolves(robo);
+        
+		const roboServiceSpy = sinon.spy(roboServiceInstance, "inhibitRobo");
+
+		const ctrl = new RoboController(roboServiceInstance as IRoboService);
+
+		// Act
+		await ctrl.inhibitRobo(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.json);
+		sinon.assert.calledWith(res.json, sinon.match({
+			"estado": "inibido",
+            "marca": "Cookies",
+            "codigo": "2B2",
+            "numeroSerie": "2324",
+            "nickname": "Roberto",
+            "tipoRobo": "lmao"
+		}));
+		sinon.assert.calledOnce(roboServiceSpy);
+		sinon.assert.calledWith(roboServiceSpy, sinon.match({ name: req.body.name }));
     
-    it('')
+    }
+    );
+    it('inibirRobo: roboController + roboService integration test using spy on roboService, unsuccess case, returns null', async function() {
+        // Arrange
+         let body = {
+        };
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+        let roboRepoInstance = Container.get("RoboRepo");
+
+        sinon.stub(roboRepoInstance, "findByCodigo").resolves(null);
+
+        let roboServiceInstance = Container.get("RoboService");
+        const roboServiceSpy = sinon.spy(roboServiceInstance, "inhibitRobo");
+
+        const ctrl = new RoboController(roboServiceInstance as IRoboService);
+
+        // Act
+        await ctrl.inhibitRobo(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 404);
+    
+    
+    }
+    );
 });

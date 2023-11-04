@@ -1,4 +1,4 @@
-export default interface IListElevadoresDTO {
+export default interface IListPisosDTO {
     codigoEdificio: string;
   }
   
