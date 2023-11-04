@@ -1,84 +1,92 @@
 @startuml sd
 
 participant Route as route
-participant InterfaceElevadorController as ictrl
 participant ElevadorController as ctrl
-participant InterfaceElevadorService as isvc
 participant ElevadorService as svc
-participant InterfaceElevadorRepo as irepo
-participant ElevadorRepo as repo
+participant ElevadorRepo as repoEle
+participant EdificioRepo as repoEdi
+participant PisoRepo as repoPis
 participant ElevadorMapper as mapper
-participant InterfaceElevadorPersistence as ischema
 participant ElevadorSchema as schema
 participant ConfigurationFile as conf
 participant Elevador as model
 
 activate route
-route -> ictrl : criar elevador
-activate ictrl
-ictrl -> ctrl : createElevador(req, res, next)
+route -> ctrl : /createElevador
 activate ctrl
 ctrl -> conf : injeta o serviço do elevador
 activate conf
 conf --> ctrl
 deactivate conf
-ctrl -> isvc : createElevador(IElevadorDTO)
-activate isvc
-isvc -> svc : createElevador(IElevadorDTO)
+ctrl -> svc : createElevador(IElevadorDTO)
 activate svc
 svc -> conf : injeta o repositório do elevador
 activate conf
 conf --> svc
 deactivate conf
+svc -> repoEle : findByNumeroIdentificativo(elevadorDTO.numeroIdentificativo)
+activate repoEle
+repoEle --> svc
+deactivate repoEle
+alt elevador existe
+    svc -> ctrl : Envia erro com a mensagem: Já existe um elevador com o código X
+end
+svc -> repoEdi : findByCodigo(elevadorDTO.edificio)
+activate repoEdi
+repoEdi --> svc
+deactivate repoEdi
+alt edificio não existe/é inválido
+    svc --> ctrl : Envia erro com a mensagem: Não existe nenhum edifício com o código X
+end
+svc -> repoPis : findByEdificio(elevadorDTO.edificio)
+activate repoPis
+repoPis --> svc
+deactivate repoPis
+alt edifício não tem pisos
+    svc --> ctrl : Envia erro com a mensagem: O edificio X não tem pisos.
+end
+loop todos os pisos de elevadorDTO.pisosServidos
+    svc -> svc : verifica se o piso pertence ao elevadorDTO.edificio.
+end
+alt um qualquer piso não pertence ao edificio
+    svc --> ctrl : Envia erro com a mensagem: O piso X não pertence ao edificio Y.
+end
 svc -> model : elevador = create(elevadorDTO)
 activate model
 model --> svc
 deactivate model
-svc -> irepo : elevador = save(elevador)
-activate irepo
-irepo -> repo : save(elevador)
-activate repo
-repo -> conf : injeta o schema do elevador
+svc -> repoEle : save(elevador)
+activate repoEle
+repoEle -> conf : injeta o schema do elevador
 activate conf
-conf --> repo
+conf --> repoEle
 deactivate conf
-repo -> mapper : toPersistence(elevador)
+repoEle -> mapper : toPersistence(elevador)
 activate mapper
-mapper --> repo
+mapper --> repoEle
 deactivate mapper
-repo -> ischema : create(elevadorCreated)
-activate ischema 
-ischema -> schema : create(elevadorCreated)
+repoEle -> schema : create(elevadorCreated)
 activate schema
-schema --> ischema
+schema --> repoEle
 deactivate schema
-deactivate scheam
-ischema --> repo
-deactivate ischema
-repo -> mapper : toDomain(elevadorCreated)
+repoEle -> mapper : toDomain(elevadorCreated)
 activate mapper
-mapper --> repo
+mapper --> repoEle
 deactivate mapper
-repo --> irepo
-deactivate repo
-irepo --> svc
-deactivate irepo
+repoEle --> svc
+deactivate repoEle
 svc -> mapper : toDTO(elevador)
 activate mapper
 mapper --> svc
 deactivate mapper
-svc --> isvc
+svc --> ctrl
 deactivate svc
-isvc --> ctrl
-deactivate isvc
 alt caso de sucesso
-    ctrl --> ictrl : Envia um código 201 (POST)
+    ctrl --> route : Envia um código 201 (OK)
 else caso de insucesso
-    ctrl --> ictrl : Envia um código 404 (NOT FOUND)
+    ctrl --> route : Envia um código 403 (NOT FOUND)
 end
 deactivate ctrl
-ictrl --> route
-deactivate ictrl
 deactivate route
 
 
