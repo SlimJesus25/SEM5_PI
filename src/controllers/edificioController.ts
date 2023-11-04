@@ -7,6 +7,7 @@ import IEdificioService from '../services/IServices/IEdificioService';
 import IEdificioDTO from '../dto/IEdificioDTO';
 
 import { Result } from "../core/logic/Result";
+import IDeleteEdificio from '../dto/IDeleteEdificio';
 
 @Service()
 export default class EdificioController implements IEdificioController /* TODO: extends ../core/infra/BaseController */ {
