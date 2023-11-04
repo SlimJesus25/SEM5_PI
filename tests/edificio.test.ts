@@ -82,8 +82,24 @@ describe('Edificio', () => {
       body.descricaoEdificio = "Edificio Acolhe Malucos";
   });
 
+  it('nomeOpcional cant exceed 50 characters', () => {
+    body.nomeOpcionalEdificio = "edificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificio";
 
-  
+    sinon.assert.match(Result.fail<Edificio>("Nome opcional do edificio excede 50 caracteres"), Edificio.create(body));
+
+    body.nomeOpcionalEdificio = "Edificio Francisco";
+  });
+
+  it('codigo cant exceed 5 characters', () => {
+    body.codigoEdificio = CodigoEdificio.create("123456").getValue();
+
+    sinon.assert.match(Result.fail<Edificio>("Codigo edificio excede 5 caracteres"), Edificio.create(body));
+
+    body.codigoEdificio = CodigoEdificio.create("2324").getValue();
+});
+
+
+
 /*
     it('codigoEdificio not empty', () =>{
         const body = {

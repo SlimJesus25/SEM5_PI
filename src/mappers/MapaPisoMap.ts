@@ -17,21 +17,20 @@ export class MapaPisoMap extends Mapper<MapaPiso> {
   public static toDTO(mapaPiso: MapaPiso): IMapaPisoDTO {
     return {
       id: mapaPiso.id.toString(),
-      piso: mapaPiso.piso.designacao, // designação única
-      mapaLargura: mapaPiso.largura,
-      mapaProfundidade: mapaPiso.profundidade,
-      mapaPiso: mapaPiso.mapa, // Deve coincidir com a largura e a profunidade.
-      mapaSaidaLocalizacao: mapaPiso.saidaLocalizacao, // Deve estar dentro das medidas.
-      mapaElevador: mapaPiso.elevador,
-      mapaSaidas: mapaPiso.saidas,
+      piso: mapaPiso.piso.designacao,
+      mapa : mapaPiso.mapa,
     } as IMapaPisoDTO;
   }
 
-  public static toDomain (mapaEdificio: any | Model<IMapaPisoPersistence & Document> ): MapaPiso {
+  public static toDomain (mapaPiso: any | Model<IMapaPisoPersistence & Document> ): MapaPiso {
     return null;
   }
 
-  public static toPersistence (mapaEdificio: MapaPiso): any {
-    return null;
+  public static toPersistence (mapaPiso: MapaPiso): any {
+    return {
+      domainId: mapaPiso.id.toString(),
+      piso : mapaPiso.piso,
+      mapa : mapaPiso.mapa,
+    }
   }
 }

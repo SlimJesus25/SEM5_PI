@@ -5,12 +5,7 @@ const MapaPisoSchema = new mongoose.Schema(
   {
     domainId: { type: String, unique: true },
     piso: { type: String, unique: true},
-    mapaLargura: { type: Number, unique: false},
-    mapaProfundidade: { type: Number, unique: false},
-    mapaPiso: { type: [[Number]], unique: false},
-    mapaSaidaLocalizacao: { type: [Number], unique: false},
-    mapaElevador: { type: [Number], unique: false},
-    mapaSaidas: { type: [[Number]], unique: false}
+    mapa: { type: String, unique: false},
   },
   {
     timestamps: true
