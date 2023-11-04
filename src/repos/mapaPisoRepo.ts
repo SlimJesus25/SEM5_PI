@@ -32,8 +32,8 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
     return !!roleDocument === true;
   }
 
-  public async save (elevador: MapaPiso): Promise<MapaPiso> {
-    const query = { domainId: elevador.id.toString()}; 
+  public async save (mapaPiso: MapaPiso): Promise<MapaPiso> {
+    const query = { domainId: mapaPiso.id.toString()}; 
 
     const roleDocument = await this.mapaPisoSchema.findOne( query );
 
@@ -45,10 +45,10 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
 
         return MapaPisoMap.toDomain(roleCreated);
       } else {
-        roleDocument.grelha = null;//elevador.grelha;
+        roleDocument.mapa = null;//elevador.grelha;
         await roleDocument.save();
 
-        return elevador;
+        return mapaPiso;
       }
     } catch (err) {
       throw err;

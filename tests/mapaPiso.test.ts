@@ -33,30 +33,17 @@ describe('MapaPiso', () => {
 
     it('MapaPiso succeeds', () =>{
       const body = {
-       mapaProfundidade : 100 ,
-       mapaLargura : 100 ,
-       mapaPiso : [[100, 100]] ,
-       mapaSaidaLocalizacao : [12] ,
-       mapaElevador :[10, 10] ,
-       mapaSaidas : [[10, 10]],
+       mapa : "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2" ,
        piso : pisodummy.getValue()
       };
 
       // Venancio: Comentei isto para conseguir correr os testes.
         const mapaPiso = MapaPiso.create({
-            mapaProfundidade : body.mapaProfundidade,
-            mapaLargura : body.mapaLargura,
-            mapaPiso : body.mapaPiso,
-            mapaSaidaLocalizacao : body.mapaSaidaLocalizacao,
-            mapaElevador :body.mapaElevador,
-            mapaSaidas : body.mapaSaidas,
+            mapa : body.mapa,
             piso : body.piso
         });
 
-        sinon.assert.match(mapaPiso.getValue().largura, 100);
-        sinon.assert.match(mapaPiso.getValue().profundidade, 100);
-        sinon.assert.match(mapaPiso.getValue().saidaLocalizacao, [12]);
-
-
+        sinon.assert.match(mapaPiso.getValue().mapa, "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2");
+        sinon.assert.match(mapaPiso.getValue().piso.descricao, pisodummy.getValue().descricao);
     });
 });

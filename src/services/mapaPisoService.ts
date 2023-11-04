@@ -34,12 +34,7 @@ export default class MapaPisoService implements IMapaPisoService {
 
       const mapaPisoOrError = MapaPiso.create({
         piso : mapaPiso.piso,
-        mapaLargura : mapaPisoDTO.mapaLargura,
-        mapaProfundidade : mapaPisoDTO.mapaProfundidade,
-        mapaPiso : mapaPisoDTO.mapaPiso,
-        mapaSaidaLocalizacao : mapaPisoDTO.mapaSaidaLocalizacao,
-        mapaElevador : mapaPisoDTO.mapaElevador,
-        mapaSaidas : mapaPisoDTO.mapaSaidas
+        mapa: mapaPisoDTO.mapa
       });
 
 
@@ -71,11 +66,7 @@ export default class MapaPisoService implements IMapaPisoService {
         return Result.fail<IMapaPisoDTO>("O mapa de piso" + mapaPisoDTO.id + "não tem nenhum piso associado.");
 
       }else {
-        mapaPiso.largura = mapaPisoDTO.mapaLargura;
-        mapaPiso.profundidade = mapaPisoDTO.mapaProfundidade;
-        mapaPiso.saidaLocalizacao = mapaPisoDTO.mapaSaidaLocalizacao;
-        mapaPiso.elevador =  mapaPisoDTO.mapaElevador;
-        mapaPiso.saidas = mapaPisoDTO.mapaSaidas;
+        mapaPiso.mapa = mapaPisoDTO.mapa
         await this.mapaPisoRepo.save(mapaPiso);
 
         const mapaPisoDTOResult = MapaPisoMap.toDTO( mapaPiso ) as IMapaPisoDTO;
