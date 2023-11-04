@@ -50,15 +50,15 @@ Para resolver o problema de sala de piso foi criado um agregado com a entidade "
 
 ##### 3.1.2.1 Nível 1
 
-![vp](../UC310/Nível%201/vp1.svg "vp1.svg")
+![vp](vp1.svg "vp1.svg")
 
 #### 3.1.2.2 Nível 2
 
-![vp](../UC310/Nível%202/vp2.svg "vp2.svg")
+![vp](vp2.svg "vp2.svg")
 
 #### 3.1.2.3 Nível 3
 
-![vp](../UC310/Nível%203/vp310.svg "vp3.svg")
+![vp](vp310.svg "vp3.svg")
 
 #### 3.1.3 Vista lógica
 
