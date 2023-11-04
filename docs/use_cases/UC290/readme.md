@@ -20,11 +20,7 @@
 
 Listar elevadores de um edíficio deve apresentar o(s) elevador(es) de um edifício específico.
 
-### 2.2 Excerto do MD
-
-![excerpt diagram](ed290.svg "ed290.svg")
-
-### 2.3 Testes ao requisito
+### 2.2 Testes ao requisito
 
 **Teste 1:** *Listar elevador(es) com sucesso (controlador, 200 GET)*
 
@@ -42,11 +38,13 @@ Para resolver o problema de listagem de elevadores foi criado um agregado com a 
 
 #### 3.3.1 Excerto de domínio
 
-![excerto dominio](ed_290.svg "ed_290.svg")
+![excerto dominio](ed290.svg "ed290.svg")
 
 #### 3.1.2 Vista de processo
 
 ##### 3.1.2.1 Nível 1
+
+![vista processo 1](vp1.svg "Vista processo - nível 1")
 
 ##### 3.1.2.2 Nível 2
 
@@ -54,7 +52,7 @@ Para resolver o problema de listagem de elevadores foi criado um agregado com a 
 
 ##### 3.1.2.3 Nível 3
 
-![vista processo 3](vp270.svg "Vista processo - nível 3")
+![vista processo 3](vp290.svg "Vista processo - nível 3")
 
 #### 3.1.3 Vista lógica
 
@@ -72,11 +70,9 @@ Para resolver o problema de listagem de elevadores foi criado um agregado com a 
 
 #### 3.1.3 Vista de cenários
 
-a
-
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenarios 1](/docs/logical_view/level3/vl3.svg "Vista cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 
