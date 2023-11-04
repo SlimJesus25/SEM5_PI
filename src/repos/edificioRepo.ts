@@ -1,7 +1,7 @@
 import { Service, Inject } from 'typedi';
 
 import IEdificioRepo from "../services/IRepos/IEdificioRepo";
-import { Edificio } from "../domain/edificio";
+import { Edificio } from '../domain/edificio';
 import { EdificioId } from "../domain/edificioId";
 import { EdificioMap } from "../mappers/EdificioMap";
 
@@ -97,6 +97,16 @@ export default class EdificioRepo implements IEdificioRepo {
   } catch (err) {
       throw err;
   }
-    
 }
+
+  public async delete(edificio: Edificio) : Promise<Edificio>{
+    try{
+      const query = { codigoEdificio: edificio.codigo}; 
+      const edificioRecord = this.edificioSchema.deleteOne(query as FilterQuery<IEdificioPersistence & Document>);
+    
+      return edificio;
+    }catch(err){
+      throw err;
+    }
+  }
 }

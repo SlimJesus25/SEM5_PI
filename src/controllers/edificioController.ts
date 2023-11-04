@@ -7,6 +7,7 @@ import IEdificioService from '../services/IServices/IEdificioService';
 import IEdificioDTO from '../dto/IEdificioDTO';
 
 import { Result } from "../core/logic/Result";
+import IDeleteEdificio from '../dto/IDeleteEdificio';
 
 @Service()
 export default class EdificioController implements IEdificioController /* TODO: extends ../core/infra/BaseController */ {
@@ -62,5 +63,20 @@ export default class EdificioController implements IEdificioController /* TODO: 
       return next(e);
     }
   }
+  public async deleteEdificio(req: Request, res: Response, next: NextFunction){
+    try {
+      const edificioOrError = await this.edificioServiceInstance.deleteEdificio(req.body as IDeleteEdificio) as Result<IEdificioDTO>;
+
+      if (edificioOrError.isFailure) {
+        return res.status(404).send("Erro: " + edificioOrError.errorValue());
+      }
+
+      const edificiosDTO = edificioOrError.getValue();
+      return res.json( edificiosDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 
 }

@@ -47,4 +47,13 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.listEdificios(req, res, next));
 
+
+  route.delete('/deleteEdificio',
+    celebrate({
+      body: Joi.object({
+        numeroIdentificativo: Joi.number().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.deleteEdificio(req, res, next));
+
 };
