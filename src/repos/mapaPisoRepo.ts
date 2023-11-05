@@ -68,4 +68,15 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
       return null;
   }
 
+  public async findByPiso (designacao : string) : Promise<MapaPiso>{
+    const query = { piso : designacao};
+    const roleRecord = await this.mapaPisoSchema.findOne (query as FilterQuery<IMapaPisoPersistence & Document>);
+
+    if (roleRecord != null) {
+      let result = await MapaPisoMap.toDomain(roleRecord)
+      return result;
+    }
+    else
+      return null;
+  }
 }

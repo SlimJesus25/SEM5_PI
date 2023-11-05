@@ -20,21 +20,16 @@ export default class MapaPisoService implements IMapaPisoService {
  public async createMapaPiso(mapaPisoDTO: IMapaPisoDTO): Promise<Result<IMapaPisoDTO>> {
     try {
 
-      const mapaPiso = await this.mapaPisoRepo.findByDomainId(mapaPisoDTO.id);
+      const mapaPiso = await this.mapaPisoRepo.findByPiso(mapaPisoDTO.piso);
 
       if (mapaPiso != null)
-        return Result.fail<IMapaPisoDTO>("Já existe um mapa de piso com o código " + mapaPisoDTO.id);
+        return Result.fail<IMapaPisoDTO>("Já existe um piso com o mapa de piso " + mapaPisoDTO.id);
 
-      
       const piso = await this.pisoRepo.findByDesignacao(mapaPisoDTO.piso);
-
-      if (piso == null){
-        return Result.fail<IMapaPisoDTO>("O mapa de piso" + mapaPisoDTO.id + "não tem nenhum piso associado.")
-      }
 
       const mapaPisoOrError = MapaPiso.create({
         mapa: mapaPisoDTO.mapa,
-        piso : piso,
+        piso : piso
       });
 
 
