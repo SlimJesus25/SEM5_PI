@@ -78,7 +78,7 @@ Para resolver o problema de sala de piso foi criado um agregado com a entidade "
 
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenario 1](/docs/scenario_view/level1/sv1.svg "Vista cenário - nível 1")
 
 #### 3.1.4 Vista de implementação
 

@@ -68,25 +68,25 @@ Para resolver o problema de listagem de elevadores foi criado um agregado com a 
 
 ![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
 
-#### 3.1.3 Vista de cenários
+#### 3.1.4 Vista de cenários
 
-##### 3.1.3.1 Nível 1
+##### 3.1.4.1 Nível 1
 
-![vista cenarios 1](/docs/logical_view/level3/vl3.svg "Vista cenários - nível 1")
+![vista cenario 1](/docs/scenario_view/level1/sv1.svg "Vista cenário - nível 1")
 
-#### 3.1.4 Vista de implementação
+#### 3.1.5 Vista de implementação
 
-##### 3.1.3.1 Nível 2
+##### 3.1.5.1 Nível 2
 
 ![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
 
-##### 3.1.3.1 Nível 3
+##### 3.1.5.2 Nível 3
 
 ![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
 
-#### 3.1.5 Vista física
+#### 3.1.6 Vista física
 
-##### 3.1.5.1 Nível 2
+##### 3.1.6.1 Nível 2
 
 ![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
