@@ -30,6 +30,10 @@ Por exemplo, do edifício B existir uma passagem para o edifício G no piso 2 e 
 
 **Test 4:** *Criar passsagem entre edifícios com insucesso (controlador + serviço, 403 FORBIDDEN)*
 
+**Test 5:** *Criar passagem entre edifícios com insucesso (edificioA e edificioB são iguais)*
+
+**Test 5:** *Criar passagem entre edifícios com insucesso (pisoA e pisoB são iguais)*
+
 
 ## 3. Desenho
 
