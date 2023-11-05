@@ -10,6 +10,7 @@ import { Result } from "../core/logic/Result";
 import IListMinMaxDTO from '../dto/IListMinMaxDTO';
 import IListPisosDTO from '../dto/IListPisosDTO';
 import IEdificioDTO from '../dto/IEdificioDTO';
+import IDeletePisoDTO from '../dto/IDeletePisoDTO'
 
 @Service()
 export default class PisoController implements IPisoController /* TODO: extends ../core/infra/BaseController */ {
@@ -80,5 +81,20 @@ export default class PisoController implements IPisoController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async deletePiso(req: Request, res: Response, next: NextFunction){
+    try{
+      const pisoOrError = await this.pisoServiceInstance.deletePiso(req.body as IDeletePisoDTO) as Result<IPisoDTO>;
+
+      if(pisoOrError.isFailure){
+        return res.status(404).send('Erro:' + pisoOrError.errorValue());
+      }
+
+      const pisoDTO = pisoOrError.getValue();
+      return res.json(pisoDTO).status(200);
+    }catch(e){
+      return next(e);
+    }
+  }
 
 }

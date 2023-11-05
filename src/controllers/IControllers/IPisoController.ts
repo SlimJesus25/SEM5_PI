@@ -5,5 +5,6 @@ export default interface IPisoController  {
   updatePiso(req: Request, res: Response, next: NextFunction);
   listPisos(req: Request, res: Response, next: NextFunction);
   listMinMax(req: Request, res: Response, next: NextFunction);
+  deletePiso(req: Request, res: Response, next: NextFunction);
 
 }

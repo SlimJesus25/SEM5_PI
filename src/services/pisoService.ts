@@ -11,6 +11,7 @@ import IEdificioRepo from './IRepos/IEdificioRepo';
 import IListMinMaxDTO from '../dto/IListMinMaxDTO';
 import IEdificioDTO from '../dto/IEdificioDTO';
 import { EdificioMap } from '../mappers/EdificioMap';
+import IDeletePiso from '../dto/IDeletePisoDTO';
 
 @Service()
 export default class PisoService implements IPisoService {
@@ -145,6 +146,21 @@ export default class PisoService implements IPisoService {
       throw e;
     }
 
+  }
+
+  public async deletePiso(pisoDTO: IDeletePiso): Promise<Result<IPisoDTO>> {
+    try {
+      const piso = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
+
+      if (piso == null)
+        return Result.fail<IPisoDTO>("Não existe qualquer piso com a designação " + pisoDTO.designacao);
+
+      await this.pisoRepo.delete(piso);
+
+      return Result.ok<IPisoDTO>(PisoMap.toDTO(piso));
+    } catch (err) {
+      throw err;
+    }
   }
 
   public async listPisoPassagem(pisoDTO: IPisoDTO): Promise<Result<Array<IPisoDTO>>> {
