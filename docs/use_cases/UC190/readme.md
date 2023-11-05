@@ -70,7 +70,7 @@ Para resolver este problema, a equipa optou por fazer um agregado próprio: Piso
 
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 
