@@ -58,27 +58,27 @@ Este requisito levanta a questão de criação de tipos de robos.
 
 ## 3. Design
 
-Para solucionar este problema, a equipa optou por criar um agregado para TipoRobo garantindo assim expansibilidade 
+Para solucionar este problema, a equipa optou por criar um agregado para TipoRobo garantindo assim expansibilidade e manutenabilidade.
 
 ### 3.1. Realização
 
-### 3.1.1 Excerto do MD
+#### 3.1.1 Excerto de domínio
 
-![excerpt diagram](ed310.svg "ed310.svg")
+![excerto dominio](ed260.svg "ed260.svg")
 
 #### 3.1.2 Vista de processo
 
 ##### 3.1.2.1 Nível 1
 
-![vp](vp1.svg "vp1.svg")
+![vista processo 1](./Nivel%201/vp1.svg "Vista processo - nível 1")
 
-#### 3.1.2.2 Nível 2
+##### 3.1.2.2 Nível 2
 
-![vp](vp2.svg "vp2.svg")
+![vista processo 2](./Nivel%202/vp2.svg "Vista processo - nível 2")
 
-#### 3.1.2.3 Nível 3
+##### 3.1.2.3 Nível 3
 
-![vp](vp3.svg "vp3.svg")
+![vista processo 3](./Nivel%203/vp3.svg "Vista processo - nível 3")
 
 #### 3.1.3 Vista lógica
 
@@ -98,7 +98,7 @@ Para solucionar este problema, a equipa optou por criar um agregado para TipoRob
 
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenários 1](/docs/scenario_view/level1/sv1.svg "Vista cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 

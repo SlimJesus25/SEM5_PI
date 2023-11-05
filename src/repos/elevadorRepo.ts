@@ -100,7 +100,7 @@ export default class ElevadorRepo implements IElevadorRepo {
   public async delete(elevador: Elevador) : Promise<Elevador>{
     try{
       const query = { numeroIdentificativo: elevador.numeroIdentificativo}; 
-      const elevadorRecord = this.elevadorSchema.deleteOne(query as FilterQuery<IElevadorPersistence & Document>);
+      const elevadorRecord = await this.elevadorSchema.deleteOne(query as FilterQuery<IElevadorPersistence & Document>);
       
       return elevador;
     }catch(err){

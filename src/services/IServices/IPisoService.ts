@@ -3,6 +3,7 @@ import IPisoDTO from "../../dto/IPisoDTO";
 import IListPisosDTO from "../../dto/IListPisosDTO"
 import IListMinMaxDTO from "../../dto/IListMinMaxDTO";
 import IEdificioDTO from "../../dto/IEdificioDTO";
+import IDeletePisoDTO from "../../dto/IDeletePisoDTO"
 
 export default interface IPisoService  {
   createPiso(pisoDTO: IPisoDTO): Promise<Result<IPisoDTO>>;
@@ -11,4 +12,5 @@ export default interface IPisoService  {
   listPisoPassagem(edificioDTO: IPisoDTO): Promise<Result<Array<IPisoDTO>>>;
   listPisos(codigoEdificio: IListPisosDTO): Promise<Result<IPisoDTO[]>>;
   listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>>;
+  deletePiso(designacao: IDeletePisoDTO): Promise<Result<IPisoDTO>>;
 }

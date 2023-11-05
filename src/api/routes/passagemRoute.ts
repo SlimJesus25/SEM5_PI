@@ -40,7 +40,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.updatePassagem(req, res, next));
 
   // Listar passagens entre 2 edifícios (recebe 2 códigos de edifício).
-  route.get('/listPassagens',
+  route.get('/listPassagensEdificios',
   celebrate({
     body: Joi.object({
       codigoEdificioA: Joi.string().required(),

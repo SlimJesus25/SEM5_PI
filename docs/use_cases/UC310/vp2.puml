@@ -1,4 +1,4 @@
-@startuml VP2
+@startuml vp2
 
 skinparam sequence {
 ParticipantBorderColor black
@@ -6,13 +6,18 @@ ParticipantBackgroundColor white
 }
 
 box "<<System(C4)>>\n SistemaRobDroneGo"
-participant MasterDataLogistics as mdl <<Container(C4)>>
-mdl -> mdl: POST createSala(descricao,categoria,designacao,piso)
-alt não existe erros durante a operação
-mdl --> mdl: 201 sala criada
-else existe erros durante a operação
-mdl --> mdl: 403 não foi possivel criar sala
+participant UI as ui <<Container(C4)>>
+participant MasterDataGestaoDispositivos as mdl <<Container(C4)>>
+activate ui
+ui -> mdl: GET /createSala(corpo)
+activate mdl
+alt sucesso
+mdl --> ui: devolve status 201
+else erro na criação
+mdl --> ui: devolve status 403
+deactivate mdl
 end 
+deactivate ui
 
 end box
 

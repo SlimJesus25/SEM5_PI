@@ -55,4 +55,12 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.listMinMax(req, res, next));
+
+    route.delete('/deletePiso',
+    celebrate({
+      body: Joi.object({
+        designacao: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.deletePiso(req, res, next));
 };

@@ -62,11 +62,9 @@ Nota de detalhe técnico: Tabela de dupla entrada.
 
 #### 3.1.3 Vista de cenários
 
-a
-
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenários 1](/docs/scenario_view/level1/sv1.svg "Vista cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 
