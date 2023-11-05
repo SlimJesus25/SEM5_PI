@@ -46,15 +46,15 @@ Para resolver este problema, a equipa optou por fazer um agregado próprio: Piso
 
 ##### 3.1.2.1 Nível 1
 
-![vista processo 1](vp1.svg "Vista processo - nível 2")
+![vista processo 1](/docs/use_cases/UC190/Nivel%201/vp1.svg "Vista processo - nível 1")
 
 ##### 3.1.2.2 Nível 2
 
-![vista processo 2](vp2.svg "Vista processo - nível 2")
+![vista processo 2](/docs/use_cases/UC190/Nivel%202/vp2.svg "Vista processo - nível 2")
 
 ##### 3.1.2.3 Nível 3
 
-![vista processo 3](vp3.svg "Vista processo - nível 3")
+![vista processo 3](/docs/use_cases/UC190/Nivel%203/vp3.svg "Vista processo - nível 3")
 
 #### 3.1.3 Vista lógica
 
@@ -72,11 +72,9 @@ Para resolver este problema, a equipa optou por fazer um agregado próprio: Piso
 
 #### 3.1.3 Vista de cenários
 
-a
-
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenario 1](/docs/VC1.svg "Vista cenário - nível 1")
 
 #### 3.1.4 Vista de implementação
 
