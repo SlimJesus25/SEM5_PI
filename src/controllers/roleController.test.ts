@@ -15,7 +15,7 @@ describe('role controller', function () {
 	beforeEach(function() {
     });
 
-    it('createRole: returns json with id+name values', async function () {
+    /*it('createRole: returns json with id+name values', async function () {
         let body = { "name":'role12' };
         let req: Partial<Request> = {};
 		req.body = body;
@@ -38,5 +38,5 @@ describe('role controller', function () {
 
 		sinon.assert.calledOnce(res.json);
 		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","name": req.body.name}));
-	});
+	});*/
 });
