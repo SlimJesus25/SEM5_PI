@@ -17,7 +17,7 @@ Criar um edifício é um conceito fundamental de criação de uma entidade impor
 
 ### 2.2 Excerto do MD
 
-![excerpt diagram](domain_excerpt_150.svg "domain_excerpt_150.svg")
+![excerpt diagram](ed150.svg "domain_excerpt_150.svg")
 
 ### 2.3 Testes ao requisito
 
@@ -41,43 +41,39 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Edif
 
 ### 3.1. Realização
 
-#### 3.1.1 Excerto de domínio
+#### 3.1.1 Vista de processo
 
-#### 3.1.2 Vista de processo
-
-##### 3.1.2.1 Nível 1
+##### 3.1.1.1 Nível 1
 
 ![vista processo 1](../UC150/Nivel%201/vp1.svg "Vista processos - nível 1")
 
-##### 3.1.2.2  Nível 2
+##### 3.1.1.2  Nível 2
 
 ![vista processo 2](../UC150/Nivel%202/vp2.svg "Vista processos - nível 2")
 
-#### #3.1.2.3  Nível 3
+#### #3.1.1.3  Nível 3
 
 ![vista logica 3](../UC150/Nivel%203/vp3.svg "Vista processos - nível 3")
 
-#### 3.1.3 Vista Lógica
+#### 3.1.2 Vista Lógica
 
-##### 3.1.3.1 Nível 1
+##### 3.1.2.1 Nível 1
 
 ![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
 
-##### 3.1.3.2 Nível 2
+##### 3.1.2.2 Nível 2
 
 ![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
 
-##### 3.1.3.3 Nível 3
+##### 3.1.2.3 Nível 3
 
 ![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
 
 #### 3.1.3 Vista de cenários
 
-a
-
 ##### 3.1.3.1 Nível 1
 
-a
+![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 
