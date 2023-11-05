@@ -45,10 +45,10 @@ export default class PassagemRepo implements IPassagemRepo {
 
         return PassagemMap.toDomain(passagemCreated);
       } else {
-        passagemDocument.edificioA = passagem.edificioA.id.toString();
-        passagemDocument.edificioB = passagem.edificioB.id.toString();
-        passagemDocument.pisoA = passagem.pisoA.id.toString();
-        passagemDocument.pisoB = passagem.pisoB.id.toString();
+        passagemDocument.edificioA = passagem.edificioA.codigo;
+        passagemDocument.edificioB = passagem.edificioB.codigo;
+        passagemDocument.pisoA = passagem.pisoA.designacao;
+        passagemDocument.pisoB = passagem.pisoB.designacao;
         await passagemDocument.save();
 
         return passagem;
@@ -108,11 +108,13 @@ export default class PassagemRepo implements IPassagemRepo {
   }
 
   public async findByDesignacao(value: string): Promise<Passagem> {
-    const query = { designacao: value.toString() };
+    const query = { designacao: value };
     const passagemRecord = await this.passagemSchema.findOne(query as FilterQuery<IPassagemPersistence & Document>);
 
-    if (passagemRecord != null)
-      return PassagemMap.toDomain(passagemRecord);
+    if (passagemRecord != null){
+      let passagemDoc  = await PassagemMap.toDomain(passagemRecord)
+      return passagemDoc;
+    }
     else
       return null;
   }
