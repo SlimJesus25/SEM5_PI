@@ -8,6 +8,7 @@ skinparam nodesep 150
 hide empty members
 left to right direction
 
+
 'o código do edificio é obrigatório, no máximo 5 caracteres, letras e digitos, podendo conter espaços no meio
 'o nome do edificio é opcional, no máximo 50 caracteres alfanuméricos
 package "<<agr Edificio>>"{
