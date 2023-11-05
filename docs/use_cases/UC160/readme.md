@@ -37,15 +37,15 @@ Para resolver este problema, é pedido ao utilizador os parametros a atualizar d
 
 ##### 3.1.2.1 Nível 1
 
-![vista processo 1](vp1.svg "Vista processo - nível 2")
+![vista processo 1](../UC150/Nivel%201/vp1.svg "Vista processos - nível 1")
 
 ##### 3.1.2.2 Nível 2
 
-![vista processo 2](vp2.svg "Vista processo - nível 2")
+![vista processo 2](../UC150/Nivel%202/vp2.svg "Vista processos - nível 2")
 
 ##### 3.1.2.3 Nível 3
 
-![vista processo 3](vp3.svg "Vista processo - nível 3")
+![vista processo 3](../UC150/Nivel%203/vp3.svg "Vista processos - nível 3")
 
 #### 3.1.3 Vista lógica
 
