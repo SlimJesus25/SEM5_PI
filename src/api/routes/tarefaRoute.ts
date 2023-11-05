@@ -22,4 +22,12 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.createTarefa(req, res, next));
 
+  route.delete('/deleteTarefa',
+    celebrate({
+      body: Joi.object({
+        tipoTarefa: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.deleteTarefa(req, res, next));
+
 };

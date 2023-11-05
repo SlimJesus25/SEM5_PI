@@ -13,27 +13,27 @@ export default class TipoRoboRepo implements ITipoRoboRepo {
   private models: any;
 
   constructor(
-    @Inject('tipoRoboSchema') private tipoRoboSchema : Model<ITipoRoboPersistence & Document>,
-  ) {}
+    @Inject('tipoRoboSchema') private tipoRoboSchema: Model<ITipoRoboPersistence & Document>,
+  ) { }
 
-  private createBaseQuery (): any {
+  private createBaseQuery(): any {
     return {
       where: {},
     }
   }
 
   public async exists(tipoRobo: TipoRobo): Promise<boolean> {
-    
+
     return null;
   }
 
-  public async save (tipoRobo: TipoRobo): Promise<TipoRobo> {
-    const query = { domainId: tipoRobo.id.toString()}; 
+  public async save(tipoRobo: TipoRobo): Promise<TipoRobo> {
+    const query = { domainId: tipoRobo.id.toString() };
 
-    const tipoRoboDocument = await this.tipoRoboSchema.findOne( query );
+    const tipoRoboDocument = await this.tipoRoboSchema.findOne(query);
 
     try {
-      if (tipoRoboDocument === null ) {
+      if (tipoRoboDocument === null) {
         const rawTipoRobo: any = TipoRoboMap.toPersistence(tipoRobo);
 
         const tipoRoboCreated = await this.tipoRoboSchema.create(rawTipoRobo);
@@ -41,7 +41,7 @@ export default class TipoRoboRepo implements ITipoRoboRepo {
         return TipoRoboMap.toDomain(tipoRoboCreated);
       } else {
 
-        let tarefas : string[] = [];
+        let tarefas: string[] = [];
 
         tipoRobo.tarefas.forEach(v => {
           tarefas.push(v.tipoTarefa);
@@ -61,7 +61,7 @@ export default class TipoRoboRepo implements ITipoRoboRepo {
     }
   }
 
-  public async findByDomainId (roleId: TipoRobo | string): Promise<TipoRobo> {
+  public async findByDomainId(roleId: TipoRobo | string): Promise<TipoRobo> {
     return null;
   }
 
@@ -69,10 +69,23 @@ export default class TipoRoboRepo implements ITipoRoboRepo {
     const query = { designacao: value.toString() };
     const tipoRoboRecord = await this.tipoRoboSchema.findOne(query);
 
-    if(tipoRoboRecord != null)
-      return TipoRoboMap.toDomain(tipoRoboRecord);
+    if (tipoRoboRecord != null) {
+      let tipoRoboDoc = await TipoRoboMap.toDomain(tipoRoboRecord)
+      return tipoRoboDoc;
+    }
     else
       return null;
-}
-  
+  }
+
+  public async delete(tipoRobo: TipoRobo): Promise<TipoRobo> {
+    try {
+      const query = { designacao: tipoRobo.designacao };
+      const tipoRoboRecord = await this.tipoRoboSchema.deleteOne(query as FilterQuery<ITipoRoboPersistence & Document>);
+
+      return tipoRobo;
+    } catch (err) {
+      throw err;
+    }
+  }
+
 }

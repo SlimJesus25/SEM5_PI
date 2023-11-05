@@ -8,6 +8,7 @@ import ITarefaRepo from '../services/IRepos/ITarefaRepo';
 import ITipoRoboService from './IServices/ITipoRoboService';
 import { Result } from "../core/logic/Result";
 import { TipoRoboMap } from "../mappers/TipoRoboMap";
+import IDeleteTipoRoboDTO from '../dto/IDeleteTipoRoboDTO';
 
 @Service()
 export default class TipoRoboService implements ITipoRoboService {
@@ -99,6 +100,21 @@ export default class TipoRoboService implements ITipoRoboService {
     let tarefas: Tarefa[];
     idTarefas.forEach(async t => tarefas.push(await this.tarefaRepo.findByDomainId(t)));
     return Result.ok<Tarefa[]>(tarefas);
+  }
+
+  public async deleteTipoRobo(tipoRoboDTO: IDeleteTipoRoboDTO): Promise<Result<ITipoRoboDTO>> {
+    try {
+      const tipoRobo = await this.tipoRoboRepo.findByDesignacao(tipoRoboDTO.designacao);
+
+      if (tipoRobo == null)
+        return Result.fail<ITipoRoboDTO>("Não existe qualquer tipo de robo com a designação " + tipoRoboDTO.designacao);
+
+      await this.tipoRoboRepo.delete(tipoRobo);
+
+      return Result.ok<ITipoRoboDTO>(TipoRoboMap.toDTO(tipoRobo));
+    } catch (err) {
+      throw err;
+    }
   }
 
 }

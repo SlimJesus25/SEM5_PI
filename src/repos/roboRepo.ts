@@ -77,8 +77,10 @@ export default class RoboRepo implements IRoboRepo {
       const query = { codigo: value.toString() };
       const roboRecord = await this.roboSchema.findOne(query);
 
-      if(roboRecord != null)
-        return RoboMap.toDomain(roboRecord);
+      if (roboRecord != null){
+        let roboDoc  = await RoboMap.toDomain(roboRecord)
+        return roboDoc;
+      }
       else
         return null;
   }
@@ -100,6 +102,17 @@ export default class RoboRepo implements IRoboRepo {
       }
   } catch (err) {
       throw err;
+  }
+}
+
+public async delete(robo: Robo): Promise<Robo> {
+  try {
+    const query = { codigo: robo.codigo.value };
+    const roboRecord = await this.roboSchema.deleteOne(query as FilterQuery<IRoboPersistence & Document>);
+
+    return robo;
+  } catch (err) {
+    throw err;
   }
 }
 }

@@ -7,6 +7,7 @@ import IRoboService from '../services/IServices/IRoboService';
 import IRoboDTO from '../dto/IRoboDTO';
 
 import { Result } from "../core/logic/Result";
+import IDeleteRoboDTO from '../dto/IDeleteRoboDTO';
 
 @Service()
 export default class RoboController implements IRoboController /* TODO: extends ../core/infra/BaseController */ {
@@ -78,5 +79,20 @@ export default class RoboController implements IRoboController /* TODO: extends 
       return next(e);
     }
     
+  }
+
+  public async deleteRobo(req: Request, res: Response, next: NextFunction){
+    try{
+      const roboOrError = await this.roboServiceInstance.deleteRobo(req.body as IDeleteRoboDTO) as Result<IRoboDTO>;
+
+      if(roboOrError.isFailure){
+        return res.status(404).send('Erro:' + roboOrError.errorValue());
+      }
+
+      const roboDTO = roboOrError.getValue();
+      return res.json(roboDTO).status(200);
+    }catch(e){
+      return next(e);
+    }
   }
 }

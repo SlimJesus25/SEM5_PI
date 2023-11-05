@@ -58,11 +58,12 @@ export default class TarefaRepo implements ITarefaRepo {
     const query = { designacao: designacao};
     const tarefaRecord = await this.tarefaSchema.findOne(query as FilterQuery<ITarefaPersistence & Document>);
 
-    if(tarefaRecord != null){
-      return TarefaMap.toDomain(tarefaRecord);
-    }else{
-      return null;
+    if (tarefaRecord != null){
+      let tarefaDoc  = await TarefaMap.toDomain(tarefaRecord)
+      return tarefaDoc;
     }
+    else
+      return null;
   }
 
   public async exists(tarefa: Tarefa): Promise<boolean> {
@@ -73,6 +74,17 @@ export default class TarefaRepo implements ITarefaRepo {
     const roleDocument = await this.tarefaSchema.findOne( query as FilterQuery<ITarefaPersistence & Document>);
 
     return !!roleDocument === true;
+  }
+
+  public async delete(tarefa: Tarefa): Promise<Tarefa> {
+    try {
+      const query = { tipoTarefa: tarefa.tipoTarefa };
+      const tarefaRecord = await this.tarefaSchema.deleteOne(query as FilterQuery<ITarefaPersistence & Document>);
+
+      return tarefa;
+    } catch (err) {
+      throw err;
+    }
   }
   
 
