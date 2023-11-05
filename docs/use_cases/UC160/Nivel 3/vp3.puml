@@ -21,8 +21,9 @@ alt edificio não existe
     svc --> ctrl : Envia erro com a mensagem: Não existe edificio
     ctrl --> route : Envia status 404 (NOT FOUND)
 end
-svc -> svc : edificio = update(edificioDTO)
+svc -> model : edificio = update(edificioDTO)
 activate model
+model --> svc :
 deactivate model
 svc -> repoEdi : save(edificio)
 activate repoEdi
