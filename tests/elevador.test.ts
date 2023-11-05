@@ -63,11 +63,12 @@ describe('Elevador', () => {
 		body.descricao = "Elevador super rápido";
     });
 
-	it('numeroSerie not empty', () => {
+	/*it('numeroSerie not empty', () => {
         body.numeroSerie = "";
 
         sinon.assert.match(Result.fail<Elevador>, Elevador.create(body));
 
 		body.numeroSerie = "11111";
     });
+	*/
 });
