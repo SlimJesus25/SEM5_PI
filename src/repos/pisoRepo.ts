@@ -34,7 +34,7 @@ export default class PisoRepo implements IPisoRepo {
   }
 
   public async save(piso: Piso): Promise<Piso> {
-    const query = { domainId: piso.id.toString() };
+    const query = { designacao: piso.designacao };
 
     const pisoDocument = await this.pisoSchema.findOne(query);
 
@@ -86,8 +86,10 @@ export default class PisoRepo implements IPisoRepo {
     const query = { designacao: value };
     const pisoRecord = await this.pisoSchema.findOne(query as FilterQuery<IPisoPersistence & Document>);
 
-    if (pisoRecord != null)
-      return PisoMap.toDomain(pisoRecord);
+    if (pisoRecord != null) {
+      let pisoDoc = await PisoMap.toDomain(pisoRecord)
+      return pisoDoc;
+    }
     else
       return null;
   }

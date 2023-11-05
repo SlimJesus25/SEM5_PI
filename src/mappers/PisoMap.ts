@@ -13,7 +13,7 @@ export class PisoMap extends Mapper<Piso> {
       id: piso.id.toString(),
       designacao: piso.designacao,
       descricao: piso.descricao,
-      edificio: piso.edificio.codigo
+      edificio: piso.edificio.codigo,
     } as IPisoDTO;
   }
 
