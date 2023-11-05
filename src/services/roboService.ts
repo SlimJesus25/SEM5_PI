@@ -14,6 +14,7 @@ import { TipoRobo } from '../domain/tipoRobo';
 import ITipoRoboRepo from './IRepos/ITipoRoboRepo';
 import IRoboRepo from './IRepos/IRoboRepo';
 import IEnableRoboDTO from '../dto/IEnableRoboDTO';
+import IDeleteRoboDTO from '../dto/IDeleteRoboDTO';
 
 @Service()
 export default class RoboService implements IRoboService {
@@ -102,4 +103,18 @@ export default class RoboService implements IRoboService {
     }
   }
 
+  public async deleteRobo(roboDTO: IDeleteRoboDTO): Promise<Result<IRoboDTO>> {
+    try {
+      const robo = await this.roboRepo.findByCodigo(roboDTO.codigo);
+
+      if (robo == null)
+        return Result.fail<IRoboDTO>("Não existe qualquer robo com o codigo " + roboDTO.codigo);
+
+      await this.roboRepo.delete(robo);
+
+      return Result.ok<IRoboDTO>(RoboMap.toDTO(robo));
+    } catch (err) {
+      throw err;
+    }
+  }
 }

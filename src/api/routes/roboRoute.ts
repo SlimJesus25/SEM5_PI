@@ -70,4 +70,12 @@ export default (app: Router) => {
  }),
  (req, res, next) => ctrl.inhibitRobo(req, res, next));
 
+ route.delete('/deleteRobo',
+    celebrate({
+      body: Joi.object({
+        codigo: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.deleteRobo(req, res, next));
+
 };

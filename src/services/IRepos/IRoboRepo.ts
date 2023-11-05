@@ -7,4 +7,5 @@ export default interface IRoboRepo extends Repo<Robo> {
   findByDomainId (roboId: RoboId | string): Promise<Robo>;
   findByCodigo(value: string): Promise<Robo>;
   findAll(): Promise<Robo[]>;
+  delete(robo: Robo ): Promise<Robo>;
 }

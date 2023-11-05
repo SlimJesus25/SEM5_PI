@@ -5,4 +5,5 @@ export default interface IRoboController  {
   updateRobo(req: Request, res: Response, next: NextFunction);
   listRobos(req: Request, res: Response, next: NextFunction);
   inhibitRobo(req: Request, res: Response, next: NextFunction);
+  deleteRobo(req: Request, res: Response, next: NextFunction);
 }
