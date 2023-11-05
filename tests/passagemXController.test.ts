@@ -1112,8 +1112,389 @@ describe('passagem controller', function () {
 		sinon.assert.calledOnce(obj);
 		sinon.assert.calledWith(obj, sinon.match(req.body));
 	});
+	
+	it('updatePassagem returns status 403 forbidden', async function () {
+		let req: Partial<Request> = {};
+		req.body = "Passagem não encontrada"
 
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
 
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemServiceInstace = Container.get("PassagemService");
+
+		const obj = sinon.stub(passagemServiceInstace, "updatePassagem").returns(Result.fail<IPassagemDTO>("Passagem não encontrada"));
+
+		const ctrl = new PassagemController(passagemServiceInstace as IPassagemService);
+		await ctrl.updatePassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+		sinon.assert.calledWith(obj, "Passagem não encontrada");
+	});
+	
+	it('updatePassagem returns piso json', async function () {
+		let req: Partial<Request> = {};
+		req.body = {
+			"designacao": "Passagem B2_H2",
+			"edificioA": "B",
+			"edificioB": "H",
+			"pisoA": "Piso 2",
+			"pisoB": "Piso 2"
+		};
+
+		let res: Partial<Response> = {
+			status: sinon.spy(),
+		};
+
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemServiceInstace = Container.get("PassagemService");
+
+		const obj = sinon.stub(passagemServiceInstace, "updatePassagem").returns(Result.ok<IPassagemDTO>(req.body as IPassagemDTO));
+
+		const ctrl = new PassagemController(passagemServiceInstace as IPassagemService);
+		await ctrl.updatePassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		sinon.assert.calledOnce(obj);
+		sinon.assert.calledWith(obj, sinon.match(req.body));
+	});
+	
+	it('updatePassagem: passagemController + passagemService integration test using spy on passagemService, success', async function () {
+		// Arrange
+		let body = {
+			"designacao": "Passagem B2_H2",
+			"edificioA": "H",
+			"edificioB": "B",
+			"pisoA": "H2",
+			"pisoB": "B2"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			json: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let pisoRepoInstance = Container.get("PisoRepo");
+		let passagemServiceInstance = Container.get("PassagemService");
+
+		const e1 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Quimica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Quimica",
+			"codigoEdificio": CodigoEdificio.create("H").getValue(),
+		}
+
+		const e2 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Informatica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
+			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+		}
+
+		let dummyEdificio = Edificio.create(e1).getValue();
+		let dummyEdificio2 = Edificio.create(e2).getValue();
+
+		const p1 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "H2",
+			"edificio": dummyEdificio,
+		}
+
+		const p2 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B2",
+			"edificio": dummyEdificio2,
+		}
+
+		let dummyPiso = Piso.create(p1).getValue();
+		let dummyPiso2 = Piso.create(p2).getValue();
+
+		const pa = {
+			id:"t123",
+			designacao: "Passagem B2_H2",
+			edificioA: dummyEdificio,
+			edificioB: dummyEdificio2,
+			pisoA: dummyPiso,
+			pisoB: dummyPiso2,
+		}
+
+		let passagem = Passagem.create(pa).getValue();
+
+		sinon.stub(passagemRepoInstance, "findByDesignacao").resolves(passagem);
+		sinon.stub(edificioRepoInstance, "findByCodigo").onCall(0).resolves(dummyEdificio).onCall(1).resolves(dummyEdificio2);
+		sinon.stub(pisoRepoInstance, "findByDesignacao").onCall(0).resolves(dummyPiso).onCall(1).resolves(dummyPiso2);
+	
+
+		sinon.stub(passagemRepoInstance, "save").resolves(passagem);
+
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "updatePassagem");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		// Act
+		await ctrl.updatePassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.json);
+		sinon.assert.calledWith(res.json, sinon.match({
+			designacao: "Passagem B2_H2",
+			edificioA: "H",
+			edificioB: "B",
+			pisoA: "H2",
+			pisoB: "B2"
+		}));
+		sinon.assert.calledOnce(passagemServiceSpy);
+		//sinon.assert.calledTwice(roleServiceSpy);
+		sinon.assert.calledWith(passagemServiceSpy, sinon.match({ name: req.body.name }));
+	});
+	
+	it('updatePassagem: passagemController + passagemService integration test using spy on passagemService, unsuccess case edificioA equals edificioB', async function () {
+		// Arrange
+		let body = {
+			"designacao": "Passagem B2_H2",
+			"edificioA": "B",
+			"edificioB": "H",
+			"pisoA": "Piso 2",
+			"pisoB": "Piso 2"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let pisoRepoInstance = Container.get("PisoRepo");
+
+		const e1 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Quimica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Quimica",
+			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+		}
+
+		const e2 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Informatica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
+			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+		}
+
+		let dummyEdificio = Edificio.create(e1).getValue();
+		let dummyEdificio2 = Edificio.create(e2).getValue();
+
+		const p1 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "H2",
+			"edificio": dummyEdificio,
+		}
+
+		const p2 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B2",
+			"edificio": dummyEdificio2,
+		}
+
+		let dummyPiso = Piso.create(p1).getValue();
+		let dummyPiso2 = Piso.create(p2).getValue();
+
+		const pa = {
+			designacao: "Passagem B2_H2",
+			edificioA: dummyEdificio,
+			edificioB: dummyEdificio2,
+			pisoA: dummyPiso,
+			pisoB: dummyPiso2,
+		}
+
+		let passagem = Passagem.create(pa).getValue();
+
+		sinon.stub(passagemRepoInstance, "findByDesignacao").resolves(passagem); 
+		sinon.stub(edificioRepoInstance, "findByCodigo").onCall(0).resolves(dummyEdificio).onCall(1).resolves(dummyEdificio2); 
+		sinon.stub(pisoRepoInstance, "findByDesignacao").onCall(0).resolves(dummyPiso).onCall(1).resolves(dummyPiso2);
+
+		let passagemServiceInstance = Container.get("PassagemService");
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "updatePassagem");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		// Act
+		await ctrl.updatePassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+	});
+	
+	it('updatePassagem: passagemController + passagemService integration test using spy on passagemService, unsuccess case pisoA equals pisoB', async function () {
+		// Arrange
+		let body = {
+			"designacao": "Passagem B2_H2",
+			"edificioA": "B",
+			"edificioB": "H",
+			"pisoA": "Piso 2",
+			"pisoB": "Piso 2"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let pisoRepoInstance = Container.get("PisoRepo");
+
+		const e1 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Quimica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Quimica",
+			"codigoEdificio": CodigoEdificio.create("H").getValue(),
+		}
+
+		const e2 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Informatica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
+			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+		}
+
+		let dummyEdificio = Edificio.create(e1).getValue();
+		let dummyEdificio2 = Edificio.create(e2).getValue();
+
+		const p1 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B2",
+			"edificio": dummyEdificio,
+		}
+
+		const p2 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B2",
+			"edificio": dummyEdificio2,
+		}
+
+		let dummyPiso = Piso.create(p1).getValue();
+		let dummyPiso2 = Piso.create(p2).getValue();
+
+		const pa = {
+			designacao: "Passagem B2_H2",
+			edificioA: dummyEdificio,
+			edificioB: dummyEdificio2,
+			pisoA: dummyPiso,
+			pisoB: dummyPiso2,
+		}
+
+		let passagem = Passagem.create(pa).getValue();
+
+		sinon.stub(passagemRepoInstance, "findByDesignacao").resolves(passagem);
+		sinon.stub(edificioRepoInstance, "findByCodigo").onCall(0).resolves(dummyEdificio).onCall(1).resolves(dummyEdificio2); 
+		sinon.stub(pisoRepoInstance, "findByDesignacao").onCall(0).resolves(dummyPiso).onCall(1).resolves(dummyPiso2);
+
+		let passagemServiceInstance = Container.get("PassagemService");
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "updatePassagem");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		// Act
+		await ctrl.updatePassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+	});
+	
+	it('updatePassagem: passagemController + passagemService integration test using spy on passagemService, unsuccess case passagem does not exist', async function () {
+		// Arrange
+		let body = {
+			"designacao": "Passagem B2_H2",
+			"edificioA": "B",
+			"edificioB": "H",
+			"pisoA": "Piso 2",
+			"pisoB": "Piso 2"
+		};
+		let req: Partial<Request> = {};
+		req.body = body;
+
+		let res: Partial<Response> = {
+			status: sinon.spy()
+		};
+		let next: Partial<NextFunction> = () => { };
+
+		let passagemRepoInstance = Container.get("PassagemRepo");
+		let edificioRepoInstance = Container.get("EdificioRepo");
+		let pisoRepoInstance = Container.get("PisoRepo");
+
+		const e1 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Quimica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Quimica",
+			"codigoEdificio": CodigoEdificio.create("H").getValue(),
+		}
+
+		const e2 = {
+			"dimensaoMaximaPiso": [200, 200],
+			"descricaoEdificio": "Edificio Informatica",
+			"nomeOpcionalEdificio": "Departamento de Engenharia Informática",
+			"codigoEdificio": CodigoEdificio.create("B").getValue(),
+		}
+
+		let dummyEdificio = Edificio.create(e1).getValue();
+		let dummyEdificio2 = Edificio.create(e2).getValue();
+
+		const p1 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B2",
+			"edificio": dummyEdificio2,
+		}
+
+		const p2 = {
+			"descricao": "Piso de gabinetes e aulas teórica-práticas",
+			"designacao": "B2",
+			"edificio": dummyEdificio2,
+		}
+
+		let dummyPiso = Piso.create(p1).getValue();
+		let dummyPiso2 = Piso.create(p2).getValue();
+
+		const pa = {
+			designacao: "Passagem B2_H2",
+			edificioA: dummyEdificio,
+			edificioB: dummyEdificio2,
+			pisoA: dummyPiso,
+			pisoB: dummyPiso2,
+		}
+
+		let passagem = Passagem.create(pa).getValue();
+
+		sinon.stub(passagemRepoInstance, "findByDesignacao").resolves(null);
+		sinon.stub(edificioRepoInstance, "findByCodigo").onCall(0).resolves(dummyEdificio).onCall(1).resolves(dummyEdificio2); 
+		sinon.stub(pisoRepoInstance, "findByDesignacao").onCall(0).resolves(dummyPiso).onCall(1).resolves(dummyPiso2);
+
+		let passagemServiceInstance = Container.get("PassagemService");
+		const passagemServiceSpy = sinon.spy(passagemServiceInstance, "updatePassagem");
+
+		const ctrl = new PassagemController(passagemServiceInstance as IPassagemService);
+
+		// Act
+		await ctrl.updatePassagem(<Request>req, <Response>res, <NextFunction>next);
+
+		// Assert
+		sinon.assert.calledOnce(res.status);
+		sinon.assert.calledWith(res.status, 403);
+	});
+	
 });
 
 
