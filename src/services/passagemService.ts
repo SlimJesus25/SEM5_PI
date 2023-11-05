@@ -16,6 +16,8 @@ import { Piso } from '../domain/piso';
 import { PisoId } from '../domain/pisoId';
 import passagemSchema from '../persistence/schemas/passagemSchema';
 import { PisoMap } from '../mappers/PisoMap';
+import IDeletePassagem from '../dto/IDeletePassagemDTO';
+import IDeletePassagemDTO from '../dto/IDeletePassagemDTO';
 
 @Service()
 export default class PassagemService implements IPassagemService {
@@ -160,6 +162,21 @@ export default class PassagemService implements IPassagemService {
       return Result.ok<IPisoDTO[]>(pisoResultDTO)
     } catch (e) {
       throw e;
+    }
+  }
+
+  public async deletePassagem(passagemDTO: IDeletePassagemDTO): Promise<Result<IPassagemDTO>> {
+    try {
+      const passagem = await this.passagemRepo.findByDesignacao(passagemDTO.designacao);
+
+      if (passagem == null)
+        return Result.fail<IPassagemDTO>("Não existe qualquer passagem com a designação " + passagemDTO.designacao);
+
+      await this.passagemRepo.delete(passagem);
+
+      return Result.ok<IPassagemDTO>(PassagemMap.toDTO(passagem));
+    } catch (err) {
+      throw err;
     }
   }
 }

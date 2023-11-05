@@ -57,5 +57,15 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.listPisos(req,res,next));
+
+  route.delete('/deletePassagem',
+    celebrate({
+      body: Joi.object({
+        designacao: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.deletePassagem(req, res, next));
 };
+
+
 

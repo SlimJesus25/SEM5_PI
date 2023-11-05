@@ -7,5 +7,6 @@ export default interface IPassagemRepo extends Repo<Passagem> {
   findByDomainId (passagemId: PassagemId | string): Promise<Passagem>;
   listPassagensBetween(codigoEdificioA : string, codigoEdificioB : string): Promise<Passagem[]>;
   listPassagens(codigoEdificio: string): Promise<Passagem[]>;
-  findByDesignacao(designacao: string): Promise<Passagem>
+  findByDesignacao(designacao: string): Promise<Passagem>;
+  delete(passagem: Passagem ): Promise<Passagem>;
 }
