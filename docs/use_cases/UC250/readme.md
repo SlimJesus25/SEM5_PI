@@ -1,95 +1,100 @@
-# US 1001
+# US 250
 
 ## 1. Requisitos
 
-**US1001** -  As Manager, I want to be able to register, disable/enable, and list users of the system (Teachers and Students, as well as Managers)
-
-**Critérios de aceitação** - This US has no specific acceptance criteria
+**US250** -  Editar passagem entre edifícios
 
 ## 2. Análise
 
 ### 2.1 Indentificar o problema
-In order to implement this functionality, we divided the documentation in 3 parts:
+Para ser possível editar uma passagem entre edifícios é necessário fornecer dados relativamente aos edificios e aos pisos em questão de cada edificio, bem como um elemento identificador da passagem que vamos alterar, usando o PUT.
 
-#### US1001_1 Add User
+**Respostas do cliente:**
 
-* The manager specifies the parameters that he wants for the user he is adding
-* The system will retrieve the input data and persist in the database the user added
+> Pergunta: O que é que pretende que seja possivel editar numa passagem entre edificios?
+>
+>Resposta: Deve ser possivel corrigir todos os dados da passagem
 
-#### US1001_2 Deactivate User
-
-* The system presents a list of the users in the database that are active
-* The user selects a user
-* The system will deactivate the user in the database
-
-#### US1001_3 List User
-
-* The manager will ask for a list of users
-* The system will retrieve them from the database and present them to the manager
 
 ### 2.2 Excerto do MD
-![excerpt diagram](domain_excerpt_1001.svg "domain_excerpt_3004.svg")
+![excerpt diagram](ed250.svg "ed250.svg")
 
-### 2.3 Testes de Unidade - Teste de regras de negócio
+### 2.3 Testes ao requisito
 
-**Test 1:** *Ensure Username can't be null*
+**Test 1:** *Editar passsagem entre edifícios com sucesso (controlador, 201 POST)*
 
-**Test 2:** *Ensure Password can't be null*
+**Test 2:** *Editar passsagem entre edifícios com insucesso (controlador, 403 FORBIDDEN)*
 
-**Test 3:** *Ensure FirstName can't be null*
+**Test 3:** *Editar passsagem entre edifícios com sucesso (controlador + serviço, 201 POST)*
 
-**Test 4:** *Ensure LastName can't be null*
-
-**Test 5:** *Ensure Email can't be null*
-
-**Test 6:** *Ensure User can't be null*
-
-**Test 7:** *Ensure list of users can't be null*
+**Test 4:** *Editar passsagem entre edifícios com insucesso (controlador + serviço, 403 FORBIDDEN)*
 
 
+## 3. Desenho
 
-## 3. Design
-
-To solve this problem it is necessary to ask for the parameters for the user (in case we're adding a user), make sure 
-they persist in the database to make sure we can solve the US1001_2 and US1001_3.
+Para resolver este problema, é pedido ao utilizador os parametros a atualizar da passagem.
 
 ### 3.1. Realização
 
-### US1001_1 Add User
-* **Sequence Diagram**
+### 3.1.1 Vistas de Processo
 
-![sequence diagram](us1001_1/sequence_diagram_addUser.svg "sequence_diagram_1001_1")
+#### 3.1.1.1 Vista de processo - nível 3
 
-* **Class Diagram**
+![sequence diagram](../UC250/Nivel%201/VP1.svg "sequence_diagram_150.svg")
 
-![class diagram](us1001_1/class_diagram_addUser.svg "class_diagram_1001_1")
+#### 3.3.1.2 Vista de processo - nível 3
 
-### US1001_2 Deactivate  User
+![sequence diagram](../UC250/Nivel%202/vp2.svg "sequence_diagram_150.svg")
 
-* **Sequence Diagram**
- 
-![sequence diagram](us1001_2/sequence_diagram_deactivateUser.svg "sequence_diagram_1001_2")
+#### 3.3.1.3 Vista de processo - nível 3
 
-* **Class Diagram**
+![sequence diagram](../UC250/Nivel%203/vp3.svg "sequence_diagram_150.svg")
 
-![class diagram](us1001_2/class_diagram_deactivateUser.svg "class_diagram_1001_2")
+### 3.3.2 Vistas lógicas
 
-#### US1001_3 List User
+#### 3.3.2.1 Vista lógica - nível 1
 
-* **Sequence Diagram**
+![vista logica 3](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 3")
 
-![sequence diagram](us1001_3/sequence_diagram_listUser.svg "sequence_diagram_1001_3")
+#### 3.3.2.2 Vista lógica - nível 2
 
-* **Class Diagram**
+![vista logica 3](/docs/logical_view/level3/vl2.svg "Vista lógica - nível 3")
 
-![class diagram](us1001_3/class_diagram_listUser.svg "class_diagram_1001_3")
+#### 3.3.2.3 Vista lógica - nível 3
+
+![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+#### 3.1.3 Vista de cenários
+
+##### 3.1.3.1 Nível 1
+
+![vista cenario 1](/docs/scenario_view/level1/sv1.svg "Vista cenário - nível 1")
+
+#### 3.1.4 Vista de implementação
+
+##### 3.1.3.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+##### 3.1.3.1 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+#### 3.1.5 Vista física
+
+##### 3.1.5.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
-The applied patters are:
-* DTO;
-* Persistence;
-* Application;
-* Controller;
-* Service;
-* Domain;
-* UI;
+Os padrões aplicados são:
+- REST + ONION (padrões arquiteturais);
+- DTO;
+- Persistence;
+- Controller;
+- Service;
+- Interfaces;
+- Schema;
+- Mapper;
+- Repository;
+- Modelo.
