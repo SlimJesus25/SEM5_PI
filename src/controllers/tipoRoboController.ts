@@ -7,6 +7,7 @@ import ITipoRoboService from '../services/IServices/ITipoRoboService';
 import ITipoRoboDTO from '../dto/ITipoRoboDTO';
 
 import { Result } from "../core/logic/Result";
+import IDeleteTipoRoboDTO from '../dto/IDeleteTipoRoboDTO';
 
 @Service()
 export default class TipoRoboController implements ITipoRoboController /* TODO: extends ../core/infra/BaseController */ {
@@ -45,4 +46,19 @@ export default class TipoRoboController implements ITipoRoboController /* TODO: 
       return next(e);
     }
   };
+
+  public async deleteTipoRobo(req: Request, res: Response, next: NextFunction){
+    try{
+      const tipoRoboOrError = await this.tipoRoboServiceInstance.deleteTipoRobo(req.body as IDeleteTipoRoboDTO) as Result<ITipoRoboDTO>;
+
+      if(tipoRoboOrError.isFailure){
+        return res.status(404).send('Erro:' + tipoRoboOrError.errorValue());
+      }
+
+      const tipoRoboDTO = tipoRoboOrError.getValue();
+      return res.json(tipoRoboDTO).status(200);
+    }catch(e){
+      return next(e);
+    }
+  }
 }

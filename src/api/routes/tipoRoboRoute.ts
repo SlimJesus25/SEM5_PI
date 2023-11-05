@@ -36,4 +36,12 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.updateTipoRobo(req, res, next));
+
+  route.delete('/deleteTipoRobo',
+    celebrate({
+      body: Joi.object({
+        designacao: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.deleteTipoRobo(req, res, next));
 };

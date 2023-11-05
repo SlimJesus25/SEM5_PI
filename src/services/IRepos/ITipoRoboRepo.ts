@@ -6,5 +6,5 @@ export default interface ITipoRoboRepo extends Repo<TipoRobo> {
   save(edificio: TipoRobo): Promise<TipoRobo>;
   findByDomainId (edificioId: TipoRoboId | string): Promise<TipoRobo>;
   findByDesignacao(value: string): Promise<TipoRobo>;
-    
+  delete(tipoRobo: TipoRobo ): Promise<TipoRobo>;
 }
