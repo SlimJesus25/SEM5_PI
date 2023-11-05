@@ -16,7 +16,7 @@ A criação de um piso de edíficio é um conceito importante do domínio. É ne
 
 ### 2.2 Excerto do MD
 
-![excerpt diagram](ed_190.svg "ed_190.svg")
+![excerpt diagram](ed190.svg "ed190.svg")
 
 ### 2.3 Testes ao requisito
 
