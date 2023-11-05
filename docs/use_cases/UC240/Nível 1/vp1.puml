@@ -2,5 +2,9 @@
 actor Actor as actor
 participant SistemaRobDroneGo as srdg <<System(C4)>>
 actor -> srdg: 	Criar passagem entre edifícios
-srdg --> actor
+alt sucesso
+	srdg --> actor: retorna a criação do edifício
+else insucesso
+	srdg --> actor: retorna informação sobre a falha da operação
+end alt
 @enduml

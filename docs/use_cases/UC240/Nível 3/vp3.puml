@@ -1,26 +1,26 @@
-@startuml sd
+@startuml vp3
 autonumber
 
-participant PassagemRoute as route
+participant Passagem as route <<Route>>
 
-participant PassagemController as ctrl
+participant Passagem as ctrl <<Controller>>
 
-participant PassagemService as svc
+participant Passagem as svc <<Service>>
 
-participant PassagemRepo as repo
+participant Passagem as repo <<Repository>>
 
-participant EdificioRepo as erepo
+participant Edificio as erepo <<Repository>>
 
-participant PisoRepo as prepo
-participant PassagemMapper as mapper
+participant Piso as prepo <<Repository>>
+participant Passagem as mapper <<Mapper>>
 
-participant PassagemSchema as schema
-participant EdificioMapper as emapper
+participant Passagem as schema <<Schema>>
+participant Edificio as emapper <<Mapper>>
 
-participant EdificioSchema as eschema
-participant PisoMapper as pmapper
+participant Edificio as eschema <<Schema>>
+participant Piso as pmapper <<Mapper>>
 
-participant PisoSchema as pschema
+participant Piso as pschema <<Schema>>
 participant ConfigurationFile as conf
 participant Passagem as model
 
