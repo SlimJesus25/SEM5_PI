@@ -44,17 +44,17 @@ Para resolver este problema, é pedido ao utilizador os parametros a atualizar d
 
 ### 3.1.1 Vistas de Processo
 
-#### 3.1.1.1 Vista de processo - nível 3
+#### 3.1.1.1 Vista de processo - nível 1
 
-![sequence diagram](../UC250/Nivel%201/VP1.svg "sequence_diagram_150.svg")
+![sequence diagram](../UC250/Nivel%201/VP1.svg "vp1.svg")
 
-#### 3.3.1.2 Vista de processo - nível 3
+#### 3.3.1.2 Vista de processo - nível 2
 
-![sequence diagram](../UC250/Nivel%202/vp2.svg "sequence_diagram_150.svg")
+![sequence diagram](../UC250/Nivel%202/vp2.svg "vp2.svg")
 
 #### 3.3.1.3 Vista de processo - nível 3
 
-![sequence diagram](../UC250/Nivel%203/vp3.svg "sequence_diagram_150.svg")
+![sequence diagram](../UC250/Nivel%203/vp3.svg "vp3.svg")
 
 ### 3.3.2 Vistas lógicas
 
@@ -74,7 +74,7 @@ Para resolver este problema, é pedido ao utilizador os parametros a atualizar d
 
 ##### 3.1.3.1 Nível 1
 
-![vista cenario 1](/docs/scenario_view/level1/sv1.svg "Vista cenário - nível 1")
+![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 

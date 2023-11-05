@@ -41,13 +41,55 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Pass
 
 ### 3.1. Realização
 
-#### 3.3.1 Vista de processo - nível 3
+### 3.1.1 Vistas de Processo
 
-![sequence diagram](../UC240/Nível%203/vp3.svg "sequence_diagram_150.svg")
+#### 3.1.1.1 Vista de processo - nível 1
 
-#### 3.3.2 Vista lógica - nível 3
+![sequence diagram](../UC250/Nivel%201/VP1.svg "vp1.svg")
+
+#### 3.3.1.2 Vista de processo - nível 2
+
+![sequence diagram](../UC250/Nivel%202/vp2.svg "vp2.svg")
+
+#### 3.3.1.3 Vista de processo - nível 3
+
+![sequence diagram](../UC250/Nivel%203/vp3.svg "vp3.svg")
+
+### 3.3.2 Vistas lógicas
+
+#### 3.3.2.1 Vista lógica - nível 1
+
+![vista logica 3](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 3")
+
+#### 3.3.2.2 Vista lógica - nível 2
+
+![vista logica 3](/docs/logical_view/level3/vl2.svg "Vista lógica - nível 3")
+
+#### 3.3.2.3 Vista lógica - nível 3
 
 ![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+
+#### 3.1.3 Vista de cenários
+
+##### 3.1.3.1 Nível 1
+
+![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
+
+#### 3.1.4 Vista de implementação
+
+##### 3.1.3.1 Nível 2
+
+![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+
+##### 3.1.3.1 Nível 3
+
+![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+
+#### 3.1.5 Vista física
+
+##### 3.1.5.1 Nível 2
+
+![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
 Os padrões aplicados são:
