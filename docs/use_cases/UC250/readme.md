@@ -29,6 +29,12 @@ Para ser possível editar uma passagem entre edifícios é necessário fornecer 
 
 **Test 4:** *Editar passsagem entre edifícios com insucesso (controlador + serviço, 403 FORBIDDEN)*
 
+**Test 5:** *Editar passagem entre edifícios com insucesso (edificioA e edificioB são iguais)*
+
+**Test 6:** *Editar passagem entre edifícios com insucesso (pisoA e pisoB são iguais)*
+
+**Test 7:** *Editar passagem entre edifícios com insucesso (designação da passagem não existe)*
+
 
 ## 3. Desenho
 
