@@ -48,6 +48,9 @@ export class Sala extends AggregateRoot<SalaProps> {
   }
 
   set designacao (value: string){
+    if (value == null){
+      throw new Error("Designação vazia");
+    }
     this.props.designacaoSala = value;
   }
 
@@ -75,6 +78,13 @@ export class Sala extends AggregateRoot<SalaProps> {
       { argument: props.categoriaSala, argumentName: 'categoriaSala' },
       { argument: props.piso, argumentName: 'piso' }
     ];
+
+    if (props.designacaoSala.length > 50){
+      return Result.fail<Sala>("Designacao excede 50 caracteres");
+    }
+
+    if(props.descricaoSala.length > 250)
+      return Result.fail<Sala>("Descrição excede 250 carateres");
 
     if(this.categoriaValue(props.categoriaSala))
       return Result.fail<Sala>("Categoria inválida!");

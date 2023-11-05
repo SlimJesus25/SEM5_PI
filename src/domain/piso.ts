@@ -38,6 +38,9 @@ export class Piso extends AggregateRoot<PisoProps> {
   }
 
   set designacao (value : string) {
+    if (value == null){
+      throw new Error("Designação vazia");
+    }
     this.props.designacao = value;
   }
 
@@ -57,6 +60,13 @@ export class Piso extends AggregateRoot<PisoProps> {
       { argument: props.descricao, argumentName: 'descricao' },
       { argument: props.edificio, argumentName: 'edificio' }
     ];
+
+    if (props.designacao.length > 50)
+      return Result.fail<Piso>("Designação do piso excede 50 caracteres");
+    
+
+    if(props.descricao.length > 250)
+      return Result.fail<Piso>("Descrição excede 250 carateres");
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 

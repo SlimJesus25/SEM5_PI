@@ -44,6 +44,9 @@ export class Passagem extends AggregateRoot<PassagemProps> {
   }
 
   set designacao (value : string){
+    if (value == null){
+      throw new Error("Designação vazia");
+    }
     this.props.designacao = value;
   }
 
@@ -76,6 +79,9 @@ export class Passagem extends AggregateRoot<PassagemProps> {
       { argument: props.pisoA, argumentName: 'pisoA' },
       { argument: props.pisoB, argumentName: 'pisoB' }
     ];
+
+    if (props.designacao.length > 50)
+      return Result.fail<Passagem>("Designação do piso excede 50 caracteres");
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 

@@ -74,7 +74,7 @@ describe('Edificio', () => {
         
     });
 
-    it('descricao cant exceed 250 characters', () => {
+  it('descricao cant exceed 250 characters', () => {
       body.descricaoEdificio = "edificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificio";
 
       sinon.assert.match(Result.fail<Edificio>("Descrição excede 250 carateres"), Edificio.create(body));
