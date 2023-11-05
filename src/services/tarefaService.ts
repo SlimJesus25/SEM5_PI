@@ -6,6 +6,7 @@ import ITarefaDTO from '../dto/ITarefaDTO';
 import { Result } from '../core/logic/Result';
 import { Tarefa } from '../domain/tarefa';
 import { TarefaMap } from '../mappers/TarefaMap';
+import IDeleteTarefaDTO from '../dto/IDeleteTarefaDTO';
 
 @Service()
 export default class TarefaService implements ITarefaService {
@@ -36,6 +37,21 @@ export default class TarefaService implements ITarefaService {
       return Result.ok<ITarefaDTO>(tarefaDTOResult)
     } catch (e) {
       throw e;
+    }
+  }
+
+  public async deleteTarefa(tarefaDTO: IDeleteTarefaDTO): Promise<Result<ITarefaDTO>> {
+    try {
+      const tarefa = await this.tarefaRepo.findByDesignacao(tarefaDTO.tipoTarefa);
+
+      if (tarefa == null)
+        return Result.fail<ITarefaDTO>("Não existe qualquer tarefa com o tipo " + tarefaDTO.tipoTarefa);
+
+      await this.tarefaRepo.delete(tarefa);
+
+      return Result.ok<ITarefaDTO>(TarefaMap.toDTO(tarefa));
+    } catch (err) {
+      throw err;
     }
   }
 

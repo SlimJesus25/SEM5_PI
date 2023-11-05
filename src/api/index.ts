@@ -9,7 +9,8 @@ import sala from './routes/salaRoute';
 import elevador from './routes/elevadorRoute';
 import robo from './routes/roboRoute';
 import tipoRobo from './routes/tipoRoboRoute';
-import mapaPiso from './routes/mapaPisoRoute'
+import mapaPiso from './routes/mapaPisoRoute';
+import tarefa from './routes/tarefaRoute';
 
 
 export default () => {
@@ -26,6 +27,7 @@ export default () => {
 	robo(app);
 	tipoRobo(app);
 	mapaPiso(app);
+	tarefa(app);
 	
 	return app
 }

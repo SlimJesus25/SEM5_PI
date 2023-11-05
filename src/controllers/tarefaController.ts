@@ -6,6 +6,7 @@ import ITarefaController from './IControllers/ITarefaController';
 import ITarefaService from '../services/IServices/ITarefaService';
 import ITarefaDTO from '../dto/ITarefaDTO';
 import { Result } from '../core/logic/Result';
+import IDeleteTarefaDTO from '../dto/IDeleteTarefaDTO';
 
 @Service()
 export default class TarefaController implements ITarefaController /* TODO: extends ../core/infra/BaseController */ {
@@ -29,5 +30,19 @@ export default class TarefaController implements ITarefaController /* TODO: exte
     }
   };
 
+  public async deleteTarefa(req: Request, res: Response, next: NextFunction){
+    try{
+      const tarefaOrError = await this.tarefaServiceInstance.deleteTarefa(req.body as IDeleteTarefaDTO) as Result<ITarefaDTO>;
+
+      if(tarefaOrError.isFailure){
+        return res.status(404).send('Erro:' + tarefaOrError.errorValue());
+      }
+
+      const tarefaDTO = tarefaOrError.getValue();
+      return res.json(tarefaDTO).status(200);
+    }catch(e){
+      return next(e);
+    }
+  }
  
 }
