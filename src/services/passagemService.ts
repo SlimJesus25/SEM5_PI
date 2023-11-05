@@ -78,11 +78,17 @@ export default class PassagemService implements IPassagemService {
 
   public async updatePassagem(passagemDTO: IPassagemDTO): Promise<Result<IPassagemDTO>> {
     try {
-      const passagem = await this.passagemRepo.findByDomainId(passagemDTO.id);
+      const passagem = await this.passagemRepo.findByDesignacao(passagemDTO.designacao);
       const edificioA = await this.edificioRepo.findByCodigo(passagemDTO.edificioA);
       const edificioB = await this.edificioRepo.findByCodigo(passagemDTO.edificioB);
       const pisoA = await this.pisoRepo.findByDesignacao(passagemDTO.pisoA);
       const pisoB = await this.pisoRepo.findByDesignacao(passagemDTO.pisoB);
+      
+    if (edificioA.codigo === edificioB.codigo || pisoA.designacao === pisoB.designacao)
+    return Result.fail<IPassagemDTO>("Origem e destino dos parâmetros não podem ser os mesmos");
+
+    if (pisoA.edificio.codigo != edificioA.codigo || pisoB.edificio.codigo != edificioB.codigo)
+    return Result.fail<IPassagemDTO>("Piso A tem de pertencer ao edificio A e o piso B tem de pertencer ao edificio B");
 
       if (passagem === null) {
         return Result.fail<IPassagemDTO>("Passagem não encontrada");

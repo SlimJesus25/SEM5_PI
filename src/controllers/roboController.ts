@@ -70,7 +70,7 @@ export default class RoboController implements IRoboController /* TODO: extends 
       if (roboOrError.isFailure) {
         return res.status(404).send("Erro: " + roboOrError.errorValue());
       }
-
+      
       const roboDTO = roboOrError.getValue();
       return res.json(roboDTO).status(201);
     }
