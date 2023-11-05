@@ -14,10 +14,6 @@
 
 A criação de um piso de edíficio é um conceito importante do domínio. É necessário poder adicionar pisos a um edifício.
 
-### 2.2 Excerto do MD
-
-![excerpt diagram](ed_190.svg "ed_190.svg")
-
 ### 2.3 Testes ao requisito
 
 **Teste 1:** *Criar piso com sucesso (controlador, 201 POST)*
@@ -46,15 +42,15 @@ Para resolver este problema, a equipa optou por fazer um agregado próprio: Piso
 
 ##### 3.1.2.1 Nível 1
 
-![vista processo 1](vp1.svg "Vista processo - nível 2")
+![vista processo 1](/docs/use_cases/UC190/Nivel%201/vp1.svg "Vista processo - nível 1")
 
 ##### 3.1.2.2 Nível 2
 
-![vista processo 2](vp2.svg "Vista processo - nível 2")
+![vista processo 2](/docs/use_cases/UC190/Nivel%202/vp2.svg "Vista processo - nível 2")
 
 ##### 3.1.2.3 Nível 3
 
-![vista processo 3](vp3.svg "Vista processo - nível 3")
+![vista processo 3](/docs/use_cases/UC190/Nivel%203/vp3.svg "Vista processo - nível 3")
 
 #### 3.1.3 Vista lógica
 
@@ -74,7 +70,7 @@ Para resolver este problema, a equipa optou por fazer um agregado próprio: Piso
 
 ##### 3.1.3.1 Nível 1
 
-![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
+a
 
 #### 3.1.4 Vista de implementação
 

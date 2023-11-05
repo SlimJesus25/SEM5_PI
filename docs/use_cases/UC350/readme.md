@@ -64,7 +64,7 @@ Para solucionar este problema, a equipa optou por criar um agregado para TipoRob
 
 #### 3.1.1 Excerto de domínio
 
-![excerto dominio](ed260.svg "ed260.svg")
+![excerto dominio](ed350.svg "ed350.svg")
 
 #### 3.1.2 Vista de processo
 

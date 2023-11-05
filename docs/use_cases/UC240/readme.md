@@ -45,15 +45,15 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Pass
 
 #### 3.1.1.1 Vista de processo - nível 1
 
-![sequence diagram](../UC250/Nivel%201/VP1.svg "vp1.svg")
+![sequence diagram](../UC240/Nível%201/VP1.svg "vp1.svg")
 
 #### 3.3.1.2 Vista de processo - nível 2
 
-![sequence diagram](../UC250/Nivel%202/vp2.svg "vp2.svg")
+![sequence diagram](../UC240/Nível%202/vp2.svg "vp2.svg")
 
 #### 3.3.1.3 Vista de processo - nível 3
 
-![sequence diagram](../UC250/Nivel%203/vp3.svg "vp3.svg")
+![sequence diagram](../UC240/Nível%203/vp3.svg "vp3.svg")
 
 ### 3.3.2 Vistas lógicas
 
