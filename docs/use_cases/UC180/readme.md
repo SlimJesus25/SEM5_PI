@@ -58,7 +58,7 @@
 
 ##### 3.1.3.1 Nível 1
 
-![vista cenario 1](/docs/VC1.svg "Vista cenário - nível 1")
+![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 
