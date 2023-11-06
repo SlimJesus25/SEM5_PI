@@ -51,7 +51,7 @@ export default (app: Router) => {
   route.delete('/deleteEdificio',
     celebrate({
       body: Joi.object({
-        numeroIdentificativo: Joi.number().required(),
+        codigoEdificio: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.deleteEdificio(req, res, next));
