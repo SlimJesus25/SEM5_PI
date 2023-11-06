@@ -74,9 +74,16 @@ export default class TipoRoboService implements ITipoRoboService {
 
   public async updateTipoRobo(tipoRoboDTO: ITipoRoboDTO): Promise<Result<ITipoRoboDTO>> {
     try {
-      const tipoRobo = await this.tipoRoboRepo.findByDomainId(tipoRoboDTO.domainId);
+      const tipoRobo = await this.tipoRoboRepo.findByDesignacao(tipoRoboDTO.designacao);
 
-      const tarefas = (await this.getTarefas(tipoRoboDTO.tarefas)).getValue();
+      let tarefas: Tarefa[] = [];
+
+      for (const tarefa of tipoRoboDTO.tarefas) {
+        const t = await this.tarefaRepo.findByDesignacao(tarefa);
+        if (t == null)
+          return Result.fail<ITipoRoboDTO>("A tarefa " + tarefa + " não existe!");
+        tarefas.push(t);
+      }
 
       if (tipoRobo === null) {
         return Result.fail<ITipoRoboDTO>("Tipo de robo não encontrado");

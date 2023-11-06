@@ -35,7 +35,7 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
   }
 
   public async save (mapaPiso: MapaPiso): Promise<MapaPiso> {
-    const query = { domainId: mapaPiso.id.toString()}; 
+    const query = { piso: mapaPiso.piso.designacao}; 
 
     const roleDocument = await this.mapaPisoSchema.findOne( query );
 
@@ -84,7 +84,7 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
 
   public async delete(mapaPiso: MapaPiso): Promise<MapaPiso> {
     try {
-      const query = { piso: mapaPiso.piso };
+      const query = { piso: mapaPiso.piso.designacao };
       const mapaPisoRecord = await this.mapaPisoSchema.deleteOne(query as FilterQuery<IMapaPisoPersistence & Document>);
 
       return mapaPiso;

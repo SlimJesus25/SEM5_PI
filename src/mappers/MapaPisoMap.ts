@@ -4,13 +4,14 @@ import { Document, Model } from 'mongoose';
 import { IMapaPisoPersistence } from '../dataschema/IMapaPisoPersistence';
 
 import IMapaEdificioDTO from "../dto/IMapaPisoDTO";
-import { Piso } from "../domain/piso";
+import { Piso } from '../domain/piso';
 
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Container } from 'typedi';
 
 import { MapaPiso } from "../domain/mapaPiso";
 import IMapaPisoDTO from "../dto/IMapaPisoDTO";
+import PisoRepo from "../repos/pisoRepo";
 
 export class MapaPisoMap extends Mapper<MapaPiso> {
   
@@ -22,9 +23,10 @@ export class MapaPisoMap extends Mapper<MapaPiso> {
     } as IMapaPisoDTO;
   }
 
-  public static toDomain (raw: any): MapaPiso {
+  public static async toDomain (raw: any): Promise<MapaPiso> {
 
-    const piso = Piso.create(raw.designacao).getValue();
+    const repoPiso = Container.get(PisoRepo);
+    const piso = await repoPiso.findByDesignacao(raw.piso)
 
     const mapaPisoOrError =  MapaPiso.create({
       mapa : raw.mapa,
