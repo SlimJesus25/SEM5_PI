@@ -31,4 +31,12 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl2.loadMapaPiso(req, res, next));
+
+    route.delete('/deleteMapaPiso',
+    celebrate({
+      body: Joi.object({
+        piso: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl2.deleteMapaPiso(req, res, next));
 };

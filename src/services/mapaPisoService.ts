@@ -8,6 +8,7 @@ import IMapaPisoDTO from '../dto/IMapaPisoDTO';
 import IPisoDTO from '../dto/IPisoDTO';
 import { MapaPiso } from '../domain/mapaPiso';
 import { MapaPisoMap } from '../mappers/MapaPisoMap';
+import IDeleteMapaPisoDTO from '../dto/IDeleteMapaPisoDTO';
 
 @Service()
 export default class MapaPisoService implements IMapaPisoService {
@@ -72,5 +73,18 @@ export default class MapaPisoService implements IMapaPisoService {
     }
   }
 
-  
+  public async deleteMapaPiso(mapaPisoDTO: IDeleteMapaPisoDTO): Promise<Result<IMapaPisoDTO>> {
+    try {
+      const mapaPiso = await this.mapaPisoRepo.findByPiso(mapaPisoDTO.piso);
+
+      if (mapaPiso == null)
+        return Result.fail<IMapaPisoDTO>("Não existe qualquer mapa piso com o piso " + mapaPisoDTO.piso);
+
+      await this.mapaPisoRepo.delete(mapaPiso);
+
+      return Result.ok<IMapaPisoDTO>(MapaPisoMap.toDTO(mapaPiso));
+    } catch (err) {
+      throw err;
+    }
+  }
 }

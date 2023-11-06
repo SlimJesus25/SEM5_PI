@@ -88,4 +88,24 @@ export default class TipoRoboRepo implements ITipoRoboRepo {
     }
   }
 
+  public async findAll(): Promise<TipoRobo[]> {
+    const query = {};
+    const tipoRoboSchema = await this.tipoRoboSchema.find(query);
+    try {
+      if (tipoRoboSchema === null) {
+          return null;
+      } else {
+          let tipoRoboArray: TipoRobo[] = [];
+          //roboSchema.forEach(async v => roboArray.push(await RoboMap.toDomain(v)));
+          for(const roboDoc of tipoRoboSchema){
+            const robo = await TipoRoboMap.toDomain(roboDoc);
+            tipoRoboArray.push(robo);
+          }
+          return tipoRoboArray;
+      }
+  } catch (err) {
+      throw err;
+  }
+}
+
 }

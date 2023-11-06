@@ -117,4 +117,23 @@ export default class TipoRoboService implements ITipoRoboService {
     }
   }
 
+  public async listTipoRobo(): Promise<Result<ITipoRoboDTO[]>> {
+    try {
+
+      const tipoRobo = await this.tipoRoboRepo.findAll();
+
+      if (tipoRobo.length == 0) {
+        return Result.fail<ITipoRoboDTO[]>("Não existem registos de tipos de robos");
+      }
+
+      let tipoRoboDTO: ITipoRoboDTO[] = [];
+
+      tipoRobo.forEach(p => tipoRoboDTO.push(TipoRoboMap.toDTO(p) as ITipoRoboDTO));
+
+      return Result.ok<ITipoRoboDTO[]>(tipoRoboDTO)
+    } catch (e) {
+      throw e;
+    }
+  }
+
 }

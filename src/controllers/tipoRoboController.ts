@@ -61,4 +61,20 @@ export default class TipoRoboController implements ITipoRoboController /* TODO: 
       return next(e);
     }
   }
+
+  public async listTipoRobo(req: Request, res: Response, next: NextFunction){
+    try {
+      const tipoRoboOrError = await this.tipoRoboServiceInstance.listTipoRobo() as Result<ITipoRoboDTO[]>;
+
+      if (tipoRoboOrError.isFailure) {
+        return res.status(404).send("Erro: " + tipoRoboOrError.errorValue());
+      }
+
+      const tipoRoboDTO = tipoRoboOrError.getValue();
+      return res.json( tipoRoboDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
 }

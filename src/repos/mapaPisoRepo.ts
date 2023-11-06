@@ -41,13 +41,15 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
 
     try {
       if (roleDocument === null ) {
-        const rawRole: any = null; //mapaPisoSchema.toPersistence(elevador);
+        //const rawRole: any = null; //mapaPisoSchema.toPersistence(elevador);
+        const rawRole: any = MapaPisoMap.toPersistence(mapaPiso);
 
         const roleCreated = await this.mapaPisoSchema.create(rawRole);
 
         return MapaPisoMap.toDomain(roleCreated);
       } else {
-        roleDocument.mapa = null;//elevador.grelha;
+        roleDocument.mapa = mapaPiso.mapa;
+        roleDocument.piso = mapaPiso.piso.designacao;
         await roleDocument.save();
 
         return mapaPiso;
@@ -78,5 +80,16 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
     }
     else
       return null;
+  }
+
+  public async delete(mapaPiso: MapaPiso): Promise<MapaPiso> {
+    try {
+      const query = { piso: mapaPiso.piso };
+      const mapaPisoRecord = await this.mapaPisoSchema.deleteOne(query as FilterQuery<IMapaPisoPersistence & Document>);
+
+      return mapaPiso;
+    } catch (err) {
+      throw err;
+    }
   }
 }

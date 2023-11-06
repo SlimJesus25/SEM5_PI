@@ -7,4 +7,5 @@ export default interface IElevadorService  {
   updateTipoRobo(tipoRoboDTO: ITipoRoboDTO): Promise<Result<ITipoRoboDTO>>;
   getTipoRobo (tipoRoboId: string): Promise<Result<ITipoRoboDTO>>;
   deleteTipoRobo(designacao: IDeleteTipoRoboDTO): Promise<Result<ITipoRoboDTO>>;
+  listTipoRobo(): Promise<Result<ITipoRoboDTO[]>>;
 }

@@ -6,6 +6,7 @@ import IMapaPisoService from '../services/IServices/IMapaPisoService';
 import IMapaPisoController from './IControllers/IMapaPisoController';
 import IMapaPisoDTO from '../dto/IMapaPisoDTO';
 import { Result } from '../core/logic/Result';
+import IDeleteMapaPisoDTO from '../dto/IDeleteMapaPisoDTO';
 
 @Service()
 export default class MapaPisoController implements IMapaPisoController /* TODO: extends ../core/infra/BaseController */ {
@@ -46,4 +47,19 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       return next(e);
     }
   };
+
+  public async deleteMapaPiso(req: Request, res: Response, next: NextFunction){
+    try{
+      const mapaPisoOrError = await this.mapaPisoServiceInstance.deleteMapaPiso(req.body as IDeleteMapaPisoDTO) as Result<IMapaPisoDTO>;
+
+      if(mapaPisoOrError.isFailure){
+        return res.status(404).send('Erro:' + mapaPisoOrError.errorValue());
+      }
+
+      const mapaPisoDTO = mapaPisoOrError.getValue();
+      return res.json(mapaPisoDTO).status(200);
+    }catch(e){
+      return next(e);
+    }
+  }
 }

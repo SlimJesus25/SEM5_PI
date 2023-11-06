@@ -37,6 +37,13 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.updateTipoRobo(req, res, next));
 
+  route.get('/listTipoRobo',
+ celebrate({
+   body: Joi.object({
+   }),
+ }),
+ (req, res, next) => ctrl.listTipoRobo(req, res, next));
+
   route.delete('/deleteTipoRobo',
     celebrate({
       body: Joi.object({
