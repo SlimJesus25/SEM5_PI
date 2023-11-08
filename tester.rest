@@ -1,0 +1,52 @@
+DELETE http://localhost:3000/api/edificio/deleteEdificio
+{
+    "codigoEidficio": "B"
+}
+
+###
+
+PUT http://localhost:3000/api/Edificio/updateEdificio
+Content-Type: application/json
+
+{
+    "dimensaoMaximaPiso": [500,500],
+    "nomeOpcionalEdificio": "Edificio Astronomia B",
+    "codigoEdificio": "B",
+    "descricaoEdificio": "Edificio B"
+
+}   
+
+###
+POST http://localhost:3000/api/Edificio/createEdificio
+Content-Type: application/json
+
+{
+    "dimensaoMaximaPiso": [200,200],
+    "nomeOpcionalEdificio": "Edificio Astronomia a",
+    "codigoEdificio": "B",
+    "descricaoEdificio": "Edificio A"
+ 
+}
+
+###
+
+POST http://localhost:3000/api/MapaPiso/createMapaPiso
+Content-Type: application/json
+
+{
+    "mapa" : "mapa de piso",
+    "piso" : "A1"
+}
+
+
+
+###
+POST http://localhost:3000/api/sala/createSala
+Content-Type: application/json
+
+{
+    "descricao": "Teste Sala",
+    "categoria": "anfiteatro",
+    "designacao": "B102",
+    "piso": "B1"
+}
