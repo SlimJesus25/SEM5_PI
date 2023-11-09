@@ -63,4 +63,11 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.deletePiso(req, res, next));
+
+    route.get('/listPisosGeral',
+    celebrate({
+      body: Joi.object({
+      }),
+    }),
+    (req, res, next) => ctrl.listPisosGeral(req, res, next));
 };

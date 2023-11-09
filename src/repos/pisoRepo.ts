@@ -134,4 +134,25 @@ export default class PisoRepo implements IPisoRepo {
       throw err;
     }
   }
+
+  public async findAll(): Promise<Piso[]> {
+    const query = {};
+    const pisoSchema = await this.pisoSchema.find(query);
+    try {
+      if (pisoSchema === null) {
+        return null;
+      } else {
+        let pisoArray = [];
+        for (let i = 0; i < pisoSchema.length; i++) {
+          const p = await PisoMap.toDomain(pisoSchema[i]);
+          pisoArray[i] = p;
+        }
+
+        //pisoSchema.forEach(async v => pisoArray.push(await PisoMap.toDomain(v)));
+        return pisoArray;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }

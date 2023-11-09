@@ -97,4 +97,20 @@ export default class PisoController implements IPisoController /* TODO: extends 
     }
   }
 
+  public async listPisosGeral(req: Request, res: Response, next: NextFunction){
+    try {
+      const pisoOrError = await this.pisoServiceInstance.listPisosGeral() as Result<IPisoDTO[]>;
+
+      if (pisoOrError.isFailure) {
+        return res.status(404).send("Erro: " + pisoOrError.errorValue());
+      }
+
+      const pisoDTO = pisoOrError.getValue();
+      return res.json( pisoDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
 }

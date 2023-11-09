@@ -167,4 +167,25 @@ export default class PisoService implements IPisoService {
     return null;
   }
 
+  public async listPisosGeral(): Promise<Result<IPisoDTO[]>> {
+    try {
+
+      const pisos = await this.pisoRepo.findAll();
+
+      if (pisos == null){
+        return Result.fail<IPisoDTO[]>("Não existem registos de pisos");
+      }
+      
+      let pisosDTO : IPisoDTO[] = [];
+
+      for(const piso of pisos){
+        const p = PisoMap.toDTO(piso) as IPisoDTO;
+        pisosDTO.push(p);
+      }
+
+      return Result.ok<IPisoDTO[]>(pisosDTO )
+    } catch (e) {
+      throw e;
+    }
 }
+  }
