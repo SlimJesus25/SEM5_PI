@@ -87,4 +87,26 @@ export default class MapaPisoService implements IMapaPisoService {
       throw err;
     }
   }
+
+  public async listMapasPiso(): Promise<Result<IMapaPisoDTO[]>> {
+    try {
+
+        const mapasPiso = await this.mapaPisoRepo.findAll();
+
+        if (mapasPiso == null){
+          return Result.fail<IMapaPisoDTO[]>("Não existem registos de mapas de piso");
+        }
+        
+        let mapaPisoDTO : IMapaPisoDTO[] = [];
+
+        for(const mapaPiso of mapasPiso){
+          const p = MapaPisoMap.toDTO(mapaPiso) as IMapaPisoDTO;
+          mapaPisoDTO.push(p);
+        }
+
+        return Result.ok<IMapaPisoDTO[]>( mapaPisoDTO )
+      } catch (e) {
+        throw e;
+      }
+  }
 }

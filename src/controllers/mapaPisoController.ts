@@ -62,4 +62,23 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       return next(e);
     }
   }
+
+
+  public async listMapasPiso(req: Request, res: Response, next: NextFunction){
+    try {
+      const mapaPisoOrError = await this.mapaPisoServiceInstance.listMapasPiso() as Result<IMapaPisoDTO[]>;
+
+      if (mapaPisoOrError.isFailure) {
+        return res.status(404).send("Erro: " + mapaPisoOrError.errorValue());
+      }
+
+      const mapaPisoDTO = mapaPisoOrError.getValue();
+      return res.json( mapaPisoDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
+
+
 }

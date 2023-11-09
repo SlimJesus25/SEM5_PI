@@ -92,4 +92,25 @@ export default class MapaPisoRepo implements IMapaPisoRepo {
       throw err;
     }
   }
+
+  public async findAll(): Promise<MapaPiso[]> {
+    const query = {};
+    const mapaPisoSchema = await this.mapaPisoSchema.find(query);
+    try {
+      if (mapaPisoSchema === null) {
+          return null;
+      } else {
+          let mapaPisoArray: MapaPiso[] = [];
+          for (let i = 0; i < mapaPisoSchema.length; i++) {
+            const p = await MapaPisoMap.toDomain(mapaPisoSchema[i]);
+            mapaPisoArray[i] = p;
+          }
+          return mapaPisoArray;
+      }
+  } catch (err) {
+      throw err;
+  }
+}
+
+
 }

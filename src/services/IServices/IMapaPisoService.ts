@@ -8,4 +8,6 @@ export default interface IMapaPisoService  {
     createMapaPiso(mapaPisoDTO: IMapaPisoDTO): Promise<Result<IMapaPisoDTO>>;
     loadMapaPiso(mapaPisoDTO: IMapaPisoDTO): Promise<Result<IMapaPisoDTO>>;
     deleteMapaPiso(piso: IDeleteMapaPisoDTO): Promise<Result<IMapaPisoDTO>>;
+    listMapasPiso(): Promise<Result<IMapaPisoDTO[]>>;
+
 }
