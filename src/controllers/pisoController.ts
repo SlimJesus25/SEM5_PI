@@ -11,6 +11,7 @@ import IListMinMaxDTO from '../dto/IListMinMaxDTO';
 import IListPisosDTO from '../dto/IListPisosDTO';
 import IEdificioDTO from '../dto/IEdificioDTO';
 import IDeletePisoDTO from '../dto/IDeletePisoDTO'
+import IListPisoByEdificioDTO from '../dto/IListPisoByEdificioDTO';
 
 @Service()
 export default class PisoController implements IPisoController /* TODO: extends ../core/infra/BaseController */ {
@@ -99,7 +100,7 @@ export default class PisoController implements IPisoController /* TODO: extends 
 
   public async listPisosGeral(req: Request, res: Response, next: NextFunction){
     try {
-      const pisoOrError = await this.pisoServiceInstance.listPisosGeral() as Result<IPisoDTO[]>;
+      const pisoOrError = await this.pisoServiceInstance.listPisosGeral() as Result<IListPisoByEdificioDTO[]>;
 
       if (pisoOrError.isFailure) {
         return res.status(404).send("Erro: " + pisoOrError.errorValue());
