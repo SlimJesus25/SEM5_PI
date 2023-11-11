@@ -107,6 +107,24 @@ export default class PassagemRepo implements IPassagemRepo {
 
   }
 
+  public async listPassagensGeral(): Promise<Passagem[]>{
+    const query = {  }
+    const passagemSchema = await this.passagemSchema.find(query);
+    try {
+      if (passagemSchema === null) {
+        return null;
+      } else {
+        let passagemArray = [];
+        for (let i = 0; i < passagemSchema.length; i++) {
+          passagemArray[i] = await PassagemMap.toDomain(passagemSchema[i]);
+        }
+        return passagemArray;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   public async findByDesignacao(value: string): Promise<Passagem> {
     const query = { designacao: value };
     const passagemRecord = await this.passagemSchema.findOne(query as FilterQuery<IPassagemPersistence & Document>);

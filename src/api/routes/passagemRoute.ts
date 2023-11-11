@@ -65,6 +65,12 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.deletePassagem(req, res, next));
+
+  route.get('/listPassagens',
+    celebrate({
+      body: Joi.object({}),
+    }),
+    (req, res, next) => ctrl.listPassagensGeral(req, res, next));
 };
 
 
