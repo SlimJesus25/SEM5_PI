@@ -26,9 +26,9 @@ export class EdificioService {
   }
 
   getEdificios(): Observable<Edificio[]> {
-    const trucks = this.http.get<Edificio[]>(this.LogisticAPI_URL);
+    const edificios = this.http.get<Edificio[]>(this.LogisticAPI_URL+ "/listEdificios");
 
-    return trucks;
+    return edificios;
   }
 /*
   getTruckByID(idNumber: string): Observable<Truck> {
@@ -54,7 +54,7 @@ export class EdificioService {
 
         const body = JSON.stringify(edificio);
         console.log(body);
-        this.http.patch<Edificio>(updateURL, body, { 'headers': headers, observe: 'response' })
+        this.http.put<Edificio>(updateURL, body, { 'headers': headers, observe: 'response' })
             .subscribe(
                 response => {
                     console.log(response);
