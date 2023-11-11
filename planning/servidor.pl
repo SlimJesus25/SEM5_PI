@@ -26,10 +26,14 @@ server(Port) :-
 
 path_between_floors(Request):-
   json_read_dict(Request, ResObj),
-  request_edificios(),
+  catch(request_edificios(),
+        error(Err, _context),
+        format('0 edifícios encontrados! ~w\n', [Err])),
   request_elevadores(), 
   request_pisos(),
-  request_passagens(),
+  catch(request_passagens(),
+        error(Err, _context),
+        format('0 passagens encontradas! ~w\n', [Err])),
   % Ver os UC para chamar os diversos algoritmos.
   % prolog_to_json(A, B)
   reply_json('{}', [json_object(dict)]).
@@ -65,11 +69,11 @@ arranja_piso(Designacao, Edificio, [_|LAtual]):-
 cria_pisos([]).
 
 cria_pisos([[Edificio, Pisos|_]|T]):-
-  assertz(piso(Edificio, Pisos)),
+  assertz(pisos(Edificio, Pisos)),
   cria_pisos(T).
 
 destroi_pisos():-
-  findall(piso(X, Y), piso(X, Y), A),
+  findall(pisos(X, Y), pisos(X, Y), A),
   destroi(A).
 
 request_passagens():-
@@ -78,19 +82,20 @@ request_passagens():-
   json_read_dict(ResJSON, ResObj),
   extrai_passagens(ResObj, ResVal),
   cria_passagens(ResVal),
-  findall(passagem(A, B, C, D), passagem(A, B, C, D), X),
+  findall(corredor(A, B, C, D), corredor(A, B, C, D), X),
   write(X).
 
 destroi_passagens():-
-  findall(passagem(A, B, C, D), passagem(A, B, C, D), A),
+  findall(corredor(A, B, C, D), corredor(A, B, C, D), A),
   destroi(A).
 
 extrai_passagens([], []).
 extrai_passagens([H|T1], [[H.edificioA, H.edificioB, H.pisoA, H.pisoB]|T2]):-
   extrai_passagens(T1, T2).
 
+cria_passagens([]).
 cria_passagens([[EdificioA, EdificioB, PisoA, PisoB]|T]):-
-  assertz(passagem(EdificioA, EdificioB, PisoA, PisoB)),
+  assertz(corredor(EdificioA, EdificioB, PisoA, PisoB)),
   cria_passagens(T).
 
 % Vai fazer o GET e fazer os asserts para criar os factos.
