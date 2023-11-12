@@ -11,6 +11,11 @@ import { EdificioGeralComponent } from './component/edificio/edificio-geral/edif
 import { EdificioCreateComponent } from './component/edificio/edificio-create/edificio-create.component';
 import { MessagesComponent } from './component/messages/messages.component';
 
+//Main menu
+import { AdminComponent } from './component/main-menu/admin/admin.component';
+import { GestorFrotaComponent } from './component/main-menu/gestor-frota/gestor-frota.component';
+import { GestorCampusComponent } from './component/main-menu/gestor-campus/gestor-campus.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -24,10 +29,14 @@ import { MessagesComponent } from './component/messages/messages.component';
     AppComponent,
     MessagesComponent,
 
-
     //Edificio
     EdificioGeralComponent,
-    EdificioCreateComponent
+    EdificioCreateComponent,
+
+    //Main menu
+    AdminComponent,
+    GestorFrotaComponent,
+    GestorCampusComponent
 
 
   ],
