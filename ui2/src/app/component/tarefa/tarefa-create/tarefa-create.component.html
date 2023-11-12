@@ -1,0 +1,17 @@
+<h1>Criar Tarefa</h1>
+
+<div>
+    <div>
+      <table>
+        <tr>
+          <th><label>Tipo Tarefa: </label></th>
+          <th><input [(ngModel)]="tarefa.tipoTarefa" /></th>
+      </table>
+    </div>
+    <div>
+      <button class="buttonBack" (click)="goBack()">Back</button>
+      <button (click)="createTarefa()">Add</button>
+    </div>
+
+
+</div>
