@@ -56,6 +56,13 @@ export class RoboService {
        return this.http.put<Robo>(updateURL + "/updateRobo", body, { 'headers': headers, observe: 'response' })
     }
 
+    inhibitRobo(codigo: string){
+      const inhibitURL = this.LogisticAPI_URL + "/inhibitRobo";
+      const headers = { 'content-type': 'application/json' };
+
+      return this.http.patch<Robo>(inhibitURL, codigo, { 'headers': headers, observe: 'response' });
+    }
+
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
   }

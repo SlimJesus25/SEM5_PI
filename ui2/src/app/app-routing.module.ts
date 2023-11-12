@@ -21,6 +21,7 @@ import { TipoRoboListComponent } from './component/tipo-robo/tipo-robo-list/tipo
 import { RoboListComponent } from './component/robo/robo-list/robo-list.component';
 import { TipoRoboUpdateComponent } from './component/tipo-robo/tipo-robo-update/tipo-robo-update.component';
 import { RoboUpdateComponent } from './component/robo/robo-update/robo-update.component';
+import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit.component';
 
 const routes: Routes = [
 
@@ -53,7 +54,8 @@ const routes: Routes = [
   { path: "robos", component: RoboGeralComponent},
   { path: "roboCreate", component: RoboCreateComponent},
   { path: "roboList", component: RoboListComponent},
-  { path: "roboUpdate", component: RoboUpdateComponent}
+  { path: "roboUpdate", component: RoboUpdateComponent},
+  { path: "inhibitRobo", component: RoboInhibitComponent}
 
 
   

@@ -36,6 +36,7 @@ import { RoboGeralComponent } from './component/robo/robo-geral/robo-geral.compo
 import { RoboCreateComponent } from './component/robo/robo-create/robo-create.component';
 import { RoboListComponent } from './component/robo/robo-list/robo-list.component';
 import { RoboUpdateComponent } from './component/robo/robo-update/robo-update.component';
+import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit.component';
 
 //Tarefa
 
@@ -78,6 +79,7 @@ import { RoboUpdateComponent } from './component/robo/robo-update/robo-update.co
     RoboCreateComponent,
     RoboListComponent,
     RoboUpdateComponent,
+    RoboInhibitComponent,
 
 
     //Main menu
