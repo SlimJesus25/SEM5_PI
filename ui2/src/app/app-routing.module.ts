@@ -18,7 +18,14 @@ const routes: Routes = [
   { path: 'edificios', component: EdificioGeralComponent },
   { path: 'edificioCreate', component: EdificioCreateComponent},
   { path: 'edificioList', component: EdificioListComponent },
-  { path: "edificioUpdate", component: EdificioUpdateComponent}
+  { path: "edificioUpdate", component: EdificioUpdateComponent},
+
+  //Main menu
+  { path: "admin", component: AdminComponent},
+  { path: "gestor-Frota", component: GestorFrotaComponent},
+  { path: "gestor-Campus", component: GestorCampusComponent}
+
+
   
 ];
 
