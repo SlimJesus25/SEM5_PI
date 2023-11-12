@@ -9,6 +9,8 @@ import IPisoDTO from '../dto/IPisoDTO';
 import { MapaPiso } from '../domain/mapaPiso';
 import { MapaPisoMap } from '../mappers/MapaPisoMap';
 import IDeleteMapaPisoDTO from '../dto/IDeleteMapaPisoDTO';
+import IMazeDTO from '../dto/IMazeDTO';
+import IMapaDTO from '../dto/IMapaDTO';
 
 @Service()
 export default class MapaPisoService implements IMapaPisoService {
@@ -90,23 +92,35 @@ export default class MapaPisoService implements IMapaPisoService {
 
 
   // Venâncio: Vou fazer uma listagem filtrada para o PROLOG, apenas com a info necessária.
-  public async listMapasPiso(): Promise<Result<IMapaPisoDTO[]>> {
+  public async listMapasPiso(): Promise<Result<IMazeDTO[]>> {
     try {
 
         const mapasPiso = await this.mapaPisoRepo.findAll();
 
         if (mapasPiso == null){
-          return Result.fail<IMapaPisoDTO[]>("Não existem registos de mapas de piso");
+          return Result.fail<IMazeDTO[]>("Não existem registos de mapas de piso");
         }
         
-        let mapaPisoDTO : IMapaPisoDTO[] = [];
+        let mapaPisoDTO : IMazeDTO[] = [];
 
         for(const mapaPiso of mapasPiso){
-          const p = MapaPisoMap.toDTO(mapaPiso) as IMapaPisoDTO;
+          
+          let mapa: IMapaDTO = mapaPiso.mapa as unknown as IMapaDTO;
+
+          const p = {
+            piso: mapaPiso.piso.designacao,
+            largura: mapa.maze.size.width,
+            profundidade: mapa.maze.size.depth,
+            mapa: mapa.maze.map,
+            saidas: mapa.maze.exits,
+            elevador: mapa.maze.elevators,
+            saidaLocalizacao: mapa.maze.exitLocation
+          } as IMazeDTO;
+          
           mapaPisoDTO.push(p);
         }
 
-        return Result.ok<IMapaPisoDTO[]>( mapaPisoDTO )
+        return Result.ok<IMazeDTO[]>( mapaPisoDTO )
       } catch (e) {
         throw e;
       }
