@@ -17,8 +17,8 @@ export default (app: Router) => {
     route.post('/createMapaPiso',
   celebrate({
     body: Joi.object({
-      mapa : Joi.string(),
-      piso : Joi.string()
+      mapa : Joi.object().required(),
+      piso : Joi.string().required()
     }),
   }),
   (req, res, next) => ctrl2.createMapaPiso(req, res, next));

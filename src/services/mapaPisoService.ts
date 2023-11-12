@@ -88,6 +88,8 @@ export default class MapaPisoService implements IMapaPisoService {
     }
   }
 
+
+  // Venâncio: Vou fazer uma listagem filtrada para o PROLOG, apenas com a info necessária.
   public async listMapasPiso(): Promise<Result<IMapaPisoDTO[]>> {
     try {
 
