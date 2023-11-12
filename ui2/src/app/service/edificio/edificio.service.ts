@@ -54,12 +54,7 @@ export class EdificioService {
 
         const body = JSON.stringify(edificio);
         console.log(body);
-        this.http.put<Edificio>(updateURL, body, { 'headers': headers, observe: 'response' })
-            .subscribe(
-                response => {
-                    console.log(response);
-                }
-            );
+       return this.http.put<Edificio>(updateURL + "/updateEdificio", body, { 'headers': headers, observe: 'response' })
     }
 
   private log(message: string) {

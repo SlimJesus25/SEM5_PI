@@ -1,0 +1,30 @@
+<h1>Editar Edificio</h1>
+
+<div>
+    <div>
+      <table>
+        <tr>
+          <th><label>Codigo: </label></th>
+          <th><input [(ngModel)]="edificio.codigoEdificio" /></th>
+        </tr>
+        <tr>
+          <th><label>Dimensao Maxima Piso: </label></th>
+          <th><input type="string" [(ngModel)]="edificio.dimensaoMaximaPiso" /></th>
+        </tr>
+        <tr>
+          <th><label>Descricao: </label>
+          <th><input type="string" [(ngModel)]="edificio.descricaoEdificio" />
+        </tr>
+      <tr>
+        <th><label>Nome Opcional: </label>
+          <th><input type="string" [(ngModel)]="edificio.nomeOpcionalEdificio" />
+      </tr>
+      </table>
+    </div>
+    <div>
+      <button class="buttonBack" (click)="goBack()">Back</button>
+      <button (click)="updateEdificio()">Add</button>
+    </div>
+
+
+</div>

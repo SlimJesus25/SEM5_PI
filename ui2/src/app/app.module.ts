@@ -19,6 +19,7 @@ import { EdificioGeralComponent } from './component/edificio/edificio-geral/edif
 import { EdificioCreateComponent } from './component/edificio/edificio-create/edificio-create.component';
 import { EdificioListComponent } from './component/edificio/edificio-list/edificio-list.component';
 import { MessagesComponent } from './component/messages/messages.component';
+import { EdificioUpdateComponent } from './component/edificio/edificio-update/edificio-update.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { MessagesComponent } from './component/messages/messages.component';
     //Edificio
     EdificioGeralComponent,
     EdificioCreateComponent,
-    EdificioListComponent
+    EdificioListComponent,
+    EdificioUpdateComponent
 
 
   ],
