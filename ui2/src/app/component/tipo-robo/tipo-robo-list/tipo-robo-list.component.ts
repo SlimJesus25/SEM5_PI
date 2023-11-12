@@ -3,8 +3,9 @@ import { Location } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { TipoRobo } from '../../../../model/tipoRobo';
-import { TipoRoboService } from '../../../../service/tipoRobo/tipoRobo.service';
+import { TipoRobo } from '../../../model/tipoRobo';
+import { TipoRoboService } from '../../../service/tipoRobo/tipoRobo.service';
+
 @Component({
   selector: 'app-tipo-robo-list',
   templateUrl: './tipo-robo-list.component.html',

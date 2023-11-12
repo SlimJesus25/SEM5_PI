@@ -3,11 +3,11 @@ import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-tipo-robo-geral',
-    templateUrl: "./tipo-robo-geral.component.html",
-    styleUrls : ['./tipo-robo-geral.component.css']
+    templateUrl: "./robo-geral.component.html",
+    styleUrls : ['./robo-geral.component.css']
 })
 
-export class TipoRoboGeralComponent  implements OnInit{
+export class RoboGeralComponent  implements OnInit{
 
     constructor( private location : Location){
 

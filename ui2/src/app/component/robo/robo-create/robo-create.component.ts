@@ -1,19 +1,19 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
+import { RoboService } from '../../../service/robo/robo.service';
 import { MessageService } from '../../../service/message/message.service';
-import { TarefaService } from '../../../service/tarefa/tarefa.service';
 @Component({
-  selector: 'app-tarefa-create',
-  templateUrl: './tarefa-create.component.html',
-  styleUrls: ['./tarefa-create.component.css']
+  selector: 'app-robo-create',
+  templateUrl: './robo-create.component.html',
+  styleUrls: ['./robo-create.component.css']
 })
-export class TarefaCreateComponent implements OnInit {
+export class RoboCreateComponent implements OnInit {
 
-  tarefa = {tipoTarefa: ""}
+  robo = {estado: "", marca: "", codigo: "",  numeroSerie:"", nickname: "", tipoRobo: ""}
 
   constructor(
     private location: Location,
-    private TarefaService: TarefaService,
+    private RoboService: RoboService,
     private messageService: MessageService
   ) { }
 
@@ -24,13 +24,13 @@ export class TarefaCreateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createTarefa() {
-    let errorOrSuccess: any = this.TarefaService.createTarefa(this.tarefa);
+  createRobo() {
+    let errorOrSuccess: any = this.RoboService.createRobo(this.robo);
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success tarefa creation!");
-        this.finalMessage = "Success tarefa creation!";
+        this.messageService.add("Success Robo creation!");
+        this.finalMessage = "Success Robo creation!";
         this.location.back();
       },
 

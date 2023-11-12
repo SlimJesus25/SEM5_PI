@@ -11,12 +11,16 @@ import { GestorFrotaComponent } from './component/main-menu/gestor-frota/gestor-
 import { GestorCampusComponent } from './component/main-menu/gestor-campus/gestor-campus.component';
 import { EdificioListComponent } from './component/edificio/edificio-list/edificio-list.component';
 import { EdificioUpdateComponent } from './component/edificio/edificio-update/edificio-update.component';
-import { TarefaGeralComponent } from './component/appcomponent/tarefa/tarefa-geral/tarefa-geral.component';
-import { TarefaCreateComponent } from './component/appcomponent/tarefa/tarefa-create/tarefa-create.component';
-import { TipoRoboGeralComponent } from './component/appcomponent/tipo-robo/tipo-robo-geral/tipo-robo-geral.component';
-import { TipoRoboCreateComponent } from './component/appcomponent/tipo-robo/tipo-robo-create/tipo-robo-create.component';
-import { TipoRoboUpdateComponent } from './component/appcomponent/tipo-robo/tipo-robo-update/tipo-robo-update.component';
-import { TipoRoboListComponent } from './component/appcomponent/tipo-robo/tipo-robo-list/tipo-robo-list.component';
+import { TarefaCreateComponent } from './component/tarefa/tarefa-create/tarefa-create.component';
+import { TarefaGeralComponent } from './component/tarefa/tarefa-geral/tarefa-geral.component';
+import { TipoRoboGeralComponent } from './component/tipo-robo/tipo-robo-geral/tipo-robo-geral.component';
+import { TipoRoboCreateComponent } from './component/tipo-robo/tipo-robo-create/tipo-robo-create.component';
+import { RoboGeralComponent } from './component/robo/robo-geral/robo-geral.component';
+import { RoboCreateComponent } from './component/robo/robo-create/robo-create.component';
+import { TipoRoboListComponent } from './component/tipo-robo/tipo-robo-list/tipo-robo-list.component';
+import { RoboListComponent } from './component/robo/robo-list/robo-list.component';
+import { TipoRoboUpdateComponent } from './component/tipo-robo/tipo-robo-update/tipo-robo-update.component';
+import { RoboUpdateComponent } from './component/robo/robo-update/robo-update.component';
 
 const routes: Routes = [
 
@@ -43,6 +47,15 @@ const routes: Routes = [
   { path: 'tipoRoboCreate', component: TipoRoboCreateComponent},
   { path: 'tipoRoboUpdate', component: TipoRoboUpdateComponent},
   { path: 'tipoRoboList', component: TipoRoboListComponent},
+
+
+  //Robo
+  { path: "robos", component: RoboGeralComponent},
+  { path: "roboCreate", component: RoboCreateComponent},
+  { path: "roboList", component: RoboListComponent},
+  { path: "roboUpdate", component: RoboUpdateComponent}
+
+
   
 ];
 

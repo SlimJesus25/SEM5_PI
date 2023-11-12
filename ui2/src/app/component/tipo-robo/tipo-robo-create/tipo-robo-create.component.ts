@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
-import { MessageService } from '../../../../service/message/message.service';
-import { TipoRoboService } from '../../../../service/tipoRobo/tipoRobo.service';
+import { MessageService } from '../../../service/message/message.service';
+import { TipoRoboService } from '../../../service/tipoRobo/tipoRobo.service';
 @Component({
   selector: 'app-tipo-robo-create',
   templateUrl: './tipo-robo-create.component.html',
