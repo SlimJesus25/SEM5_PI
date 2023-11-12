@@ -9,16 +9,16 @@ import { EdificioGeralComponent } from './component/edificio/edificio-geral/edif
 import { AdminComponent } from './component/main-menu/admin/admin.component';
 import { GestorFrotaComponent } from './component/main-menu/gestor-frota/gestor-frota.component';
 import { GestorCampusComponent } from './component/main-menu/gestor-campus/gestor-campus.component';
+import { EdificioListComponent } from './component/edificio/edificio-list/edificio-list.component';
+import { EdificioUpdateComponent } from './component/edificio/edificio-update/edificio-update.component';
 
 const routes: Routes = [
 
   // Edificio
   { path: 'edificios', component: EdificioGeralComponent },
   { path: 'edificioCreate', component: EdificioCreateComponent},
-  //Main menu
-  { path: 'gestor-Frota', component: GestorFrotaComponent },
-  { path: 'gestor-Campus', component: GestorCampusComponent },
-  { path: 'admin', component: AdminComponent }
+  { path: 'edificioList', component: EdificioListComponent },
+  { path: "edificioUpdate", component: EdificioUpdateComponent}
   
 ];
 
