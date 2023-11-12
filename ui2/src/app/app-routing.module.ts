@@ -23,6 +23,11 @@ import { TipoRoboUpdateComponent } from './component/tipo-robo/tipo-robo-update/
 import { RoboUpdateComponent } from './component/robo/robo-update/robo-update.component';
 import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit.component';
 
+//Piso
+import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
+import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
+
 const routes: Routes = [
 
   // Edificio
@@ -34,6 +39,7 @@ const routes: Routes = [
   //Main menu
   { path: "admin", component: AdminComponent},
   { path: "gestor-Frota", component: GestorFrotaComponent},
+  { path: "gestor-Campus", component: GestorCampusComponent},
   { path: "gestor-Campus", component: GestorCampusComponent},
 
 
@@ -55,10 +61,13 @@ const routes: Routes = [
   { path: "roboCreate", component: RoboCreateComponent},
   { path: "roboList", component: RoboListComponent},
   { path: "roboUpdate", component: RoboUpdateComponent},
-  { path: "inhibitRobo", component: RoboInhibitComponent}
+  { path: "inhibitRobo", component: RoboInhibitComponent},
 
 
-  
+  //Piso
+  { path: 'pisos', component: PisoGeralComponent },
+  { path: 'pisoList', component: PisoListComponent },
+  { path: 'pisoCreate', component: PisoCreateComponent }
 ];
 
 
