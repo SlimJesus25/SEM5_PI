@@ -13,6 +13,9 @@
 :-dynamic pisos/2. % pisos(A, [A1, A2, A3])...
 :-dynamic corredor/4. % corredor(A, B, A1, B2)...
 :-dynamic elevador/2. % elevador(A, [A1, A2, A3])...
+:-dynamic m/4. % m(col, lin, valor, piso) => m(0, 0, 0, A1)...
+:-dynamic ligacel/3. % ligacel(cel1, cel2, piso) => ligacel(cel(1,3), cel(2,3), A1)...
+:-dynamic cel/2. % cel(x, y) => cel(0, 3)...
 
 :-json_object edificio(id:string, codigoEdificio: string, nomeOpcionalEdificio: string, descricaoEdificio: string, dimensaoMaximaPiso: list(integer)).
 
@@ -34,6 +37,7 @@ path_between_floors(Request):-
   catch(request_passagens(),
         error(Err, _context),
         format('0 passagens encontradas! ~w\n', [Err])),
+  request_mapa_pisos(),
   % Ver os UC para chamar os diversos algoritmos.
   % prolog_to_json(A, B)
   reply_json('{}', [json_object(dict)]).
@@ -157,14 +161,27 @@ destroi_elevadores():-
 % - 2, elevadores;
 % - 3, corredores;
 % - 4, saídas;
-%request_mapa_pisos():-
-%  destroi_mapa_pisos(),
-%  http_open('http://localhost:3000/api/mapaPiso/listMapaPisos', ResJSON, [cert_verify_hook(cert_accept_any)]),
-%  json_read_dict(ResJSON, ResObj),
-%  extrai_elevadores(ResObj, ResVal),
-%  cria_elevadores(ResVal),
-%  findall(elevador(X, Y), elevador(X, Y), A),
-%  write(A).
+request_mapa_pisos():-
+  destroi_mapa_pisos(),
+  http_open('http://localhost:3000/api/mapaPiso/listMapaPisos', ResJSON, [cert_verify_hook(cert_accept_any)]),
+  json_read_dict(ResJSON, ResObj),
+  extrai_mapa_pisos(ResObj, ResVal),
+  cria_elevadores(ResVal),
+  findall(elevador(X, Y), elevador(X, Y), A),
+  write(A).
+
+destroi_mapa_pisos():-
+  findall(m(X, Y, V, P), m(X, Y, V, P), Mapa),
+  destroi(Mapa).
+
+extrai_mapa_pisos([], []).
+extrai_mapa_pisos([H|T], [H2|T2]):-
+  Piso is H.piso,
+  Width is H.mapa.maze.size.width,
+  Depth is H.mapa.maze.size.depth,
+  % TODO: Ver forma de gerar grafo com os valores passados pelo maze map.
+  H2 is [Piso, Width, Depth, ],
+  extrai_mapa_pisos(T, T2).
 
 % Faz retract a todos os predicados que fez assert dinamicamente antes do novo request.
 destroi([]).
@@ -204,3 +221,20 @@ NElevR is NElev1, NCorR is NCor1,LLigR=LLig);
 conta([],0,0).
 conta([elev(_,_)|L],NElev,NCor):-conta(L,NElevL,NCor),NElev is NElevL+1.
 conta([cor(_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
+
+
+% #### Criação de grafo (mapa do piso) ####
+cria_grafo(_,0):-!.
+cria_grafo(Col,Lin):-cria_grafo_lin(Col,Lin),Lin1 is Lin-
+1,cria_grafo(Col,Lin1).
+cria_grafo_lin(0,_):-!.
+cria_grafo_lin(Col,Lin):-m(Col,Lin,0),!,
+ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
+((m(ColS,Lin,0),assertz(ligacel(cel(Col,Lin),cel(ColS,Lin)));true)),
+((m(ColA,Lin,0),assertz(ligacel(cel(Col,Lin),cel(ColA,Lin)));true)),
+((m(Col,LinS,0),assertz(ligacel(cel(Col,Lin),cel(Col,LinS)));true)),
+((m(Col,LinA,0),assertz(ligacel(cel(Col,Lin),cel(Col,LinA)));true)),
+Col1 is Col-1,
+cria_grafo_lin(Col1,Lin).
+cria_grafo_lin(Col,Lin):-Col1 is Col-1,cria_grafo_lin(Col1,Lin).
+
