@@ -40,6 +40,15 @@ import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit
 
 //Tarefa
 
+//Piso
+import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
+import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
+import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+
+//Passagem
+import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
+import { PassagemCreateComponent } from './component/passagem/passagem-create/passagem-create.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -85,8 +94,16 @@ import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit
     //Main menu
     AdminComponent,
     GestorFrotaComponent,
-    GestorCampusComponent
+    GestorCampusComponent,
 
+    //Piso
+    PisoGeralComponent,
+    PisoListComponent,
+    PisoCreateComponent,
+
+    //Passagem
+    PassagemGeralComponent,
+    PassagemCreateComponent
 
   ],
   bootstrap: [ AppComponent ]

@@ -52,9 +52,13 @@ export default class PisoController implements IPisoController /* TODO: extends 
   };
 
   public async listPisos(req: Request, res: Response, next: NextFunction){
+    const codigoEdificio = req.params.codigoEdificio;
+    
+    
     try {
-      const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
+      //const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
 
+      const pisoOrError = await this.pisoServiceInstance.listPisos({codigoEdificio} as IListPisosDTO) as Result<IPisoDTO[]>;
       if (pisoOrError.isFailure) {
         return res.status(404).send("Erro: " + pisoOrError.errorValue());
       }
@@ -68,8 +72,11 @@ export default class PisoController implements IPisoController /* TODO: extends 
   };
 
   public async listMinMax(req: Request, res: Response, next: NextFunction){
+    const min = Number(req.params.min);
+    const max = Number(req.params.max);
+    const minMaxDTO: IListMinMaxDTO = { min, max };
     try {
-      const edificioOrError = await this.pisoServiceInstance.listMinMax(req.body as IListMinMaxDTO) as Result<IEdificioDTO[]>;
+      const edificioOrError = await this.pisoServiceInstance.listMinMax(minMaxDTO) as Result<IEdificioDTO[]>;
 
       if (edificioOrError.isFailure) {
         return res.status(404).send("Erro: " + edificioOrError.errorValue());

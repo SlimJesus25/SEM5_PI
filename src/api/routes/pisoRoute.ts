@@ -27,10 +27,9 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createPiso(req, res, next));
 
     // List pisos de um edifício.
-    route.get('/listPisos',
+    route.get('/listPisos/:codigoEdificio',
     celebrate({
       body: Joi.object({
-          codigoEdificio: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.listPisos(req, res, next));
@@ -47,11 +46,9 @@ export default (app: Router) => {
   (req, res, next) => ctrl.updatePiso(req, res, next));
 
     // List edifícios com min e max de pisos.
-    route.get('/listMinMax',
+    route.get('/listMinMax/:min/:max',
     celebrate({
       body: Joi.object({
-          min: Joi.number().required(),
-          max: Joi.number().required()
       }),
     }),
     (req, res, next) => ctrl.listMinMax(req, res, next));

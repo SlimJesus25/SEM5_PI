@@ -17,7 +17,6 @@ export default (app: Router) => {
   route.post('/createRobo',
   celebrate({
     body: Joi.object({
-      estado: Joi.string().required(),
       marca: Joi.string().required(),
       codigo: Joi.string().required(),
       numeroSerie: Joi.string().required(),

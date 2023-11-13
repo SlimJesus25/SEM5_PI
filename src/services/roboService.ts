@@ -37,7 +37,7 @@ export default class RoboService implements IRoboService {
       if(tipo == null)
         return Result.fail<IRoboDTO>("Não existe tipo de robo com esse código " + roboDTO.tipoRobo);
       const roboOrError = Robo.create({
-        estado: EstadoRobo[estado],
+        estado: "Inibido",
         marca: MarcaRobo.create(roboDTO.marca).getValue(),
         codigo: CodigoRobo.create(roboDTO.codigo).getValue(),
         numeroSerie: NumeroSerieRobo.create(roboDTO.numeroSerie).getValue(),
@@ -64,7 +64,7 @@ export default class RoboService implements IRoboService {
 
       const robos = await this.roboRepo.findAll();
 
-      if (robos.length == 0) {
+      if (robos == null) {
         return Result.fail<IRoboDTO[]>("Não existem registos de robos");
       }
 

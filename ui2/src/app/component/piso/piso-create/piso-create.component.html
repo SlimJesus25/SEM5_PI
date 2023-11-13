@@ -1,0 +1,24 @@
+<h1>Criar Piso</h1>
+
+<div>
+  <div>
+    <table>
+      <tr>
+        <th><label>Designacao: </label></th>
+        <td><input type="string" [(ngModel)]="piso.designacao" /></td>
+      </tr>
+      <tr>
+        <th><label>Descricao: </label></th>
+        <td><input type="string" [(ngModel)]="piso.descricao" /></td>
+      </tr>
+      <tr>
+        <th><label>Codigo Edificio: </label></th>
+        <td><input type="string" [(ngModel)]="piso.edificio" /></td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <button class="buttonBack" (click)="goBack()">Back</button>
+    <button (click)="createPiso()">Add</button>
+  </div>
+</div>

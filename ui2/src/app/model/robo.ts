@@ -1,5 +1,4 @@
 export interface Robo {
-    estado : string;
     nickname : string;
     marca : string;
     numeroSerie : string;

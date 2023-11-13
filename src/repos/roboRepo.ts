@@ -46,7 +46,7 @@ export default class RoboRepo implements IRoboRepo {
 
         return RoboMap.toDomain(roboCreated);
       } else {
-        roboDocument.estado = robo.estado.toString(),
+        roboDocument.estado = robo.estado,
         roboDocument.marca = robo.marca.value,
         roboDocument.codigo = robo.codigo.value,
         roboDocument.numeroSerie = robo.numeroSerie.value,
@@ -89,16 +89,16 @@ export default class RoboRepo implements IRoboRepo {
     const query = {};
     const roboSchema = await this.roboSchema.find(query);
     try {
-      if (roboSchema === null) {
-          return null;
+      if (roboSchema != null) {
+        let roboArray: Robo[] = [];
+        //roboSchema.forEach(async v => roboArray.push(await RoboMap.toDomain(v)));
+        for(const roboDoc of roboSchema){
+          const robo = await RoboMap.toDomain(roboDoc);
+          roboArray.push(robo);
+        }
+        return roboArray;
       } else {
-          let roboArray: Robo[] = [];
-          //roboSchema.forEach(async v => roboArray.push(await RoboMap.toDomain(v)));
-          for(const roboDoc of roboSchema){
-            const robo = await RoboMap.toDomain(roboDoc);
-            roboArray.push(robo);
-          }
-          return roboArray;
+          return null;
       }
   } catch (err) {
       throw err;

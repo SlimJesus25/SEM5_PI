@@ -23,6 +23,15 @@ import { TipoRoboUpdateComponent } from './component/tipo-robo/tipo-robo-update/
 import { RoboUpdateComponent } from './component/robo/robo-update/robo-update.component';
 import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit.component';
 
+//Piso
+import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
+import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
+
+//Passagem
+import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
+import { PassagemCreateComponent } from './component/passagem/passagem-create/passagem-create.component';
+
 const routes: Routes = [
 
   // Edificio
@@ -34,6 +43,7 @@ const routes: Routes = [
   //Main menu
   { path: "admin", component: AdminComponent},
   { path: "gestor-Frota", component: GestorFrotaComponent},
+  { path: "gestor-Campus", component: GestorCampusComponent},
   { path: "gestor-Campus", component: GestorCampusComponent},
 
 
@@ -53,12 +63,19 @@ const routes: Routes = [
   //Robo
   { path: "robos", component: RoboGeralComponent},
   { path: "roboCreate", component: RoboCreateComponent},
-  { path: "roboList", component: RoboListComponent},
+  { path: "listRobo", component: RoboListComponent},
   { path: "roboUpdate", component: RoboUpdateComponent},
-  { path: "inhibitRobo", component: RoboInhibitComponent}
+  { path: "inhibitRobo", component: RoboInhibitComponent},
 
 
-  
+  //Piso
+  { path: 'pisos', component: PisoGeralComponent },
+  { path: 'pisoList', component: PisoListComponent },
+  { path: 'pisoCreate', component: PisoCreateComponent },
+
+  //Passagem
+  { path: 'passagens', component: PassagemGeralComponent},
+  { path: 'passagemCreate', component: PassagemCreateComponent},
 ];
 
 
