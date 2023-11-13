@@ -27,10 +27,10 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createPiso(req, res, next));
 
     // List pisos de um edifício.
-    route.get('/listPisos',
+    route.get('/listPisos/:codigoEdificio',
     celebrate({
       body: Joi.object({
-          codigoEdificio: Joi.string().required(),
+          //codigoEdificio: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.listPisos(req, res, next));
