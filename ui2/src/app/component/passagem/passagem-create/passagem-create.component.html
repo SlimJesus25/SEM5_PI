@@ -1,0 +1,32 @@
+<h3>Criar Passagem</h3>
+
+<div>
+  <div>
+    <table>
+      <tr>
+        <th><label>Designacao: </label></th>
+        <td><input type="string" [(ngModel)]="passagem.designacao" /></td>
+      </tr>
+      <tr>
+        <th><label>Edificio A: </label></th>
+        <td><input type="string" [(ngModel)]="passagem.edificioA" /></td>
+      </tr>
+      <tr>
+        <th><label>Edificio B: </label></th>
+        <td><input type="string" [(ngModel)]="passagem.edificioB" /></td>
+      </tr>
+      <tr>
+        <th><label>Piso A: </label></th>
+        <td><input type="string" [(ngModel)]="passagem.pisoA" /></td>
+      </tr>
+      <tr>
+        <th><label>Piso B: </label></th>
+        <td><input type="string" [(ngModel)]="passagem.pisoB" /></td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <button class="buttonBack" (click)="goBack()">Back</button>
+    <button (click)="createPassagem()">Add</button>
+  </div>
+</div>
