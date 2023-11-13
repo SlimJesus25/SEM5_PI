@@ -64,7 +64,7 @@ export default class RoboService implements IRoboService {
 
       const robos = await this.roboRepo.findAll();
 
-      if (robos.length == 0) {
+      if (robos == null) {
         return Result.fail<IRoboDTO[]>("Não existem registos de robos");
       }
 
