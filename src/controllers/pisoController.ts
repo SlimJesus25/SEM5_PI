@@ -52,9 +52,13 @@ export default class PisoController implements IPisoController /* TODO: extends 
   };
 
   public async listPisos(req: Request, res: Response, next: NextFunction){
+    const codigoEdificio = req.params.codigoEdificio;
+    
+    
     try {
-      const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
+      //const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
 
+      const pisoOrError = await this.pisoServiceInstance.listPisos({codigoEdificio} as IListPisosDTO) as Result<IPisoDTO[]>;
       if (pisoOrError.isFailure) {
         return res.status(404).send("Erro: " + pisoOrError.errorValue());
       }
