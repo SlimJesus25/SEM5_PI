@@ -43,7 +43,7 @@ import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit
 //Piso
 import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
 import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
-import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+//import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
 
 @NgModule({
   imports: [
@@ -94,7 +94,7 @@ import { PisoListComponent } from './component/piso/piso-list/piso-list.componen
 
     //Piso
     PisoGeralComponent,
-    PisoListComponent,
+    //PisoListComponent,
     PisoCreateComponent
 
   ],

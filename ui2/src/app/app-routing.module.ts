@@ -25,7 +25,7 @@ import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit
 
 //Piso
 import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
-import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+//import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
 import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
 
 const routes: Routes = [
@@ -59,14 +59,14 @@ const routes: Routes = [
   //Robo
   { path: "robos", component: RoboGeralComponent},
   { path: "roboCreate", component: RoboCreateComponent},
-  { path: "roboList", component: RoboListComponent},
+  { path: "listRobo", component: RoboListComponent},
   { path: "roboUpdate", component: RoboUpdateComponent},
   { path: "inhibitRobo", component: RoboInhibitComponent},
 
 
   //Piso
   { path: 'pisos', component: PisoGeralComponent },
-  { path: 'pisoList', component: PisoListComponent },
+  //{ path: 'pisoList', component: PisoListComponent },
   { path: 'pisoCreate', component: PisoCreateComponent }
 ];
 

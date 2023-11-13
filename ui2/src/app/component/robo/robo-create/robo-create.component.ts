@@ -9,7 +9,7 @@ import { MessageService } from '../../../service/message/message.service';
 })
 export class RoboCreateComponent implements OnInit {
 
-  robo = {estado: "", marca: "", codigo: "",  numeroSerie:"", nickname: "", tipoRobo: ""}
+  robo = {marca: "", codigo: "",  numeroSerie:"", nickname: "", tipoRobo: ""}
 
   constructor(
     private location: Location,
