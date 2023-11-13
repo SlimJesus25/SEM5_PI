@@ -179,4 +179,22 @@ export default class PassagemService implements IPassagemService {
       throw err;
     }
   }
+
+  public async listPassagensGeral(): Promise<Result<IPassagemDTO[]>>{
+    try {
+
+      const passagensResult = await this.passagemRepo.listPassagensGeral();
+
+      if (passagensResult.length == 0)
+        return Result.fail<IPassagemDTO[]>("Não existem passagens!");
+
+      let passagensResultDTO: IPassagemDTO[] = [];
+
+      passagensResult.forEach(p => passagensResultDTO.push(PassagemMap.toDTO(p) as IPassagemDTO));
+
+      return Result.ok<IPassagemDTO[]>(passagensResultDTO)
+    } catch (e) {
+      throw e;
+    }
+  }
 }

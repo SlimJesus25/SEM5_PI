@@ -5,6 +5,7 @@ import config from "../../config";
 import IMapaPisoService from '../services/IServices/IMapaPisoService';
 import IMapaPisoController from './IControllers/IMapaPisoController';
 import IMapaPisoDTO from '../dto/IMapaPisoDTO';
+import IMazeDTO from '../dto/IMazeDTO';
 import { Result } from '../core/logic/Result';
 import IDeleteMapaPisoDTO from '../dto/IDeleteMapaPisoDTO';
 
@@ -62,4 +63,23 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       return next(e);
     }
   }
+
+
+  public async listMapasPiso(req: Request, res: Response, next: NextFunction){
+    try {
+      const mapaPisoOrError = await this.mapaPisoServiceInstance.listMapasPiso() as Result<IMazeDTO[]>;
+
+      if (mapaPisoOrError.isFailure) {
+        return res.status(404).send("Erro: " + mapaPisoOrError.errorValue());
+      }
+
+      const mapaPisoDTO = mapaPisoOrError.getValue();
+      return res.json( mapaPisoDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
+
+
 }

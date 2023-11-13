@@ -2,6 +2,6 @@
 export default interface IMapaPisoDTO {
     id: string;
     piso: string;
-    mapa : string;
+    mapa : JSON;
   }
   

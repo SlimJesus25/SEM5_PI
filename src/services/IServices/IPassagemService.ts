@@ -10,4 +10,5 @@ export default interface IPassagemService  {
   listPisos(edificio): Promise<Result<IPisoDTO[]>>;
   getPassagem (passagemId: string): Promise<Result<IPassagemDTO>>;
   deletePassagem(designacao: IDeletePassagemDTO): Promise<Result<IPassagemDTO>>;
+  listPassagensGeral(): Promise<Result<IPassagemDTO[]>>;
 }

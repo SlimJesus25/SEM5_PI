@@ -8,6 +8,7 @@ export default interface IPisoRepo extends Repo<Piso> {
   findByDesignacao(designacao: string): Promise<Piso>
   findByEdificio(codigoEdificio: string): Promise<Piso[]>
   delete(piso: Piso ): Promise<Piso>;
+  findAll(): Promise<Piso[]>;
     
   //findByIds (rolesIds: RoleId[]): Promise<Role[]>;
   //saveCollection (roles: Role[]): Promise<Role[]>;

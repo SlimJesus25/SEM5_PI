@@ -12,6 +12,7 @@ import IListMinMaxDTO from '../dto/IListMinMaxDTO';
 import IEdificioDTO from '../dto/IEdificioDTO';
 import { EdificioMap } from '../mappers/EdificioMap';
 import IDeletePiso from '../dto/IDeletePisoDTO';
+import IListPisoByEdificioDTO from '../dto/IListPisoByEdificioDTO';
 
 @Service()
 export default class PisoService implements IPisoService {
@@ -167,4 +168,38 @@ export default class PisoService implements IPisoService {
     return null;
   }
 
+  public async listPisosGeral(): Promise<Result<IListPisoByEdificioDTO[]>> {
+    try {
+
+      const pisos = await this.pisoRepo.findAll();
+
+      if (pisos == null){
+        return Result.fail<IListPisoByEdificioDTO[]>("Não existem registos de pisos");
+      }
+
+      let pisoProHM = new Map<string, string[]>();
+      pisos.forEach(p => {
+        const v = pisoProHM.get(p.edificio.codigo);
+        if(v == undefined)
+          pisoProHM.set(p.edificio.codigo, [p.designacao]);
+        else
+          v.push(p.designacao);
+      });
+
+      let pisoProDTO : IListPisoByEdificioDTO[] = [];
+      pisoProHM.forEach((value: string[], key: string) =>{
+
+        const d = {
+          edificio: key,
+          pisos: value
+        } as IListPisoByEdificioDTO;
+
+        pisoProDTO.push(d);
+      });
+
+      return Result.ok<IListPisoByEdificioDTO[]>(pisoProDTO)
+    } catch (e) {
+      throw e;
+    }
 }
+  }

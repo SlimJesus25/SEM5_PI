@@ -8,7 +8,7 @@ import { Piso } from "./piso";
 
 interface MapaPisoProps {
   piso: Piso;
-  mapa: string;
+  mapa: JSON;
 }
 
 export class MapaPiso extends AggregateRoot<MapaPisoProps> {
@@ -20,7 +20,7 @@ export class MapaPiso extends AggregateRoot<MapaPisoProps> {
     return MapaPisoId.caller(this.id)
   }
 
-  get mapa (): string {
+  get mapa (): JSON {
     return this.props.mapa;
   }
 
@@ -32,7 +32,7 @@ export class MapaPiso extends AggregateRoot<MapaPisoProps> {
     this.props.piso = value;
   }
   
-  set mapa (value : string){
+  set mapa (value : JSON){
     this.props.mapa = value;
   }
 

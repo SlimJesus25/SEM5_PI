@@ -1,0 +1,38 @@
+<h1>Criar Robo</h1>
+
+<div>
+    <div>
+      <table>
+        <tr>
+          <th><label>Estado: </label></th>
+          <th><input [(ngModel)]="robo.estado" /></th>
+        </tr>
+        <tr>
+          <th><label>Marca: </label></th>
+          <th><input type="string" [(ngModel)]="robo.marca" /></th>
+        </tr>
+        <tr>
+          <th><label>Codigo: </label>
+          <th><input type="string" [(ngModel)]="robo.codigo" />
+        </tr>
+      <tr>
+        <th><label>Numero Serie: </label>
+          <th><input type="string" [(ngModel)]="robo.numeroSerie" />
+      </tr>
+      <tr>
+        <th><label>Nickname: </label>
+          <th><input type="string" [(ngModel)]="robo.nickname" />
+      </tr>
+      <tr>
+        <th><label>Tipo Robo: </label>
+          <th><input type="string" [(ngModel)]="robo.tipoRobo" />
+      </tr>
+      </table>
+    </div>
+    <div>
+      <button class="buttonBack" (click)="goBack()">Back</button>
+      <button (click)="createRobo()">Add</button>
+    </div>
+
+
+</div>

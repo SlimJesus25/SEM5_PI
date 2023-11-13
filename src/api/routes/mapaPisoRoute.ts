@@ -17,8 +17,8 @@ export default (app: Router) => {
     route.post('/createMapaPiso',
   celebrate({
     body: Joi.object({
-      mapa : Joi.string(),
-      piso : Joi.string()
+      mapa : Joi.object().required(),
+      piso : Joi.string().required()
     }),
   }),
   (req, res, next) => ctrl2.createMapaPiso(req, res, next));
@@ -39,4 +39,11 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl2.deleteMapaPiso(req, res, next));
+
+    route.get('/listMapasPiso',
+  celebrate({
+    body: Joi.object({
+    }),
+  }),
+  (req, res, next) => ctrl2.listMapasPiso(req, res, next));
 };

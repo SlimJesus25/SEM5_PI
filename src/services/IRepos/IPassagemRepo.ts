@@ -9,4 +9,5 @@ export default interface IPassagemRepo extends Repo<Passagem> {
   listPassagens(codigoEdificio: string): Promise<Passagem[]>;
   findByDesignacao(designacao: string): Promise<Passagem>;
   delete(passagem: Passagem ): Promise<Passagem>;
+  listPassagensGeral(): Promise<Passagem[]>;
 }

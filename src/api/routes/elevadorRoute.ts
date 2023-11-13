@@ -35,7 +35,7 @@ export default (app: Router) => {
         codigoEdificio: Joi.string().required(),
       }),
     }),
-    (req, res, next) => ctrl.listElevadores(req, res, next));
+    (req, res, next) => ctrl.listElevadoresEdificio(req, res, next));
 
   route.get('/listElevadores',
     celebrate({

@@ -6,4 +6,5 @@ export default interface IPassagemController  {
   listPassagens(req: Request, res: Response, next: NextFunction);
   listPisos(req: Request, res: Response, next: NextFunction);
   deletePassagem(req: Request, res: Response, next: NextFunction);
+  listPassagensGeral(req: Request, res: Response, next: NextFunction);
 }
