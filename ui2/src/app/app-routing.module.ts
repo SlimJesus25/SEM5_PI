@@ -25,8 +25,12 @@ import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit
 
 //Piso
 import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
-//import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
 import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
+
+//Passagem
+import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
+import { PassagemCreateComponent } from './component/passagem/passagem-create/passagem-create.component';
 
 const routes: Routes = [
 
@@ -66,8 +70,12 @@ const routes: Routes = [
 
   //Piso
   { path: 'pisos', component: PisoGeralComponent },
-  //{ path: 'pisoList', component: PisoListComponent },
-  { path: 'pisoCreate', component: PisoCreateComponent }
+  { path: 'pisoList', component: PisoListComponent },
+  { path: 'pisoCreate', component: PisoCreateComponent },
+
+  //Passagem
+  { path: 'passagens', component: PassagemGeralComponent},
+  { path: 'passagemCreate', component: PassagemCreateComponent},
 ];
 
 

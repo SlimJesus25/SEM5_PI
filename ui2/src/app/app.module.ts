@@ -43,7 +43,11 @@ import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit
 //Piso
 import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
 import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
-//import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+
+//Passagem
+import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
+import { PassagemCreateComponent } from './component/passagem/passagem-create/passagem-create.component';
 
 @NgModule({
   imports: [
@@ -94,8 +98,12 @@ import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.compo
 
     //Piso
     PisoGeralComponent,
-    //PisoListComponent,
-    PisoCreateComponent
+    PisoListComponent,
+    PisoCreateComponent,
+
+    //Passagem
+    PassagemGeralComponent,
+    PassagemCreateComponent
 
   ],
   bootstrap: [ AppComponent ]

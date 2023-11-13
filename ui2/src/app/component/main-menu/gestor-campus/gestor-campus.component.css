@@ -20,3 +20,11 @@ nav a:hover {
 nav a:active {
     background-color: black;
 }
+
+.blue-button {
+    background-color: rgb(135,206,250);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
