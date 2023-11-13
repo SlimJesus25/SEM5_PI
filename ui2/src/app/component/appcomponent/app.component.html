@@ -1,8 +1,8 @@
 <h1>RobDroneGO</h1>
 
-<button (click)="openAdmin()">Menu Admin</button>
-<button (click)="openGestorCampus()">Menu Gestor Campus</button>
-<button (click)="openGestorFrota()">Menu Gestor Frota</button>
+<button (click)="openAdmin()"class="blue-button">Menu Admin</button>
+<button (click)="openGestorCampus()" class="blue-button">Menu Gestor Campus</button>
+<button (click)="openGestorFrota()"class="blue-button">Menu Gestor Frota</button>
 
 <ng-container *ngIf="selectedMenu === 'admin'">
     <router-outlet></router-outlet>
@@ -18,7 +18,5 @@
     <router-outlet></router-outlet>
     <app-messages></app-messages>
 
-<app-robo-create></app-robo-create>
-<app-robo-inhibit></app-robo-inhibit>
-<app-robo-list></app-robo-list>
+
 </ng-container>

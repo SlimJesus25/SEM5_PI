@@ -45,6 +45,10 @@ import { PisoCreateComponent } from './component/piso/piso-create/piso-create.co
 import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
 import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
 
+//Passagem
+import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
+import { PassagemCreateComponent } from './component/passagem/passagem-create/passagem-create.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -95,7 +99,11 @@ import { PisoListComponent } from './component/piso/piso-list/piso-list.componen
     //Piso
     PisoGeralComponent,
     PisoListComponent,
-    PisoCreateComponent
+    PisoCreateComponent,
+
+    //Passagem
+    PassagemGeralComponent,
+    PassagemCreateComponent
 
   ],
   bootstrap: [ AppComponent ]
