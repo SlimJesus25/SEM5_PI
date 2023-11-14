@@ -31,6 +31,8 @@ import { PisoCreateComponent } from './component/piso/piso-create/piso-create.co
 //Passagem
 import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
 import { PassagemCreateComponent } from './component/passagem/passagem-create/passagem-create.component';
+import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elevador-geral.component';
+import { ElevadorUpdateComponent } from './component/elevador/elevador-update/elevador-update.component';
 
 const routes: Routes = [
 
@@ -76,6 +78,10 @@ const routes: Routes = [
   //Passagem
   { path: 'passagens', component: PassagemGeralComponent},
   { path: 'passagemCreate', component: PassagemCreateComponent},
+
+
+  { path: 'elevadores', component: ElevadorGeralComponent},
+  { path: "elevadorUpdate", component: ElevadorUpdateComponent},
 ];
 
 
