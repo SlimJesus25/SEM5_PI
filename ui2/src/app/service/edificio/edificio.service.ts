@@ -16,7 +16,9 @@ export class EdificioService {
 
   createEdificio(edificio: Edificio) {
     console.log("Ponto 2");
-    const headers = {'content-type': 'application/json'};
+    const headers = {'content-type': 'application/json',
+    'Access-Control-Allow-Origin': '*', // Este cabeçalho pode ser ajustado conforme necessário
+  };
     
     const body = JSON.stringify(edificio);
     console.log(body);
