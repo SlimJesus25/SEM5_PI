@@ -29,10 +29,9 @@ export default (app: Router) => {
     (req, res, next) => ctrl.createElevador(req, res, next));
 
   // List elevadores de um edifício.
-  route.get('/listElevadoresEdificio',
+  route.get('/listElevadoresEdificio/:codigoEdificio',
     celebrate({
       body: Joi.object({
-        codigoEdificio: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.listElevadoresEdificio(req, res, next));
