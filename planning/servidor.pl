@@ -16,6 +16,7 @@
 :-dynamic m/4. % m(col, lin, valor, piso) => m(0, 0, 0, A1)...
 :-dynamic ligacel/3. % ligacel(cel1, cel2, piso) => ligacel(cel(1,3), cel(2,3), A1)...
 :-dynamic cel/2. % cel(x, y) => cel(0, 3)...
+:-dynamic liga/2. % liga(EdificioA, EdificioB)...
 
 :-json_object edificio(id:string, codigoEdificio: string, nomeOpcionalEdificio: string, descricaoEdificio: string, dimensaoMaximaPiso: list(integer)).
 
@@ -49,7 +50,6 @@ request_pisos():-
   http_open('http://localhost:3000/api/piso/listPisosGeral', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_pisos(ResObj, ResVal),
-  write('Aqui'),
   write(ResVal),
   cria_pisos(ResVal).
 
@@ -100,6 +100,7 @@ extrai_passagens([H|T1], [[H.edificioA, H.edificioB, H.pisoA, H.pisoB]|T2]):-
 cria_passagens([]).
 cria_passagens([[EdificioA, EdificioB, PisoA, PisoB]|T]):-
   assertz(corredor(EdificioA, EdificioB, PisoA, PisoB)),
+  assertz(liga(EdificioA, EdificioB)),
   cria_passagens(T).
 
 % Vai fazer o GET e fazer os asserts para criar os factos.
@@ -163,25 +164,50 @@ destroi_elevadores():-
 % - 4, saídas;
 request_mapa_pisos():-
   destroi_mapa_pisos(),
-  http_open('http://localhost:3000/api/mapaPiso/listMapaPisos', ResJSON, [cert_verify_hook(cert_accept_any)]),
+  http_open('http://localhost:3000/api/mapaPiso/listMapasPiso', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_mapa_pisos(ResObj, ResVal),
-  cria_elevadores(ResVal),
-  findall(elevador(X, Y), elevador(X, Y), A),
-  write(A).
+  cria_mapa_pisos(ResVal),
+  write('Mapa'),
+  findall(m(A, B, C, D), m(A, B, C, D), A),nl,nl,
+  write(A),nl,nl,
+  write('Ligações'),nl,
+  findall(ligacel(E, F, G), ligacel(E, F, G), H),
+  write(H).
 
 destroi_mapa_pisos():-
   findall(m(X, Y, V, P), m(X, Y, V, P), Mapa),
+  findall(ligacel(A, B, C), ligacel(A, B, C), Ligacoes),
+  destroi(Ligacoes),
   destroi(Mapa).
 
 extrai_mapa_pisos([], []).
-extrai_mapa_pisos([H|T], [H2|T2]):-
-  Piso is H.piso,
-  Width is H.mapa.maze.size.width,
-  Depth is H.mapa.maze.size.depth,
-  % TODO: Ver forma de gerar grafo com os valores passados pelo maze map.
-  H2 is [Piso, Width, Depth, ],
+extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas, H.elevador, H.saidaLocalizacao]|T2]):-
   extrai_mapa_pisos(T, T2).
+
+
+cria_mapa_pisos([]):-!.
+
+cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, Elevador, SaidaLocalizacao]|T]):-
+  cria_mapa(Mapa, Piso, 1, 1),
+  cria_grafo(Largura, Profundidade, Piso),
+  cria_mapa_pisos(T).
+
+cria_mapa([], _, _, _):-!.
+
+cria_mapa([Array|Restantes], Piso, Col, Lin):-
+  cria_linha(Array, Piso, Col, Lin),
+  Col2 is 0,
+  Lin2 is Lin+1,
+  cria_mapa(Restantes, Piso, Col2, Lin2).
+
+
+cria_linha([], _, _, _):-!.
+
+cria_linha([Valor|Restantes], Piso, Col, Lin):-
+  assertz(m(Col, Lin, Valor, Piso)),
+  Col2 is Col+1,
+  cria_linha(Restantes, Piso, Col2, Lin).
 
 % Faz retract a todos os predicados que fez assert dinamicamente antes do novo request.
 destroi([]).
@@ -207,6 +233,14 @@ PisoAct1\==PisoAct,
 elevador(EdAct,LPisos),member(PisoAct,LPisos),member(PisoAct1,LPisos),
 segue_pisos(PisoSeg,PisoDest,[EdSeg|LOutrosEd],LOutrasLig).
 
+caminho_edificios(EdOr,EdDest,LEdCam):-
+caminho_edificios2(EdOr,EdDest,[EdOr],LEdCam).
+caminho_edificios2(EdX,EdX,LEdInv,LEdCam):-!,reverse(LEdInv,LEdCam).
+caminho_edificios2(EdAct,EdDest,LEdPassou,LEdCam):-
+(liga(EdAct,EdInt);liga(EdInt,EdAct)),
+\+member(EdInt,LEdPassou),
+caminho_edificios2(EdInt,EdDest,[EdInt|LEdPassou],LEdCam).
+
 % Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
 melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor):-
 findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig),LLLig),
@@ -223,18 +257,50 @@ conta([elev(_,_)|L],NElev,NCor):-conta(L,NElevL,NCor),NElev is NElevL+1.
 conta([cor(_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
 
 
-% #### Criação de grafo (mapa do piso) ####
-cria_grafo(_,0):-!.
-cria_grafo(Col,Lin):-cria_grafo_lin(Col,Lin),Lin1 is Lin-
-1,cria_grafo(Col,Lin1).
-cria_grafo_lin(0,_):-!.
-cria_grafo_lin(Col,Lin):-m(Col,Lin,0),!,
+%%%%% Criação de grafo (mapa do piso) %%%%%
+% m(col, lin, valor, piso) => m(0, 0, 0, A1)...
+cria_grafo(_,0,_):-!.
+cria_grafo(Col,Lin,Piso):-cria_grafo_lin(Col,Lin,Piso),Lin1 is Lin-1,cria_grafo(Col,Lin1,Piso).
+
+
+cria_grafo_lin(0,_,_):-!.
+
+cria_grafo_lin(Col,Lin,Piso):-m(Col,Lin,0,Piso),!,
 ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-((m(ColS,Lin,0),assertz(ligacel(cel(Col,Lin),cel(ColS,Lin)));true)),
-((m(ColA,Lin,0),assertz(ligacel(cel(Col,Lin),cel(ColA,Lin)));true)),
-((m(Col,LinS,0),assertz(ligacel(cel(Col,Lin),cel(Col,LinS)));true)),
-((m(Col,LinA,0),assertz(ligacel(cel(Col,Lin),cel(Col,LinA)));true)),
+((m(ColS,Lin,0,Piso),assertz(ligacel([Col,Lin], [ColS,Lin], Piso));true)),
+((m(ColA,Lin,0,Piso),assertz(ligacel([Col,Lin], [ColA,Lin], Piso));true)),
+((m(Col,LinS,0,Piso),assertz(ligacel([Col,Lin], [Col,LinS], Piso));true)),
+((m(Col,LinA,0,Piso),assertz(ligacel([Col,Lin], [Col,Lin], Piso));true)),
 Col1 is Col-1,
-cria_grafo_lin(Col1,Lin).
-cria_grafo_lin(Col,Lin):-Col1 is Col-1,cria_grafo_lin(Col1,Lin).
+cria_grafo_lin(Col1,Lin,Piso).
+
+cria_grafo_lin(Col,Lin,Piso):-Col1 is Col-1,cria_grafo_lin(Col1,Lin,Piso).
+
+
+% A-star.
+aStar(Orig,Dest,Cam,Custo):-
+    aStar2(Dest,[(_,0,[Orig])],Cam,Custo).
+
+aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):-
+	reverse([Dest|T],Cam).
+
+aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
+	LA=[Act|_],
+	findall((CEX,CaX,[X|LA]),
+		(Dest\==Act,edge(Act,X,CustoX),\+ member(X,LA),
+		CaX is CustoX + Ca, estimativa(X,Dest,EstX),
+		CEX is CaX +EstX),Novos),
+	append(Outros,Novos,Todos),
+	sort(Todos,TodosOrd),
+	aStar2(Dest,TodosOrd,Cam,Custo).
+
+% substituir a chamada edge(Act,X,CustoX)
+% por (edge(Act,X,CustoX);edge(X,Act,CustoX))
+% se quiser ligacoes bidirecionais
+
+
+estimativa(Nodo1,Nodo2,Estimativa):-
+	node(Nodo1,X1,Y1),
+	node(Nodo2,X2,Y2),
+	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
 
