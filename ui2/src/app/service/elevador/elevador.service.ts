@@ -29,6 +29,12 @@ export class ElevadorService {
 
     return elevadores;
   }
+
+  listElevadoresEdificio(codigoEdificio: string): Observable<Elevador[]> {
+    const listElevadoresEdificio = this.LogisticAPI_URL + "/listElevadoresEdificio/" +codigoEdificio;
+    const elevadores =  this.http.get<Elevador[]>(listElevadoresEdificio);
+    return elevadores;
+}
 /*
   getTruckByID(idNumber: string): Observable<Truck> {
     const truckById = this.LogisticAPI_URL + "/" + idNumber;

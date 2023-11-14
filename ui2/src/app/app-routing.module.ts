@@ -36,6 +36,7 @@ import { PassagemCreateComponent } from './component/passagem/passagem-create/pa
 //Elevador
 import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elevador-geral.component';
 import { ElevadorUpdateComponent } from './component/elevador/elevador-update/elevador-update.component';
+import { ElevadorListComponent } from './component/elevador/elevador-list/elevador-list.component';
 
 const routes: Routes = [
 
@@ -83,9 +84,10 @@ const routes: Routes = [
   { path: 'passagens', component: PassagemGeralComponent},
   { path: 'passagemCreate', component: PassagemCreateComponent},
 
-
+  //Elevador
   { path: 'elevadores', component: ElevadorGeralComponent},
   { path: "elevadorUpdate", component: ElevadorUpdateComponent},
+  { path: "elevadorList", component: ElevadorListComponent}
 ];
 
 

@@ -49,8 +49,11 @@ import { PisoUpdateComponent } from './component/piso/piso-update/piso-update.co
 //Passagem
 import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
 import { PassagemCreateComponent } from './component/passagem/passagem-create/passagem-create.component';
+
+//Elevador
 import { ElevadorUpdateComponent } from './component/elevador/elevador-update/elevador-update.component';
 import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elevador-geral.component';
+import { ElevadorListComponent } from './component/elevador/elevador-list/elevador-list.component';
 
 @NgModule({
   imports: [
@@ -111,7 +114,8 @@ import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elev
 
     //Elevador
     ElevadorGeralComponent,
-    ElevadorUpdateComponent
+    ElevadorUpdateComponent,
+    ElevadorListComponent
 
   ],
   bootstrap: [ AppComponent ]
