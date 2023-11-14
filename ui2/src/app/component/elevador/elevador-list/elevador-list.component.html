@@ -21,8 +21,8 @@
 
         <table mat-table matSort [dataSource]="dataSource" class="listagem">
 
-            <ng-container matColumnDef="Numero Identficativo">
-                <th mat-header-cell *matHeaderCellDef> Numero Identficativo</th>
+            <ng-container matColumnDef="Numero Identificativo">
+                <th mat-header-cell *matHeaderCellDef> Numero Identificativo</th>
                 <td mat-cell *matCellDef="let elevador"> {{elevador.numeroIdentificativo}} </td>
             </ng-container>
 
@@ -32,7 +32,7 @@
             </ng-container>
 
             <ng-container matColumnDef="Numero Serie">
-                <th mat-header-cell *matHeaderCellDef> Descricao</th>
+                <th mat-header-cell *matHeaderCellDef> Numero Serie</th>
                 <td mat-cell *matCellDef="let elevador"> {{elevador.numeroSerie}} </td>
             </ng-container>
 
