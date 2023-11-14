@@ -9,7 +9,7 @@ import { ElevadorService } from '../../../service/elevador/elevador.service';
 })
 export class ElevadorUpdateComponent implements OnInit {
 
-  elevador = {numeroIdentificativo: "", descricao: "", numeroSerie: "",  modelo:"", marca: "", pisosServidos: "", edificio: ""};
+  elevador = {numeroIdentificativo: "", descricao: "", numeroSerie: "",  modelo:"", marca: "", pisosServidos: [], edificio: ""};
 
   constructor(
     private location: Location,
