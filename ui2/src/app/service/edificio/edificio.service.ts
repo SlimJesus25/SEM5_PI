@@ -30,21 +30,13 @@ export class EdificioService {
 
     return edificios;
   }
-/*
-  getTruckByID(idNumber: string): Observable<Truck> {
-    const truckById = this.LogisticAPI_URL + "/" + idNumber;
-    const truck = this.http.get<Truck>(truckById)!;
- 
-    return truck;
-  }
 
-    getTruckByDistance(name: string): Observable<Truck[]> {
-        const truckByName = this.LogisticAPI_URL + "/name/" + name;
-        const truck = this.http.get<Truck[]>(truckByName)!;
-
-        return truck;
-    }
-    */
+  listMinMax(min: string, max: string): Observable<Edificio[]> {
+    const listEdificiosMinMax = this.LogisticAPI_URL + "/listMinMax/" + min+ "/" +max;
+    console.log(listEdificiosMinMax);
+    const pisos = this.http.get<Edificio[]>(listEdificiosMinMax)!;
+    return pisos;
+}
 
     updateEdificio(edificio: Edificio) {
 

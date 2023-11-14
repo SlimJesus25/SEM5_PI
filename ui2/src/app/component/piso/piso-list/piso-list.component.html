@@ -1,69 +1,12 @@
 <h1>Listar Pisos</h1>
 
-<button (click)="listPisos()" class="small-button">Listar pisos de um edificio</button>
-<button (click)="listMinMax()" class="small-button">Listar min e max de pisos</button>
-
-<!-- Listar pisos de um edificio-->
-<!--If selected option =1  -->
-<div *ngIf="selectOption === 1">
     <table>
         <tr>
             <td><label>Codigo Edificio: </label></td>
             <td><input type="text" [(ngModel)]="codigoEdificio"> <br></td>
         </tr>
     </table>
-    <br> <br>
-    <button (click)="submitCode()">Submit Code</button>
-
-    <div>
-        <div class="search-container">
-            <mat-form-field appearance="fill">
-                <label>Search by KeyWord</label> <input matInput placeholder="key word" autocomplete="off"
-                    (keyup)="filterData($event)">
-            </mat-form-field>
-        </div>
-
-        <br> <br>
-
-        <table mat-table matSort [dataSource]="dataSource" class="listagem">
-
-            <ng-container matColumnDef="Designacao">
-                <th mat-header-cell *matHeaderCellDef> Designacao</th>
-                <td mat-cell *matCellDef="let piso"> {{piso.designacao}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="Descricao">
-                <th mat-header-cell *matHeaderCellDef> Descricao</th>
-                <td mat-cell *matCellDef="let piso"> {{piso.descricao}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="Edificio">
-                <th mat-header-cell *matHeaderCellDef> Edificio</th>
-                <td mat-cell *matCellDef="let piso"> {{piso.edificio}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Page navigation"></mat-paginator>
-    </div>
-</div>
-
-
-<!-- Listar min e max de pisos-->
-<!--If selected option = 2-->
-<div *ngIf="selectOption === 2">
-    <table>
-        <tr>
-            <td><label>Min: </label></td>
-            <td><input type="text" [(ngModel)]="min"> <br></td>
-        </tr>
-        <tr>
-            <th><label>Max: </label></th>
-            <td><input type="text" [(ngModel)]="max"> <br></td>
-        </tr>
-    </table>
+    <button (click)="listPisos()" class="small-button">Search</button>
     <br> <br>
 
     <div>
@@ -99,7 +42,6 @@
 
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Page navigation"></mat-paginator>
     </div>
-</div>
 
-<button class="buttonBack" (click)="goBack()">Back</button>
+<button class="buttonBack" class="small-button" (click)="goBack()">Back</button>
 <router-outlet></router-outlet>
