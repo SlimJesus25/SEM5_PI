@@ -44,6 +44,7 @@ import { RoboInhibitComponent } from './component/robo/robo-inhibit/robo-inhibit
 import { PisoCreateComponent } from './component/piso/piso-create/piso-create.component';
 import { PisoGeralComponent } from './component/piso/piso-geral/piso-geral.component';
 import { PisoListComponent } from './component/piso/piso-list/piso-list.component';
+import { PisoUpdateComponent } from './component/piso/piso-update/piso-update.component';
 
 //Passagem
 import { PassagemGeralComponent } from './component/passagem/passagem-geral/passagem-geral.component';
@@ -102,6 +103,7 @@ import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elev
     PisoGeralComponent,
     PisoListComponent,
     PisoCreateComponent,
+    PisoUpdateComponent,
 
     //Passagem
     PassagemGeralComponent,

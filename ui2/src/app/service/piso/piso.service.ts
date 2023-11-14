@@ -45,7 +45,16 @@ export class PisoService {
         this.messageService.add(`HeroService: ${message}`);
     }
 
-    //Metodo para listar min e max de pisos
+    updateEdificio(piso: Piso) {
+
+        const updateURL = this.LogisticAPI_URL;
+
+        const headers = { 'content-type': 'application/json' };
+
+        const body = JSON.stringify(piso);
+        console.log(body);
+       return this.http.put<Piso>(updateURL + "/updatePiso", body, { 'headers': headers, observe: 'response' })
+    }
 
     //Metodo para listar pisos geral
     listPisosGeral(): Observable<Piso[]> {
