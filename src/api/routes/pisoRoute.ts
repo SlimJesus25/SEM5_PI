@@ -45,14 +45,6 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.updatePiso(req, res, next));
 
-    // List edifícios com min e max de pisos.
-    route.get('/listMinMax/:min/:max',
-    celebrate({
-      body: Joi.object({
-      }),
-    }),
-    (req, res, next) => ctrl.listMinMax(req, res, next));
-
     route.delete('/deletePiso',
     celebrate({
       body: Joi.object({

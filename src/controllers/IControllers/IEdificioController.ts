@@ -5,5 +5,5 @@ export default interface IRoleController  {
   updateEdificio(req: Request, res: Response, next: NextFunction);
   listEdificios(req: Request, res: Response, next: NextFunction);
   deleteEdificio(req: Request, res: Response, next: NextFunction);
-
+  listMinMax(req: Request, res: Response, next: NextFunction);
 }

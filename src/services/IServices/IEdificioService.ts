@@ -14,4 +14,5 @@ export default interface IEdificioService  {
   listEdificios(): Promise<Result<IEdificioDTO[]>>;
   getEdificio (edificioId: string): Promise<Result<IEdificioDTO>>;
   deleteEdificio(codigoEdificio: IDeleteEdificio): Promise<Result<IEdificioDTO>>;
+  listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>>;
 }

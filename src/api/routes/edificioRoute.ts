@@ -56,4 +56,11 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.deleteEdificio(req, res, next));
 
+    route.get('/listMinMax/:min/:max',
+    celebrate({
+      body: Joi.object({
+      }),
+    }),
+    (req, res, next) => ctrl.listMinMax(req, res, next));
+
 };

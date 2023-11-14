@@ -11,13 +11,17 @@ import { EdificioMap } from "../mappers/EdificioMap";
 import { CodigoEdificio } from '../domain/codigoEdificio';
 import { resolve } from 'path';
 import IDeleteEdificio from '../dto/IDeleteEdificio';
+import IListMinMaxDTO from '../dto/IListMinMaxDTO';
+import IPisoRepo from './IRepos/IPisoRepo';
 
 @Service()
 export default class EdificioService implements IEdificioService {
   constructor(
       //@Inject(config.repos.role.name) private edificioRepo : IEdificioRepo, // joao :repos.edificio ?
       @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo,
-  ) {}
+      @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo,
+ 
+      ) {}
 
   public async getEdificio( edificioId: string): Promise<Result<IEdificioDTO>> {
     try {
@@ -128,6 +132,31 @@ export default class EdificioService implements IEdificioService {
     } catch (err) {
       throw err;
     }
+  }
+
+  public async listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>> {
+    try {
+      const edificios = await this.edificioRepo.findAll();
+      if (edificios == null){
+        return Result.fail<IEdificioDTO[]>("Não existem registos de edifícios");
+      }
+    
+      
+      let edificiosDTO = [];
+     for (let i = 0; i < edificios.length; i++) {
+      const edificio = edificios[i];
+      const pisos = await this.pisoRepo.findByEdificio(edificio.codigo);
+      const numPisos = pisos.length;
+      if (numPisos > minMax.min && numPisos < minMax.max) {
+        edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
+      }
+    }
+
+      return Result.ok<IEdificioDTO[]>( edificiosDTO )
+    } catch (e) {
+      throw e;
+    }
+
   }
 
 
