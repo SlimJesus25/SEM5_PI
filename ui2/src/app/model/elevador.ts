@@ -4,6 +4,6 @@ export interface Elevador {
     numeroSerie : string;
     modelo : string;
     marca : string;
-    pisosServidos : string;
+    pisosServidos : string[];
     edificio : string;
 }

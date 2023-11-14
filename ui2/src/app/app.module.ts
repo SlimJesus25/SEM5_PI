@@ -54,6 +54,7 @@ import { PassagemCreateComponent } from './component/passagem/passagem-create/pa
 import { ElevadorUpdateComponent } from './component/elevador/elevador-update/elevador-update.component';
 import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elevador-geral.component';
 import { ElevadorListComponent } from './component/elevador/elevador-list/elevador-list.component';
+import { ElevadorCreateComponent } from './component/elevador/elevador-create/elevador-create.component';
 
 @NgModule({
   imports: [
@@ -115,7 +116,8 @@ import { ElevadorListComponent } from './component/elevador/elevador-list/elevad
     //Elevador
     ElevadorGeralComponent,
     ElevadorUpdateComponent,
-    ElevadorListComponent
+    ElevadorListComponent,
+    ElevadorCreateComponent
 
   ],
   bootstrap: [ AppComponent ]
