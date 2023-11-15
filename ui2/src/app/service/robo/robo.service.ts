@@ -57,10 +57,9 @@ export class RoboService {
     }
 
     inhibitRobo(codigo: string){
-      const inhibitURL = this.LogisticAPI_URL + "/inhibitRobo";
       const headers = { 'content-type': 'application/json' };
-
-      return this.http.patch<Robo>(inhibitURL, codigo, { 'headers': headers, observe: 'response' });
+      const body = JSON.stringify({codigo: codigo});
+      return this.http.patch<Robo>(this.LogisticAPI_URL + "/inhibitRobo", body, { 'headers': headers, observe: 'response' });
     }
 
   private log(message: string) {
