@@ -17,6 +17,8 @@
 :-dynamic ligacel/3. % ligacel(cel1, cel2, piso) => ligacel(cel(1,3), cel(2,3), A1)...
 :-dynamic cel/2. % cel(x, y) => cel(0, 3)...
 :-dynamic liga/2. % liga(EdificioA, EdificioB)...
+:-dynamic node/5. % node(Id, Col, Lin, Valor, Piso)...
+:-dynamic edge/4. % edge(Id1, Id2, Custo, Piso)...
 
 :-json_object edificio(id:string, codigoEdificio: string, nomeOpcionalEdificio: string, descricaoEdificio: string, dimensaoMaximaPiso: list(integer)).
 
@@ -167,18 +169,22 @@ request_mapa_pisos():-
   http_open('http://localhost:3000/api/mapaPiso/listMapasPiso', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_mapa_pisos(ResObj, ResVal),
-  cria_mapa_pisos(ResVal),
+  cria_mapa_pisos(ResVal, 0),
   write('Mapa'),
-  findall(m(A, B, C, D), m(A, B, C, D), A),nl,nl,
-  write(A),nl,nl,
+  findall(node(A, B, C, D, E), node(A, B, C, D, E), Z),nl,nl,
+  write(Z),nl,nl,
   write('Ligações'),nl,
-  findall(ligacel(E, F, G), ligacel(E, F, G), H),
-  write(H).
+  findall(edge(E, F, G, H), edge(E, F, G, H), Y),
+  write(Y).
 
 destroi_mapa_pisos():-
   findall(m(X, Y, V, P), m(X, Y, V, P), Mapa),
   findall(ligacel(A, B, C), ligacel(A, B, C), Ligacoes),
+  findall(node(K, L, M, N, O), node(K, L, M, N, O), Nodes),
+  findall(edge(A1, B1, C1, D1), edge(A1, B1, C1, D1), Edges),
   destroi(Ligacoes),
+  destroi(Nodes),
+  destroi(Edges),
   destroi(Mapa).
 
 extrai_mapa_pisos([], []).
@@ -186,28 +192,32 @@ extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas
   extrai_mapa_pisos(T, T2).
 
 
-cria_mapa_pisos([]):-!.
+cria_mapa_pisos([], _):-!.
 
-cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, Elevador, SaidaLocalizacao]|T]):-
-  cria_mapa(Mapa, Piso, 1, 1),
-  cria_grafo(Largura, Profundidade, Piso),
-  cria_mapa_pisos(T).
+cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, Elevador, SaidaLocalizacao]|T], Id):-
+  cria_mapa(Mapa, Piso, 1, 1, 1),
+  L1 is Largura+1,
+  P1 is Profundidade+1,
+  cria_grafo(L1, P1, Piso),
+  cria_mapa_pisos(T, 1).
 
-cria_mapa([], _, _, _):-!.
+cria_mapa([], _, _, _, _):-!.
 
-cria_mapa([Array|Restantes], Piso, Col, Lin):-
-  cria_linha(Array, Piso, Col, Lin),
-  Col2 is 0,
+cria_mapa([Array|Restantes], Piso, Col, Lin, Id):-
+  cria_linha(Array, Piso, Col, Lin, Id, LId),
+  Col2 is 1,
   Lin2 is Lin+1,
-  cria_mapa(Restantes, Piso, Col2, Lin2).
+  cria_mapa(Restantes, Piso, Col2, Lin2, LId).
 
 
-cria_linha([], _, _, _):-!.
+cria_linha([], _, _, _, Id, Id):-!.
 
-cria_linha([Valor|Restantes], Piso, Col, Lin):-
-  assertz(m(Col, Lin, Valor, Piso)),
+cria_linha([Valor|Restantes], Piso, Col, Lin, Id, LId):-
+  %assertz(m(Col, Lin, Valor, Piso)),
+  assertz(node(Id, Col, Lin, Valor, Piso)),
+  Id2 is Id+1,
   Col2 is Col+1,
-  cria_linha(Restantes, Piso, Col2, Lin).
+  cria_linha(Restantes, Piso, Col2, Lin, Id2, LId).
 
 % Faz retract a todos os predicados que fez assert dinamicamente antes do novo request.
 destroi([]).
@@ -259,48 +269,56 @@ conta([cor(_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
 
 %%%%% Criação de grafo (mapa do piso) %%%%%
 % m(col, lin, valor, piso) => m(0, 0, 0, A1)...
+% node(Id, Col, Lin, Valor, Piso)...
+% edge(Id1, Id2, Custo, Piso)...
 cria_grafo(_,0,_):-!.
-cria_grafo(Col,Lin,Piso):-cria_grafo_lin(Col,Lin,Piso),Lin1 is Lin-1,cria_grafo(Col,Lin1,Piso).
+cria_grafo(Col,Lin,Piso):-
+  cria_grafo_lin(Col,Lin,Piso),
+  Lin1 is Lin-1,
+  cria_grafo(Col,Lin1,Piso).
 
 
 cria_grafo_lin(0,_,_):-!.
 
-cria_grafo_lin(Col,Lin,Piso):-m(Col,Lin,0,Piso),!,
-ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-((m(ColS,Lin,0,Piso),assertz(ligacel([Col,Lin], [ColS,Lin], Piso));true)),
-((m(ColA,Lin,0,Piso),assertz(ligacel([Col,Lin], [ColA,Lin], Piso));true)),
-((m(Col,LinS,0,Piso),assertz(ligacel([Col,Lin], [Col,LinS], Piso));true)),
-((m(Col,LinA,0,Piso),assertz(ligacel([Col,Lin], [Col,Lin], Piso));true)),
-Col1 is Col-1,
-cria_grafo_lin(Col1,Lin,Piso).
+cria_grafo_lin(Col,Lin,Piso):-
+  node(Id1,Col,Lin,0,Piso),
+  !,
+  ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
+  ((node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id2, 1, Piso));true)), % Verifca à direita.
+  ((node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id3, 1, Piso));true)), % Verifca à esquerda.
+  ((node(Id4,Col,LinS,0,Piso), assertz(edge(Id1, Id4, 1, Piso));true)), % Verifica abaixo.
+  ((node(Id5,Col,LinA,0,Piso), assertz(edge(Id1, Id5, 1, Piso));true)), % Verifica acima.
+  Col1 is Col-1,
+  cria_grafo_lin(Col1,Lin,Piso).
 
-cria_grafo_lin(Col,Lin,Piso):-Col1 is Col-1,cria_grafo_lin(Col1,Lin,Piso).
+cria_grafo_lin(Col,Lin,Piso):-
+  Col1 is Col-1,cria_grafo_lin(Col1,Lin,Piso).
 
 
 % A-star.
-aStar(Orig,Dest,Cam,Custo):-
-    aStar2(Dest,[(_,0,[Orig])],Cam,Custo).
+aStar(Orig,Dest,Cam,Custo,Piso):-
+    aStar2(Dest,[(_,0,[Orig])],Cam,Custo,Piso).
 
-aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):-
+aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo,Piso):-
 	reverse([Dest|T],Cam).
 
-aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
+aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo,Piso):-
 	LA=[Act|_],
 	findall((CEX,CaX,[X|LA]),
-		(Dest\==Act,edge(Act,X,CustoX),\+ member(X,LA),
-		CaX is CustoX + Ca, estimativa(X,Dest,EstX),
+		(Dest\==Act,edge(Act,X,CustoX,Piso),\+ member(X,LA),
+		CaX is CustoX + Ca, estimativa(X,Dest,EstX,Piso),
 		CEX is CaX +EstX),Novos),
 	append(Outros,Novos,Todos),
 	sort(Todos,TodosOrd),
-	aStar2(Dest,TodosOrd,Cam,Custo).
+	aStar2(Dest,TodosOrd,Cam,Custo,Piso).
 
 % substituir a chamada edge(Act,X,CustoX)
 % por (edge(Act,X,CustoX);edge(X,Act,CustoX))
 % se quiser ligacoes bidirecionais
 
 
-estimativa(Nodo1,Nodo2,Estimativa):-
-	node(Nodo1,X1,Y1),
-	node(Nodo2,X2,Y2),
+estimativa(Nodo1,Nodo2,Estimativa,Piso):-
+	node(Nodo1,X1,Y1,0,Piso),
+	node(Nodo2,X2,Y2,0,Piso),
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
 
