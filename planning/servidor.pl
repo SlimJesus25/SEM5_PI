@@ -299,6 +299,7 @@ cria_grafo_lin(Col,Lin,Piso):-
 aStar(Orig,Dest,Cam,Custo,Piso):-
     aStar2(Dest,[(_,0,[Orig])],Cam,Custo,Piso).
 
+% Se for preciso apenas o melhor caminho, colocar cut a seguir ao reverse.
 aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo,Piso):-
 	reverse([Dest|T],Cam).
 
@@ -318,7 +319,7 @@ aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo,Piso):-
 
 
 estimativa(Nodo1,Nodo2,Estimativa,Piso):-
-	node(Nodo1,X1,Y1,0,Piso),
-	node(Nodo2,X2,Y2,0,Piso),
+	node(Nodo1,X1,Y1,_,Piso),
+	node(Nodo2,X2,Y2,_,Piso),
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
 
