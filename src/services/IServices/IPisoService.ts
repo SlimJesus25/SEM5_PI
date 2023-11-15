@@ -12,7 +12,6 @@ export default interface IPisoService  {
   getPiso( pisoId: string): Promise<Result<IPisoDTO>>;
   listPisoPassagem(edificioDTO: IPisoDTO): Promise<Result<Array<IPisoDTO>>>;
   listPisos(codigoEdificio: IListPisosDTO): Promise<Result<IPisoDTO[]>>;
-  listMinMax(minMax: IListMinMaxDTO): Promise<Result<IEdificioDTO[]>>;
   deletePiso(designacao: IDeletePisoDTO): Promise<Result<IPisoDTO>>;
   listPisosGeral(): Promise<Result<IListPisoByEdificioDTO[]>>;
 }

@@ -13,9 +13,6 @@ import { MatSort } from '@angular/material/sort';
 })
 export class PisoListComponent {
   @Input() codigoEdificio: string = '';
-  @Input() min : string = '';
-  @Input() max : string = '';
-  selectOption :number = 0;
 
   displayedColumns: string[] = ['Designacao', 'Descricao', 'Edificio'];
   dataSource: MatTableDataSource<Piso> = new MatTableDataSource();
@@ -29,25 +26,12 @@ export class PisoListComponent {
   }
 
   listPisos() {
-    this.selectOption = 1;
-  }
-
-  submitCode() {
     this.pisoService.listPisos(this.codigoEdificio)
         .subscribe(pisos => {
           this.dataSource = new MatTableDataSource(pisos);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         });
-  }
-
-  listMinMax() {
-    this.selectOption = 2;
-    this.pisoService.listMinMax(this.min,this.max)
-      .subscribe(pisos => {
-        this.dataSource = new MatTableDataSource(pisos);
-        this.dataSource.paginator = this.paginator;
-      });
   }
 
   filterData($event: any) {

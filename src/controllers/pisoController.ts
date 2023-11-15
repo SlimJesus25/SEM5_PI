@@ -71,25 +71,6 @@ export default class PisoController implements IPisoController /* TODO: extends 
     }
   };
 
-  public async listMinMax(req: Request, res: Response, next: NextFunction){
-    const min = Number(req.params.min);
-    const max = Number(req.params.max);
-    const minMaxDTO: IListMinMaxDTO = { min, max };
-    try {
-      const edificioOrError = await this.pisoServiceInstance.listMinMax(minMaxDTO) as Result<IEdificioDTO[]>;
-
-      if (edificioOrError.isFailure) {
-        return res.status(404).send("Erro: " + edificioOrError.errorValue());
-      }
-
-      const edificioDTO = edificioOrError.getValue();
-      return res.json( edificioDTO ).status(200)
-    }
-    catch (e) {
-      return next(e);
-    }
-  };
-
   public async deletePiso(req: Request, res: Response, next: NextFunction){
     try{
       const pisoOrError = await this.pisoServiceInstance.deletePiso(req.body as IDeletePisoDTO) as Result<IPisoDTO>;

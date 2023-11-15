@@ -25,4 +25,8 @@ export class GestorCampusComponent implements OnInit {
     this.router.navigate(['/passagens']);
   }
 
+  openElevador() {
+    this.router.navigate(['/elevadores']);
+  }
+
 }
