@@ -1,3 +1,11 @@
+.mat-toolbar {
+    background-color: #2196F3;
+    color: #FFFFFF;
+    height: 70px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 h1 {
     margin-bottom: 0;
 }
@@ -20,11 +28,3 @@ nav a:hover {
 nav a:active {
     background-color: black;
 }
-
-.blue-button {
-    background-color: rgb(135,206,250);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-  }

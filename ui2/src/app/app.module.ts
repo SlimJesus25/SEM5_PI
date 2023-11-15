@@ -12,6 +12,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MessagesComponent } from './component/messages/messages.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -55,6 +62,7 @@ import { ElevadorUpdateComponent } from './component/elevador/elevador-update/el
 import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elevador-geral.component';
 import { ElevadorListComponent } from './component/elevador/elevador-list/elevador-list.component';
 import { ElevadorCreateComponent } from './component/elevador/elevador-create/elevador-create.component';
+import { LoginComponent } from './component/login/login.component';
 
 @NgModule({
   imports: [
@@ -69,6 +77,12 @@ import { ElevadorCreateComponent } from './component/elevador/elevador-create/el
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatListModule,
+    MatMenuModule
   ],
   declarations: [
     AppComponent,
@@ -117,7 +131,9 @@ import { ElevadorCreateComponent } from './component/elevador/elevador-create/el
     ElevadorGeralComponent,
     ElevadorUpdateComponent,
     ElevadorListComponent,
-    ElevadorCreateComponent
+    ElevadorCreateComponent,
+
+    LoginComponent
 
   ],
   bootstrap: [ AppComponent ]
