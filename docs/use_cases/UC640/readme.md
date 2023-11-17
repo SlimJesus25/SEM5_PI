@@ -9,6 +9,8 @@
 ### 2.1 Identificação do problema
 
 Qual o módulo "ideal" para ser deployed para uma VM do DEI?
+Como implementar o "deployment automático"?
+O que é o plano de testes?
 
 ### 2.2 Testes ao requisito
 
@@ -16,63 +18,27 @@ Qual o módulo "ideal" para ser deployed para uma VM do DEI?
 
 ## 3. Desenho
 
-### 3.1. Realização
+### 3.1 Módulo Ideal
 
-#### 3.1.1 Excerto de domínio
+A equipa optou por escolher o módulo de front-end para dar o deployment automático para uma VM do DEI. É um módulo simples e fácil de configurar para correr corretamente.
 
-![excerto dominio](ed270.svg "ed_270.svg")
+### 3.2 Deployment Automático
 
-#### 3.1.2 Vista de processo
+Para a implementação do deployment automático, a equipa pensou num bash script que seria adicionado ao crontab do servidor para que conseguisse ser executado com uma frequência X.
 
-##### 3.1.2.1 Nível 1
+### 3.3 Plano de Testes
 
-![vista processo 1](vp1.svg "Vista processo - nível 1")
+O plano de testes vai consistir em 2 pontos:
 
-##### 3.1.2.2 Nível 2
+- Testes de compilação + runtime;
+- Testes de unidade + integração.
 
-![vista processo 2](vp2.svg "Vista processo - nível 2")
+Testes de compilação + runtime vão perceber se a aplicação está com algum problema que leve a uma interrupção inesperada. Enquanto que os testes de unidade + integração vão tentar verificar se as regras de negócio e os diferentes componentes isolados e integrados estão a ser seguidas e a funcionar devidamente.
 
-##### 3.1.2.3 Nível 3
+### 3.4 Notas
 
-![vista processo 3](vp270.svg "Vista processo - nível 3")
+A aplicação vai seguir o workflow da seguinte figura (ponto inicial S0):
 
-#### 3.1.3 Vista lógica
+![maquina de estados](me.svg "me.svg")
 
-##### 3.1.3.1 Nível 1
-
-![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
-
-##### 3.1.3.2 Nível 2
-
-![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
-
-##### 3.1.3.3 Nível 3
-
-![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
-
-#### 3.1.3 Vista de cenários
-
-##### 3.1.3.1 Nível 1
-
-![vista cenario 1](/docs/scenario_view/level1/sv1.svg "Vista cenário - nível 1")
-
-#### 3.1.4 Vista de implementação
-
-##### 3.1.3.1 Nível 2
-
-![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
-
-##### 3.1.3.1 Nível 3
-
-![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
-
-#### 3.1.5 Vista física
-
-##### 3.1.5.1 Nível 2
-
-![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
-
-### 3.2. Padrões aplicados
-
-Os padrões aplicados são:
-
+A equipa optou passar as novas atualizações do módulo escolhido para produção, apenas depois de garantir que nada "estragado" vai ser posto em produção, daí o passo intermédio de "compila código?".
