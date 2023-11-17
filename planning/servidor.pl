@@ -39,20 +39,10 @@ server(Port) :-
 
 path_between_floors(Request):-
   cors_enable(Request, [methods([get])]),
-  open('teste.txt', append, Stream),
-  write(Stream, Request),nl(Stream),
   http_read_data(Request, JSONData, [json_object(dict)]),
-  %http_parameters(Request, [origem(PisoOr, []), posOrigem([ColOr, LinOr], []), destino(PisoDest, []), posDestino([ColDest, LinDest], [])]),
-  %json_read_dict(Request, ResObj),
   extrai_request(JSONData, ResVal),
-  write(Stream, ResVal),nl(Stream),
   
-  catch(define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
-        error(Err,_Context),
-        write(Stream, [Err])),
-  
-  write(Stream, PisoOr),nl(Stream),
-  close(Stream),
+  define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
   request_edificios(),
   request_elevadores(),
@@ -61,28 +51,66 @@ path_between_floors(Request):-
   request_mapa_pisos(),
 
   caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
-  node(X, ColOr, LinOr, 0, PisoOr), % Pos inicial tem que ser 0.
-  node(Y, ColDest, LinDest, 0, PisoDest), % Pos destino tem que ser 0 também.
+
+  node(X, COr, LOr, 0, PisoOr), % Pos inicial tem que ser 0.
+  node(Y, CDest, LDest, 0, PisoDest), % Pos destino tem que ser 0 também.
   
-  aStar_piso(PisosPer, CamPorPiso, CamF, X, Y),
+  aStar_piso(PisosPer, CamPorPiso, Cam, X, Y),
+
+  converte_cam_final(Cam, CamF),
+
   R = json([sol1=CamF, sol2=CamPorPiso]),
   prolog_to_json(R, JSONObject),
+
   reply_json(JSONObject, [json_object(dict)]).
+
+converte_cam_final([], []).
+
+converte_cam_final([elev(PO,PD)|T], [[PO,elev,PD]|T2]):-
+  converte_cam_final(T, T2).
+
+converte_cam_final([cor(PO,PD)|T], [[PO,cor,PD]|T2]):-
+  converte_cam_final(T, T2).
+
+remove_double_quotes([], []).  % Base case: an empty list remains empty
+
+remove_double_quotes([H|T], [H1|T1]) :-
+    atomic(H),
+    atom_chars(H, Chars),
+    exclude(=( '"'), Chars, CharsWithoutQuotes),
+    atomic_list_concat(CharsWithoutQuotes, H1),
+    atom(H1),
+    remove_double_quotes(T, T1).
+
+remove_double_quotes([H|T], [H1|T1]) :-
+    compound(H),
+    H =.. [F|Args],  % Decompose compound term into functor and arguments
+    remove_double_quotes(Args, ArgsWithoutQuotes),  % Recursively process arguments
+    H1 =.. [F|ArgsWithoutQuotes],  % Reconstruct compound term with modified arguments
+    remove_double_quotes(T, T1).
+
+remove_double_quotes([H|T], Result) :-
+    \+ (atomic(H); compound(H)),  % Skip non-atomic and non-compound elements
+    remove_double_quotes(T, Result).
+
+
+remove_quotes([], []).
+remove_quotes([cor(A,B)|T1], [cor(A1,B1)|T0]) :-
+  atom_chars(A, [O,T|CharsA]), % skip the quotes
+  atom_chars(B, [O2,T2|CharsB]), % skip the quotes
+  atom_concat(O, T, A1),
+  atom_concat(O2, T2, B1),
+  remove_quotes(T1, T0).
+remove_quotes([elev(C,D)|T1], [elev(C1,D1)|T0]) :-
+  atom_chars(C, [O,T|CharsA]), % skip the quotes
+  atom_chars(D, [O2,T2|CharsB]), % skip the quotes
+  atom_concat(O, T, C1),
+  atom_concat(O2, T2, D1),
+  remove_quotes(T1, T0).
 
 extrai_request(Data, [Data.origem, Data.posOrigem, Data.destino, Data.posDestino|[]]).
 
-define_dados([PO, [ColOr, LinOr], PD, [ColDest, LinDest]], PO2, ColOr2, LinOr2, PD2, ColDest2, LinDest2):-
-  PO2 is PO,
-  ColOr2 is ColOr,
-  LinOr2 is LinOr,
-  PD2 is PD,
-  ColDest2 is ColDest,
-  LinDest2 is LinDest.
-  
-  %open('teste.txt', append, Stream),
-  %nl(Stream),
-  %write(Stream, PisoOr),nl(Stream),
-  %close(Stream).
+define_dados([PO, [ColOr, LinOr], PD, [ColDest, LinDest]], PO, ColOr, LinOr, PD, ColDest, LinDest).
 
 % Vai aplicar o A-Star a cada um dos pisos da solução de melhor_caminho_pisos ou caminho_pisos.
 % 1º - Lista de pisos da solução.
