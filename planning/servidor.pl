@@ -112,6 +112,10 @@ extrai_request(Data, [Data.origem, Data.posOrigem, Data.destino, Data.posDestino
 
 define_dados([PO, [ColOr, LinOr], PD, [ColDest, LinDest]], PO, ColOr, LinOr, PD, ColDest, LinDest).
 
+%%%
+
+%%%
+
 % Vai aplicar o A-Star a cada um dos pisos da solução de melhor_caminho_pisos ou caminho_pisos.
 % 1º - Lista de pisos da solução.
 % 2º - Lista de listas contendo as soluções do A-Star para cada piso.
@@ -122,8 +126,8 @@ aStar_piso([PisoDest|[]], [UltCaminho|[]], [], Or, Dest):-
 aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Travessias], IdInicial, Dest):-
 
   ((TravessiaEd == elev(PisoAct, PisoProx), elev_pos(Col, Lin, PisoAct), node(IdElev, Col, Lin, _, PisoAct),
-  edge(IdElev, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(Col1, Lin1, PisoProx),
-  node(IdElevProxPiso, Col1, Lin1, _, PisoProx), edge(IdElevProxPiso, IdInicialProxPiso, _, PisoProx))
+  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(Col1, Lin1, PisoProx),
+  node(IdElevProxPiso, Col1, Lin1, _, PisoProx), edge(IdElevProxPiso, IdInicialProxPiso, _, PisoProx),!)
   ;
   (TravessiaEd == cor(PisoAct, PisoProx), corr_pos(Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct),
   edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), corr_pos(Col1, Lin1, PisoProx),
@@ -318,45 +322,53 @@ destroi([H|T]):-
   destroi(T).
 
 % Algoritmo que vai retornar os caminhos do piso origem para o piso destino. Em LEdCam vai armazenar os edifícios e o LLig vai retornar pormenorizado.
-caminho_pisos(PisoOr,PisoDest,LEdCam,LLig,LPiCam):-
-  pisos(EdOr,LPisosOr),member(PisoOr,LPisosOr),
-  pisos(EdDest,LPisosDest),member(PisoDest,LPisosDest),
-  caminho_edificios(EdOr,EdDest,LEdCam),
-  segue_pisos(PisoOr,PisoDest,LEdCam,LLig,LPiCam2),
-  append([PisoOr],LPiCam2,LPiCam).
-  %nl,
-  %write(LPiCam2),nl,nl.
 
-segue_pisos(PisoDest,PisoDest,_,[],[]).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-segue_pisos(PisoDest1,PisoDest,[EdDest],[elev(PisoDest1,PisoDest)],[PisoDest|ListaPisos]):-
-  PisoDest\==PisoDest1,
-  elevador(EdDest,LPisos), member(PisoDest1,LPisos), member(PisoDest,LPisos).
+caminho_pisos(PisoOr, PisoDest, LEdCam, LLig, LPiCam):-
+  pisos(EdOr, LPisosOr), member(PisoOr, LPisosOr),
+  pisos(EdDest, LPisosDest), member(PisoDest, LPisosDest),
+  caminho_edificios(EdOr, EdDest, LEdCam),
+  !, % Cut to prevent backtracking on the caminho_edificios/3 predicate
+  segue_pisos(PisoOr, PisoDest, LEdCam, LLig, LPiCam2),
+  append([PisoOr], LPiCam2, LPiCam).
 
-segue_pisos(PisoAct,PisoDest,[EdAct,EdSeg|LOutrosEd],[cor(PisoAct,PisoSeg)|LOutrasLig],[PisoSeg|ListaPisos]):-
-  (corredor(EdAct,EdSeg,PisoAct,PisoSeg);corredor(EdSeg,EdAct,PisoSeg,PisoAct)),
-  segue_pisos(PisoSeg,PisoDest,[EdSeg|LOutrosEd],LOutrasLig,ListaPisos).
+segue_pisos(PisoDest, PisoDest, _, [], []):- !.
 
-segue_pisos(PisoAct,PisoDest,[EdAct,EdSeg|LOutrosEd],[elev(PisoAct,PisoAct1),cor(PisoAct1,PisoSeg)|LOutrasLig],[PisoAct1,PisoSeg|ListaPisos]):-
-  (corredor(EdAct,EdSeg,PisoAct1,PisoSeg);corredor(EdSeg,EdAct,PisoSeg,PisoAct1)),
-  PisoAct1\==PisoAct,
-  elevador(EdAct,LPisos),member(PisoAct,LPisos),member(PisoAct1,LPisos),
-  segue_pisos(PisoSeg,PisoDest,[EdSeg|LOutrosEd],LOutrasLig,ListaPisos).
+segue_pisos(PisoDest1, PisoDest, [EdDest], [elev(PisoDest1, PisoDest)], [PisoDest | ListaPisos]):-
+  PisoDest \== PisoDest1,
+  elevador(EdDest, LPisos), member(PisoDest1, LPisos), member(PisoDest, LPisos),
+  !. % Cut to prevent backtracking
 
-caminho_edificios(EdOr,EdDest,LEdCam):-
-  caminho_edificios2(EdOr,EdDest,[EdOr],LEdCam).
+segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [cor(PisoAct, PisoSeg) | LOutrasLig], [PisoSeg | ListaPisos]):-
+  (corredor(EdAct, EdSeg, PisoAct, PisoSeg), !; corredor(EdSeg, EdAct, PisoSeg, PisoAct), !),
+  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos),
+  !. % Cut to prevent backtracking
 
-caminho_edificios2(EdX,EdX,LEdInv,LEdCam):-
-  !,reverse(LEdInv,LEdCam).
+segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [elev(PisoAct, PisoAct1), cor(PisoAct1, PisoSeg) | LOutrasLig], [PisoAct1, PisoSeg | ListaPisos]):-
+  (corredor(EdAct, EdSeg, PisoAct1, PisoSeg), !; corredor(EdSeg, EdAct, PisoSeg, PisoAct1), !),
+  PisoAct1 \== PisoAct,
+  elevador(EdAct, LPisos), member(PisoAct, LPisos), member(PisoAct1, LPisos),
+  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos),
+  !. % Cut to prevent backtracking
 
-caminho_edificios2(EdAct,EdDest,LEdPassou,LEdCam):-
-  (liga(EdAct,EdInt);liga(EdInt,EdAct)),
-  \+member(EdInt,LEdPassou),
-  caminho_edificios2(EdInt,EdDest,[EdInt|LEdPassou],LEdCam).
+caminho_edificios(EdOr, EdDest, LEdCam):-
+  caminho_edificios2(EdOr, EdDest, [EdOr], LEdCam),
+  !. % Cut to prevent backtracking
+
+caminho_edificios2(EdX, EdX, LEdInv, LEdCam):-
+  !, reverse(LEdInv, LEdCam).
+
+caminho_edificios2(EdAct, EdDest, LEdPassou, LEdCam):-
+  (liga(EdAct, EdInt), !; liga(EdInt, EdAct)),
+  \+member(EdInt, LEdPassou),
+  caminho_edificios2(EdInt, EdDest, [EdInt | LEdPassou], LEdCam),
+  !. % Cut to prevent backtracking
+
 
 % Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
 melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor,LPiCam):-
-findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig,LPiCam),LLLig),
+findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLiga,LPiCam),LLLig),
 menos_elevadores(LLLig,LLigMelhor,_,_).
 menos_elevadores([LLig],LLig,NElev,NCor):-conta(LLig,NElev,NCor).
 menos_elevadores([LLig|OutrosLLig],LLigR,NElevR,NCorR):-
@@ -406,7 +418,7 @@ cria_grafo_lin(Col,Lin,Piso):-
 
   
   Col1 is Col-1,
-  cria_grafo_lin(Col1,Lin,Piso).
+  cria_grafo_lin(Col1,Lin,Piso),!.
 
 cria_grafo_lin(Col,Lin,Piso):-
   Col1 is Col-1,cria_grafo_lin(Col1,Lin,Piso).
@@ -418,7 +430,7 @@ aStar(Orig,Dest,Cam,Custo,Piso):-
 
 % Se for preciso apenas o melhor caminho, colocar cut a seguir ao reverse.
 aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo,Piso):-
-	reverse([Dest|T],Cam).
+	reverse([Dest|T],Cam),!.
 
 aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo,Piso):-
 	LA=[Act|_],
