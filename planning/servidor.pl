@@ -8,6 +8,8 @@
 :- use_module(library(http/json_convert)).
 :- use_module(library(http/http_open)).
 :- use_module(library(http/http_json)).
+:- use_module(library(http/http_error)).
+:- use_module(library(http/http_dispatch)).
 
 :-dynamic edificio/1. % edificio(A), edificio(B)...
 :-dynamic pisos/2. % pisos(A, [A1, A2, A3])...
@@ -19,6 +21,13 @@
 :-dynamic liga/2. % liga(EdificioA, EdificioB)...
 :-dynamic node/5. % node(Id, Col, Lin, Valor, Piso)...
 :-dynamic edge/4. % edge(Id1, Id2, Custo, Piso)...
+:-dynamic elev_pos/3. % elev_pos(Col, Lin, Piso)...
+:-dynamic corr_pos/3. % corr_pos(Col, Lin, Piso)...
+
+:-set_prolog_flag(answer_write_options,[max_depth(0)]).
+:-set_prolog_flag(report_error,true).
+:-set_prolog_flag(unknown,error). 
+
 
 % Rela��o entre pedidos HTTP e predicados que os processam
 :- http_handler('/path_between_floors', path_between_floors, []).
@@ -29,29 +38,71 @@ server(Port) :-
 		
 
 path_between_floors(Request):-
-  json_read_dict(Request, ResObj),
-  catch(request_edificios(),
-        error(Err, _context),
-        format('0 edifícios encontrados! ~w\n', [Err])),
-  request_elevadores(), 
-  request_pisos(),
-  catch(request_passagens(),
-        error(Err, _context),
-        format('0 passagens encontradas! ~w\n', [Err])),
-  request_mapa_pisos(),
-  melhor_caminho_pisos(PisoOr, PisoDest, Cam, PisosPer),
-  aStar_piso(PisosPer),
+  cors_enable(Request, [methods([get])]),
+  open('teste.txt', append, Stream),
+  write(Stream, Request),nl(Stream),
+  http_read_data(Request, JSONData, [json_object(dict)]),
+  %http_parameters(Request, [origem(PisoOr, []), posOrigem([ColOr, LinOr], []), destino(PisoDest, []), posDestino([ColDest, LinDest], [])]),
+  %json_read_dict(Request, ResObj),
+  extrai_request(JSONData, ResVal),
+  write(Stream, ResVal),nl(Stream),
+  
+  catch(define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
+        error(Err,_Context),
+        write(Stream, [Err])),
+  
+  write(Stream, PisoOr),nl(Stream),
+  close(Stream),
 
-  reply_json('{}', [json_object(dict)]).
+  request_edificios(),
+  request_elevadores(),
+  request_pisos(),
+  request_passagens(),
+  request_mapa_pisos(),
+
+  caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
+  node(X, ColOr, LinOr, 0, PisoOr), % Pos inicial tem que ser 0.
+  node(Y, ColDest, LinDest, 0, PisoDest), % Pos destino tem que ser 0 também.
+  
+  aStar_piso(PisosPer, CamPorPiso, CamF, X, Y),
+  R = json([sol1=CamF, sol2=CamPorPiso]),
+  prolog_to_json(R, JSONObject),
+  reply_json(JSONObject, [json_object(dict)]).
+
+extrai_request(Data, [Data.origem, Data.posOrigem, Data.destino, Data.posDestino|[]]).
+
+define_dados([PO, [ColOr, LinOr], PD, [ColDest, LinDest]], PO2, ColOr2, LinOr2, PD2, ColDest2, LinDest2):-
+  PO2 is PO,
+  ColOr2 is ColOr,
+  LinOr2 is LinOr,
+  PD2 is PD,
+  ColDest2 is ColDest,
+  LinDest2 is LinDest.
+  
+  %open('teste.txt', append, Stream),
+  %nl(Stream),
+  %write(Stream, PisoOr),nl(Stream),
+  %close(Stream).
 
 % Vai aplicar o A-Star a cada um dos pisos da solução de melhor_caminho_pisos ou caminho_pisos.
 % 1º - Lista de pisos da solução.
 % 2º - Lista de listas contendo as soluções do A-Star para cada piso.
-aStar_piso([], _):-!.
+aStar_piso([PisoDest|[]], [UltCaminho|[]], [], Or, Dest):-
+  aStar(Or, Dest, UltCaminho, Custo, PisoDest),
+  !.
 
-aStar_piso([PisoAct|ProxPisos], [CamPiso|Restante]):-
-  aStar(Orig, Dest, CamPiso, Custo, PisoAct),
-  aStar_piso(ProxPisos, Restante).
+aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Travessias], IdInicial, Dest):-
+
+  ((TravessiaEd == elev(PisoAct, PisoProx), elev_pos(Col, Lin, PisoAct), node(IdElev, Col, Lin, _, PisoAct),
+  edge(IdElev, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(Col1, Lin1, PisoProx),
+  node(IdElevProxPiso, Col1, Lin1, _, PisoProx), edge(IdElevProxPiso, IdInicialProxPiso, _, PisoProx))
+  ;
+  (TravessiaEd == cor(PisoAct, PisoProx), corr_pos(Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct),
+  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), corr_pos(Col1, Lin1, PisoProx),
+  node(IdCorrProxPiso, Col1, Lin1, _, PisoProx), edge(IdCorrProxPiso, IdInicialProxPiso, _, PisoProx))),
+
+  append([PisoProx], ProxPisos, L),
+  aStar_piso(L, Restante, Travessias, IdInicialProxPiso, Dest).
 
 % Vai fazer o GET e fazer os asserts para criar os factos.
 % São aproveitados o edifício a que pertence o piso e a sua designação: pisos(B, [B1, B2, B3]). pisos(C, [C1, C2]).
@@ -60,7 +111,6 @@ request_pisos():-
   http_open('http://localhost:3000/api/piso/listPisosGeral', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_pisos(ResObj, ResVal),
-  write(ResVal),
   cria_pisos(ResVal).
 
 % Dada uma lista de JSONs, vai iterar e colocar na lista Codigos os codigos dos edifícios.
@@ -95,9 +145,7 @@ request_passagens():-
   http_open('http://localhost:3000/api/passagem/listPassagens', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_passagens(ResObj, ResVal),
-  cria_passagens(ResVal),
-  findall(corredor(A, B, C, D), corredor(A, B, C, D), X),
-  write(X).
+  cria_passagens(ResVal).
 
 destroi_passagens():-
   findall(corredor(A, B, C, D), corredor(A, B, C, D), A),
@@ -120,9 +168,7 @@ request_edificios():-
   http_open('http://localhost:3000/api/edificio/listEdificios', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_edificio(ResObj, ResVal),
-  cria_edificio(ResVal),
-  findall(edificio(X), edificio(X), A),
-  write(A).
+  cria_edificio(ResVal).
 
 
 % Dada uma lista de JSONs, vai iterar e colocar na lista Codigos os codigos dos edifícios.
@@ -147,9 +193,7 @@ request_elevadores():-
   http_open('http://localhost:3000/api/elevador/listElevadores', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_elevadores(ResObj, ResVal),
-  cria_elevadores(ResVal),
-  findall(elevador(X, Y), elevador(X, Y), A),
-  write(A).
+  cria_elevadores(ResVal).
 
 extrai_elevadores([], []).
 extrai_elevadores([H|T], [[H.edificio, H.pisosServidos]|T2]):-
@@ -177,19 +221,17 @@ request_mapa_pisos():-
   http_open('http://localhost:3000/api/mapaPiso/listMapasPiso', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_mapa_pisos(ResObj, ResVal),
-  cria_mapa_pisos(ResVal, 0),
-  write('Mapa'),
-  findall(node(A, B, C, D, E), node(A, B, C, D, E), Z),nl,nl,
-  write(Z),nl,nl,
-  write('Ligações'),nl,
-  findall(edge(E, F, G, H), edge(E, F, G, H), Y),
-  write(Y).
+  cria_mapa_pisos(ResVal, 0).
 
 destroi_mapa_pisos():-
   %findall(m(X, Y, V, P), m(X, Y, V, P), Mapa),
   %findall(ligacel(A, B, C), ligacel(A, B, C), Ligacoes),
   findall(node(K, L, M, N, O), node(K, L, M, N, O), Nodes),
   findall(edge(A1, B1, C1, D1), edge(A1, B1, C1, D1), Edges),
+  findall(elev_pos(K1, L1, M1), elev_pos(K1, L1, M1), ElevPos),
+  findall(corr_pos(K2, L2, M2), corr_pos(K2, L2, M2), CorrPos),
+  destroi(ElevPos),
+  destroi(CorrPos),
   %destroi(Ligacoes),
   destroi(Nodes),
   destroi(Edges).
@@ -202,12 +244,26 @@ extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas
 
 cria_mapa_pisos([], _):-!.
 
-cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, Elevador, SaidaLocalizacao]|T], Id):-
+cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[ColE, LinE]|_], SaidaLocalizacao]|T], Id):-
   cria_mapa(Mapa, Piso, 1, 1, 1),
+  identifica_corredores(Saidas, Piso),
+  assertz(elev_pos(ColE, LinE, Piso)), % Existe apenas 1 elevador por edifício.
   L1 is Largura+1,
   P1 is Profundidade+1,
   cria_grafo(L1, P1, Piso),
   cria_mapa_pisos(T, 1).
+
+% Caso base - percorreu a lista de corredores até ao final.
+identifica_corredores([], _):-
+  !.
+
+% Caso o edifício não tenha nenhum corredor.
+identifica_corredores([[]], _):-
+  !.
+
+identifica_corredores([[Col, Lin]|Restantes], Piso):-
+  assertz(corr_pos(Col, Lin, Piso)),
+  identifica_corredores(Restantes, Piso).
 
 cria_mapa([], _, _, _, _):-!.
 
@@ -300,13 +356,27 @@ cria_grafo(Col,Lin,Piso):-
 cria_grafo_lin(0,_,_):-!.
 
 cria_grafo_lin(Col,Lin,Piso):-
-  node(Id1,Col,Lin,0,Piso),
+  ((corr_pos(Col, Lin, Piso),%Piso == "A1",trace,
+  node(Id1, Col, Lin, _, Piso))
+  ;
+  (elev_pos(Col, Lin, Piso),%Piso == "A1",trace,
+  node(Id1, Col, Lin, _, Piso))
+  ;
+  node(Id1,Col,Lin,0,Piso)),
   !,
   ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
   ((node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id2, 1, Piso));true)), % Verifca à direita.
   ((node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id3, 1, Piso));true)), % Verifca à esquerda.
   ((node(Id4,Col,LinS,0,Piso), assertz(edge(Id1, Id4, 1, Piso));true)), % Verifica abaixo.
   ((node(Id5,Col,LinA,0,Piso), assertz(edge(Id1, Id5, 1, Piso));true)), % Verifica acima.
+  C is sqrt(2),
+  ((node(Id6,ColS,LinA,0,Piso), assertz(edge(Id1, Id6, C, Piso));true)), % Verifica diagonal superior direita.
+  ((node(Id7,ColA,LinA,0,Piso), assertz(edge(Id1, Id7, C, Piso));true)), % Verifica diagonal superior esquerda.
+  ((node(Id8,ColS,LinS,0,Piso), assertz(edge(Id1, Id8, C, Piso));true)), % Verifica diagonal inferior direita.
+  ((node(Id9,ColA,LinS,0,Piso), assertz(edge(Id1, Id9, C, Piso));true)), % Verifica diagonal inferior esquerda.
+
+
+  
   Col1 is Col-1,
   cria_grafo_lin(Col1,Lin,Piso).
 
