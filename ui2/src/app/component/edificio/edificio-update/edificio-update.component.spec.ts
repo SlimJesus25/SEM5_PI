@@ -3,25 +3,25 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { of, throwError } from 'rxjs';
-import { EdificioCreateComponent } from './edificio-create.component';
+import { EdificioUpdateComponent } from './edificio-update.component';
 import { Edificio } from '../../../model/edificio';
 import { MessageService } from '../../../service/message/message.service';
 import { EdificioService } from '../../../service/edificio/edificio.service';
 import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
 
 
-describe('EdificioCreateComponent', () => {
-  let component: EdificioCreateComponent;
-  let fixture: ComponentFixture<EdificioCreateComponent>;
+describe('EdificioUpdateComponent', () => {
+  let component: EdificioUpdateComponent;
+  let fixture: ComponentFixture<EdificioUpdateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports:[HttpClientTestingModule],
-      declarations: [ EdificioCreateComponent ]
+      declarations: [ EdificioUpdateComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EdificioCreateComponent);
+    fixture = TestBed.createComponent(EdificioUpdateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -30,7 +30,7 @@ describe('EdificioCreateComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should be successful created', () => {
+  it('should be successful updated', () => {
     let fakeLocation = TestBed.inject(Location);
     let fakeMessageService = TestBed.inject(MessageService);
 
@@ -53,32 +53,32 @@ describe('EdificioCreateComponent', () => {
       }
     }));
 
-    component = new EdificioCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new EdificioUpdateComponent(fakeLocation,fakeService,fakeMessageService);
 
     component.edificio.codigoEdificio = "K",
     component.edificio.dimensaoMaximaPiso = "[200,200]",
-    component.edificio.descricaoEdificio = "Edificio de Magia",
-    component.edificio.nomeOpcionalEdificio = "Edificio Julio de Matos";
+    component.edificio.descricaoEdificio = "Edificio de Truques",
+    component.edificio.nomeOpcionalEdificio = "Edificio Alterado";
 
 
-    component.createEdificio();
+    component.updateEdificio();
 
-    expect(fakeService.createEdificio).toHaveBeenCalled();
-    expect(component.finalMessage).toBe("Success edificio creation!");
+    expect(fakeService.updateEdificio).toHaveBeenCalled();
+    expect(component.finalMessage).toBe("Success edificio update!");
   })
 
-  it('should be successful created', () => {
+  it('should be successful updated', () => {
     let fakeLocation = TestBed.inject(Location);
     let fakeMessageService = TestBed.inject(MessageService);
 
-    const fakeService = jasmine.createSpyObj('EdificioService', ['createEdificio']);
-    fakeService.createEdificio.and.returnValue(throwError({
+    const fakeService = jasmine.createSpyObj('EdificioService', ['updateEdificio']);
+    fakeService.updateEdificio.and.returnValue(throwError({
       error: "error"
     }));
 
-    component = new EdificioCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new EdificioUpdateComponent(fakeLocation,fakeService,fakeMessageService);
 
-    component.createEdificio();
+    component.updateEdificio();
 
     expect(fakeService.createEdificio).toHaveBeenCalled();
     expect(component.finalMessage).toBe("error");

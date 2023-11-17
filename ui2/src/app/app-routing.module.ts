@@ -40,6 +40,8 @@ import { ElevadorListComponent } from './component/elevador/elevador-list/elevad
 import { ElevadorCreateComponent } from './component/elevador/elevador-create/elevador-create.component';
 
 import { LoginComponent } from './component/login/login.component';
+import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/mapa-piso-create.component';
+import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
 
 const routes: Routes = [
 
@@ -92,6 +94,11 @@ const routes: Routes = [
   { path: "elevadorUpdate", component: ElevadorUpdateComponent},
   { path: "elevadorList", component: ElevadorListComponent},
   { path: "elevadorCreate", component: ElevadorCreateComponent},
+
+  //MapaPiso
+  //{ path: 'mapasPisos', component: MapaPisoGeralComponent},
+  { path: 'mapaPisoCreate', component: MapaPisoCreateComponent},
+  { path: 'mapaPisoUpdate', component: MapaPisoUpdateComponent},
 
   { path: 'login',component:LoginComponent}
 ];

@@ -63,6 +63,8 @@ import { ElevadorGeralComponent } from './component/elevador/elevador-geral/elev
 import { ElevadorListComponent } from './component/elevador/elevador-list/elevador-list.component';
 import { ElevadorCreateComponent } from './component/elevador/elevador-create/elevador-create.component';
 import { LoginComponent } from './component/login/login.component';
+import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/mapa-piso-create.component';
+import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
 
 @NgModule({
   imports: [
@@ -132,6 +134,10 @@ import { LoginComponent } from './component/login/login.component';
     ElevadorUpdateComponent,
     ElevadorListComponent,
     ElevadorCreateComponent,
+
+    //MapaPiso
+    MapaPisoCreateComponent,
+    MapaPisoUpdateComponent,
 
     LoginComponent
 
