@@ -8,21 +8,9 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'RobDroneGo';
-  selectedMenu: string | null = null;
   constructor(private router: Router) {}
 
-  openAdmin() {
-    this.selectedMenu = 'admin';
-    this.router.navigate(['/admin']);
-  }
-
-  openGestorCampus() {
-    this.selectedMenu = 'gestor-Campus';
-    this.router.navigate(['/gestor-Campus']);
-  }
-
-  openGestorFrota() {
-    this.selectedMenu = 'gestor-Frota';
-    this.router.navigate(['/gestor-Frota']);
+  ngOnInit() : void{
+    this.router.navigate(['/login']);
   }
 }

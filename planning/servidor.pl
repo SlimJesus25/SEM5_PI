@@ -8,6 +8,8 @@
 :- use_module(library(http/json_convert)).
 :- use_module(library(http/http_open)).
 :- use_module(library(http/http_json)).
+:- use_module(library(http/http_error)).
+:- use_module(library(http/http_dispatch)).
 
 :-dynamic edificio/1. % edificio(A), edificio(B)...
 :-dynamic pisos/2. % pisos(A, [A1, A2, A3])...
@@ -17,8 +19,15 @@
 :-dynamic ligacel/3. % ligacel(cel1, cel2, piso) => ligacel(cel(1,3), cel(2,3), A1)...
 :-dynamic cel/2. % cel(x, y) => cel(0, 3)...
 :-dynamic liga/2. % liga(EdificioA, EdificioB)...
+:-dynamic node/5. % node(Id, Col, Lin, Valor, Piso)...
+:-dynamic edge/4. % edge(Id1, Id2, Custo, Piso)...
+:-dynamic elev_pos/3. % elev_pos(Col, Lin, Piso)...
+:-dynamic corr_pos/3. % corr_pos(Col, Lin, Piso)...
 
-:-json_object edificio(id:string, codigoEdificio: string, nomeOpcionalEdificio: string, descricaoEdificio: string, dimensaoMaximaPiso: list(integer)).
+:-set_prolog_flag(answer_write_options,[max_depth(0)]).
+:-set_prolog_flag(report_error,true).
+:-set_prolog_flag(unknown,error). 
+
 
 % Rela��o entre pedidos HTTP e predicados que os processam
 :- http_handler('/path_between_floors', path_between_floors, []).
@@ -29,19 +38,71 @@ server(Port) :-
 		
 
 path_between_floors(Request):-
-  json_read_dict(Request, ResObj),
-  catch(request_edificios(),
-        error(Err, _context),
-        format('0 edifícios encontrados! ~w\n', [Err])),
-  request_elevadores(), 
+  cors_enable(Request, [methods([get])]),
+  open('teste.txt', append, Stream),
+  write(Stream, Request),nl(Stream),
+  http_read_data(Request, JSONData, [json_object(dict)]),
+  %http_parameters(Request, [origem(PisoOr, []), posOrigem([ColOr, LinOr], []), destino(PisoDest, []), posDestino([ColDest, LinDest], [])]),
+  %json_read_dict(Request, ResObj),
+  extrai_request(JSONData, ResVal),
+  write(Stream, ResVal),nl(Stream),
+  
+  catch(define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
+        error(Err,_Context),
+        write(Stream, [Err])),
+  
+  write(Stream, PisoOr),nl(Stream),
+  close(Stream),
+
+  request_edificios(),
+  request_elevadores(),
   request_pisos(),
-  catch(request_passagens(),
-        error(Err, _context),
-        format('0 passagens encontradas! ~w\n', [Err])),
+  request_passagens(),
   request_mapa_pisos(),
-  % Ver os UC para chamar os diversos algoritmos.
-  % prolog_to_json(A, B)
-  reply_json('{}', [json_object(dict)]).
+
+  caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
+  node(X, ColOr, LinOr, 0, PisoOr), % Pos inicial tem que ser 0.
+  node(Y, ColDest, LinDest, 0, PisoDest), % Pos destino tem que ser 0 também.
+  
+  aStar_piso(PisosPer, CamPorPiso, CamF, X, Y),
+  R = json([sol1=CamF, sol2=CamPorPiso]),
+  prolog_to_json(R, JSONObject),
+  reply_json(JSONObject, [json_object(dict)]).
+
+extrai_request(Data, [Data.origem, Data.posOrigem, Data.destino, Data.posDestino|[]]).
+
+define_dados([PO, [ColOr, LinOr], PD, [ColDest, LinDest]], PO2, ColOr2, LinOr2, PD2, ColDest2, LinDest2):-
+  PO2 is PO,
+  ColOr2 is ColOr,
+  LinOr2 is LinOr,
+  PD2 is PD,
+  ColDest2 is ColDest,
+  LinDest2 is LinDest.
+  
+  %open('teste.txt', append, Stream),
+  %nl(Stream),
+  %write(Stream, PisoOr),nl(Stream),
+  %close(Stream).
+
+% Vai aplicar o A-Star a cada um dos pisos da solução de melhor_caminho_pisos ou caminho_pisos.
+% 1º - Lista de pisos da solução.
+% 2º - Lista de listas contendo as soluções do A-Star para cada piso.
+aStar_piso([PisoDest|[]], [UltCaminho|[]], [], Or, Dest):-
+  aStar(Or, Dest, UltCaminho, Custo, PisoDest),
+  !.
+
+aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Travessias], IdInicial, Dest):-
+
+  ((TravessiaEd == elev(PisoAct, PisoProx), elev_pos(Col, Lin, PisoAct), node(IdElev, Col, Lin, _, PisoAct),
+  edge(IdElev, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(Col1, Lin1, PisoProx),
+  node(IdElevProxPiso, Col1, Lin1, _, PisoProx), edge(IdElevProxPiso, IdInicialProxPiso, _, PisoProx))
+  ;
+  (TravessiaEd == cor(PisoAct, PisoProx), corr_pos(Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct),
+  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), corr_pos(Col1, Lin1, PisoProx),
+  node(IdCorrProxPiso, Col1, Lin1, _, PisoProx), edge(IdCorrProxPiso, IdInicialProxPiso, _, PisoProx))),
+
+  append([PisoProx], ProxPisos, L),
+  aStar_piso(L, Restante, Travessias, IdInicialProxPiso, Dest).
 
 % Vai fazer o GET e fazer os asserts para criar os factos.
 % São aproveitados o edifício a que pertence o piso e a sua designação: pisos(B, [B1, B2, B3]). pisos(C, [C1, C2]).
@@ -50,7 +111,6 @@ request_pisos():-
   http_open('http://localhost:3000/api/piso/listPisosGeral', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_pisos(ResObj, ResVal),
-  write(ResVal),
   cria_pisos(ResVal).
 
 % Dada uma lista de JSONs, vai iterar e colocar na lista Codigos os codigos dos edifícios.
@@ -85,9 +145,7 @@ request_passagens():-
   http_open('http://localhost:3000/api/passagem/listPassagens', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_passagens(ResObj, ResVal),
-  cria_passagens(ResVal),
-  findall(corredor(A, B, C, D), corredor(A, B, C, D), X),
-  write(X).
+  cria_passagens(ResVal).
 
 destroi_passagens():-
   findall(corredor(A, B, C, D), corredor(A, B, C, D), A),
@@ -110,9 +168,7 @@ request_edificios():-
   http_open('http://localhost:3000/api/edificio/listEdificios', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_edificio(ResObj, ResVal),
-  cria_edificio(ResVal),
-  findall(edificio(X), edificio(X), A),
-  write(A).
+  cria_edificio(ResVal).
 
 
 % Dada uma lista de JSONs, vai iterar e colocar na lista Codigos os codigos dos edifícios.
@@ -137,9 +193,7 @@ request_elevadores():-
   http_open('http://localhost:3000/api/elevador/listElevadores', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_elevadores(ResObj, ResVal),
-  cria_elevadores(ResVal),
-  findall(elevador(X, Y), elevador(X, Y), A),
-  write(A).
+  cria_elevadores(ResVal).
 
 extrai_elevadores([], []).
 extrai_elevadores([H|T], [[H.edificio, H.pisosServidos]|T2]):-
@@ -167,47 +221,67 @@ request_mapa_pisos():-
   http_open('http://localhost:3000/api/mapaPiso/listMapasPiso', ResJSON, [cert_verify_hook(cert_accept_any)]),
   json_read_dict(ResJSON, ResObj),
   extrai_mapa_pisos(ResObj, ResVal),
-  cria_mapa_pisos(ResVal),
-  write('Mapa'),
-  findall(m(A, B, C, D), m(A, B, C, D), A),nl,nl,
-  write(A),nl,nl,
-  write('Ligações'),nl,
-  findall(ligacel(E, F, G), ligacel(E, F, G), H),
-  write(H).
+  cria_mapa_pisos(ResVal, 0).
 
 destroi_mapa_pisos():-
-  findall(m(X, Y, V, P), m(X, Y, V, P), Mapa),
-  findall(ligacel(A, B, C), ligacel(A, B, C), Ligacoes),
-  destroi(Ligacoes),
-  destroi(Mapa).
+  %findall(m(X, Y, V, P), m(X, Y, V, P), Mapa),
+  %findall(ligacel(A, B, C), ligacel(A, B, C), Ligacoes),
+  findall(node(K, L, M, N, O), node(K, L, M, N, O), Nodes),
+  findall(edge(A1, B1, C1, D1), edge(A1, B1, C1, D1), Edges),
+  findall(elev_pos(K1, L1, M1), elev_pos(K1, L1, M1), ElevPos),
+  findall(corr_pos(K2, L2, M2), corr_pos(K2, L2, M2), CorrPos),
+  destroi(ElevPos),
+  destroi(CorrPos),
+  %destroi(Ligacoes),
+  destroi(Nodes),
+  destroi(Edges).
+  %destroi(Mapa).
 
 extrai_mapa_pisos([], []).
 extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas, H.elevador, H.saidaLocalizacao]|T2]):-
   extrai_mapa_pisos(T, T2).
 
 
-cria_mapa_pisos([]):-!.
+cria_mapa_pisos([], _):-!.
 
-cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, Elevador, SaidaLocalizacao]|T]):-
-  cria_mapa(Mapa, Piso, 1, 1),
-  cria_grafo(Largura, Profundidade, Piso),
-  cria_mapa_pisos(T).
+cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[ColE, LinE]|_], SaidaLocalizacao]|T], Id):-
+  cria_mapa(Mapa, Piso, 1, 1, 1),
+  identifica_corredores(Saidas, Piso),
+  assertz(elev_pos(ColE, LinE, Piso)), % Existe apenas 1 elevador por edifício.
+  L1 is Largura+1,
+  P1 is Profundidade+1,
+  cria_grafo(L1, P1, Piso),
+  cria_mapa_pisos(T, 1).
 
-cria_mapa([], _, _, _):-!.
+% Caso base - percorreu a lista de corredores até ao final.
+identifica_corredores([], _):-
+  !.
 
-cria_mapa([Array|Restantes], Piso, Col, Lin):-
-  cria_linha(Array, Piso, Col, Lin),
-  Col2 is 0,
+% Caso o edifício não tenha nenhum corredor.
+identifica_corredores([[]], _):-
+  !.
+
+identifica_corredores([[Col, Lin]|Restantes], Piso):-
+  assertz(corr_pos(Col, Lin, Piso)),
+  identifica_corredores(Restantes, Piso).
+
+cria_mapa([], _, _, _, _):-!.
+
+cria_mapa([Array|Restantes], Piso, Col, Lin, Id):-
+  cria_linha(Array, Piso, Col, Lin, Id, LId),
+  Col2 is 1,
   Lin2 is Lin+1,
-  cria_mapa(Restantes, Piso, Col2, Lin2).
+  cria_mapa(Restantes, Piso, Col2, Lin2, LId).
 
 
-cria_linha([], _, _, _):-!.
+cria_linha([], _, _, _, Id, Id):-!.
 
-cria_linha([Valor|Restantes], Piso, Col, Lin):-
-  assertz(m(Col, Lin, Valor, Piso)),
+cria_linha([Valor|Restantes], Piso, Col, Lin, Id, LId):-
+  %assertz(m(Col, Lin, Valor, Piso)),
+  assertz(node(Id, Col, Lin, Valor, Piso)),
+  Id2 is Id+1,
   Col2 is Col+1,
-  cria_linha(Restantes, Piso, Col2, Lin).
+  cria_linha(Restantes, Piso, Col2, Lin, Id2, LId).
 
 % Faz retract a todos os predicados que fez assert dinamicamente antes do novo request.
 destroi([]).
@@ -216,34 +290,45 @@ destroi([H|T]):-
   destroi(T).
 
 % Algoritmo que vai retornar os caminhos do piso origem para o piso destino. Em LEdCam vai armazenar os edifícios e o LLig vai retornar pormenorizado.
-caminho_pisos(PisoOr,PisoDest,LEdCam,LLig):-pisos(EdOr,LPisosOr),member(PisoOr,LPisosOr),
-pisos(EdDest,LPisosDest),member(PisoDest,LPisosDest),
-caminho_edificios(EdOr,EdDest,LEdCam),
-segue_pisos(PisoOr,PisoDest,LEdCam,LLig).
-segue_pisos(PisoDest,PisoDest,_,[]).
-segue_pisos(PisoDest1,PisoDest,[EdDest],[elev(PisoDest1,PisoDest)]):-
-PisoDest\==PisoDest1,
-elevador(EdDest,LPisos), member(PisoDest1,LPisos), member(PisoDest,LPisos).
-segue_pisos(PisoAct,PisoDest,[EdAct,EdSeg|LOutrosEd],[cor(PisoAct,PisoSeg)|LOutrasLig]):-
-(corredor(EdAct,EdSeg,PisoAct,PisoSeg);corredor(EdSeg,EdAct,PisoSeg,PisoAct)),
-segue_pisos(PisoSeg,PisoDest,[EdSeg|LOutrosEd],LOutrasLig).
-segue_pisos(PisoAct,PisoDest,[EdAct,EdSeg|LOutrosEd],[elev(PisoAct,PisoAct1),cor(PisoAct1,PisoSeg)|LOutrasLig]):-
-(corredor(EdAct,EdSeg,PisoAct1,PisoSeg);corredor(EdSeg,EdAct,PisoSeg,PisoAct1)),
-PisoAct1\==PisoAct,
-elevador(EdAct,LPisos),member(PisoAct,LPisos),member(PisoAct1,LPisos),
-segue_pisos(PisoSeg,PisoDest,[EdSeg|LOutrosEd],LOutrasLig).
+caminho_pisos(PisoOr,PisoDest,LEdCam,LLig,LPiCam):-
+  pisos(EdOr,LPisosOr),member(PisoOr,LPisosOr),
+  pisos(EdDest,LPisosDest),member(PisoDest,LPisosDest),
+  caminho_edificios(EdOr,EdDest,LEdCam),
+  segue_pisos(PisoOr,PisoDest,LEdCam,LLig,LPiCam2),
+  append([PisoOr],LPiCam2,LPiCam).
+  %nl,
+  %write(LPiCam2),nl,nl.
+
+segue_pisos(PisoDest,PisoDest,_,[],[]).
+
+segue_pisos(PisoDest1,PisoDest,[EdDest],[elev(PisoDest1,PisoDest)],[PisoDest|ListaPisos]):-
+  PisoDest\==PisoDest1,
+  elevador(EdDest,LPisos), member(PisoDest1,LPisos), member(PisoDest,LPisos).
+
+segue_pisos(PisoAct,PisoDest,[EdAct,EdSeg|LOutrosEd],[cor(PisoAct,PisoSeg)|LOutrasLig],[PisoSeg|ListaPisos]):-
+  (corredor(EdAct,EdSeg,PisoAct,PisoSeg);corredor(EdSeg,EdAct,PisoSeg,PisoAct)),
+  segue_pisos(PisoSeg,PisoDest,[EdSeg|LOutrosEd],LOutrasLig,ListaPisos).
+
+segue_pisos(PisoAct,PisoDest,[EdAct,EdSeg|LOutrosEd],[elev(PisoAct,PisoAct1),cor(PisoAct1,PisoSeg)|LOutrasLig],[PisoAct1,PisoSeg|ListaPisos]):-
+  (corredor(EdAct,EdSeg,PisoAct1,PisoSeg);corredor(EdSeg,EdAct,PisoSeg,PisoAct1)),
+  PisoAct1\==PisoAct,
+  elevador(EdAct,LPisos),member(PisoAct,LPisos),member(PisoAct1,LPisos),
+  segue_pisos(PisoSeg,PisoDest,[EdSeg|LOutrosEd],LOutrasLig,ListaPisos).
 
 caminho_edificios(EdOr,EdDest,LEdCam):-
-caminho_edificios2(EdOr,EdDest,[EdOr],LEdCam).
-caminho_edificios2(EdX,EdX,LEdInv,LEdCam):-!,reverse(LEdInv,LEdCam).
+  caminho_edificios2(EdOr,EdDest,[EdOr],LEdCam).
+
+caminho_edificios2(EdX,EdX,LEdInv,LEdCam):-
+  !,reverse(LEdInv,LEdCam).
+
 caminho_edificios2(EdAct,EdDest,LEdPassou,LEdCam):-
-(liga(EdAct,EdInt);liga(EdInt,EdAct)),
-\+member(EdInt,LEdPassou),
-caminho_edificios2(EdInt,EdDest,[EdInt|LEdPassou],LEdCam).
+  (liga(EdAct,EdInt);liga(EdInt,EdAct)),
+  \+member(EdInt,LEdPassou),
+  caminho_edificios2(EdInt,EdDest,[EdInt|LEdPassou],LEdCam).
 
 % Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
-melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor):-
-findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig),LLLig),
+melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor,LPiCam):-
+findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig,LPiCam),LLLig),
 menos_elevadores(LLLig,LLigMelhor,_,_).
 menos_elevadores([LLig],LLig,NElev,NCor):-conta(LLig,NElev,NCor).
 menos_elevadores([LLig|OutrosLLig],LLigR,NElevR,NCorR):-
@@ -259,48 +344,71 @@ conta([cor(_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
 
 %%%%% Criação de grafo (mapa do piso) %%%%%
 % m(col, lin, valor, piso) => m(0, 0, 0, A1)...
+% node(Id, Col, Lin, Valor, Piso)...
+% edge(Id1, Id2, Custo, Piso)...
 cria_grafo(_,0,_):-!.
-cria_grafo(Col,Lin,Piso):-cria_grafo_lin(Col,Lin,Piso),Lin1 is Lin-1,cria_grafo(Col,Lin1,Piso).
+cria_grafo(Col,Lin,Piso):-
+  cria_grafo_lin(Col,Lin,Piso),
+  Lin1 is Lin-1,
+  cria_grafo(Col,Lin1,Piso).
 
 
 cria_grafo_lin(0,_,_):-!.
 
-cria_grafo_lin(Col,Lin,Piso):-m(Col,Lin,0,Piso),!,
-ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-((m(ColS,Lin,0,Piso),assertz(ligacel([Col,Lin], [ColS,Lin], Piso));true)),
-((m(ColA,Lin,0,Piso),assertz(ligacel([Col,Lin], [ColA,Lin], Piso));true)),
-((m(Col,LinS,0,Piso),assertz(ligacel([Col,Lin], [Col,LinS], Piso));true)),
-((m(Col,LinA,0,Piso),assertz(ligacel([Col,Lin], [Col,Lin], Piso));true)),
-Col1 is Col-1,
-cria_grafo_lin(Col1,Lin,Piso).
+cria_grafo_lin(Col,Lin,Piso):-
+  ((corr_pos(Col, Lin, Piso),%Piso == "A1",trace,
+  node(Id1, Col, Lin, _, Piso))
+  ;
+  (elev_pos(Col, Lin, Piso),%Piso == "A1",trace,
+  node(Id1, Col, Lin, _, Piso))
+  ;
+  node(Id1,Col,Lin,0,Piso)),
+  !,
+  ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
+  ((node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id2, 1, Piso));true)), % Verifca à direita.
+  ((node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id3, 1, Piso));true)), % Verifca à esquerda.
+  ((node(Id4,Col,LinS,0,Piso), assertz(edge(Id1, Id4, 1, Piso));true)), % Verifica abaixo.
+  ((node(Id5,Col,LinA,0,Piso), assertz(edge(Id1, Id5, 1, Piso));true)), % Verifica acima.
+  C is sqrt(2),
+  ((node(Id6,ColS,LinA,0,Piso), assertz(edge(Id1, Id6, C, Piso));true)), % Verifica diagonal superior direita.
+  ((node(Id7,ColA,LinA,0,Piso), assertz(edge(Id1, Id7, C, Piso));true)), % Verifica diagonal superior esquerda.
+  ((node(Id8,ColS,LinS,0,Piso), assertz(edge(Id1, Id8, C, Piso));true)), % Verifica diagonal inferior direita.
+  ((node(Id9,ColA,LinS,0,Piso), assertz(edge(Id1, Id9, C, Piso));true)), % Verifica diagonal inferior esquerda.
 
-cria_grafo_lin(Col,Lin,Piso):-Col1 is Col-1,cria_grafo_lin(Col1,Lin,Piso).
+
+  
+  Col1 is Col-1,
+  cria_grafo_lin(Col1,Lin,Piso).
+
+cria_grafo_lin(Col,Lin,Piso):-
+  Col1 is Col-1,cria_grafo_lin(Col1,Lin,Piso).
 
 
 % A-star.
-aStar(Orig,Dest,Cam,Custo):-
-    aStar2(Dest,[(_,0,[Orig])],Cam,Custo).
+aStar(Orig,Dest,Cam,Custo,Piso):-
+    aStar2(Dest,[(_,0,[Orig])],Cam,Custo,Piso).
 
-aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):-
+% Se for preciso apenas o melhor caminho, colocar cut a seguir ao reverse.
+aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo,Piso):-
 	reverse([Dest|T],Cam).
 
-aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
+aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo,Piso):-
 	LA=[Act|_],
 	findall((CEX,CaX,[X|LA]),
-		(Dest\==Act,edge(Act,X,CustoX),\+ member(X,LA),
-		CaX is CustoX + Ca, estimativa(X,Dest,EstX),
+		(Dest\==Act,edge(Act,X,CustoX,Piso),\+ member(X,LA),
+		CaX is CustoX + Ca, estimativa(X,Dest,EstX,Piso),
 		CEX is CaX +EstX),Novos),
 	append(Outros,Novos,Todos),
 	sort(Todos,TodosOrd),
-	aStar2(Dest,TodosOrd,Cam,Custo).
+	aStar2(Dest,TodosOrd,Cam,Custo,Piso).
 
 % substituir a chamada edge(Act,X,CustoX)
 % por (edge(Act,X,CustoX);edge(X,Act,CustoX))
 % se quiser ligacoes bidirecionais
 
 
-estimativa(Nodo1,Nodo2,Estimativa):-
-	node(Nodo1,X1,Y1),
-	node(Nodo2,X2,Y2),
+estimativa(Nodo1,Nodo2,Estimativa,Piso):-
+	node(Nodo1,X1,Y1,_,Piso),
+	node(Nodo2,X2,Y2,_,Piso),
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
 

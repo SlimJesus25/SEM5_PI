@@ -39,6 +39,8 @@ import { ElevadorUpdateComponent } from './component/elevador/elevador-update/el
 import { ElevadorListComponent } from './component/elevador/elevador-list/elevador-list.component';
 import { ElevadorCreateComponent } from './component/elevador/elevador-create/elevador-create.component';
 
+import { LoginComponent } from './component/login/login.component';
+
 const routes: Routes = [
 
   // Edificio
@@ -89,7 +91,9 @@ const routes: Routes = [
   { path: 'elevadores', component: ElevadorGeralComponent},
   { path: "elevadorUpdate", component: ElevadorUpdateComponent},
   { path: "elevadorList", component: ElevadorListComponent},
-  { path: "elevadorCreate", component: ElevadorCreateComponent}
+  { path: "elevadorCreate", component: ElevadorCreateComponent},
+
+  { path: 'login',component:LoginComponent}
 ];
 
 

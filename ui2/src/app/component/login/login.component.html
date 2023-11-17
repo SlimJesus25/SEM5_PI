@@ -1,0 +1,25 @@
+<body>
+    <div class="login-box">
+        <h2>Login</h2>
+        <form>
+            <input type="text" name="username" [(ngModel)]="username">
+            <input type="password" name="password" [(ngModel)]="password">
+            <button (click)="submit()">Login</button>
+        </form>
+    </div>
+</body>
+
+<ng-container *ngIf="username === 'admin'">
+    <router-outlet></router-outlet>
+    <app-messages></app-messages>
+</ng-container>
+
+<ng-container *ngIf="username === 'campus'">
+    <router-outlet></router-outlet>
+    <app-messages></app-messages>
+</ng-container>
+
+<ng-container *ngIf="username === 'fleet'">
+    <router-outlet></router-outlet>
+    <app-messages></app-messages>
+</ng-container>
