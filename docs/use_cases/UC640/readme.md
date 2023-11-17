@@ -40,3 +40,5 @@ Testes de compilação + runtime vão perceber se a aplicação está com algum 
 A aplicação vai seguir o workflow da seguinte figura (ponto inicial S0):
 
 ![maquina de estados](me.svg "me.svg")
+
+A equipa optou passar as novas atualizações do módulo escolhido para produção, apenas depois de garantir que nada "estragado" vai ser posto em produção, daí o passo intermédio de "compila código?".
