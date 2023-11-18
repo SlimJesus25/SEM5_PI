@@ -26,19 +26,13 @@ export class EdificioCreateComponent implements OnInit {
 
   createEdificio() {
     let errorOrSuccess: any = this.EdificioService.createEdificio(this.edificio);
-    console.log("Ponto 1");
     errorOrSuccess.subscribe(
       (data: any) => {
-        //success
-        this.messageService.add("Success edificio creation!");
-        this.finalMessage = "Success edificio creation!";
-        this.location.back();
+        alert("Edificio criado");
       },
 
       (error: any) => {
-        //error
-        this.messageService.add(error.error);
-        this.finalMessage = error.error;
+        alert(error.error);
       }
     );
 
