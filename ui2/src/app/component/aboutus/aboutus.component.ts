@@ -9,7 +9,4 @@ import { Router } from '@angular/router';
 })
 export class AboutUsComponent {
   constructor(private router: Router) { }
-  openGestor(){
-    this.router.navigate(['gestor-Campus']);
-  }
 }

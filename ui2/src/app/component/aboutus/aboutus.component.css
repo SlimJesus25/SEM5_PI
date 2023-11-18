@@ -5,6 +5,10 @@
     z-index: 1;
 }
 
+.h2{
+    font-weight: bold;
+}
+
 .team-member {
     display: inline-block;
     margin: 20px;

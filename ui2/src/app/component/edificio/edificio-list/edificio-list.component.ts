@@ -12,9 +12,9 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./edificio-list.component.css']
 })
 export class EdificioListComponent {
-  @Input() min : string = '';
-  @Input() max : string = '';
-  selectOption :number = 0;
+  @Input() min: string = '';
+  @Input() max: string = '';
+  selectOption: number = 0;
 
   displayedColumns: string[] = ['Codigo', 'Dimensao Maxima Piso', 'Descricao', 'Nome Opcional'];
   dataSource: MatTableDataSource<Edificio> = new MatTableDataSource();
@@ -27,21 +27,25 @@ export class EdificioListComponent {
   ngOnInit(): void {
   }
 
-  listEdificios(){
+  listEdificios() {
     this.selectOption = 1;
-    this.edificioService.getEdificios()
-      .subscribe(edificios => {
+    let errorOrSuccess = this.edificioService.getEdificios();
+    errorOrSuccess.subscribe(
+      edificios => {
         this.dataSource = new MatTableDataSource(edificios);
         this.dataSource.paginator = this.paginator;
+      },
+      (error) => {
+        alert(error.error);
       });
   }
 
   listMinMax() {
     this.selectOption = 2;
   }
-  
-  submitMinMax(){
-    this.edificioService.listMinMax(this.min,this.max)
+
+  submitMinMax() {
+    this.edificioService.listMinMax(this.min, this.max)
       .subscribe(edificios => {
         this.dataSource = new MatTableDataSource(edificios);
         this.dataSource.paginator = this.paginator;
