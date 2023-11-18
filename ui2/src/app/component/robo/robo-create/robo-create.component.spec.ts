@@ -9,23 +9,24 @@ import { EdificioService } from '../../../service/edificio/edificio.service';
 import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MapaPisoCreateComponent } from './mapa-piso-create.component';
-import { Piso } from '../../../model/piso';
-import { MapaPiso } from '../../../model/mapaPiso';
+import { RoboCreateComponent } from './robo-create.component';
+import { Tarefa } from '../../../model/tarefa';
+import { TipoRobo } from '../../../model/tipoRobo';
+import { Robo } from '../../../model/robo';
 
 
-describe('MapaPisoCreateComponent', () => {
-  let component: MapaPisoCreateComponent;
-  let fixture: ComponentFixture<MapaPisoCreateComponent>;
+describe('RoboCreateComponent', () => {
+  let component: RoboCreateComponent;
+  let fixture: ComponentFixture<RoboCreateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
-      declarations: [ MapaPisoCreateComponent ]
+      declarations: [ RoboCreateComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MapaPisoCreateComponent);
+    fixture = TestBed.createComponent(RoboCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -38,29 +39,27 @@ describe('MapaPisoCreateComponent', () => {
     let fakeLocation = TestBed.inject(Location);
     let fakeMessageService = TestBed.inject(MessageService);
 
-    let edificioK: Edificio = {
-      codigoEdificio : "K",
-      dimensaoMaximaPiso : "[200, 200]",
-      descricaoEdificio : "Edificio de Magia",
-      nomeOpcionalEdificio : "Edificio Julio de Matos"
+
+    let tipoRobo : TipoRobo = {
+        tarefas : "[limpeza]",
+        designacao : "designacao",
+        marca : "marca",
+        modelo : "modelo",
     }
 
-    let piso : Piso = {
-      designacao : "Piso 26",
-      descricao : "Piso Burj Kaliffa",
-      edificio : edificioK.codigoEdificio,
+    let robo : Robo = {
+        nickname : "nickname",
+        marca : "marcola",
+        numeroSerie : "12214",
+        codigo : "XCV",
+        tipoRobo : tipoRobo.designacao
     }
 
-    let mapaPiso : MapaPiso = {
-      piso : piso.designacao,
-      mapa : "Big Mapa"
-    }
-
-    const fakeService = jasmine.createSpyObj('MapaPisoService', ['createMapaPiso']);
-    fakeService.createMapaPiso.and.returnValue(of({
+    const fakeService = jasmine.createSpyObj('RoboService', ['createRobo']);
+    fakeService.createRobo.and.returnValue(of({
       data: {
         status: 200,
-        body: mapaPiso
+        body: robo
       },
 
       error: {
@@ -68,33 +67,36 @@ describe('MapaPisoCreateComponent', () => {
       }
     }));
 
-    component = new MapaPisoCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new RoboCreateComponent(fakeLocation,fakeService,fakeMessageService);
 
-    component.mapaPiso.mapa = "Big Mapa",
-    component.mapaPiso.piso = piso.designacao,
+    component.robo.codigo = "XCV",
+    component.robo.tipoRobo = tipoRobo.designacao,
+    component.robo.numeroSerie = "12214" ,
+    component.robo.marca = "marcola";
+    component.robo.nickname = "nickname";
 
 
-    component.createMapaPiso();
+    component.createRobo();
 
-    expect(fakeService.createMapaPiso).toHaveBeenCalled();
+    expect(fakeService.createRobo).toHaveBeenCalled();
    // expect(component.finalMessage).toBe("Success edificio creation!");
-    expect(alert('Success Mapa Piso creation'));
+    expect(alert('Success Robo creation'));
   })
 
   it('should be insuccessful created', () => {
     let fakeLocation = TestBed.inject(Location);
     let fakeMessageService = TestBed.inject(MessageService);
 
-    const fakeService = jasmine.createSpyObj('MapaPisoService', ['createMapaPiso']);
-    fakeService.createMapaPiso.and.returnValue(throwError({
+    const fakeService = jasmine.createSpyObj('RoboService', ['createRobo']);
+    fakeService.createRobo.and.returnValue(throwError({
       error: "error"
     }));
 
-    component = new MapaPisoCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new RoboCreateComponent(fakeLocation,fakeService,fakeMessageService);
 
-    component.createMapaPiso();
+    component.createRobo();
 
-    expect(fakeService.createMapaPiso).toHaveBeenCalled();
+    expect(fakeService.createRobo).toHaveBeenCalled();
    // expect(component.finalMessage).toBe("error");
     expect(alert("error"));
   })
