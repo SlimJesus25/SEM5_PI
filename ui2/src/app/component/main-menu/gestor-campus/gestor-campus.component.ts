@@ -22,7 +22,7 @@ export class GestorCampusComponent implements OnInit {
   }
 
   listEdificios(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['edificioList']);
   }
 
   updateEdificio(){

@@ -22,7 +22,6 @@ export class EdificioService {
     
     const body = JSON.stringify(edificio);
     console.log(body);
-
     return this.http.post<Edificio>(this.LogisticAPI_URL + "/createEdificio", body, {'headers':headers , observe: 'response'})
 
   }
