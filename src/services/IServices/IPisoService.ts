@@ -14,4 +14,5 @@ export default interface IPisoService  {
   listPisos(codigoEdificio: IListPisosDTO): Promise<Result<IPisoDTO[]>>;
   deletePiso(designacao: IDeletePisoDTO): Promise<Result<IPisoDTO>>;
   listPisosGeral(): Promise<Result<IListPisoByEdificioDTO[]>>;
+  listPisosGeral2(): Promise<Result<IPisoDTO[]>>;
 }

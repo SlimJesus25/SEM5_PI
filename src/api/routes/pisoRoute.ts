@@ -59,4 +59,11 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.listPisosGeral(req, res, next));
+
+    route.get('/listPisosGeral2',
+    celebrate({
+      body: Joi.object({
+      }),
+    }),
+    (req, res, next) => ctrl.listPisosGeral2(req, res, next));
 };

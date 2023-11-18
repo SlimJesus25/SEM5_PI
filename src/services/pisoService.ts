@@ -17,11 +17,11 @@ import IListPisoByEdificioDTO from '../dto/IListPisoByEdificioDTO';
 @Service()
 export default class PisoService implements IPisoService {
   constructor(
-      @Inject(config.repos.piso.name) private pisoRepo : IPisoRepo,
-      @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo
-  ) {}
+    @Inject(config.repos.piso.name) private pisoRepo: IPisoRepo,
+    @Inject(config.repos.edificio.name) private edificioRepo: IEdificioRepo
+  ) { }
 
-  public async getPiso( pisoId: string): Promise<Result<IPisoDTO>> {
+  public async getPiso(pisoId: string): Promise<Result<IPisoDTO>> {
     try {
       const piso = await this.pisoRepo.findByDomainId(pisoId);
 
@@ -29,9 +29,9 @@ export default class PisoService implements IPisoService {
         return Result.fail<IPisoDTO>("Piso não encontrado");
       }
       else {
-        const pisoDTOResult = PisoMap.toDTO( piso ) as IPisoDTO;
-        return Result.ok<IPisoDTO>( pisoDTOResult )
-        }
+        const pisoDTOResult = PisoMap.toDTO(piso) as IPisoDTO;
+        return Result.ok<IPisoDTO>(pisoDTOResult)
+      }
     } catch (e) {
       throw e;
     }
@@ -43,12 +43,12 @@ export default class PisoService implements IPisoService {
 
       const piso = await this.pisoRepo.findByDesignacao(pisoDTO.designacao);
 
-      if(piso != null)
+      if (piso != null)
         return Result.fail<IPisoDTO>("Já existe um piso com a designação " + pisoDTO.designacao);
 
       const edificio = await this.edificioRepo.findByCodigo(pisoDTO.edificio);
 
-      if(edificio == null)
+      if (edificio == null)
         return Result.fail<IPisoDTO>("Não foi encontrado um edifício com o código " + pisoDTO.edificio);
 
       const pisoOrError = Piso.create({
@@ -63,8 +63,8 @@ export default class PisoService implements IPisoService {
       const pisoResult = pisoOrError.getValue();
       await this.pisoRepo.save(pisoResult);
 
-      const pisoDTOResult = PisoMap.toDTO( pisoResult ) as IPisoDTO;
-      return Result.ok<IPisoDTO>( pisoDTOResult )
+      const pisoDTOResult = PisoMap.toDTO(pisoResult) as IPisoDTO;
+      return Result.ok<IPisoDTO>(pisoDTOResult)
     } catch (e) {
       throw e;
     }
@@ -76,11 +76,11 @@ export default class PisoService implements IPisoService {
 
       if (piso === null) {
         return Result.fail<IPisoDTO>("Piso não encontrado");
-      }else {
+      } else {
 
         const edificio = await this.edificioRepo.findByCodigo(pisoDTO.edificio);
 
-        if(edificio == null)
+        if (edificio == null)
           return Result.fail<IPisoDTO>("Não foi encontrado um edifício com o código " + pisoDTO.edificio);
 
         piso.descricao = pisoDTO.descricao;
@@ -88,9 +88,9 @@ export default class PisoService implements IPisoService {
         piso.edificio = edificio;
         await this.pisoRepo.save(piso);
 
-        const pisoDTOResult = PisoMap.toDTO( piso ) as IPisoDTO;
-        return Result.ok<IPisoDTO>( pisoDTOResult )
-        }
+        const pisoDTOResult = PisoMap.toDTO(piso) as IPisoDTO;
+        return Result.ok<IPisoDTO>(pisoDTOResult)
+      }
     } catch (e) {
       throw e;
     }
@@ -98,26 +98,26 @@ export default class PisoService implements IPisoService {
 
   public async listPisos(listPisosDTO: IListPisosDTO): Promise<Result<IPisoDTO[]>> {
     try {
-      
+
       const pisos = await this.pisoRepo.findByEdificio(listPisosDTO.codigoEdificio);
 
       if (pisos == null)
         return Result.fail<IPisoDTO[]>("O edifício com o código " + listPisosDTO.codigoEdificio + " não tem pisos.");
 
       // Query deve retornar todos os pisos que contenham este edificio.
-    
+
       /*
       let pisosDTO: IPisoDTO[] = [];
       pisos.forEach(p => pisosDTO.push(PisoMap.toDTO(p)));
       */
-     
-     let pisosDTO = [];
-     for (let i = 0; i < pisos.length; i++){
-      pisosDTO[i] = PisoMap.toDTO(pisos[i]);
-    }
-    
 
-      return Result.ok<IPisoDTO[]>( pisosDTO )
+      let pisosDTO = [];
+      for (let i = 0; i < pisos.length; i++) {
+        pisosDTO[i] = PisoMap.toDTO(pisos[i]);
+      }
+
+
+      return Result.ok<IPisoDTO[]>(pisosDTO)
     } catch (e) {
       throw e;
     }
@@ -147,21 +147,21 @@ export default class PisoService implements IPisoService {
 
       const pisos = await this.pisoRepo.findAll();
 
-      if (pisos == null){
+      if (pisos == null) {
         return Result.fail<IListPisoByEdificioDTO[]>("Não existem registos de pisos");
       }
 
       let pisoProHM = new Map<string, string[]>();
       pisos.forEach(p => {
         const v = pisoProHM.get(p.edificio.codigo);
-        if(v == undefined)
+        if (v == undefined)
           pisoProHM.set(p.edificio.codigo, [p.designacao]);
         else
           v.push(p.designacao);
       });
 
-      let pisoProDTO : IListPisoByEdificioDTO[] = [];
-      pisoProHM.forEach((value: string[], key: string) =>{
+      let pisoProDTO: IListPisoByEdificioDTO[] = [];
+      pisoProHM.forEach((value: string[], key: string) => {
 
         const d = {
           edificio: key,
@@ -175,5 +175,27 @@ export default class PisoService implements IPisoService {
     } catch (e) {
       throw e;
     }
-}
   }
+
+  public async listPisosGeral2(): Promise<Result<IPisoDTO[]>> {
+    try {
+
+        const pisos = await this.pisoRepo.findAll();
+
+        if (pisos == null){
+          return Result.fail<IPisoDTO[]>("Não existem registos de pisos");
+        }
+        
+        let pisosDTO : IPisoDTO[] = [];
+
+        for(const piso of pisos){
+          const p = PisoMap.toDTO(piso) as IPisoDTO;
+          pisosDTO.push(p);
+        }
+
+        return Result.ok<IPisoDTO[]>( pisosDTO )
+      } catch (e) {
+        throw e;
+      }
+  }
+}
