@@ -13,20 +13,56 @@ export class GestorCampusComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openEdificio() {
-    this.router.navigate(['/edificios']);
+  openAboutUs(){
+    this.router.navigate(['/aboutUs']);
   }
 
-  openPiso() {
-    this.router.navigate(['/pisos']);
+  createEdificio(){
+    this.router.navigate(['edificioCreate']);
   }
 
-  openPassagem() {
-    this.router.navigate(['/passagens']);
+  listEdificios(){
+    this.router.navigate(['edificioCreate']);
   }
 
-  openElevador() {
-    this.router.navigate(['/elevadores']);
+  updateEdificio(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  createPiso(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  listPisos(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  updatePiso(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  createPassagem(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  listPassagens(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  updatePassagem(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  createElevador(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  listElevadores(){
+    this.router.navigate(['edificioCreate']);
+  }
+
+  updateElevador(){
+    this.router.navigate(['edificioCreate']);
   }
 
 }

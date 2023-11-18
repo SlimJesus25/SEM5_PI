@@ -23,6 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './component/appcomponent/app.component';
+import { AboutUsComponent } from './component/aboutus/aboutus.component';
 import { EdificioGeralComponent } from './component/edificio/edificio-geral/edificio-geral.component';
 import { EdificioCreateComponent } from './component/edificio/edificio-create/edificio-create.component';
 import { EdificioListComponent } from './component/edificio/edificio-list/edificio-list.component';
@@ -139,7 +140,8 @@ import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/
     MapaPisoCreateComponent,
     MapaPisoUpdateComponent,
 
-    LoginComponent
+    LoginComponent,
+    AboutUsComponent
 
   ],
   bootstrap: [ AppComponent ]

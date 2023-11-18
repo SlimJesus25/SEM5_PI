@@ -42,70 +42,72 @@ import { ElevadorCreateComponent } from './component/elevador/elevador-create/el
 import { LoginComponent } from './component/login/login.component';
 import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/mapa-piso-create.component';
 import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
+import { AboutUsComponent } from './component/aboutus/aboutus.component';
 
 const routes: Routes = [
 
   // Edificio
   { path: 'edificios', component: EdificioGeralComponent },
-  { path: 'edificioCreate', component: EdificioCreateComponent},
+  { path: 'edificioCreate', component: EdificioCreateComponent },
   { path: 'edificioList', component: EdificioListComponent },
-  { path: "edificioUpdate", component: EdificioUpdateComponent},
+  { path: "edificioUpdate", component: EdificioUpdateComponent },
 
   //Main menu
-  { path: "admin", component: AdminComponent},
-  { path: "gestor-Frota", component: GestorFrotaComponent},
-  { path: "gestor-Campus", component: GestorCampusComponent},
-  { path: "gestor-Campus", component: GestorCampusComponent},
+  { path: "admin", component: AdminComponent },
+  { path: "gestor-Frota", component: GestorFrotaComponent },
+  { path: "gestor-Campus", component: GestorCampusComponent },
+  { path: "gestor-Campus", component: GestorCampusComponent },
 
 
-  { path: "edificioUpdate", component: EdificioUpdateComponent},
+  { path: "edificioUpdate", component: EdificioUpdateComponent },
 
   //Tarefa
-  { path: 'tarefas', component: TarefaGeralComponent},
-  { path: 'tarefaCreate', component: TarefaCreateComponent},
+  { path: 'tarefas', component: TarefaGeralComponent },
+  { path: 'tarefaCreate', component: TarefaCreateComponent },
 
   //TipoRobo
-  { path: 'tiposRobo', component: TipoRoboGeralComponent},
-  { path: 'tipoRoboCreate', component: TipoRoboCreateComponent},
-  { path: 'tipoRoboUpdate', component: TipoRoboUpdateComponent},
-  { path: 'tipoRoboList', component: TipoRoboListComponent},
+  { path: 'tiposRobo', component: TipoRoboGeralComponent },
+  { path: 'tipoRoboCreate', component: TipoRoboCreateComponent },
+  { path: 'tipoRoboUpdate', component: TipoRoboUpdateComponent },
+  { path: 'tipoRoboList', component: TipoRoboListComponent },
 
 
   //Robo
-  { path: "robos", component: RoboGeralComponent},
-  { path: "roboCreate", component: RoboCreateComponent},
-  { path: "listRobo", component: RoboListComponent},
-  { path: "roboUpdate", component: RoboUpdateComponent},
-  { path: "inhibitRobo", component: RoboInhibitComponent},
+  { path: "robos", component: RoboGeralComponent },
+  { path: "roboCreate", component: RoboCreateComponent },
+  { path: "listRobo", component: RoboListComponent },
+  { path: "roboUpdate", component: RoboUpdateComponent },
+  { path: "inhibitRobo", component: RoboInhibitComponent },
 
 
   //Piso
   { path: 'pisos', component: PisoGeralComponent },
   { path: 'pisoList', component: PisoListComponent },
   { path: 'pisoCreate', component: PisoCreateComponent },
-  { path: "pisoUpdate", component: PisoUpdateComponent},
+  { path: "pisoUpdate", component: PisoUpdateComponent },
 
   //Passagem
-  { path: 'passagens', component: PassagemGeralComponent},
-  { path: 'passagemCreate', component: PassagemCreateComponent},
+  { path: 'passagens', component: PassagemGeralComponent },
+  { path: 'passagemCreate', component: PassagemCreateComponent },
 
   //Elevador
-  { path: 'elevadores', component: ElevadorGeralComponent},
-  { path: "elevadorUpdate", component: ElevadorUpdateComponent},
-  { path: "elevadorList", component: ElevadorListComponent},
-  { path: "elevadorCreate", component: ElevadorCreateComponent},
+  { path: 'elevadores', component: ElevadorGeralComponent },
+  { path: "elevadorUpdate", component: ElevadorUpdateComponent },
+  { path: "elevadorList", component: ElevadorListComponent },
+  { path: "elevadorCreate", component: ElevadorCreateComponent },
 
   //MapaPiso
   //{ path: 'mapasPisos', component: MapaPisoGeralComponent},
-  { path: 'mapaPisoCreate', component: MapaPisoCreateComponent},
-  { path: 'mapaPisoUpdate', component: MapaPisoUpdateComponent},
+  { path: 'mapaPisoCreate', component: MapaPisoCreateComponent },
+  { path: 'mapaPisoUpdate', component: MapaPisoUpdateComponent },
 
-  { path: 'login',component:LoginComponent}
+  { path: 'login', component: LoginComponent },
+  { path: 'aboutUs', component: AboutUsComponent }
 ];
 
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
