@@ -37,6 +37,12 @@ Testes de compilação + runtime vão perceber se a aplicação está com algum 
 
 ### 3.4 Notas
 
+#### Logs
+
+Existe um ficheiro designado "audit_log" que vai armzenar todas as informações de sucesso/insucesso ao longo de uma semana. Após esse tempo, é feito um refresh e apagado todo o conteúdo.
+
+#### Workflow
+
 A aplicação vai seguir o workflow da seguinte figura (ponto inicial S0):
 
 ![maquina de estados](me.svg "me.svg")
