@@ -42,7 +42,7 @@ export class GestorCampusComponent implements OnInit {
   }
 
   createPassagem(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['passagemCreate']);
   }
 
   listPassagens(){

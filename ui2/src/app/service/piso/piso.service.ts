@@ -58,8 +58,7 @@ export class PisoService {
 
     //Metodo para listar pisos geral
     listPisosGeral(): Observable<Piso[]> {
-        console.log("Vai ate ao serviço");
-        const pisos = this.http.get<Piso[]>(this.LogisticAPI_URL + "/listPisosGeral");
+        const pisos = this.http.get<Piso[]>(this.LogisticAPI_URL + "/listPisosGeral2");
         return pisos;
     }
 
