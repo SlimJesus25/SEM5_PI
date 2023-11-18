@@ -3,6 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { GestorCampusComponent } from './gestor-campus.component';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 describe('GestorCampusComponent', () => {
   let component: GestorCampusComponent;
@@ -10,7 +12,7 @@ describe('GestorCampusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, FormsModule, MatToolbarModule],
       declarations: [ GestorCampusComponent ]
     })
     .compileComponents();

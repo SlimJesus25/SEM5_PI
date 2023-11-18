@@ -65,13 +65,13 @@ export class Guard {
   }
 
   public static allInRange (numbers: number[], min: number, max: number, argumentName: string) : IGuardResult {
-    let failingResult: IGuardResult = null;
+    let failingResult: IGuardResult | null = null;
     for(let num of numbers) {
       const numIsInRangeResult = this.inRange(num, min, max, argumentName);
       if (!numIsInRangeResult.succeeded) failingResult = numIsInRangeResult;
     }
 
-    if (failingResult) {
+    if (failingResult == null) {
       return { succeeded: false, message: `${argumentName} is not within the range.`}
     } else {
       return { succeeded: true }

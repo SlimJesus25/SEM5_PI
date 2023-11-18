@@ -15,7 +15,6 @@ export class EdificioService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createEdificio(edificio: Edificio) {
-    console.log("Ponto 2");
     const headers = {'content-type': 'application/json',
     'Access-Control-Allow-Origin': '*', // Este cabeçalho pode ser ajustado conforme necessário
   };

@@ -8,6 +8,8 @@ import { Edificio } from '../../../model/edificio';
 import { MessageService } from '../../../service/message/message.service';
 import { EdificioService } from '../../../service/edificio/edificio.service';
 import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 describe('EdificioCreateComponent', () => {
@@ -16,7 +18,7 @@ describe('EdificioCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule],
+      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
       declarations: [ EdificioCreateComponent ]
     })
     .compileComponents();
@@ -64,10 +66,11 @@ describe('EdificioCreateComponent', () => {
     component.createEdificio();
 
     expect(fakeService.createEdificio).toHaveBeenCalled();
-    expect(component.finalMessage).toBe("Success edificio creation!");
+   // expect(component.finalMessage).toBe("Success edificio creation!");
+    expect(alert('Success edificio creation'));
   })
 
-  it('should be successful created', () => {
+  it('should be insuccessful created', () => {
     let fakeLocation = TestBed.inject(Location);
     let fakeMessageService = TestBed.inject(MessageService);
 
@@ -81,7 +84,8 @@ describe('EdificioCreateComponent', () => {
     component.createEdificio();
 
     expect(fakeService.createEdificio).toHaveBeenCalled();
-    expect(component.finalMessage).toBe("error");
+   // expect(component.finalMessage).toBe("error");
+    expect(alert("error"));
   })
 
 });

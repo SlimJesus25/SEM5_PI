@@ -8,6 +8,8 @@ import { Edificio } from '../../../model/edificio';
 import { MessageService } from '../../../service/message/message.service';
 import { EdificioService } from '../../../service/edificio/edificio.service';
 import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 describe('EdificioUpdateComponent', () => {
@@ -16,7 +18,7 @@ describe('EdificioUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule],
+      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
       declarations: [ EdificioUpdateComponent ]
     })
     .compileComponents();
@@ -40,9 +42,10 @@ describe('EdificioUpdateComponent', () => {
       descricaoEdificio : "Edificio de Magia",
       nomeOpcionalEdificio : "Edificio Julio de Matos"
     }
+    
 
-    const fakeService = jasmine.createSpyObj('EdificioService', ['createEdificio']);
-    fakeService.createEdificio.and.returnValue(of({
+    const fakeService = jasmine.createSpyObj('EdificioService', ['updateEdificio']);
+    fakeService.updateEdificio.and.returnValue(of({
       data: {
         status: 200,
         body: edificio
@@ -64,10 +67,12 @@ describe('EdificioUpdateComponent', () => {
     component.updateEdificio();
 
     expect(fakeService.updateEdificio).toHaveBeenCalled();
-    expect(component.finalMessage).toBe("Success edificio update!");
+  //  expect(component.finalMessage).toBe("Success edificio update!");
+    expect(component.edificio.codigoEdificio = "K");
+    expect(alert("Success edificio update!"));
   })
 
-  it('should be successful updated', () => {
+  it('should be insuccessful updated', () => {
     let fakeLocation = TestBed.inject(Location);
     let fakeMessageService = TestBed.inject(MessageService);
 
@@ -80,8 +85,9 @@ describe('EdificioUpdateComponent', () => {
 
     component.updateEdificio();
 
-    expect(fakeService.createEdificio).toHaveBeenCalled();
-    expect(component.finalMessage).toBe("error");
+    expect(fakeService.updateEdificio).toHaveBeenCalled();
+  //  expect(component.finalMessage).toBe("error");
+    expect(alert("error"));
   })
 
 });

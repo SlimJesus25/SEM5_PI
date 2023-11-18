@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { Edificio } from '../../../model/edificio';
 import { EdificioListComponent } from './edificio-list.component';
 import { of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 describe('EdificioListComponent', () => {
   let component: EdificioListComponent;
@@ -12,7 +14,7 @@ describe('EdificioListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule],
+      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
       declarations: [ EdificioListComponent ]
     })
     .compileComponents();
@@ -39,14 +41,17 @@ describe('EdificioListComponent', () => {
     }]
 
     const observable = of(edificio);
-
     const fakeService = jasmine.createSpyObj('EdificioService', ['getEdificios']);
-    fakeService.getTrucks.and.returnValue(observable);
+    fakeService.getEdificios.and.returnValue(observable);
 
     component = new EdificioListComponent(fakeService,fakeLocation,fakeLiveAnnouncer);
 
     component.ngOnInit();
 
-    expect(component.dataSource.data).toBe(edificio);
+
+    console.log('Component dataSource:', component.dataSource.data);
+    console.log('Expected edificio:', edificio);
+    
+    expect(component.dataSource.data).toEqual(edificio)
   })
 });
