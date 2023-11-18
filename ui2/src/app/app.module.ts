@@ -29,11 +29,6 @@ import { EdificioCreateComponent } from './component/edificio/edificio-create/ed
 import { EdificioListComponent } from './component/edificio/edificio-list/edificio-list.component';
 import { EdificioUpdateComponent } from './component/edificio/edificio-update/edificio-update.component';
 
-
-//Main menu
-import { AdminComponent } from './component/main-menu/admin/admin.component';
-import { GestorFrotaComponent } from './component/main-menu/gestor-frota/gestor-frota.component';
-import { GestorCampusComponent } from './component/main-menu/gestor-campus/gestor-campus.component';
 import { TarefaGeralComponent } from './component/tarefa/tarefa-geral/tarefa-geral.component';
 import { TarefaCreateComponent } from './component/tarefa/tarefa-create/tarefa-create.component';
 import { TipoRoboGeralComponent } from './component/tipo-robo/tipo-robo-geral/tipo-robo-geral.component';
@@ -66,6 +61,7 @@ import { ElevadorCreateComponent } from './component/elevador/elevador-create/el
 import { LoginComponent } from './component/login/login.component';
 import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/mapa-piso-create.component';
 import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
+import { MainMenuComponent } from './component/main-menu/main-menu.component';
 
 @NgModule({
   imports: [
@@ -114,12 +110,6 @@ import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/
     RoboUpdateComponent,
     RoboInhibitComponent,
 
-
-    //Main menu
-    AdminComponent,
-    GestorFrotaComponent,
-    GestorCampusComponent,
-
     //Piso
     PisoGeralComponent,
     PisoListComponent,
@@ -141,7 +131,8 @@ import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/
     MapaPisoUpdateComponent,
 
     LoginComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    MainMenuComponent
 
   ],
   bootstrap: [ AppComponent ]

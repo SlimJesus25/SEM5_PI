@@ -1,0 +1,89 @@
+<div class="background-container"></div>
+<mat-toolbar>
+  <h1 class="h1">RobDroneGO</h1>
+
+  <!--Gestor de Campus Menu-->
+  <button mat-button [matMenuTriggerFor]="gestorCampusMenu">Gestor Campus</button>
+  <mat-menu #gestorCampusMenu="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="edificioMenu">Edificio</button>
+    <button mat-menu-item [matMenuTriggerFor]="pisoMenu">Piso</button>
+    <button mat-menu-item [matMenuTriggerFor]="mapaPisoMenu">Mapa Piso</button>
+    <button mat-menu-item [matMenuTriggerFor]="passagemMenu">Passagem</button>
+    <button mat-menu-item [matMenuTriggerFor]="elevadorMenu">Elevador</button>
+    <button mat-menu-item [matMenuTriggerFor]="salaMenu">Sala</button>
+  </mat-menu>
+
+  <mat-menu #edificioMenu="matMenu">
+    <button mat-menu-item (click)="createEdificio()">Criar Edificio</button>
+    <button mat-menu-item (click)="listEdificios()">Listar Edificios</button>
+    <button mat-menu-item (click)="updateEdificio()">Atualizar Edificio</button>
+  </mat-menu>
+
+  <mat-menu #pisoMenu="matMenu">
+    <button mat-menu-item (click)="createPiso()">Criar Piso</button>
+    <button mat-menu-item (click)="listPisos()">Listar Pisos</button>
+    <button mat-menu-item (click)="updatePiso()">Atualizar Piso</button>
+  </mat-menu>
+
+  <mat-menu #passagemMenu="matMenu">
+    <button mat-menu-item (click)="createPassagem()">Criar Passagem</button>
+    <button mat-menu-item (click)="listPassagens()">Listar Passagens</button>
+    <button mat-menu-item (click)="updatePassagem()">Atualizar Passagem</button>
+  </mat-menu>
+
+  <mat-menu #elevadorMenu="matMenu">
+    <button mat-menu-item (click)="createElevador()">Criar Elevador</button>
+    <button mat-menu-item (click)="listElevadores()">Listar Elevadores</button>
+    <button mat-menu-item (click)="updateElevador()">Atualizar Elevador</button>
+  </mat-menu>
+
+  <mat-menu #mapaPisoMenu="matMenu">
+    <button mat-menu-item (click)="createMapaPiso()">Carregar mapa de piso</button>
+  </mat-menu>
+
+  <mat-menu #salaMenu="matMenu">
+    <button mat-menu-item (click)="createElevador()">Criar sala</button>
+  </mat-menu>
+
+  <!--Gestor de Frota Menu-->
+  <button mat-button [matMenuTriggerFor]="gestorFrotaMenu">Gestor Frota</button>
+  <mat-menu #gestorFrotaMenu="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="tipoRoboMenu">Tipo Robo</button>
+    <button mat-menu-item [matMenuTriggerFor]="roboMenu">Robo</button>
+  </mat-menu>
+
+  <mat-menu #tipoRoboMenu="matMenu">
+    <button mat-menu-item (click)="createEdificio()">Criar Tipo Robo</button>
+  </mat-menu>
+
+  <mat-menu #roboMenu="matMenu">
+    <button mat-menu-item (click)="createPiso()">Criar Robo</button>
+    <button mat-menu-item (click)="listPisos()">Listar Robos</button>
+    <button mat-menu-item (click)="updatePiso()">Inibir Robo</button>
+  </mat-menu>
+
+  <!--Gestor de Tarefas Menu-->
+  <button mat-button [matMenuTriggerFor]="gestorTarefasMenu">Gestor Tarefa</button>
+  <mat-menu #gestorTarefasMenu="matMenu">
+    <button mat-menu-item (click)="createPiso()">Obter percurso entre dois edificios</button>
+    <button mat-menu-item (click)="createPiso()">Analise de complexidade</button>
+  </mat-menu>
+
+  <!--Visualização-->
+  <button mat-button (click)="createEdificio()">Visualização</button>
+
+  <!--Asist Menu-->
+  <button mat-button [matMenuTriggerFor]="asistMenu">Asist</button>
+  <mat-menu #asistMenu="matMenu">
+    <button mat-menu-item (click)="createPiso()">MBCO</button>
+    <button mat-menu-item (click)="createPiso()">Estratégia de recuperação de dados</button>
+  </mat-menu>
+
+  <!--Info Menu-->
+  <button mat-button [matMenuTriggerFor]="infoMenu" class="spacer">Info</button>
+  <mat-menu #infoMenu="matMenu">
+    <button mat-menu-item (click)="openAboutUs()">About Us</button>
+    <button mat-menu-item (click)="createPiso()">Relatório RGPD</button>
+  </mat-menu>
+
+</mat-toolbar>

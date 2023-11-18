@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-gestor-campus',
-  templateUrl: './gestor-campus.component.html',
-  styleUrls: ['./gestor-campus.component.css']
+  selector: 'app-main.menu',
+  templateUrl: './main-menu.component.html',
+  styleUrls: ['./main-menu.component.css']
 })
-export class GestorCampusComponent implements OnInit {
+export class MainMenuComponent implements OnInit {
 
   constructor(private router: Router) {}
 
@@ -26,11 +26,11 @@ export class GestorCampusComponent implements OnInit {
   }
 
   updateEdificio(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['edificioUpdate']);
   }
 
   createPiso(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['pisoCreate']);
   }
 
   listPisos(){
@@ -63,6 +63,10 @@ export class GestorCampusComponent implements OnInit {
 
   updateElevador(){
     this.router.navigate(['edificioCreate']);
+  }
+
+  createMapaPiso(){
+    this.router.navigate(['mapaPisoCreate']);
   }
 
 }

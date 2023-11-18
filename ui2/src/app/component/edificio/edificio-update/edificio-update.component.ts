@@ -8,36 +8,35 @@ import { EdificioService } from '../../../service/edificio/edificio.service';
   styleUrls: ['./edificio-update.component.css']
 })
 export class EdificioUpdateComponent implements OnInit {
+  edificios: string[] = [];
 
-  edificio = {codigoEdificio: "", dimensaoMaximaPiso: "", descricaoEdificio: "",  nomeOpcionalEdificio:""}
+  edificio = { codigoEdificio: "", dimensaoMaximaPiso: "", descricaoEdificio: "", nomeOpcionalEdificio: "" }
 
   constructor(
     private location: Location,
-    private EdificioService: EdificioService,
+    private edificioService: EdificioService,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
+  }
 
 
-  @Output() finalMessage: string ='';
+  @Output() finalMessage: string = '';
 
 
   ngOnInit(): void {
   }
 
   updateEdificio() {
-    let errorOrSuccess: any = this.EdificioService.updateEdificio(this.edificio);
+    let errorOrSuccess: any = this.edificioService.updateEdificio(this.edificio);
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success edificio update!");
-        this.finalMessage = "Success edificio update!";
-        this.location.back();
+        alert("Success edificio update!");
       },
 
       (error: any) => {
-        //error
-        this.messageService.add(error.error);
-        this.finalMessage = error.error;
+        alert(error.error);
       }
     );
 

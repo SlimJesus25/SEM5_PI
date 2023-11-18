@@ -12,7 +12,16 @@ export class LoginComponent {
   @Input() password: string = '';
   constructor(private router: Router) { }
 
-  submit() {
+  submit(){
+    if (this.password != 'teste1234'){
+      console.error('Invalid password');
+    }else {
+      this.router.navigate(['/mainMenu']);
+    }
+  }
+}
+
+  /*submit() {
     switch (this.username) {
       case 'asist': {
         this.openAsist();
@@ -58,7 +67,7 @@ export class LoginComponent {
     if (this.password != 'asist1234'){
       console.error('Invalid password');
     }else {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/asist']);
     }
   }
 
@@ -74,7 +83,7 @@ export class LoginComponent {
     if (this.password != 'info1234'){
       console.error('Invalid password');
     }else {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/info']);
     }
   }
 
@@ -82,7 +91,7 @@ export class LoginComponent {
     if (this.password != 'campus1234'){
       console.error('Invalid password');
     }else {
-      this.router.navigate(['/gestor-Campus']);
+      this.router.navigate(['/mainMenu']);
     }
   }
 
@@ -94,3 +103,4 @@ export class LoginComponent {
     }
   }
 }
+*/

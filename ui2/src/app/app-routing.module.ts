@@ -1,14 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ɵsetInjectorProfilerContext } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 //Edificio
 import { EdificioCreateComponent } from './component/edificio/edificio-create/edificio-create.component';
 import { EdificioGeralComponent } from './component/edificio/edificio-geral/edificio-geral.component';
 
-//Main menu
-import { AdminComponent } from './component/main-menu/admin/admin.component';
-import { GestorFrotaComponent } from './component/main-menu/gestor-frota/gestor-frota.component';
-import { GestorCampusComponent } from './component/main-menu/gestor-campus/gestor-campus.component';
 import { EdificioListComponent } from './component/edificio/edificio-list/edificio-list.component';
 import { EdificioUpdateComponent } from './component/edificio/edificio-update/edificio-update.component';
 import { TarefaCreateComponent } from './component/tarefa/tarefa-create/tarefa-create.component';
@@ -43,6 +39,7 @@ import { LoginComponent } from './component/login/login.component';
 import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/mapa-piso-create.component';
 import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
 import { AboutUsComponent } from './component/aboutus/aboutus.component';
+import { MainMenuComponent } from './component/main-menu/main-menu.component';
 
 const routes: Routes = [
 
@@ -50,15 +47,6 @@ const routes: Routes = [
   { path: 'edificios', component: EdificioGeralComponent },
   { path: 'edificioCreate', component: EdificioCreateComponent },
   { path: 'edificioList', component: EdificioListComponent },
-  { path: "edificioUpdate", component: EdificioUpdateComponent },
-
-  //Main menu
-  { path: "admin", component: AdminComponent },
-  { path: "gestor-Frota", component: GestorFrotaComponent },
-  { path: "gestor-Campus", component: GestorCampusComponent },
-  { path: "gestor-Campus", component: GestorCampusComponent },
-
-
   { path: "edificioUpdate", component: EdificioUpdateComponent },
 
   //Tarefa
@@ -102,7 +90,8 @@ const routes: Routes = [
   { path: 'mapaPisoUpdate', component: MapaPisoUpdateComponent },
 
   { path: 'login', component: LoginComponent },
-  { path: 'aboutUs', component: AboutUsComponent }
+  { path: 'aboutUs', component: AboutUsComponent },
+  { path: 'mainMenu', component: MainMenuComponent }
 ];
 
 
