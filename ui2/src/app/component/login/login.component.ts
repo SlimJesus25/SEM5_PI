@@ -14,8 +14,8 @@ export class LoginComponent {
 
   submit() {
     switch (this.username) {
-      case 'admin': {
-        this.openAdmin();
+      case 'asist': {
+        this.openAsist();
         break;
       }
       case 'campus': {
@@ -26,6 +26,19 @@ export class LoginComponent {
         this.openFleet();
         break;
       }
+      case 'task': {
+        this.openTask();
+        break;
+      }
+      case 'info': {
+        this.openInfo();
+        break;
+      }
+
+      case 'vis': {
+        this.openVis();
+        break;
+      }
       default: {
         console.log('Invalid username');
         break;
@@ -33,8 +46,32 @@ export class LoginComponent {
     }
   }
 
-  openAdmin(){
-    if (this.password != 'admin1234'){
+  openVis(){
+    if (this.password != 'vis1234'){
+      console.error('Invalid password');
+    }else {
+      this.router.navigate(['/admin']);
+    }
+  }
+
+  openAsist(){
+    if (this.password != 'asist1234'){
+      console.error('Invalid password');
+    }else {
+      this.router.navigate(['/admin']);
+    }
+  }
+
+  openTask(){
+    if (this.password != 'task1234'){
+      console.error('Invalid password');
+    }else {
+      this.router.navigate(['/admin']);
+    }
+  }
+
+  openInfo(){
+    if (this.password != 'info1234'){
       console.error('Invalid password');
     }else {
       this.router.navigate(['/admin']);

@@ -9,7 +9,7 @@
     </div>
 </body>
 
-<ng-container *ngIf="username === 'admin'">
+<ng-container *ngIf="username === 'asist'">
     <router-outlet></router-outlet>
     <app-messages></app-messages>
 </ng-container>
@@ -20,6 +20,21 @@
 </ng-container>
 
 <ng-container *ngIf="username === 'fleet'">
+    <router-outlet></router-outlet>
+    <app-messages></app-messages>
+</ng-container>
+
+<ng-container *ngIf="username === 'task'">
+    <router-outlet></router-outlet>
+    <app-messages></app-messages>
+</ng-container>
+
+<ng-container *ngIf="username === 'vis'">
+    <router-outlet></router-outlet>
+    <app-messages></app-messages>
+</ng-container>
+
+<ng-container *ngIf="username === 'info'">
     <router-outlet></router-outlet>
     <app-messages></app-messages>
 </ng-container>
