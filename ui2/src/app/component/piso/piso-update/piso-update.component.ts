@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { MessageService } from '../../../service/message/message.service';
 import { PisoService } from '../../../service/piso/piso.service';
+import { EdificioService } from '../../../service/edificio/edificio.service';
 @Component({
   selector: 'app-piso-update',
   templateUrl: './piso-update.component.html',
@@ -9,35 +10,38 @@ import { PisoService } from '../../../service/piso/piso.service';
 })
 export class PisoUpdateComponent implements OnInit {
 
-  piso = {designacao: "", descricao: "", edificio:""}
-  
+  piso = { designacao: "", descricao: "", edificio: "" };
+  edificios: string[] = [];
+  pisos: string[] = [];
+
   constructor(
     private location: Location,
-    private PisoService: PisoService,
+    private pisoService: PisoService,
+    private edificioService: EdificioService,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
+    this.pisoService.listPisosGeral().subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao));
+  }
 
 
-  @Output() finalMessage: string ='';
+  @Output() finalMessage: string = '';
 
 
   ngOnInit(): void {
   }
 
   updatePiso() {
-    let errorOrSuccess: any = this.PisoService.updatePiso(this.piso);
+    let errorOrSuccess: any = this.pisoService.updatePiso(this.piso);
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success piso update!");
-        this.finalMessage = "Success piso update!";
-        this.location.back();
+       alert("Success piso update!");
       },
 
       (error: any) => {
         //error
-        this.messageService.add(error.error);
-        this.finalMessage = error.error;
+        alert(error.error);
       }
     );
 
