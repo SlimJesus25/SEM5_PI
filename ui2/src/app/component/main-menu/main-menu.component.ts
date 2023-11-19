@@ -46,7 +46,7 @@ export class MainMenuComponent implements OnInit {
   }
 
   listPassagens(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['passagemList']);
   }
 
   updatePassagem(){

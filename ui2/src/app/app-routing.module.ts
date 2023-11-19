@@ -40,6 +40,7 @@ import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/
 import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
 import { AboutUsComponent } from './component/aboutus/aboutus.component';
 import { MainMenuComponent } from './component/main-menu/main-menu.component';
+import { PassagemListComponent } from './component/passagem/passagem-list/passagem-list.component';
 
 const routes: Routes = [
 
@@ -77,6 +78,7 @@ const routes: Routes = [
   //Passagem
   { path: 'passagens', component: PassagemGeralComponent },
   { path: 'passagemCreate', component: PassagemCreateComponent },
+  { path: 'passagemList', component: PassagemListComponent },
 
   //Elevador
   { path: 'elevadores', component: ElevadorGeralComponent },

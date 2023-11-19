@@ -28,5 +28,9 @@ export class PassagemService {
     this.messageService.add(`PassagemService: ${message}`);
   }
 
+  getPassagens(): Observable<Passagem[]> {
+    const edificios = this.http.get<Passagem[]>(this.LogisticAPI_URL+ "/listPassagens");
 
+    return edificios;
+  }
 }
