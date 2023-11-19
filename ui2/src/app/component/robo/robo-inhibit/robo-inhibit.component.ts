@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output} from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { RoboService } from '../../../service/robo/robo.service';
 import { MessageService } from '../../../service/message/message.service';
@@ -9,13 +9,15 @@ import { MessageService } from '../../../service/message/message.service';
   styleUrls: ['./robo-inhibit.component.css']
 })
 export class RoboInhibitComponent implements OnInit {
-
-  constructor(private roboService: RoboService, private location: Location, private messageService: MessageService) { }
+  robos: string[] = [];
+  constructor(private roboService: RoboService, private location: Location, private messageService: MessageService) {
+    this.roboService.getRobo().subscribe(robos => this.robos = robos.map(robo => robo.codigo));
+  }
 
   ngOnInit(): void {
   }
 
-  @Input() codigo: string = '';
+  codigo: string = '';
   @Output() finalMessage: string = '';
 
   inhibitRobo() {
@@ -24,15 +26,12 @@ export class RoboInhibitComponent implements OnInit {
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success Robo inhibition!");
-        this.finalMessage = "Success Robo inhibition!";
-        this.location.back();
+        alert("Success Robo inhibition!");
       },
 
       (error: any) => {
         //error
-        this.messageService.add("Failed robo inhibition!");
-        this.finalMessage = "Failed robo inhibition!";
+        alert(error.error);
       }
     );
   }

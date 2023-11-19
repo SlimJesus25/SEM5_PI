@@ -1,14 +1,25 @@
-<h1>Inibir Robo</h1>
+<div class="background-container"></div>
+<mat-toolbar>
+  <h1 class="h1">RobDroneGO</h1>
+</mat-toolbar>
 
-<table>
-    <tr>
-      <td><label>Codigo Robo: </label></td>
-      <td><input type="text" [(ngModel)]="codigo"></td>
-    </tr>
-</table> 
-
-<div>
-    <button class="buttonBack" (click)="inhibitRobo()">Inhibit</button>
-    <br>
-    <button class="buttonBack" (click)="goBack()">Back</button>
+<body>
+  <div class="box">
+    <div>
+      <table>
+        <tr>
+          <mat-form-field>
+            <mat-label>Codigo Robo </mat-label>
+            <mat-select [(ngModel)]="codigo">
+              <mat-option *ngFor="let robo of robos" [value]="robo">{{robo}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <button (click)="inhibitRobo()">Inhibit</button>
+      <button class="buttonBack" (click)="goBack()">Back</button>
+    </div>
   </div>
+</body>
