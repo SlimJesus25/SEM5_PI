@@ -64,6 +64,7 @@ import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/
 import { MainMenuComponent } from './component/main-menu/main-menu.component';
 import { PassagemListComponent } from './component/passagem/passagem-list/passagem-list.component';
 import { PassagemUpdateComponent } from './component/passagem/passagem-update/passagem-update.component';
+import { SalaCreateComponent } from './component/sala/sala-create/sala-create.component';
 
 @NgModule({
   imports: [
@@ -129,6 +130,9 @@ import { PassagemUpdateComponent } from './component/passagem/passagem-update/pa
     ElevadorUpdateComponent,
     ElevadorListComponent,
     ElevadorCreateComponent,
+
+    //Sala
+    SalaCreateComponent,
 
     //MapaPiso
     MapaPisoCreateComponent,

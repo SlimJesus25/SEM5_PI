@@ -64,4 +64,8 @@ export class MainMenuComponent implements OnInit {
   createTipoRobo(){
     this.router.navigate(['tipoRoboCreate']);
   }
+  //Sala
+  createSala(){
+    this.router.navigate(['salaCreate']);
+  }
 }

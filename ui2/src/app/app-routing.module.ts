@@ -42,6 +42,7 @@ import { AboutUsComponent } from './component/aboutus/aboutus.component';
 import { MainMenuComponent } from './component/main-menu/main-menu.component';
 import { PassagemListComponent } from './component/passagem/passagem-list/passagem-list.component';
 import { PassagemUpdateComponent } from './component/passagem/passagem-update/passagem-update.component';
+import { SalaCreateComponent } from './component/sala/sala-create/sala-create.component';
 
 const routes: Routes = [
 
@@ -92,6 +93,9 @@ const routes: Routes = [
   //{ path: 'mapasPisos', component: MapaPisoGeralComponent},
   { path: 'mapaPisoCreate', component: MapaPisoCreateComponent },
   { path: 'mapaPisoUpdate', component: MapaPisoUpdateComponent },
+
+  //Sala
+  {path: 'salaCreate', component: SalaCreateComponent},
 
   { path: 'login', component: LoginComponent },
   { path: 'aboutUs', component: AboutUsComponent },
