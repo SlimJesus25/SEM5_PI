@@ -31,7 +31,7 @@ export class MainMenuComponent implements OnInit {
     this.router.navigate(['pisoCreate']);
   }
   listPisos(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['pisoList']);
   }
   updatePiso(){
     this.router.navigate(['pisoUpdate']);
@@ -54,7 +54,7 @@ export class MainMenuComponent implements OnInit {
     this.router.navigate(['elevadorList']);
   }
   updateElevador(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['elevadorUpdate']);
   }
   //MapaPiso
   createMapaPiso(){
@@ -63,6 +63,16 @@ export class MainMenuComponent implements OnInit {
   //TipoRobo
   createTipoRobo(){
     this.router.navigate(['tipoRoboCreate']);
+  }
+  //Robo
+  createRobo(){
+    this.router.navigate(['roboCreate']);
+  }
+  listRobos(){
+    this.router.navigate(['roboList']);
+  }
+  inibirRobo(){
+    this.router.navigate(['inhibitRobo']);
   }
   //Sala
   createSala(){

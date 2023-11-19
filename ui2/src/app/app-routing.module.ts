@@ -66,7 +66,7 @@ const routes: Routes = [
   //Robo
   { path: "robos", component: RoboGeralComponent },
   { path: "roboCreate", component: RoboCreateComponent },
-  { path: "listRobo", component: RoboListComponent },
+  { path: "roboList", component: RoboListComponent },
   { path: "roboUpdate", component: RoboUpdateComponent },
   { path: "inhibitRobo", component: RoboInhibitComponent },
 

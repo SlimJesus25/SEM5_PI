@@ -2,6 +2,8 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { MessageService } from '../../../service/message/message.service';
 import { ElevadorService } from '../../../service/elevador/elevador.service';
+import { PisoService } from '../../../service/piso/piso.service';
+import { EdificioService } from '../../../service/edificio/edificio.service';
 @Component({
   selector: 'app-edificio-update',
   templateUrl: './elevador-update.component.html',
@@ -9,13 +11,26 @@ import { ElevadorService } from '../../../service/elevador/elevador.service';
 })
 export class ElevadorUpdateComponent implements OnInit {
 
-  elevador = {numeroIdentificativo: "", descricao: "", numeroSerie: "",  modelo:"", marca: "", pisosServidos: [""], edificio: ""};
+  edificios: string[] = [];
+  pisos: string[] = [];
+  elevadores: string[] = [];
+  elevador = {numeroIdentificativo: "", descricao: "", numeroSerie: "",  modelo:"", marca: "", pisosServidos: [], edificio: ""};
 
   constructor(
     private location: Location,
-    private ElevadorService: ElevadorService,
+    private elevadorService: ElevadorService,
+    private pisoService: PisoService,
+    private edificioService: EdificioService,
     private messageService: MessageService
-  ) { }
+  ) { 
+    this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
+    this.elevadorService.getElevadores().subscribe(elevadores => this.elevadores = elevadores.map(elevador => elevador.numeroIdentificativo));
+  }
+
+  submitEdificio(){
+    this.pisoService.listPisos(this.elevador.edificio).subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao));
+  
+  }
 
 
   @Output() finalMessage: string ='';
@@ -25,19 +40,16 @@ export class ElevadorUpdateComponent implements OnInit {
   }
 
   updateElevador() {
-    let errorOrSuccess: any = this.ElevadorService.updateElevador(this.elevador);
+    let errorOrSuccess: any = this.elevadorService.updateElevador(this.elevador);
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success elevador update!");
-        this.finalMessage = "Success elevador update!";
-        this.location.back();
+        alert("Success elevador update!");
       },
 
       (error: any) => {
         //error
-        this.messageService.add(error.error);
-        this.finalMessage = error.error;
+        alert(error.error);
       }
     );
 
