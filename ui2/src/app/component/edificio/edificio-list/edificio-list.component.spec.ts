@@ -45,7 +45,7 @@ describe('EdificioListComponent', () => {
     fakeService.getEdificios.and.returnValue(observable);
 
     component = new EdificioListComponent(fakeService,fakeLocation,fakeLiveAnnouncer);
-
+    debugger;
     component.ngOnInit();
 
 
