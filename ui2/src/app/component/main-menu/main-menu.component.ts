@@ -48,7 +48,7 @@ export class MainMenuComponent implements OnInit {
   }
   //Elevador
   createElevador(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['elevadorCreate']);
   }
   listElevadores(){
     this.router.navigate(['edificioCreate']);

@@ -2,6 +2,9 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { MessageService } from '../../../service/message/message.service';
 import { ElevadorService } from '../../../service/elevador/elevador.service';
+import { PisoService } from '../../../service/piso/piso.service';
+import { Edificio } from '../../../model/edificio';
+import { EdificioService } from '../../../service/edificio/edificio.service';
 @Component({
   selector: 'app-elevador-create',
   templateUrl: './elevador-create.component.html',
@@ -9,35 +12,39 @@ import { ElevadorService } from '../../../service/elevador/elevador.service';
 })
 export class ElevadorCreateComponent implements OnInit {
 
-  elevador = {numeroIdentificativo: "", descricao: "", numeroSerie: "",  modelo:"", marca: "", pisosServidos: [""] , edificio: ""};
+  edificios: string[] = [];
+  pisos: string[] = [];
+  elevador = { numeroIdentificativo: "", descricao: "", numeroSerie: "", modelo: "", marca: "", pisosServidos: [], edificio: "" };
 
   constructor(
     private location: Location,
-    private ElevadorService: ElevadorService,
+    private elevadorService: ElevadorService,
+    private pisoService: PisoService,
+    private edificioService: EdificioService,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
+    this.pisoService.listPisosGeral().subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao));
+  }
 
 
-  @Output() finalMessage: string ='';
+  @Output() finalMessage: string = '';
 
 
   ngOnInit(): void {
   }
 
   createElevador() {
-    let errorOrSuccess: any = this.ElevadorService.createElevador(this.elevador);
+    let errorOrSuccess: any = this.elevadorService.createElevador(this.elevador);
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success elevador creation!");
-        this.finalMessage = "Success elevador creation!";
-        this.location.back();
+        alert("Success elevador creation!");
       },
 
       (error: any) => {
         //error
-        this.messageService.add(error.error);
-        this.finalMessage = error.error;
+        alert(error.error);
       }
     );
 

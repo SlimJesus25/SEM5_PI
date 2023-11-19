@@ -1,6 +1,10 @@
-<h1>Criar Elevador</h1>
+<div class="background-container"></div>
+<mat-toolbar>
+  <h1 class="h1">RobDroneGO</h1>
+</mat-toolbar>
 
-<div>
+<body>
+  <div class="box">
     <div>
       <table>
         <tr>
@@ -15,28 +19,37 @@
           <th><label>Numero Serie: </label>
           <th><input type="string" [(ngModel)]="elevador.numeroSerie" />
         </tr>
-      <tr>
-        <th><label>Modelo: </label>
+        <tr>
+          <th><label>Modelo: </label>
           <th><input type="string" [(ngModel)]="elevador.modelo" />
-      </tr>
-      <tr>
-        <th><label>Marca: </label>
+        </tr>
+        <tr>
+          <th><label>Marca: </label>
           <th><input type="string" [(ngModel)]="elevador.marca" />
-      </tr>
-      <tr>
-        <th><label>Pisos Servidos: </label>
-          <th><input type="string" [(ngModel)]="elevador.pisosServidos" />
-      </tr>
-      <tr>
-        <th><label>Edificio: </label>
-          <th><input type="string" [(ngModel)]="elevador.edificio" />
-      </tr>
+        </tr>
+        <tr>
+          <mat-form-field>
+            <mat-label>Edificio </mat-label>
+            <mat-select [(ngModel)]="elevador.edificio">
+              <mat-option *ngFor="let edificio of edificios" [value]="edificio">{{edificio}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </tr>
+        <tr>
+          <mat-form-field>
+            <mat-label>Pisos</mat-label>
+            <mat-select [(ngModel)]="elevador.pisosServidos" multiple>
+              <mat-option *ngFor="let piso of pisos" [value]="piso"> {{ piso }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </tr>
+
       </table>
     </div>
     <div>
-      <button class="buttonBack" (click)="goBack()">Back</button>
       <button (click)="createElevador()">Add</button>
+      <button (click)="goBack()">Back</button>
     </div>
-
-
-</div>
+  </div>
+</body>
