@@ -15,7 +15,7 @@ import ISolucaoCaminhoDTO from '../dto/ISolucaoCaminhoDTO'
 export default class MapaPisoController implements IMapaPisoController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
     @Inject(config.services.mapaPiso.name) private mapaPisoServiceInstance: IMapaPisoService
-  ) {}
+  ) { }
 
 
   public async createMapaPiso(req: Request, res: Response, next: NextFunction) {
@@ -84,9 +84,14 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
   }
 
   public async caminhoEntrePisos(req: Request, res: Response, next: NextFunction) {
+    const origem = String(req.params.origem);
+    const posicaoOrigem = Number[req.params.posicaoOrigem];
+    const destino = String(req.params.destino);
+    const posicaoDestino = Number[req.params.posicaoDestino];
+    const caminho: ICaminhoEntrePisosDTO = { origem, posicaoOrigem, destino, posicaoDestino };
     try {
-      const caminhoEntrePisos = await this.mapaPisoServiceInstance.caminhoEntrePisos(req.body as ICaminhoEntrePisosDTO) as Result<ISolucaoCaminhoDTO>;
-
+      //const caminhoEntrePisos = await this.mapaPisoServiceInstance.caminhoEntrePisos(req.body as ICaminhoEntrePisosDTO) as Result<ISolucaoCaminhoDTO>;
+      const caminhoEntrePisos = await this.mapaPisoServiceInstance.caminhoEntrePisos(caminho) as Result<ISolucaoCaminhoDTO>;
       if (caminhoEntrePisos.isFailure) {
         return res.status(404).send('Erro:' + caminhoEntrePisos.errorValue());
       }

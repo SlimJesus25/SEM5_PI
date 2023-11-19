@@ -78,4 +78,8 @@ export class MainMenuComponent implements OnInit {
   createSala(){
     this.router.navigate(['salaCreate']);
   }
+  //Obter caminho
+  calcularCaminho(){
+    this.router.navigate(['planning']);
+  }
 }
