@@ -7,11 +7,15 @@ import { Edificio } from '../../../model/edificio';
 import { MessageService } from '../../../service/message/message.service';
 import { EdificioService } from '../../../service/edificio/edificio.service';
 import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MapaPisoCreateComponent } from './mapa-piso-create.component';
 import { Piso } from '../../../model/piso';
 import { MapaPiso } from '../../../model/mapaPiso';
+import { PisoService } from '../../../service/piso/piso.service';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 describe('MapaPisoCreateComponent', () => {
@@ -20,7 +24,7 @@ describe('MapaPisoCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
+      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatSelectModule, BrowserAnimationsModule],
       declarations: [ MapaPisoCreateComponent ]
     })
     .compileComponents();
@@ -68,7 +72,7 @@ describe('MapaPisoCreateComponent', () => {
       }
     }));
 
-    component = new MapaPisoCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new MapaPisoCreateComponent(fakeLocation,fakeService,TestBed.inject(PisoService),fakeMessageService);
 
     component.mapaPiso.mapa = "Big Mapa",
     component.mapaPiso.piso = piso.designacao,
@@ -90,7 +94,7 @@ describe('MapaPisoCreateComponent', () => {
       error: "error"
     }));
 
-    component = new MapaPisoCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new MapaPisoCreateComponent(fakeLocation,fakeService,TestBed.inject(PisoService),fakeMessageService);
 
     component.createMapaPiso();
 

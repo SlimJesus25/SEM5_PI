@@ -46,4 +46,14 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl2.listMapasPiso(req, res, next));
+
+  route.get('/caminhoEntrePisos',
+    celebrate({
+      body: Joi.object({
+        origem: Joi.string().required(),
+        posicaoOrigem: Joi.array().items(Joi.number()).min(2).max(2).required(),
+        destino: Joi.string().required(),
+        posicaoDestino: Joi.array().items(Joi.number()).min(2).max(2).required()
+      }),
+    }), (req, res, next) => ctrl2.caminhoEntrePisos(req, res, next));
 };
