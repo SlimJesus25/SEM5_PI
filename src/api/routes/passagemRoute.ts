@@ -50,10 +50,9 @@ export default (app: Router) => {
   (req, res, next) => ctrl.listPassagens(req, res, next));
   
   //Listar pisos de edifício com passagem para outros edifícios
-  route.get('/listPisos',
+  route.get('/listPisos/:codigoEdificio',
   celebrate({
     body: Joi.object({
-    codigoEdificioA: Joi.string().required()
     }),
   }),
   (req, res, next) => ctrl.listPisos(req,res,next));

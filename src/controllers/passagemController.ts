@@ -69,9 +69,9 @@ export default class PassagemController implements IPassagemController /* TODO: 
   }
   
   public async listPisos(req: Request, res: Response, next: NextFunction) {
-      try{
-        const passagemOrError = await this.passagemServiceInstance.listPisos(req.body as IListPisosComPassagemDTO) as Result<IPisoDTO[]>;
-        
+    const codigoEdificio = req.params.codigoEdificio;
+    try{
+        const passagemOrError = await this.passagemServiceInstance.listPisos({codigoEdificio} as IListPisosComPassagemDTO) as Result<IPisoDTO[]>;
         if(passagemOrError.isFailure){
           return res.status(404).send("Erro: " + passagemOrError.errorValue());
         }
