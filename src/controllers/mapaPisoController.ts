@@ -85,9 +85,13 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
 
   public async caminhoEntrePisos(req: Request, res: Response, next: NextFunction) {
     const origem = String(req.params.origem);
-    const posicaoOrigem = Number[req.params.posicaoOrigem];
+    const posicaoOrigem1 = String(req.params.posicaoOrigem);
     const destino = String(req.params.destino);
-    const posicaoDestino = Number[req.params.posicaoDestino];
+    const posicaoDestino1 = String(req.params.posicaoDestino);
+
+    let posicaoOrigem = JSON.parse(posicaoOrigem1);
+    let posicaoDestino = JSON.parse(posicaoDestino1);
+
     const caminho: ICaminhoEntrePisosDTO = { origem, posicaoOrigem, destino, posicaoDestino };
     try {
       //const caminhoEntrePisos = await this.mapaPisoServiceInstance.caminhoEntrePisos(req.body as ICaminhoEntrePisosDTO) as Result<ISolucaoCaminhoDTO>;
