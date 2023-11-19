@@ -5,4 +5,5 @@ import ITarefaDTO from "../../dto/ITarefaDTO";
 export default interface ITarefaService {
     createTarefa(tarefaDTO: ITarefaDTO): Promise<Result<ITarefaDTO>>;
     deleteTarefa(tipoTarefa: IDeleteTarefaDTO): Promise<Result<ITarefaDTO>>;
+    listTarefas(): Promise<Result<ITarefaDTO[]>>;
 }

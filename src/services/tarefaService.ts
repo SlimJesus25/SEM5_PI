@@ -55,4 +55,25 @@ export default class TarefaService implements ITarefaService {
     }
   }
 
+  public async listTarefas(): Promise<Result<ITarefaDTO[]>> {
+    try {
+
+        const tarefas = await this.tarefaRepo.findAll();
+
+        if (tarefas == null){
+          return Result.fail<ITarefaDTO[]>("Não existem registos de edifícios");
+        }
+        
+        let tarefasDTO : ITarefaDTO[] = [];
+
+        for(const tarefa of tarefas){
+          const p = TarefaMap.toDTO(tarefa) as ITarefaDTO;
+          tarefasDTO.push(p);
+        }
+
+        return Result.ok<ITarefaDTO[]>( tarefasDTO )
+      } catch (e) {
+        throw e;
+      }
+  }
 }

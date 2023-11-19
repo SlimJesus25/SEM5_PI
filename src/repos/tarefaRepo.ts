@@ -54,12 +54,12 @@ export default class TarefaRepo implements ITarefaRepo {
       return null;
   }
 
-  public async findByDesignacao(designacao: string): Promise<Tarefa> {
-    const query = { designacao: designacao};
+  public async findByDesignacao(value: string): Promise<Tarefa> {
+    const query = { tipoTarefa: value };
     const tarefaRecord = await this.tarefaSchema.findOne(query as FilterQuery<ITarefaPersistence & Document>);
 
-    if (tarefaRecord != null){
-      let tarefaDoc  = await TarefaMap.toDomain(tarefaRecord)
+    if (tarefaRecord != null) {
+      let tarefaDoc = await TarefaMap.toDomain(tarefaRecord)
       return tarefaDoc;
     }
     else
@@ -86,6 +86,22 @@ export default class TarefaRepo implements ITarefaRepo {
       throw err;
     }
   }
+
+  public async findAll(): Promise<Tarefa[]> {
+    const query = {};
+    const tarefaSchema = await this.tarefaSchema.find(query);
+    try {
+      if (tarefaSchema === null) {
+          return null;
+      } else {
+          let tarefaArray: Tarefa[] = [];
+          tarefaSchema.forEach(async v => tarefaArray.push(await TarefaMap.toDomain(v)));
+          return tarefaArray;
+      }
+  } catch (err) {
+      throw err;
+  }
+}
   
 
  

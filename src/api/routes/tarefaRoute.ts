@@ -30,4 +30,10 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.deleteTarefa(req, res, next));
 
+    route.get('/listTarefas',
+  celebrate({
+    body: Joi.object({
+    }),
+  }),
+  (req, res, next) => ctrl.listTarefas(req, res, next));
 };

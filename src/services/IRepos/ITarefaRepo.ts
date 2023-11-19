@@ -7,4 +7,5 @@ export default interface ITarefaRepo extends Repo<Tarefa> {
   findByDomainId (tarefaId: TarefaId | string): Promise<Tarefa>;
   findByDesignacao (designacao: string): Promise<Tarefa>;
   delete(tarefa: Tarefa ): Promise<Tarefa>;
+  findAll(): Promise<Tarefa[]>;
 }
