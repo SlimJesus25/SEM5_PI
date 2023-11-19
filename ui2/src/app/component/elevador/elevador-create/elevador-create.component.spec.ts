@@ -78,7 +78,7 @@ describe('ElevadorCreateComponent', () => {
       }
     }));
 
-    component = new ElevadorCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new ElevadorCreateComponent(fakeLocation,fakeService,TestBed.inject(PisoService),TestBed.inject(EdificioService),fakeMessageService);
 
     component.elevador.numeroIdentificativo = "122994";
     component.elevador.descricao = "Elevador Bombastico";
@@ -106,7 +106,7 @@ describe('ElevadorCreateComponent', () => {
       error: "error"
     }));
 
-    component = new ElevadorCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new ElevadorCreateComponent(fakeLocation,fakeService,TestBed.inject(PisoService),TestBed.inject(EdificioService),fakeMessageService);
 
     component.createElevador();
 

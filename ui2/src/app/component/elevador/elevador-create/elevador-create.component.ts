@@ -14,7 +14,7 @@ export class ElevadorCreateComponent implements OnInit {
 
   edificios: string[] = [];
   pisos: string[] = [];
-  elevador = { numeroIdentificativo: "", descricao: "", numeroSerie: "", modelo: "", marca: "", pisosServidos: [], edificio: "" };
+  elevador = { numeroIdentificativo: "", descricao: "", numeroSerie: "", modelo: "", marca: "", pisosServidos: [""], edificio: "" };
 
   constructor(
     private location: Location,

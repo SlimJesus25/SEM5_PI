@@ -15,6 +15,8 @@ import { EdificioService } from '../../../service/edificio/edificio.service';
 import { ElevadorUpdateComponent } from './elevador-update.component';
 import { Piso } from '../../../model/piso';
 import { Elevador } from '../../../model/elevador';
+import { Test } from 'mocha';
+import { PisoService } from '../../../service/piso/piso.service';
 
 
 describe('ElevadorUpdateComponent', () => {
@@ -78,7 +80,7 @@ describe('ElevadorUpdateComponent', () => {
     }));
     
 
-    component = new ElevadorUpdateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new ElevadorUpdateComponent(fakeLocation,fakeService,TestBed.inject(PisoService),TestBed.inject(EdificioService),fakeMessageService);
 
     component.elevador.numeroIdentificativo = "122994";
     component.elevador.descricao = "Elevador Silencioso";
@@ -105,7 +107,7 @@ describe('ElevadorUpdateComponent', () => {
       error: "error"
     }));
 
-    component = new ElevadorUpdateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new ElevadorUpdateComponent(fakeLocation,fakeService,TestBed.inject(PisoService),TestBed.inject(EdificioService),fakeMessageService);
 
     component.updateElevador();
 

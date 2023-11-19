@@ -13,6 +13,8 @@ import { RoboCreateComponent } from './robo-create.component';
 import { Tarefa } from '../../../model/tarefa';
 import { TipoRobo } from '../../../model/tipoRobo';
 import { Robo } from '../../../model/robo';
+import { TipoRoboService } from '../../../service/tipoRobo/tipoRobo.service';
+
 
 
 describe('RoboCreateComponent', () => {
@@ -67,7 +69,7 @@ describe('RoboCreateComponent', () => {
       }
     }));
 
-    component = new RoboCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new RoboCreateComponent(fakeLocation,fakeService,TestBed.inject(TipoRoboService),fakeMessageService);
 
     component.robo.codigo = "XCV",
     component.robo.tipoRobo = tipoRobo.designacao,
@@ -92,7 +94,7 @@ describe('RoboCreateComponent', () => {
       error: "error"
     }));
 
-    component = new RoboCreateComponent(fakeLocation,fakeService,fakeMessageService);
+    component = new RoboCreateComponent(fakeLocation,fakeService,TestBed.inject(TipoRoboService),fakeMessageService);
 
     component.createRobo();
 
