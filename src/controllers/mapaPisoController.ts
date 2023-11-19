@@ -8,31 +8,33 @@ import IMapaPisoDTO from '../dto/IMapaPisoDTO';
 import IMazeDTO from '../dto/IMazeDTO';
 import { Result } from '../core/logic/Result';
 import IDeleteMapaPisoDTO from '../dto/IDeleteMapaPisoDTO';
+import ICaminhoEntrePisosDTO from '../dto/ICaminhoEntrePisosDTO';
+import ISolucaoCaminhoDTO from '../dto/ISolucaoCaminhoDTO'
 
 @Service()
 export default class MapaPisoController implements IMapaPisoController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
-      @Inject(config.services.mapaPiso.name) private mapaPisoServiceInstance : IMapaPisoService
+    @Inject(config.services.mapaPiso.name) private mapaPisoServiceInstance: IMapaPisoService
   ) {}
 
 
   public async createMapaPiso(req: Request, res: Response, next: NextFunction) {
     try {
       const mapaPisoOrError = await this.mapaPisoServiceInstance.createMapaPiso(req.body as IMapaPisoDTO) as Result<IMapaPisoDTO>;
-        
+
       if (mapaPisoOrError.isFailure) {
         return res.status(403).send("Erro: " + mapaPisoOrError.errorValue());
       }
 
       const mapaPisoDTO = mapaPisoOrError.getValue();
-      return res.json( mapaPisoDTO ).status(201);
+      return res.json(mapaPisoDTO).status(201);
     }
     catch (e) {
       return next(e);
     }
   };
 
-  
+
   public async loadMapaPiso(req: Request, res: Response, next: NextFunction) {
     try {
       const mapaPisoOrError = await this.mapaPisoServiceInstance.loadMapaPiso(req.body as IMapaPisoDTO) as Result<IMapaPisoDTO>;
@@ -42,30 +44,30 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       }
 
       const mapaPisoDTO = mapaPisoOrError.getValue();
-      return res.json( mapaPisoDTO ).status(201);
+      return res.json(mapaPisoDTO).status(201);
     }
     catch (e) {
       return next(e);
     }
   };
 
-  public async deleteMapaPiso(req: Request, res: Response, next: NextFunction){
-    try{
+  public async deleteMapaPiso(req: Request, res: Response, next: NextFunction) {
+    try {
       const mapaPisoOrError = await this.mapaPisoServiceInstance.deleteMapaPiso(req.body as IDeleteMapaPisoDTO) as Result<IMapaPisoDTO>;
 
-      if(mapaPisoOrError.isFailure){
+      if (mapaPisoOrError.isFailure) {
         return res.status(404).send('Erro:' + mapaPisoOrError.errorValue());
       }
 
       const mapaPisoDTO = mapaPisoOrError.getValue();
       return res.json(mapaPisoDTO).status(200);
-    }catch(e){
+    } catch (e) {
       return next(e);
     }
   }
 
 
-  public async listMapasPiso(req: Request, res: Response, next: NextFunction){
+  public async listMapasPiso(req: Request, res: Response, next: NextFunction) {
     try {
       const mapaPisoOrError = await this.mapaPisoServiceInstance.listMapasPiso() as Result<IMazeDTO[]>;
 
@@ -74,9 +76,24 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       }
 
       const mapaPisoDTO = mapaPisoOrError.getValue();
-      return res.json( mapaPisoDTO ).status(200);
+      return res.json(mapaPisoDTO).status(200);
     }
     catch (e) {
+      return next(e);
+    }
+  }
+
+  public async caminhoEntrePisos(req: Request, res: Response, next: NextFunction) {
+    try {
+      const caminhoEntrePisos = await this.mapaPisoServiceInstance.caminhoEntrePisos(req.body as ICaminhoEntrePisosDTO) as Result<ISolucaoCaminhoDTO>;
+
+      if (caminhoEntrePisos.isFailure) {
+        return res.status(404).send('Erro:' + caminhoEntrePisos.errorValue());
+      }
+
+      const caminhoEntrePisosDTO = caminhoEntrePisos.getValue();
+      return res.json(caminhoEntrePisosDTO).status(200);
+    } catch (e) {
       return next(e);
     }
   }
