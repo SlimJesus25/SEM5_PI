@@ -51,7 +51,7 @@ export class MainMenuComponent implements OnInit {
     this.router.navigate(['elevadorCreate']);
   }
   listElevadores(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['elevadorList']);
   }
   updateElevador(){
     this.router.navigate(['edificioCreate']);
