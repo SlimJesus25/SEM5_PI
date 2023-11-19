@@ -7,7 +7,7 @@
   <div class="box">
     <mat-form-field>
       <mat-label>Piso</mat-label>
-      <mat-select [(ngModel)]="mapaPiso.piso" name="Piso">
+      <mat-select [(ngModel)]="mapaPiso.piso">
         <mat-option *ngFor="let piso of pisos" [value]="piso">{{piso}}</mat-option>
       </mat-select>
     </mat-form-field>

@@ -17,7 +17,7 @@ export class EdificioUpdateComponent implements OnInit {
     private edificioService: EdificioService,
     private messageService: MessageService
   ) {
-    this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
+    this.edificioService.getEdificios().subscribe(edificiosX => this.edificios = edificiosX.map(edificioP => edificioP.codigoEdificio));
   }
 
 

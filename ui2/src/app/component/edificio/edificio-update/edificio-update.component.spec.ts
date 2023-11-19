@@ -3,13 +3,16 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { of, throwError } from 'rxjs';
-import { EdificioUpdateComponent } from './edificio-update.component';
 import { Edificio } from '../../../model/edificio';
 import { MessageService } from '../../../service/message/message.service';
-import { EdificioService } from '../../../service/edificio/edificio.service';
 import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EdificioUpdateComponent } from './edificio-update.component';
+import { EdificioService } from '../../../service/edificio/edificio.service';
 
 
 describe('EdificioUpdateComponent', () => {
@@ -18,7 +21,7 @@ describe('EdificioUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
+      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatSelectModule, BrowserAnimationsModule],
       declarations: [ EdificioUpdateComponent ]
     })
     .compileComponents();
