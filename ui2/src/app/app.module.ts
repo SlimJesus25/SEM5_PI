@@ -63,6 +63,7 @@ import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/
 import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
 import { MainMenuComponent } from './component/main-menu/main-menu.component';
 import { PassagemListComponent } from './component/passagem/passagem-list/passagem-list.component';
+import { PassagemUpdateComponent } from './component/passagem/passagem-update/passagem-update.component';
 
 @NgModule({
   imports: [
@@ -121,6 +122,7 @@ import { PassagemListComponent } from './component/passagem/passagem-list/passag
     PassagemGeralComponent,
     PassagemCreateComponent,
     PassagemListComponent,
+    PassagemUpdateComponent,
 
     //Elevador
     ElevadorGeralComponent,

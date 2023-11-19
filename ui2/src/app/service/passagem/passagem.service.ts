@@ -33,4 +33,15 @@ export class PassagemService {
 
     return edificios;
   }
+
+  updatePassagem(passagem: Passagem) {
+
+    const updateURL = this.LogisticAPI_URL;
+
+    const headers = { 'content-type': 'application/json' };
+
+    const body = JSON.stringify(passagem);
+    console.log(body);
+   return this.http.put<Passagem>(updateURL + "/updatePassagem", body, { 'headers': headers, observe: 'response' })
+}
 }

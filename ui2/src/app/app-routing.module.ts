@@ -41,6 +41,7 @@ import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/
 import { AboutUsComponent } from './component/aboutus/aboutus.component';
 import { MainMenuComponent } from './component/main-menu/main-menu.component';
 import { PassagemListComponent } from './component/passagem/passagem-list/passagem-list.component';
+import { PassagemUpdateComponent } from './component/passagem/passagem-update/passagem-update.component';
 
 const routes: Routes = [
 
@@ -79,6 +80,7 @@ const routes: Routes = [
   { path: 'passagens', component: PassagemGeralComponent },
   { path: 'passagemCreate', component: PassagemCreateComponent },
   { path: 'passagemList', component: PassagemListComponent },
+  { path: 'passagemUpdate', component: PassagemUpdateComponent },
 
   //Elevador
   { path: 'elevadores', component: ElevadorGeralComponent },

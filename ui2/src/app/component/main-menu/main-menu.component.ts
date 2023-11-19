@@ -50,7 +50,7 @@ export class MainMenuComponent implements OnInit {
   }
 
   updatePassagem(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['passagemUpdate']);
   }
 
   createElevador(){
