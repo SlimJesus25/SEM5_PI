@@ -41,7 +41,7 @@ describe('RoboCreateComponent', () => {
 
 
     let tipoRobo : TipoRobo = {
-        tarefas : "[limpeza]",
+        tarefas : ["limpeza"],
         designacao : "designacao",
         marca : "marca",
         modelo : "modelo",
