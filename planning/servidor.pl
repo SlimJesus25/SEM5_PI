@@ -37,12 +37,32 @@ server(Port) :-
   http_server(http_dispatch, [port(Port)]).
 		
 
+define_dados_2(L, X, Y):-
+  term_string(Term, L),
+  maplist(atom_, Term, [X, Y|_]),
+  open('teste.txt', append, Stream),
+  write(Stream, 'Aqui: '),write(Stream, X), nl(Stream),
+  write(Stream, 'Aqui: '),write(Stream, Y), nl(Stream),
+  close(Stream).
+
 path_between_floors(Request):-
   cors_enable(Request, [methods([get])]),
-  http_read_data(Request, JSONData, [json_object(dict)]),
-  extrai_request(JSONData, ResVal),
+  http_parameters(Request, [origem(PisoOr1, []), xOrigem(XOrigem, []), yOrigem(YOrigem, []), destino(PisoDest1, []), xDestino(XDestino, []), yDestino(YDestino, [])]),
+  %define_dados_2(CordOr, COr, LOr),
+  %define_dados_2(CordDest, CDest, LDest),
   
-  define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
+  atom_string(PisoOr1, PisoOr),
+  atom_string(PisoDest1, PisoDest),
+
+  atom_number(XOrigem, COr),
+  atom_number(YOrigem, LOr),
+  atom_number(XDestino, CDest),
+  atom_number(YDestino, LDest),
+
+  %http_read_data(Request, JSONData, [json_object(dict)]),
+  %extrai_request(JSONData, ResVal),
+  
+  %define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
   request_edificios(),
   request_elevadores(),
@@ -51,6 +71,11 @@ path_between_floors(Request):-
   request_mapa_pisos(),
 
   caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
+
+  open('teste.txt', append, Stream),
+  write(Stream,PisoOr),
+  nl(Stream),
+  close(Stream),
 
   node(X, COr, LOr, 0, PisoOr), % Pos inicial tem que ser 0.
   node(Y, CDest, LDest, 0, PisoDest), % Pos destino tem que ser 0 também.

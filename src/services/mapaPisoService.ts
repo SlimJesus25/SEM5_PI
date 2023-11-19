@@ -134,59 +134,30 @@ export default class MapaPisoService implements IMapaPisoService {
     let sol1: string[];
     let sol2: number[];
 
-    const url = config.planningConnectionString + "/path_between_floors?origem=" + cep.origem + "&posOrigem=" +
-    cep.posicaoOrigem + "&destino=" + cep.destino + "&posDestino=" +
-    cep.posicaoDestino + "";
+    const uri = config.planningConnectionString + "/path_between_floors?origem=" + cep.origem +
+      "&xOrigem=" + cep.posicaoOrigem[0] + "&yOrigem=" + cep.posicaoOrigem[1] +
+      "&destino=" + cep.destino + "&xDestino=" + cep.posicaoDestino[0] + "&yDestino=" + cep.posicaoDestino[1];
 
-    /*const url = config.planningConnectionString + "/path_between_floors";
+    let a = new Promise((resolve) => {
+      http.get(uri, res => {
+        let data = '';
 
-    // Prepare the JSON payload
-    const payload = JSON.stringify({
-      origem: cep.origem,
-      posOrigem: cep.posicaoOrigem,
-      destino: cep.destino,
-      posDestino: cep.posicaoDestino
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          resolve(data);
+          const parsedData = JSON.parse(data);
+          sol1 = JSON.parse(data).sol1;
+          sol2 = JSON.parse(data).sol2;
+        });
+      }).on("error", (err) => {
+        console.log("Error: " + err.message);
+      }).end();
     });
 
-
-
-    // Set the options for the HTTP request
-    const options: http.RequestOptions = {
-      hostname: 'localhost',
-      port: 5000,
-      path: '/path_between_floors',
-      method: 'GET', // Use POST method for sending JSON payload
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(payload)
-      }
-    };*/
-
-    try {
-
-      let solucao = new Promise((resolve) => {
-        http.get(url, (res) => {
-          let data = '';
-
-          res.on('data', (chunk) => {
-            data += chunk;
-          });
-
-          res.on('end', () => {
-            resolve(data);
-            sol1 = JSON.parse(data).sol1;
-            sol2 = JSON.parse(data).sol2;
-          });
-        }).on("error", (err) => {
-          console.log("Error: " + err);
-        }).end();
-      });
-
-      await solucao;
-
-    } catch (err) {
-      return Result.fail<ISolucaoCaminhoDTO>("Erro inesperado");
-    }
+    await a;
 
     return CaminhoEntrePisosSolucao.create({
       caminhoEntrePisos: sol1,
