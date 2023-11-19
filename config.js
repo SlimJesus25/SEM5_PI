@@ -22,6 +22,11 @@ export default {
   databaseURL: process.env.MONGODB_URI || "mongodb://mongoadmin:aed0452dba3a82201f874542@vsgate-s1.dei.isep.ipp.pt:10242/?authMechanism=DEFAULT",
 
   /**
+   * Planning connection string
+   */
+  planningConnectionString: process.env.PLANNING_CONNECTION_STRING || "http://localhost:5000",
+
+  /**
    * Your secret sauce
    */
   jwtSecret: process.env.JWT_SECRET || "my sakdfho2390asjod$%jl)!sdjas0i secret",
