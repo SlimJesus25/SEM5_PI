@@ -34,6 +34,7 @@
               <mat-option *ngFor="let edificio of edificios" [value]="edificio">{{edificio}}</mat-option>
             </mat-select>
           </mat-form-field>
+          <button (click)="submitEdificio()">Submit</button>
         </tr>
         <tr>
           <mat-form-field>

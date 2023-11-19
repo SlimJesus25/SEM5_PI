@@ -24,9 +24,12 @@ export class ElevadorCreateComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
-    this.pisoService.listPisosGeral().subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao));
-  }
+    }
 
+  submitEdificio(){
+    this.pisoService.listPisos(this.elevador.edificio).subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao));
+  
+  }
 
   @Output() finalMessage: string = '';
 
