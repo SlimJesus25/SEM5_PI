@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { MessageService } from '../../../service/message/message.service';
 import { TipoRoboService } from '../../../service/tipoRobo/tipoRobo.service';
+import { TarefaService } from '../../../service/tarefa/tarefa.service';
 @Component({
   selector: 'app-tipo-robo-create',
   templateUrl: './tipo-robo-create.component.html',
@@ -9,16 +10,18 @@ import { TipoRoboService } from '../../../service/tipoRobo/tipoRobo.service';
 })
 export class TipoRoboCreateComponent implements OnInit {
 
-  tipoRobo = {tarefas: '[" "]', designacao: "", marca: "",  modelo:""}
+  tipoRobo = { tarefas: [], designacao: "", marca: "", modelo: "" };
+  tarefas: string[] = [];
 
   constructor(
     private location: Location,
     private TipoRoboService: TipoRoboService,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+    private tarefaService: TarefaService
+  ) { this.tarefaService.getTarefas().subscribe(tarefas => this.tarefas = tarefas.map(tarefa => tarefa.tipoTarefa)); }
 
 
-  @Output() finalMessage: string ='';
+  @Output() finalMessage: string = '';
 
 
   ngOnInit(): void {
@@ -29,15 +32,13 @@ export class TipoRoboCreateComponent implements OnInit {
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success Tipo Robo creation!");
-        this.finalMessage = "Success Tipo Robo creation!";
-        this.location.back();
+        alert("Success Tipo Robo creation!");
       },
 
       (error: any) => {
         //error
-        this.messageService.add(error.error);
-        this.finalMessage = error.error;
+        alert(error.error);
+
       }
     );
 

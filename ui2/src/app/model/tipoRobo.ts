@@ -1,5 +1,5 @@
 export interface TipoRobo {
-    tarefas : string;
+    tarefas : string[];
     designacao : string;
     marca : string;
     modelo : string;
