@@ -9,7 +9,7 @@ import { TipoRoboService } from '../../../service/tipoRobo/tipoRobo.service';
 })
 export class TipoRoboUpdateComponent implements OnInit {
 
-  tipoRobo = {designacao: "", marca: "", modelo: "",  tarefas:'[" "]'}
+  tipoRobo = {designacao: "", marca: "", modelo: "",  tarefas:[]}
 
   constructor(
     private location: Location,

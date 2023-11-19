@@ -45,4 +45,19 @@ export default class TarefaController implements ITarefaController /* TODO: exte
     }
   }
  
+  public async listTarefas(req: Request, res: Response, next: NextFunction){
+    try {
+      const tarefaOrError = await this.tarefaServiceInstance.listTarefas() as Result<ITarefaDTO[]>;
+
+      if (tarefaOrError.isFailure) {
+        return res.status(404).send("Erro: " + tarefaOrError.errorValue());
+      }
+
+      const tarefaDTO = tarefaOrError.getValue();
+      return res.json( tarefaDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
 }

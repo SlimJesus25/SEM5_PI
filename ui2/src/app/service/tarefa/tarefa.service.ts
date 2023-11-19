@@ -29,5 +29,11 @@ export class TarefaService {
     this.messageService.add(`HeroService: ${message}`);
   }
 
+  getTarefas(): Observable<Tarefa[]> {
+    const edificios = this.http.get<Tarefa[]>(this.LogisticAPI_URL+ "/listTarefas");
+
+    return edificios;
+  }
+
 
 }

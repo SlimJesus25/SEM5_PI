@@ -69,4 +69,8 @@ export class MainMenuComponent implements OnInit {
     this.router.navigate(['mapaPisoCreate']);
   }
 
+  createTipoRobo(){
+    this.router.navigate(['tipoRoboCreate']);
+  }
+
 }
