@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { MessageService } from '../../../service/message/message.service';
 import { PisoService } from '../../../service/piso/piso.service';
+import { EdificioService } from '../../../service/edificio/edificio.service';
 @Component({
   selector: 'app-piso-create',
   templateUrl: './piso-create.component.html',
@@ -9,13 +10,15 @@ import { PisoService } from '../../../service/piso/piso.service';
 })
 export class PisoCreateComponent implements OnInit {
 
+  edificios: string[] = [];
   piso = {designacao: "", descricao: "", edificio:""}
 
   constructor(
     private location: Location,
     private PisoService: PisoService,
+    private edificioService: EdificioService,
     private messageService: MessageService
-  ) { }
+  ) { this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));}
 
 
   @Output() finalMessage: string ='';
@@ -29,15 +32,12 @@ export class PisoCreateComponent implements OnInit {
     errorOrSuccess.subscribe(
       (data: any) => {
         //success
-        this.messageService.add("Success piso creation!");
-        this.finalMessage = "Success piso creation!";
-        this.location.back();
+        alert("Success piso creation!");
       },
 
       (error: any) => {
         //error
-        this.messageService.add(error.error);
-        this.finalMessage = error.error;
+        alert(error.error);
       }
     );
 
