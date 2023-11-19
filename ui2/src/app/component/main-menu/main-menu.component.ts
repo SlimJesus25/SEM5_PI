@@ -31,7 +31,7 @@ export class MainMenuComponent implements OnInit {
     this.router.navigate(['pisoCreate']);
   }
   listPisos(){
-    this.router.navigate(['edificioCreate']);
+    this.router.navigate(['pisoList']);
   }
   updatePiso(){
     this.router.navigate(['pisoUpdate']);
