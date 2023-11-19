@@ -7,13 +7,16 @@ import { Edificio } from '../../../model/edificio';
 import { MessageService } from '../../../service/message/message.service';
 import { EdificioService } from '../../../service/edificio/edificio.service';
 import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RoboCreateComponent } from './robo-create.component';
 import { Tarefa } from '../../../model/tarefa';
 import { TipoRobo } from '../../../model/tipoRobo';
 import { Robo } from '../../../model/robo';
 import { TipoRoboService } from '../../../service/tipoRobo/tipoRobo.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -23,7 +26,7 @@ describe('RoboCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
+      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatSelectModule, BrowserAnimationsModule],
       declarations: [ RoboCreateComponent ]
     })
     .compileComponents();
