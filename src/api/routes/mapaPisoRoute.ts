@@ -47,7 +47,7 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl2.listMapasPiso(req, res, next));
 
-  route.get('/caminhoEntrePisos/:origem/:posicaoOrigem/:destino/:posicaoDestino',
+  route.get('/caminhoEntrePisos/:origem/:destino',
     celebrate({
       body: Joi.object({
         /*origem: Joi.string().required(),
