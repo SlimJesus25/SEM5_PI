@@ -117,6 +117,7 @@ export default class MapaPisoService implements IMapaPisoService {
           mapa: mapa.maze.map,
           saidas: mapa.maze.exits,
           elevador: mapa.maze.elevators,
+          salas: mapa.maze.rooms,
           saidaLocalizacao: mapa.maze.exitLocation
         } as IMazeDTO;
 

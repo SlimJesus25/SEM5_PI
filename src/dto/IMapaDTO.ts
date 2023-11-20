@@ -8,6 +8,7 @@ export default interface IMapaDTO {
       map: number[][];
       exits: number[][];
       elevators: number[][];
+      rooms: number[][];
       exitLocation: number[];
     };
     ground: {

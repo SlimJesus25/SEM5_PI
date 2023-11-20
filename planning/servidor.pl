@@ -23,6 +23,9 @@
 :-dynamic edge/4. % edge(Id1, Id2, Custo, Piso)...
 :-dynamic elev_pos/3. % elev_pos(Col, Lin, Piso)...
 :-dynamic corr_pos/3. % corr_pos(Col, Lin, Piso)...
+:-dynamic ponto_acesso/4. % ponto_acesso(Identificador, Col, Lin, Piso)...
+:-dynamic piso_origem/1.
+:-dynamic piso_destino/1.
 
 :-set_prolog_flag(answer_write_options,[max_depth(0)]).
 :-set_prolog_flag(report_error,true).
@@ -35,40 +38,28 @@
 % Cria��o de servidor HTTP no porto 'Port'					
 server(Port) :-						
   http_server(http_dispatch, [port(Port)]).
-		
-
-define_dados_2(L, X, Y):-
-  term_string(Term, L),
-  maplist(atom_, Term, [X, Y|_]),
-  open('teste.txt', append, Stream),
-  write(Stream, 'Aqui: '),write(Stream, X), nl(Stream),
-  write(Stream, 'Aqui: '),write(Stream, Y), nl(Stream),
-  close(Stream).
 
 path_between_floors(Request):-
   cors_enable(Request, [methods([get])]),
-  http_parameters(Request, [origem(PisoOr1, []), xOrigem(XOrigem, []), yOrigem(YOrigem, []), destino(PisoDest1, []), xDestino(XDestino, []), yDestino(YDestino, [])]),
-  %define_dados_2(CordOr, COr, LOr),
-  %define_dados_2(CordDest, CDest, LDest),
+  http_parameters(Request, [origem(Origem, []), destino(Destino, [])]),
   
-  atom_string(PisoOr1, PisoOr),
-  atom_string(PisoDest1, PisoDest),
+  atom_string(Origem, Or),
+  atom_string(Destino, Dest),
 
-  atom_number(XOrigem, COr),
-  atom_number(YOrigem, LOr),
-  atom_number(XDestino, CDest),
-  atom_number(YDestino, LDest),
-
-  %http_read_data(Request, JSONData, [json_object(dict)]),
-  %extrai_request(JSONData, ResVal),
+  %atom_number(XOrigem, COr),
+  %atom_number(YOrigem, LOr),
+  %atom_number(XDestino, CDest),
+  %atom_number(YDestino, LDest),
   
-  %define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
-
   request_edificios(),
   request_elevadores(),
   request_pisos(),
   request_passagens(),
   request_mapa_pisos(),
+
+  % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
+  ponto_acesso(Or, COr, LOr, PisoOr),
+  ponto_acesso(Dest, CDest, LDest, PisoDest),
 
   caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
 
@@ -77,8 +68,11 @@ path_between_floors(Request):-
   nl(Stream),
   close(Stream),
 
-  node(X, COr, LOr, 0, PisoOr), % Pos inicial tem que ser 0.
-  node(Y, CDest, LDest, 0, PisoDest), % Pos destino tem que ser 0 também.
+  node(X1, COr, LOr, _, PisoOr), % Pos inicial tem que ser   %define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
+  edge(X1, X, _, PisoOr),
+
+  node(Y1, CDest, LDest, _, PisoDest), % Pos destino tem que ser 0 também.
+  edge(Y1, Y, _, PisoDest),
   
   aStar_piso(PisosPer, CamPorPiso, Cam, X, Y),
 
@@ -162,7 +156,7 @@ aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Tra
   aStar_piso(L, Restante, Travessias, IdInicialProxPiso, Dest).
 
 % Vai fazer o GET e fazer os asserts para criar os factos.
-% São aproveitados o edifício a que pertence o piso e a sua designação: pisos(B, [B1, B2, B3]). pisos(C, [C1, C2]).
+% São aproveitados o edifíidentifica_salascio a que pertence o piso e a sua designação: pisos(B, [B1, B2, B3]). pisos(C, [C1, C2]).
 request_pisos():-
   destroi_pisos(),
   http_open('http://localhost:3000/api/piso/listPisosGeral', ResJSON, [cert_verify_hook(cert_accept_any)]),
@@ -281,29 +275,28 @@ request_mapa_pisos():-
   cria_mapa_pisos(ResVal, 0).
 
 destroi_mapa_pisos():-
-  %findall(m(X, Y, V, P), m(X, Y, V, P), Mapa),
-  %findall(ligacel(A, B, C), ligacel(A, B, C), Ligacoes),
   findall(node(K, L, M, N, O), node(K, L, M, N, O), Nodes),
   findall(edge(A1, B1, C1, D1), edge(A1, B1, C1, D1), Edges),
   findall(elev_pos(K1, L1, M1), elev_pos(K1, L1, M1), ElevPos),
   findall(corr_pos(K2, L2, M2), corr_pos(K2, L2, M2), CorrPos),
+  findall(ponto_acesso(A2, B2, C2, D2), ponto_acesso(A2, B2, C2, D2), PontoAce),
   destroi(ElevPos),
   destroi(CorrPos),
-  %destroi(Ligacoes),
+  destroi(PontoAce),
   destroi(Nodes),
   destroi(Edges).
-  %destroi(Mapa).
 
 extrai_mapa_pisos([], []).
-extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas, H.elevador, H.saidaLocalizacao]|T2]):-
+extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas, H.elevador, H.salas, H.saidaLocalizacao]|T2]):-
   extrai_mapa_pisos(T, T2).
 
 
 cria_mapa_pisos([], _):-!.
 
-cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[ColE, LinE]|_], SaidaLocalizacao]|T], Id):-
+cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[ColE, LinE]|_], Salas, SaidaLocalizacao]|T], Id):-
   cria_mapa(Mapa, Piso, 1, 1, 1),
   identifica_corredores(Saidas, Piso),
+  identifica_salas(Salas, Piso),
   assertz(elev_pos(ColE, LinE, Piso)), % Existe apenas 1 elevador por edifício.
   L1 is Largura+1,
   P1 is Profundidade+1,
@@ -321,6 +314,18 @@ identifica_corredores([[]], _):-
 identifica_corredores([[Col, Lin]|Restantes], Piso):-
   assertz(corr_pos(Col, Lin, Piso)),
   identifica_corredores(Restantes, Piso).
+
+identifica_salas([], _):-
+  !.
+
+identifica_salas([[]], _):-
+  !.
+
+identifica_salas([[Identificacao, Col, Lin]|Restantes], Piso):-
+  assertz(ponto_acesso(Identificacao, Col, Lin, Piso)),
+  identifica_salas(Restantes, Piso).
+
+
 
 cria_mapa([], _, _, _, _):-!.
 
@@ -425,6 +430,9 @@ cria_grafo_lin(Col,Lin,Piso):-
   node(Id1, Col, Lin, _, Piso))
   ;
   (elev_pos(Col, Lin, Piso),%Piso == "A1",trace,
+  node(Id1, Col, Lin, _, Piso))
+  ;
+  (ponto_acesso(_, Col, Lin, Piso),%trace,
   node(Id1, Col, Lin, _, Piso))
   ;
   node(Id1,Col,Lin,0,Piso)),
