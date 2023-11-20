@@ -45,4 +45,20 @@ export default class SalaController implements ISalaController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async listSalas(req: Request, res: Response, next: NextFunction){
+    try {
+      const salaOrError = await this.salaServiceInstance.listSalas() as Result<ISalaDTO[]>;
+
+      if (salaOrError.isFailure) {
+        return res.status(404).send("Erro: " + salaOrError.errorValue());
+      }
+
+      const salaDTO = salaOrError.getValue();
+      return res.json( salaDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
 }

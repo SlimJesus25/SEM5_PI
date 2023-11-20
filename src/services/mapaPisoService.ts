@@ -117,6 +117,7 @@ export default class MapaPisoService implements IMapaPisoService {
           mapa: mapa.maze.map,
           saidas: mapa.maze.exits,
           elevador: mapa.maze.elevators,
+          salas: mapa.maze.rooms,
           saidaLocalizacao: mapa.maze.exitLocation
         } as IMazeDTO;
 
@@ -135,8 +136,7 @@ export default class MapaPisoService implements IMapaPisoService {
     let sol2: number[];
 
     const uri = config.planningConnectionString + "/path_between_floors?origem=" + cep.origem +
-      "&xOrigem=" + cep.posicaoOrigem[0] + "&yOrigem=" + cep.posicaoOrigem[1] +
-      "&destino=" + cep.destino + "&xDestino=" + cep.posicaoDestino[0] + "&yDestino=" + cep.posicaoDestino[1];
+      "&destino=" + cep.destino;
 
     let a = new Promise((resolve) => {
       http.get(uri, res => {

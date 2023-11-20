@@ -34,4 +34,11 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.updateSala(req, res, next) );
+
+    route.get('/listSalas',
+  celebrate({
+    body: Joi.object({
+    }),
+  }),
+  (req, res, next) => ctrl.listSalas(req, res, next));
 };

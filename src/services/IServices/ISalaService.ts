@@ -4,6 +4,6 @@ import ISalaDTO from "../../dto/ISalaDTO";
 export default interface ISalaService  {
   createSala(salaDTO: ISalaDTO): Promise<Result<ISalaDTO>>;
   updateSala(salaDTO: ISalaDTO): Promise<Result<ISalaDTO>>;
-
+  listSalas(): Promise<Result<ISalaDTO[]>>;
   getSala (salaId: string): Promise<Result<ISalaDTO>>;
 }
