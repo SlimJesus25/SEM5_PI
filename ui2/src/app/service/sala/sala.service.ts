@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Edificio } from '../../model/edificio';
 import { Sala } from '../../model/sala';
 
 @Injectable({
@@ -24,6 +23,12 @@ export class SalaService {
     console.log(body);
     return this.http.post<Sala>(this.LogisticAPI_URL + "/createSala", body, {'headers':headers , observe: 'response'})
 
+  }
+
+  getSalas(): Observable<Sala[]> {
+    const salas = this.http.get<Sala[]>(this.LogisticAPI_URL+ "/listSalas");
+
+    return salas;
   }
 
 

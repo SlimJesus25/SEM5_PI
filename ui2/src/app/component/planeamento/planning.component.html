@@ -9,27 +9,19 @@
       <table>
         <tr>
           <mat-form-field>
-            <mat-label>Piso Origem</mat-label>
+            <mat-label>Sala Origem</mat-label>
             <mat-select [(ngModel)]="caminhoEntrePisos.origem">
-              <mat-option *ngFor="let piso of pisos" [value]="piso">{{piso}}</mat-option>
+              <mat-option *ngFor="let sala of salas" [value]="sala">{{sala}}</mat-option>
             </mat-select>
           </mat-form-field>
-        </tr>
-        <tr>
-          <th><label>Posição Origem [x,y]: </label></th>
-          <th><input type="string" [(ngModel)]="caminhoEntrePisos.posicaoOrigem" /></th>
         </tr>
         <tr>
           <mat-form-field>
-            <mat-label>Piso Destino</mat-label>
+            <mat-label>Sala Destino</mat-label>
             <mat-select [(ngModel)]="caminhoEntrePisos.destino">
-              <mat-option *ngFor="let piso of pisos" [value]="piso">{{piso}}</mat-option>
+              <mat-option *ngFor="let sala of salas" [value]="sala">{{sala}}</mat-option>
             </mat-select>
           </mat-form-field>
-        </tr>
-        <tr>
-          <th><label>Posição Destino [x,y]: </label></th>
-          <th><input type="string" [(ngModel)]="caminhoEntrePisos.posicaoDestino" /></th>
         </tr>
       </table>
     </div>

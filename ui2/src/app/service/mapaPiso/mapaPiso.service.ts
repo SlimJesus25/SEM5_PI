@@ -50,7 +50,7 @@ export class MapaPisoService {
   }
 
   calcularCaminho(caminhoEntrePisos: CaminhoEntrePisos): Observable<SolucaoCaminho> {
-    const solucao = this.http.get<SolucaoCaminho>(this.LogisticAPI_URL+ "/caminhoEntrePisos/"+caminhoEntrePisos.origem+"/"+caminhoEntrePisos.posicaoOrigem+"/"+caminhoEntrePisos.destino+"/"+caminhoEntrePisos.posicaoDestino);
+    const solucao = this.http.get<SolucaoCaminho>(this.LogisticAPI_URL+ "/caminhoEntrePisos/"+caminhoEntrePisos.origem+"/"+caminhoEntrePisos.destino);
     return solucao;
   }
 

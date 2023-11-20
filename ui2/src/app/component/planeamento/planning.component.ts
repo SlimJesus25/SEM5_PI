@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { PisoService } from '../../service/piso/piso.service';
 import { MapaPisoService } from '../../service/mapaPiso/mapaPiso.service';
+import { SalaService } from '../../service/sala/sala.service';
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.component.html',
@@ -9,15 +10,15 @@ import { MapaPisoService } from '../../service/mapaPiso/mapaPiso.service';
 })
 export class PlanningComponent implements OnInit {
 
-  pisos: string[] = [];
-  caminhoEntrePisos = { origem: "", posicaoOrigem: [], destino: "", posicaoDestino: [] }
+  salas: string[] = [];
+  caminhoEntrePisos = { origem: "",  destino: "" }
 
 
   constructor(
     private location: Location,
-    private pisoService: PisoService,
+    private salaService: SalaService,
     private mapaPisoService : MapaPisoService,
-  ) { this.pisoService.listPisosGeral().subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao)); }
+  ) { this.salaService.getSalas().subscribe(salas => this.salas = salas.map(sala => sala.designacao)); }
 
 
   @Output() finalMessage: string = '';
@@ -30,7 +31,7 @@ export class PlanningComponent implements OnInit {
     let errorOrSuccess: any = this.mapaPisoService.calcularCaminho(this.caminhoEntrePisos);
     errorOrSuccess.subscribe(
       (data: any) => {
-        alert("Edificio criado");
+        alert("Caminho encontrado");
       },
 
       (error: any) => {
