@@ -76,4 +76,21 @@ export default class SalaRepo implements ISalaRepo {
     else
       return null;
   }
+
+  public async findAll(): Promise<Sala[]> {
+    const query = {};
+    const salaSchema = await this.salaSchema.find(query);
+    try {
+      if (salaSchema === null) {
+          return null;
+      } else {
+        let salaArray = [];
+        for (let i = 0; i < salaSchema.length; i++) {
+          salaArray[i] = await SalaMap.toDomain(salaSchema[i]);
+        }return salaArray;
+      }
+  } catch (err) {
+      throw err;
+  }
+}
 }
