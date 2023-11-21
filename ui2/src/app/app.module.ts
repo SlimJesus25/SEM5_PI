@@ -66,6 +66,8 @@ import { PassagemListComponent } from './component/passagem/passagem-list/passag
 import { PassagemUpdateComponent } from './component/passagem/passagem-update/passagem-update.component';
 import { SalaCreateComponent } from './component/sala/sala-create/sala-create.component';
 import { PlanningComponent } from './component/planeamento/planning.component';
+import { VisualizacaoComponent } from './component/visualizacao/visualizacao.component';
+import { ViewerComponent } from './component/spa/viewer.component';
 
 @NgModule({
   imports: [
@@ -142,8 +144,10 @@ import { PlanningComponent } from './component/planeamento/planning.component';
     LoginComponent,
     AboutUsComponent,
     MainMenuComponent,
-    PlanningComponent
+    PlanningComponent,
 
+    // SGRAI
+    ViewerComponent,
   ],
   bootstrap: [ AppComponent ]
 })
