@@ -57,13 +57,34 @@ Para definir o MDT, é preciso responder à(s) pergunta(s):
 
 Este é um requisito onde as exigências do cliente são cruciais (como qualquer outro use case, mas este especialmente) e vão redigir a proposta MBCO.
 
+### Contexto do sistema
+
+Este sistema contém drones e robôs que executam, fundamentalmente, tarefas de vigilância, entrega de objetos e limpeza.
+
 ### Criticidade dos dados
 
-Neste sistema é importante que todos os processos que envolvam as funções dos robôs/drones estejam "sempre" operáveis, sendo considerado o mais crítico.
+Neste sistema é importante que todos os processos que envolvam as funções dos robôs/drones estejam "sempre" operáveis, sendo considerado o mais crítico a vigilância e a limpeza.
+
+Este sistema trata-se um sistema não crítico por conter funcionalidades dispensáveis ao negócio.
 
 ### Custo da baixa do sistema
 
-O sistema RobDroneGo não se define como crítico, é algo que apenas auxilía os seus utilizadores e que não impede que as funções dos próprios sejam executadas. Em suma, o risco pode ser mais elevado tendo isto consequências positivas, como não necessitar de soluções de recuperação mais sofisticadas.
+Sem o sistema, em média, existem custos como:
+ - Cerca de 15 minutos por dia com a tarefa de busca de objetos;
+ - Limpezas por fazer;
+ - Sistema de vigilância sofre vulnerabilidades.
+ 
+Relativamente à busca de objetos, são 75 minutos por semana que 100 pessoas vão perder, resultando em 465 minutos semanais de produtividade. Se por cada 15 minutos as pessoas gerarem 10eur para a empresa, 310eur serão faturados (31 000eur/100pess.), enquanto que com o sistema serão 320eur (32 000eur/100pess). 
+
+Se se optasse por uma solução menos arriscada, ou seja, com execução de cópias de segurança mais frequentes como por exemplo, diariamente, teria um **custo de cerca de 10 000eur**. Enquanto que se se optasse por uma solução mais arriscada com uma frequência de três dias, teria um **custo de cerca de 3333eur.**
+
+As perdas ocorrem **apenas** quando o sistema está em baixo, ou seja, a perda de dados de um dia, em princípio, não afetará, fincanceiramente, o negócio.
+
+Relativamente à limpeza e à vigilância, o seu impacto não seria a nível financeiro, porém teria, obviamente, consequências negativas.
+
+Nota: Os valores utilizados são completamente figurativos, mas com proporção direta para os valores reais.
+
+Em suma, o sistema RobDroneGo não se define como crítico, é algo que apenas auxilía os seus utilizadores e que não impede que as funções dos próprios sejam executadas. O risco pode ser mais elevado tendo isto consequências positivas, como não necessitar de soluções de recuperação mais sofisticadas e dispendiosas. 
 
 ### Tecnologias da infraestrutura
 
