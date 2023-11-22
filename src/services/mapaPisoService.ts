@@ -135,6 +135,9 @@ export default class MapaPisoService implements IMapaPisoService {
     let sol1: string[];
     let sol2: number[];
 
+    if(cep.destino == cep.origem)
+      return Result.fail<ISolucaoCaminhoDTO>("A origem e o destino devem ser diferentes.");
+
     const uri = config.planningConnectionString + "/path_between_floors?origem=" + cep.origem +
       "&destino=" + cep.destino;
 
