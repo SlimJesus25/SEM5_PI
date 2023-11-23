@@ -13,7 +13,7 @@
 
 :-dynamic edificio/1. % edificio(A), edificio(B)...
 :-dynamic pisos/2. % pisos(A, [A1, A2, A3])...
-:-dynamic corredor/4. % corredor(A, B, A1, B2)...
+:-dynamic corredor/5. % corredor(Designacao, A, B, A1, B2)...
 :-dynamic elevador/2. % elevador(A, [A1, A2, A3])...
 :-dynamic m/4. % m(col, lin, valor, piso) => m(0, 0, 0, A1)...
 :-dynamic ligacel/3. % ligacel(cel1, cel2, piso) => ligacel(cel(1,3), cel(2,3), A1)...
@@ -50,46 +50,20 @@ path_between_floors(Request):-
   request_passagens(),
   request_mapa_pisos(),
 
-  open('teste.txt', append, Stream2),
-  write(Stream2, 'Or: '),write(Stream2, Or),nl(Stream2),
-  write(Stream2, 'Dest: '),write(Stream2, Dest),nl(Stream2),
-  close(Stream2),
-
   % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
   busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
-  open('teste.txt', append, Stream),
-  write(Stream, 'PisoOr: '),write(Stream, PisoOr),nl(Stream),
-  write(Stream, 'PisoDest: '),write(Stream, PisoDest),nl(Stream),
-  close(Stream),
-
   % Calcula o trajeto entre pisos.
   melhor_caminho_pisos(PisoOr, PisoDest, Cam, PisosPer),
-
-  open('teste.txt', append, Stream3),
-  write(Stream3, 'Cam: '),write(Stream3, Cam),nl(Stream3),
-  write(Stream3, 'PisosPer: '),write(Stream3, PisosPer),nl(Stream3),
-  close(Stream3),
 
   node(X1, COr, LOr, _, PisoOr), % Pos inicial tem que ser   %define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
   edge(X1, X, _, PisoOr),
 
   node(Y1, CDest, LDest, _, PisoDest), % Pos destino tem que ser 0 também.
   edge(Y1, Y, _, PisoDest),
-
-  open('teste.txt', append, Stream4),
-  write(Stream4, 'X: '),write(Stream4, X),nl(Stream4),
-  write(Stream4, 'Y: '),write(Stream4, Y),nl(Stream4),
-
-  close(Stream4),
   
   % Calcula o trajeto dentro de cada piso.
   aStar_piso(PisosPer, CamPorPiso, Cam, X, Y),
-
-  open('teste.txt', append, Stream5),
-  write(Stream5, 'Cam: '),write(Stream5, CamPorPiso),nl(Stream5),
-
-  close(Stream5),
 
   converte_cam_final(Cam, CamF),
 
@@ -107,44 +81,8 @@ converte_cam_final([], []).
 converte_cam_final([elev(PO,PD)|T], [[PO,elev,PD]|T2]):-
   converte_cam_final(T, T2).
 
-converte_cam_final([cor(PO,PD)|T], [[PO,cor,PD]|T2]):-
+converte_cam_final([cor(_,PO,PD)|T], [[PO,cor,PD]|T2]):-
   converte_cam_final(T, T2).
-
-remove_double_quotes([], []).  % Base case: an empty list remains empty
-
-remove_double_quotes([H|T], [H1|T1]) :-
-    atomic(H),
-    atom_chars(H, Chars),
-    exclude(=( '"'), Chars, CharsWithoutQuotes),
-    atomic_list_concat(CharsWithoutQuotes, H1),
-    atom(H1),
-    remove_double_quotes(T, T1).
-
-remove_double_quotes([H|T], [H1|T1]) :-
-    compound(H),
-    H =.. [F|Args],  % Decompose compound term into functor and arguments
-    remove_double_quotes(Args, ArgsWithoutQuotes),  % Recursively process arguments
-    H1 =.. [F|ArgsWithoutQuotes],  % Reconstruct compound term with modified arguments
-    remove_double_quotes(T, T1).
-
-remove_double_quotes([H|T], Result) :-
-    \+ (atomic(H); compound(H)),  % Skip non-atomic and non-compound elements
-    remove_double_quotes(T, Result).
-
-
-remove_quotes([], []).
-remove_quotes([cor(A,B)|T1], [cor(A1,B1)|T0]) :-
-  atom_chars(A, [O,T|CharsA]), % skip the quotes
-  atom_chars(B, [O2,T2|CharsB]), % skip the quotes
-  atom_concat(O, T, A1),
-  atom_concat(O2, T2, B1),
-  remove_quotes(T1, T0).
-remove_quotes([elev(C,D)|T1], [elev(C1,D1)|T0]) :-
-  atom_chars(C, [O,T|CharsA]), % skip the quotes
-  atom_chars(D, [O2,T2|CharsB]), % skip the quotes
-  atom_concat(O, T, C1),
-  atom_concat(O2, T2, D1),
-  remove_quotes(T1, T0).
 
 extrai_request(Data, [Data.origem, Data.posOrigem, Data.destino, Data.posDestino|[]]).
 
@@ -167,7 +105,7 @@ aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Tra
   edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(_, Col1, Lin1, PisoProx),
   node(IdElevProxPiso, Col1, Lin1, _, PisoProx), edge(IdElevProxPiso, IdInicialProxPiso, _, PisoProx),!)
   ;
-  (TravessiaEd == cor(PisoAct, PisoProx), corr_pos(_, Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct),
+  (TravessiaEd = cor(Des, PisoAct, PisoProx), corr_pos(Des, Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct), % no início TravessiaEd == cor(_, PisoAct, PisoProx),
   edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), corr_pos(_, Col1, Lin1, PisoProx),
   node(IdCorrProxPiso, Col1, Lin1, _, PisoProx), edge(IdCorrProxPiso, IdInicialProxPiso, _, PisoProx))),
 
@@ -218,16 +156,16 @@ request_passagens():-
   cria_passagens(ResVal).
 
 destroi_passagens():-
-  findall(corredor(A, B, C, D), corredor(A, B, C, D), A),
-  destroi(A).
+  findall(corredor(A, B, C, D, E), corredor(A, B, C, D, E), F),
+  destroi(F).
 
 extrai_passagens([], []).
-extrai_passagens([H|T1], [[H.edificioA, H.edificioB, H.pisoA, H.pisoB]|T2]):-
+extrai_passagens([H|T1], [[H.designacao, H.edificioA, H.edificioB, H.pisoA, H.pisoB]|T2]):-
   extrai_passagens(T1, T2).
 
 cria_passagens([]).
-cria_passagens([[EdificioA, EdificioB, PisoA, PisoB]|T]):-
-  assertz(corredor(EdificioA, EdificioB, PisoA, PisoB)),
+cria_passagens([[Designacao, EdificioA, EdificioB, PisoA, PisoB]|T]):-
+  assertz(corredor(Designacao, EdificioA, EdificioB, PisoA, PisoB)),
   assertz(liga(EdificioA, EdificioB)),
   cria_passagens(T).
 
@@ -374,31 +312,31 @@ destroi([H|T]):-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-caminho_pisos(PisoOr, PisoDest, LEdCam, LLig, LPiCam):-
+caminho_pisos(PisoOr, PisoDest, LEdCam, LLig):-
   pisos(EdOr, LPisosOr), member(PisoOr, LPisosOr),
   pisos(EdDest, LPisosDest), member(PisoDest, LPisosDest),
   caminho_edificios(EdOr, EdDest, LEdCam),
   %!, % Cut to prevent backtracking on the caminho_edificios/3 predicate
-  segue_pisos(PisoOr, PisoDest, LEdCam, LLig, LPiCam2),
+  segue_pisos(PisoOr, PisoDest, LEdCam, LLig),
   append([PisoOr], LPiCam2, LPiCam).
 
-segue_pisos(PisoDest, PisoDest, _, [], []).
+segue_pisos(PisoDest, PisoDest, _, []).
 
-segue_pisos(PisoDest1, PisoDest, [EdDest], [elev(PisoDest1, PisoDest)], [PisoDest | ListaPisos]):-
+segue_pisos(PisoDest1, PisoDest, [EdDest], [elev(PisoDest1, PisoDest)]):-
   PisoDest \== PisoDest1,
   elevador(EdDest, LPisos), member(PisoDest1, LPisos), member(PisoDest, LPisos).
   %!. % Cut to prevent backtracking
 
-segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [cor(PisoAct, PisoSeg) | LOutrasLig], [PisoSeg | ListaPisos]):-
-  (corredor(EdAct, EdSeg, PisoAct, PisoSeg); corredor(EdSeg, EdAct, PisoSeg, PisoAct)),
-  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos).
+segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [cor(Des, PisoAct, PisoSeg) | LOutrasLig]):-
+  (corredor(Des, EdAct, EdSeg, PisoAct, PisoSeg); corredor(Des, EdSeg, EdAct, PisoSeg, PisoAct)),
+  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig).
   %!. % Cut to prevent backtracking
 
-segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [elev(PisoAct, PisoAct1), cor(PisoAct1, PisoSeg) | LOutrasLig], [PisoAct1, PisoSeg | ListaPisos]):-
-  (corredor(EdAct, EdSeg, PisoAct1, PisoSeg); corredor(EdSeg, EdAct, PisoSeg, PisoAct1)),
+segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [elev(PisoAct, PisoAct1), cor(Des, PisoAct1, PisoSeg) | LOutrasLig]):-
+  (corredor(Des, EdAct, EdSeg, PisoAct1, PisoSeg); corredor(Des, EdSeg, EdAct, PisoSeg, PisoAct1)),
   PisoAct1 \== PisoAct,
   elevador(EdAct, LPisos), member(PisoAct, LPisos), member(PisoAct1, LPisos),
-  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos).
+  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig).
   %!. % Cut to prevent backtracking
 
 caminho_edificios(EdOr, EdDest, LEdCam):-
@@ -417,18 +355,18 @@ caminho_edificios2(EdAct, EdDest, LEdPassou, LEdCam):-
 
 % Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
 melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor,LPiCam):-
-  findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig,_),LLLig),
+  findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig),LLLig),
   menos_elevadores(LLLig,LLigMelhor,_,_),
   enumera_pisos(LLigMelhor, LPiCam).
 
 enumera_pisos([elev(Piso1, Piso2)|[]], [Piso1, Piso2|[]]):-!.
 
-enumera_pisos([cor(Piso1, Piso2)|[]], [Piso1, Piso2|[]]):-!.
+enumera_pisos([cor(_,Piso1, Piso2)|[]], [Piso1, Piso2|[]]):-!.
 
 enumera_pisos([elev(Piso, _)|T1], [Piso|T2]):-
   enumera_pisos(T1, T2).
 
-enumera_pisos([cor(Piso, _)|T1], [Piso|T2]):-
+enumera_pisos([cor(_,Piso, _)|T1], [Piso|T2]):-
   enumera_pisos(T1, T2).
 
 
@@ -445,7 +383,7 @@ conta([],0,0).
 
 conta([elev(_,_)|L],NElev,NCor):-conta(L,NElevL,NCor),NElev is NElevL+1.
 
-conta([cor(_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
+conta([cor(_,_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
 
 
 %%%%% Criação de grafo (mapa do piso) %%%%%
@@ -520,4 +458,3 @@ estimativa(Nodo1,Nodo2,Estimativa,Piso):-
 	node(Nodo1,X1,Y1,_,Piso),
 	node(Nodo2,X2,Y2,_,Piso),
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
-
