@@ -86,8 +86,8 @@ export class MainMenuComponent implements OnInit {
     this.router.navigate(['planning']);
   }
 
-  // Visualização.
-  viewer(){
-    this.router.navigate(['viewer']);
+  //Visualizacao
+  view(){
+    this.router.navigate(['view']);
   }
 }
