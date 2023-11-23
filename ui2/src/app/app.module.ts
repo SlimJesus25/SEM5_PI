@@ -86,7 +86,6 @@ import { PlanningComponent } from './component/planeamento/planning.component';
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
-    NgModule
   ],
   declarations: [
     AppComponent,
