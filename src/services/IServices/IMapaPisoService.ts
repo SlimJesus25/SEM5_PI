@@ -5,6 +5,7 @@ import IMazeDTO from "../../dto/IMazeDTO";
 import IDeleteMapaPisoDTO from "../../dto/IDeleteMapaPisoDTO";
 import ISolucaoCaminhoDTO from "../../dto/ISolucaoCaminhoDTO";
 import ICaminhoEntrePisosDTO from "../../dto/ICaminhoEntrePisosDTO"
+import IListMapasPisoDTO from "../../dto/IListMapaPisoDTO";
 
 
 export default interface IMapaPisoService  {
@@ -13,4 +14,5 @@ export default interface IMapaPisoService  {
     deleteMapaPiso(piso: IDeleteMapaPisoDTO): Promise<Result<IMapaPisoDTO>>;
     listMapasPiso(): Promise<Result<IMazeDTO[]>>;
     caminhoEntrePisos(cep: ICaminhoEntrePisosDTO): Promise<Result<ISolucaoCaminhoDTO>>;
+    listMapaPiso(piso: IListMapasPisoDTO): Promise<Result<IMapaPisoDTO>>;
 }

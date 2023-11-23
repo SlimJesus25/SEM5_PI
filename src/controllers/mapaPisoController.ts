@@ -10,6 +10,7 @@ import { Result } from '../core/logic/Result';
 import IDeleteMapaPisoDTO from '../dto/IDeleteMapaPisoDTO';
 import ICaminhoEntrePisosDTO from '../dto/ICaminhoEntrePisosDTO';
 import ISolucaoCaminhoDTO from '../dto/ISolucaoCaminhoDTO'
+import IListMapaPisoDTO from '../dto/IListMapaPisoDTO';
 
 @Service()
 export default class MapaPisoController implements IMapaPisoController /* TODO: extends ../core/infra/BaseController */ {
@@ -101,6 +102,26 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
       return next(e);
     }
   }
+
+  public async listMapaPiso(req: Request, res: Response, next: NextFunction){
+    const piso = req.params.piso;
+    
+    
+    try {
+      //const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
+
+      const mapaPisoOrError = await this.mapaPisoServiceInstance.listMapaPiso({piso} as IListMapaPisoDTO) as Result<IMapaPisoDTO>;
+      if (mapaPisoOrError.isFailure) {
+        return res.status(404).send("Erro: " + mapaPisoOrError.errorValue());
+      }
+
+      const mapaPisoDTO = mapaPisoOrError.getValue();
+      return res.json( mapaPisoDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 
 
 }

@@ -13,6 +13,7 @@ import IMapaDTO from '../dto/IMapaDTO';
 import ISolucaoCaminhoDTO from '../dto/ISolucaoCaminhoDTO';
 import { CaminhoEntrePisosSolucao } from '../domain/caminhoEntrePisosSolucao';
 import ICaminhoEntrePisosDTO from '../dto/ICaminhoEntrePisosDTO';
+import IListMapaPisoDTO from '../dto/IListMapaPisoDTO';
 const http = require('http');
 
 @Service()
@@ -167,5 +168,31 @@ export default class MapaPisoService implements IMapaPisoService {
       caminhoPorPiso: sol2
     } as ISolucaoCaminhoDTO);
 
+  }
+
+  public async listMapaPiso(listMapaPisoDTO: IListMapaPisoDTO): Promise<Result<IMapaPisoDTO>> {
+    try {
+
+      const piso = await this.mapaPisoRepo.findByPiso(listMapaPisoDTO.piso);
+
+      if (piso == null)
+        return Result.fail<IMapaPisoDTO>("O piso com a designacao " + listMapaPisoDTO.piso + " não tem mapa piso.");
+
+      // Query deve retornar todos os pisos que contenham este edificio.
+
+      /*
+      let pisosDTO: IPisoDTO[] = [];
+      pisos.forEach(p => pisosDTO.push(PisoMap.toDTO(p)));
+      */
+
+      
+      let mapaPisoDTO = MapaPisoMap.toDTO(piso);
+      
+
+
+      return Result.ok<IMapaPisoDTO>(mapaPisoDTO)
+    } catch (e) {
+      throw e;
+    }
   }
 }
