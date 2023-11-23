@@ -74,6 +74,9 @@ export class MainMenuComponent implements OnInit {
   inibirRobo(){
     this.router.navigate(['inhibitRobo']);
   }
+  updateRobo(){
+    this.router.navigate(['updateRobo']);
+  }
   //Sala
   createSala(){
     this.router.navigate(['salaCreate']);
