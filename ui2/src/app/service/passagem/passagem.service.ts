@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Passagem } from '../../model/passagem';
+import { Piso } from '../../model/piso';
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +44,13 @@ export class PassagemService {
     const body = JSON.stringify(passagem);
     console.log(body);
    return this.http.put<Passagem>(updateURL + "/updatePassagem", body, { 'headers': headers, observe: 'response' })
+  }
+  
+   listPisos(codEdificio: string) : Observable<Piso[]>{
+    const listPisos = this.LogisticAPI_URL + "/listPisosPassagens" + codEdificio;
+    console.log(listPisos);
+    const pisos =  this.http.get<Piso[]>(listPisos)!;
+    return pisos;
+   }
 }
-}
+

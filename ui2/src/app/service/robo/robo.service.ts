@@ -47,13 +47,11 @@ export class RoboService {
 
     updateRobo(robo: Robo) {
 
-        const updateURL = this.LogisticAPI_URL;
-
         const headers = { 'content-type': 'application/json' };
 
         const body = JSON.stringify(robo);
         console.log(body);
-       return this.http.put<Robo>(updateURL + "/updateRobo", body, { 'headers': headers, observe: 'response' })
+       return this.http.put<Robo>(this.LogisticAPI_URL + "/updateRobo", body, { 'headers': headers, observe: 'response' })
     }
 
     inhibitRobo(codigo: string){
