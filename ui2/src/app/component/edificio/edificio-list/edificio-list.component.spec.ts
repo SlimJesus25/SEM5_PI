@@ -5,8 +5,13 @@ import { Location } from '@angular/common';
 import { Edificio } from '../../../model/edificio';
 import { EdificioListComponent } from './edificio-list.component';
 import { of } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { EdificioService } from '../../../service/edificio/edificio.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('EdificioListComponent', () => {
   let component: EdificioListComponent;
@@ -14,7 +19,7 @@ describe('EdificioListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule, FormsModule, MatToolbarModule],
+      imports:[[HttpClientTestingModule, FormsModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatSelectModule, BrowserAnimationsModule],],
       declarations: [ EdificioListComponent ]
     })
     .compileComponents();
@@ -29,29 +34,18 @@ describe('EdificioListComponent', () => {
   });
 
   it('should list edificios', () => {
-    let fakeLocation = TestBed.inject(Location);
-    let fakeLiveAnnouncer = TestBed.inject(LiveAnnouncer);
-
-    let edificio: Edificio[] = [{
-      codigoEdificio : "K",
-      dimensaoMaximaPiso : "[200,200]",
-      descricaoEdificio : "Edificio de Magia",
-      nomeOpcionalEdificio : "Edificio Julio de Matos"
-
-    }]
-
-    const observable = of(edificio);
-    const fakeService = jasmine.createSpyObj('EdificioService', ['getEdificios']);
-    fakeService.getEdificios.and.returnValue(observable);
-
-    component = new EdificioListComponent(fakeService,fakeLocation,fakeLiveAnnouncer);
-    debugger;
-    component.ngOnInit();
-
-
-    console.log('Component dataSource:', component.dataSource.data);
-    console.log('Expected edificio:', edificio);
+    const edificioService = TestBed.inject(EdificioService);
+    const mockEdificios: Edificio[] = [{
+      codigoEdificio: 'K',
+      dimensaoMaximaPiso: '[200,200]',
+      descricaoEdificio: 'Edificio de Magia',
+      nomeOpcionalEdificio: 'Edificio Julio de Matos'
+    }];
+  
+    spyOn(edificioService, 'getEdificios').and.returnValue(of(mockEdificios));
     
-    expect(component.dataSource.data).toEqual(edificio)
+    component.listEdificios();
+    
+    expect(component.dataSource.data).toEqual(mockEdificios);
   })
 });
