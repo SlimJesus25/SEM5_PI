@@ -50,20 +50,46 @@ path_between_floors(Request):-
   request_passagens(),
   request_mapa_pisos(),
 
+  open('teste.txt', append, Stream2),
+  write(Stream2, 'Or: '),write(Stream2, Or),nl(Stream2),
+  write(Stream2, 'Dest: '),write(Stream2, Dest),nl(Stream2),
+  close(Stream2),
+
   % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
   busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
+  open('teste.txt', append, Stream),
+  write(Stream, 'PisoOr: '),write(Stream, PisoOr),nl(Stream),
+  write(Stream, 'PisoDest: '),write(Stream, PisoDest),nl(Stream),
+  close(Stream),
+
   % Calcula o trajeto entre pisos.
-  caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
+  melhor_caminho_pisos(PisoOr, PisoDest, Cam, PisosPer),
+
+  open('teste.txt', append, Stream3),
+  write(Stream3, 'Cam: '),write(Stream3, Cam),nl(Stream3),
+  write(Stream3, 'PisosPer: '),write(Stream3, PisosPer),nl(Stream3),
+  close(Stream3),
 
   node(X1, COr, LOr, _, PisoOr), % Pos inicial tem que ser   %define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
   edge(X1, X, _, PisoOr),
 
   node(Y1, CDest, LDest, _, PisoDest), % Pos destino tem que ser 0 também.
   edge(Y1, Y, _, PisoDest),
+
+  open('teste.txt', append, Stream4),
+  write(Stream4, 'X: '),write(Stream4, X),nl(Stream4),
+  write(Stream4, 'Y: '),write(Stream4, Y),nl(Stream4),
+
+  close(Stream4),
   
   % Calcula o trajeto dentro de cada piso.
   aStar_piso(PisosPer, CamPorPiso, Cam, X, Y),
+
+  open('teste.txt', append, Stream5),
+  write(Stream5, 'Cam: '),write(Stream5, CamPorPiso),nl(Stream5),
+
+  close(Stream5),
 
   converte_cam_final(Cam, CamF),
 
@@ -391,17 +417,34 @@ caminho_edificios2(EdAct, EdDest, LEdPassou, LEdCam):-
 
 % Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
 melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor,LPiCam):-
-findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLiga,LPiCam),LLLig),
-menos_elevadores(LLLig,LLigMelhor,_,_).
+  findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig,_),LLLig),
+  menos_elevadores(LLLig,LLigMelhor,_,_),
+  enumera_pisos(LLigMelhor, LPiCam).
+
+enumera_pisos([elev(Piso1, Piso2)|[]], [Piso1, Piso2|[]]):-!.
+
+enumera_pisos([cor(Piso1, Piso2)|[]], [Piso1, Piso2|[]]):-!.
+
+enumera_pisos([elev(Piso, _)|T1], [Piso|T2]):-
+  enumera_pisos(T1, T2).
+
+enumera_pisos([cor(Piso, _)|T1], [Piso|T2]):-
+  enumera_pisos(T1, T2).
+
+
 menos_elevadores([LLig],LLig,NElev,NCor):-conta(LLig,NElev,NCor).
+
 menos_elevadores([LLig|OutrosLLig],LLigR,NElevR,NCorR):-
-menos_elevadores(OutrosLLig,LLigM,NElev,NCor),
-conta(LLig,NElev1,NCor1),
-(((NElev1<NElev;(NElev1==NElev,NCor1<NCor)),!,
-NElevR is NElev1, NCorR is NCor1,LLigR=LLig);
-(NElevR is NElev,NCorR is NCor,LLigR=LLigM)).
+  menos_elevadores(OutrosLLig,LLigM,NElev,NCor),
+  conta(LLig,NElev1,NCor1),
+  (((NElev1<NElev;(NElev1==NElev,NCor1<NCor)),!,
+  NElevR is NElev1, NCorR is NCor1,LLigR=LLig);
+  (NElevR is NElev,NCorR is NCor,LLigR=LLigM)).
+
 conta([],0,0).
+
 conta([elev(_,_)|L],NElev,NCor):-conta(L,NElevL,NCor),NElev is NElevL+1.
+
 conta([cor(_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
 
 
