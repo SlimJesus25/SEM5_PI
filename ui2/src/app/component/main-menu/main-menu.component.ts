@@ -85,4 +85,9 @@ export class MainMenuComponent implements OnInit {
   calcularCaminho(){
     this.router.navigate(['planning']);
   }
+
+  // Visualização.
+  viewer(){
+    this.router.navigate(['viewer']);
+  }
 }

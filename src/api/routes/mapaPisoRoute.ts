@@ -56,4 +56,11 @@ export default (app: Router) => {
         posicaoDestino: Joi.array().items(Joi.number()).min(2).max(2).required()*/
       }),
     }), (req, res, next) => ctrl2.caminhoEntrePisos(req, res, next));
+
+    route.get('/listMapaPiso/:piso',
+    celebrate({
+      body: Joi.object({
+      }),
+    }),
+    (req, res, next) => ctrl2.listMapaPiso(req, res, next));
 };

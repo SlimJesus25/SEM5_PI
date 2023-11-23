@@ -6,4 +6,5 @@ export default interface IMapaPisoController  {
     deleteMapaPiso(req: Request, res: Response, next: NextFunction);
     listMapasPiso(req: Request, res: Response, next: NextFunction);
     caminhoEntrePisos(req: Request, res: Response, next: NextFunction);
+    listMapaPiso(req: Request, res: Response, next: NextFunction);
 }

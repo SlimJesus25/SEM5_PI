@@ -147,7 +147,7 @@ export default class EdificioService implements IEdificioService {
       const edificio = edificios[i];
       const pisos = await this.pisoRepo.findByEdificio(edificio.codigo);
       const numPisos = pisos.length;
-      if (numPisos > minMax.min && numPisos < minMax.max) {
+      if (numPisos >= minMax.min && numPisos <= minMax.max) {
         edificiosDTO.push(EdificioMap.toDTO(edificio) as IEdificioDTO);
       }
     }

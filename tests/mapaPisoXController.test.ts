@@ -168,8 +168,13 @@ describe('mapaPiso controller', function () {
     
         const pisodummy = Piso.create(bodypiso).getValue();
 
+		let out : JSON = <JSON><unknown>{
+        "A" : 1,
+        "B" : 2
+    };
+
         const mapaPiso = MapaPiso.create({
-            mapa: "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2",
+            mapa: out,
             piso : pisodummy
         }).getValue();
 		
@@ -239,13 +244,23 @@ describe('mapaPiso controller', function () {
         const pisodummy = Piso.create(bodypiso).getValue();
         
 
+		let out : JSON = <JSON><unknown>{
+			"A" : 1,
+			"B" : 2
+		};
+
+		let out2 : JSON = <JSON><unknown>{
+			"A" : 3,
+			"B" : 4
+		};
+
         const mapaPiso1 = MapaPiso.create({
-            mapa : "MAPA DE PISO 230 X 340 COM 2 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 3",
+            mapa : out,
             piso : pisodummy
         }).getValue();
 
         const mapaPiso2 = MapaPiso.create({
-            mapa: "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2",
+            mapa: out2,
             piso : pisodummy
         }).getValue();
         
