@@ -8,7 +8,17 @@
 
 ### 2.1 Identificação do problema
 
-### 2.2 Testes ao requisito (Alterar consoante necessidade!)
+Implementar a interface de utilizador para listar edificios com min e max de pisos
+
+### 2.2 Testes ao requisito
+
+**Test 1:** *Listar edficio min max com sucesso (controlador, 201 PUT)*
+
+**Test 2:** *Listar edficio min max com insucesso (controlador, 403 FORBIDDEN)*
+
+**Test 3:** *Listar edficio min max com sucesso (controlador + serviço, 201 PUT)*
+
+**Test 4:** *Listar edficio min max com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
 
 ## 3. Desenho
 

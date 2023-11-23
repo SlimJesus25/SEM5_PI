@@ -2,37 +2,33 @@
 
 ## 1. Requisitos
 
-**UC1060** -  Editar edificio
+**UC1060** -  Como gestor de Campus pretendo listar Edifícios
 
 ## 2. Análise
 
 ### 2.1 Indentificar o problema
-Implementar a interface de utilizador para a edição do edificio
 
-
-#### 2.2 Excerto de domínio
-
-![excerto dominio](ed1060.svg "ed_160.svg")
+Implementar a interface de utilizador para listar edificios
 
 ### 2.3 Testes ao requisito
 
-**Test 1:** *Modificar edficio com sucesso (controlador, 201 PUT)*
+**Test 1:** *Listar edficio com sucesso (controlador, 201 PUT)*
 
-**Test 2:** *Modificar edificio com insucesso (controlador, 403 FORBIDDEN)*
+**Test 2:** *Listar edificio com insucesso (controlador, 403 FORBIDDEN)*
 
-**Test 3:** *Modificar edificio com sucesso (controlador + serviço, 201 PUT)*
+**Test 3:** *Listar edificio com sucesso (controlador + serviço, 201 PUT)*
 
-**Test 4:** *Modificar edificio com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 4:** *Listar edificio com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
 
 ## 3. Desenho
 
-Para resolver este problema, é pedido ao utilizador os parametros a atualizar do edificio. O único parametro que nao pode ser atualizado é o código por ser unico.
+Para resolver este problema, é listado automaticamente edificos em função do codigo introduzido
 
 ### 3.1. Realização
 
 #### 3.1.1 Excerto de domínio
 
-![excerto dominio](../UC1060/ed0160.svg "ed_270.svg")
+![excerto dominio](ed1060.svg "ed_160.svg")
 
 #### 3.1.2 Vista de processo
 
@@ -66,7 +62,7 @@ Para resolver este problema, é pedido ao utilizador os parametros a atualizar d
 
 ##### 3.1.3.1 Nível 1
 
-![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
+![vista cenarios 1](../../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 
@@ -88,13 +84,8 @@ Para resolver este problema, é pedido ao utilizador os parametros a atualizar d
 
 Os padrões aplicados são:
 
-- REST + ONION (padrões arquiteturais);
-- DTO;
-- Persistence;
-- Controller;
-- Service;
-- Interfaces;
-- Schema;
-- Mapper;
-- Repository;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.

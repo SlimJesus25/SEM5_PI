@@ -1,9 +1,9 @@
 @startuml
 actor GestorCampus as actor
 participant SistemaRobDroneGo as srdg
-actor -> srdg: Editar edificio
+actor -> srdg: Listar edificios
 srdg --> actor : Requesita dados
-actor -> srdg: Envia dados de edificio
+actor -> srdg: Envia dados de edificios
 alt sucesso
 srdg --> actor : Mensagem de Sucesso
 else insucesso

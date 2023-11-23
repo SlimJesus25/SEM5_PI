@@ -10,8 +10,6 @@
 
 Implementar a interface de utilizador para a criação do edificio
 
-
-
 ### 2.2 Excerto do MD
 
 ![excerpt diagram](ed1050.svg "domain_excerpt_150.svg")
@@ -70,7 +68,7 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Edif
 
 ##### 3.1.3.1 Nível 1
 
-![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
+![vista cenarios 1](../../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 

@@ -1,4 +1,4 @@
-# UC 1050
+# UC 1120
 
 ## 1. Requisitos
 
@@ -18,19 +18,13 @@ Implementar a interface de utilizador para a criação do mapa piso
 
 ### 2.3 Testes ao requisito
 
-**Test 1:** *Criar edifício com sucesso (controlador, 201 POST)*
+**Test 1:** *Carregar mapa de edificio com sucesso (controlador, 201 POST)*
 
-**Test 2:** *Criar edifício com insucesso (controlador, 403 FORBIDDEN)*
+**Test 2:** *Carregar mapa de edificio com insucesso (controlador, 403 FORBIDDEN)*
 
-**Test 3:** *Criar edifício com sucesso (controlador + serviço, 201 POST)*
+**Test 3:** *Carregar mapa de edificio com sucesso (controlador + serviço, 201 POST)*
 
-**Test 4:** *Criar edifício com insucesso (controlador + serviço, 403 FORBIDDEN)*
-
-**Test 5:** *Código de edifício segue regras de negócio.*
-
-**Test 6:** *Nome opcional segue regras de negócio.*
-
-**Test 7:** *Descrição segue regras de negócio*
+**Test 4:** *Carregar mapa de edificio com insucesso (controlador + serviço, 403 FORBIDDEN)*
 
 ## 3. Desenho
 
@@ -70,7 +64,7 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Mapa
 
 ##### 3.1.3.1 Nível 1
 
-![vista cenarios 1](../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
+![vista cenarios 1](../../../scenario_view/level1/sv1.svg "Vista de cenários - nível 1")
 
 #### 3.1.4 Vista de implementação
 
@@ -92,13 +86,8 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Mapa
 
 Os padrões aplicados são:
 
-- REST + ONION (padrões arquiteturais);
-- DTO;
-- Persistence;
-- Controller;
-- Service;
-- Interfaces;
-- Schema;
-- Mapper;
-- Repository;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.

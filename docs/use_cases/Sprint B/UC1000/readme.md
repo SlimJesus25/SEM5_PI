@@ -8,19 +8,17 @@
 
 ### 2.1 Identificação do problema
 
+Implementar todo o trabalho feito no backend numa UI para o Gestor de Frota
+
 ### 2.2 Testes ao requisito (Alterar consoante necessidade!)
 
-**Teste 1:** *Criar elevador com sucesso (controlador, 201 OK)*
+**Teste 1:** *Criar Tipo Robo com sucesso (controlador, 201 OK)*
 
-**Teste 2:** *Criar elevador com insucesso (controlador, 404 NOT FOUND)*
+**Teste 2:** *Criar Tipo Robo com insucesso (controlador, 404 NOT FOUND)*
 
-**Teste 3:** *Criar elevador com sucesso (controlador + serviço, 201 OK)*
+**Teste 3:** *Criar Tipo Robo com sucesso (controlador + serviço, 201 OK)*
 
-**Teste 4:** *Criar elevador com insucesso (controlador + serviço, 404 NOT FOUND)*
-
-**Teste 5:** *Criar elevador com insucesso, novo edificio não existe (controlador + serviço, 404 NOT FOUND)*
-
-**Teste 6:** *Criar elevador com insucesso, novos pisos servidos não existem/não pertecem ao edifício (controlador + serviço, 404 NOT FOUND)*
+**Teste 4:** *Criar Tipo Robo com insucesso (controlador + serviço, 404 NOT FOUND)*
 
 ## 3. Desenho
 
@@ -80,8 +78,14 @@
 
 Os padrões aplicados são:
 
-- ONION (padrões arquiteturais);
+- REST + ONION (padrões arquiteturais);
 - DTO;
+- Persistence;
+- Controller;
 - Service;
 - Interfaces;
+- Schema;
+- Mapper;
+- Repository;
 - Modelo.
+

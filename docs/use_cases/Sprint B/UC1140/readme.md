@@ -10,17 +10,17 @@
 
 ### 2.2 Testes ao requisito (Alterar consoante necessidade!)
 
-**Teste 1:** *Criar elevador com sucesso (controlador, 201 OK)*
+**Teste 1:** *Listar elevador com sucesso (controlador, 201 OK)*
 
-**Teste 2:** *Criar elevador com insucesso (controlador, 404 NOT FOUND)*
+**Teste 2:** *Listar elevador com insucesso (controlador, 404 NOT FOUND)*
 
-**Teste 3:** *Criar elevador com sucesso (controlador + serviço, 201 OK)*
+**Teste 3:** *Listar elevador com sucesso (controlador + serviço, 201 OK)*
 
-**Teste 4:** *Criar elevador com insucesso (controlador + serviço, 404 NOT FOUND)*
+**Teste 4:** *Listar elevador com insucesso (controlador + serviço, 404 NOT FOUND)*
 
-**Teste 5:** *Criar elevador com insucesso, novo edificio não existe (controlador + serviço, 404 NOT FOUND)*
+**Teste 5:** *Listar elevador com insucesso, novo edificio não existe (controlador + serviço, 404 NOT FOUND)*
 
-**Teste 6:** *Criar elevador com insucesso, novos pisos servidos não existem/não pertecem ao edifício (controlador + serviço, 404 NOT FOUND)*
+**Teste 6:** *Listar elevador com insucesso, novos pisos servidos não existem/não pertecem ao edifício (controlador + serviço, 404 NOT FOUND)*
 
 ## 3. Desenho
 

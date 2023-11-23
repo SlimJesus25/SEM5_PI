@@ -8,21 +8,17 @@
 
 ### 2.1 Identificação do problema
 
-Criar um elevador é um requisito relevante do domínio que deve ser capaz de criar informação.
+Implementar todo o trabalho feito no backend numa UI para o Gestor de Frota
 
-### 2.2 Testes ao requisito (Alterar consoante necessidade!)
+### 2.2 Testes ao requisito
 
-**Teste 1:** *Criar elevador com sucesso (controlador, 201 OK)*
+**Teste 1:** *Listar robos com sucesso (controlador, 201 OK)*
 
-**Teste 2:** *Criar elevador com insucesso (controlador, 404 NOT FOUND)*
+**Teste 2:** *Listar robos com insucesso (controlador, 404 NOT FOUND)*
 
-**Teste 3:** *Criar elevador com sucesso (controlador + serviço, 201 OK)*
+**Teste 3:** *Listar robos com sucesso (controlador + serviço, 201 OK)*
 
-**Teste 4:** *Criar elevador com insucesso (controlador + serviço, 404 NOT FOUND)*
-
-**Teste 5:** *Criar elevador com insucesso, novo edificio não existe (controlador + serviço, 404 NOT FOUND)*
-
-**Teste 6:** *Criar elevador com insucesso, novos pisos servidos não existem/não pertecem ao edifício (controlador + serviço, 404 NOT FOUND)*
+**Teste 4:** *Listar robos com insucesso (controlador + serviço, 404 NOT FOUND)*
 
 ## 3. Desenho
 
@@ -82,8 +78,13 @@ Criar um elevador é um requisito relevante do domínio que deve ser capaz de cr
 
 Os padrões aplicados são:
 
-- ONION (padrões arquiteturais);
+- REST + ONION (padrões arquiteturais);
 - DTO;
+- Persistence;
+- Controller;
 - Service;
 - Interfaces;
+- Schema;
+- Mapper;
+- Repository;
 - Modelo.

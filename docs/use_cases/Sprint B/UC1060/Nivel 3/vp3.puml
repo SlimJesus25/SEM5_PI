@@ -6,15 +6,15 @@ participant Edificio as model
 participant MDGD as be
 
 activate view
-view -> ctrl : updateEdificio()
+view -> ctrl : listarEdificios()
 activate ctrl
-ctrl -> model : updateEdificio(codigoEdificio,descricaoEdificio,dimensaoMaximaPiso,nomeOpcionalEdificio,mapaPiso)
+ctrl -> model : listarEdificio()
 activate model
-model --> ctrl : edificioUpdated
+model --> ctrl : EdificiosList
 deactivate model
-ctrl -> svc: save(edificioUpdated)
+ctrl -> svc: get(edificiosList)
 activate svc
-svc -> be: PUT edificio {json}
+svc -> be: GET edificio {json}
 activate be
 be --> svc : Resposta HTTP
 deactivate be
