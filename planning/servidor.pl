@@ -21,16 +21,13 @@
 :-dynamic liga/2. % liga(EdificioA, EdificioB)...
 :-dynamic node/5. % node(Id, Col, Lin, Valor, Piso)...
 :-dynamic edge/4. % edge(Id1, Id2, Custo, Piso)...
-:-dynamic elev_pos/3. % elev_pos(Col, Lin, Piso)...
-:-dynamic corr_pos/3. % corr_pos(Col, Lin, Piso)...
+:-dynamic elev_pos/4. % elev_pos(Identificador, Col, Lin, Piso)...
+:-dynamic corr_pos/4. % corr_pos(Identificador, Col, Lin, Piso)...
 :-dynamic ponto_acesso/4. % ponto_acesso(Identificador, Col, Lin, Piso)...
-:-dynamic piso_origem/1.
-:-dynamic piso_destino/1.
 
 :-set_prolog_flag(answer_write_options,[max_depth(0)]).
 :-set_prolog_flag(report_error,true).
 :-set_prolog_flag(unknown,error). 
-
 
 % Rela��o entre pedidos HTTP e predicados que os processam
 :- http_handler('/path_between_floors', path_between_floors, []).
@@ -45,12 +42,8 @@ path_between_floors(Request):-
   
   atom_string(Origem, Or),
   atom_string(Destino, Dest),
-
-  %atom_number(XOrigem, COr),
-  %atom_number(YOrigem, LOr),
-  %atom_number(XDestino, CDest),
-  %atom_number(YDestino, LDest),
   
+  % Faz os pedidos ao backend dos dados.
   request_edificios(),
   request_elevadores(),
   request_pisos(),
@@ -58,15 +51,10 @@ path_between_floors(Request):-
   request_mapa_pisos(),
 
   % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
-  ponto_acesso(Or, COr, LOr, PisoOr),
-  ponto_acesso(Dest, CDest, LDest, PisoDest),
+  busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
+  % Calcula o trajeto entre pisos.
   caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
-
-  open('teste.txt', append, Stream),
-  write(Stream,PisoOr),
-  nl(Stream),
-  close(Stream),
 
   node(X1, COr, LOr, _, PisoOr), % Pos inicial tem que ser   %define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
   edge(X1, X, _, PisoOr),
@@ -74,6 +62,7 @@ path_between_floors(Request):-
   node(Y1, CDest, LDest, _, PisoDest), % Pos destino tem que ser 0 também.
   edge(Y1, Y, _, PisoDest),
   
+  % Calcula o trajeto dentro de cada piso.
   aStar_piso(PisosPer, CamPorPiso, Cam, X, Y),
 
   converte_cam_final(Cam, CamF),
@@ -82,6 +71,10 @@ path_between_floors(Request):-
   prolog_to_json(R, JSONObject),
 
   reply_json(JSONObject, [json_object(dict)]).
+
+busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest):-
+  ((ponto_acesso(Or, COr, LOr, PisoOr);corr_pos(Or, COr, LOr, PisoOr);elev_pos(Or, COr, LOr, PisoOr)),
+  (ponto_acesso(Dest, CDest, LDest, PisoDest);corr_pos(Dest, CDest, LDest, PisoDest);elev_pos(Dest, CDest, LDest, PisoDest))).
 
 converte_cam_final([], []).
 
@@ -144,12 +137,12 @@ aStar_piso([PisoDest|[]], [UltCaminho|[]], [], Or, Dest):-
 
 aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Travessias], IdInicial, Dest):-
 
-  ((TravessiaEd == elev(PisoAct, PisoProx), elev_pos(Col, Lin, PisoAct), node(IdElev, Col, Lin, _, PisoAct),
-  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(Col1, Lin1, PisoProx),
+  ((TravessiaEd == elev(PisoAct, PisoProx), elev_pos(_, Col, Lin, PisoAct), node(IdElev, Col, Lin, _, PisoAct),
+  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(_, Col1, Lin1, PisoProx),
   node(IdElevProxPiso, Col1, Lin1, _, PisoProx), edge(IdElevProxPiso, IdInicialProxPiso, _, PisoProx),!)
   ;
-  (TravessiaEd == cor(PisoAct, PisoProx), corr_pos(Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct),
-  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), corr_pos(Col1, Lin1, PisoProx),
+  (TravessiaEd == cor(PisoAct, PisoProx), corr_pos(_, Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct),
+  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), corr_pos(_, Col1, Lin1, PisoProx),
   node(IdCorrProxPiso, Col1, Lin1, _, PisoProx), edge(IdCorrProxPiso, IdInicialProxPiso, _, PisoProx))),
 
   append([PisoProx], ProxPisos, L),
@@ -277,8 +270,8 @@ request_mapa_pisos():-
 destroi_mapa_pisos():-
   findall(node(K, L, M, N, O), node(K, L, M, N, O), Nodes),
   findall(edge(A1, B1, C1, D1), edge(A1, B1, C1, D1), Edges),
-  findall(elev_pos(K1, L1, M1), elev_pos(K1, L1, M1), ElevPos),
-  findall(corr_pos(K2, L2, M2), corr_pos(K2, L2, M2), CorrPos),
+  findall(elev_pos(K11, K1, L1, M1), elev_pos(K11, K1, L1, M1), ElevPos),
+  findall(corr_pos(K22, K2, L2, M2), corr_pos(K22, K2, L2, M2), CorrPos),
   findall(ponto_acesso(A2, B2, C2, D2), ponto_acesso(A2, B2, C2, D2), PontoAce),
   destroi(ElevPos),
   destroi(CorrPos),
@@ -293,11 +286,11 @@ extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas
 
 cria_mapa_pisos([], _):-!.
 
-cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[ColE, LinE]|_], Salas, SaidaLocalizacao]|T], Id):-
+cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[IdElev, ColE, LinE]|_], Salas, SaidaLocalizacao]|T], Id):-
   cria_mapa(Mapa, Piso, 1, 1, 1),
   identifica_corredores(Saidas, Piso),
   identifica_salas(Salas, Piso),
-  assertz(elev_pos(ColE, LinE, Piso)), % Existe apenas 1 elevador por edifício.
+  assertz(elev_pos(IdElev, ColE, LinE, Piso)), % Existe apenas 1 elevador por edifício.
   L1 is Largura+1,
   P1 is Profundidade+1,
   cria_grafo(L1, P1, Piso),
@@ -311,8 +304,8 @@ identifica_corredores([], _):-
 identifica_corredores([[]], _):-
   !.
 
-identifica_corredores([[Col, Lin]|Restantes], Piso):-
-  assertz(corr_pos(Col, Lin, Piso)),
+identifica_corredores([[Id, Col, Lin]|Restantes], Piso):-
+  assertz(corr_pos(Id, Col, Lin, Piso)),
   identifica_corredores(Restantes, Piso).
 
 identifica_salas([], _):-
@@ -359,41 +352,41 @@ caminho_pisos(PisoOr, PisoDest, LEdCam, LLig, LPiCam):-
   pisos(EdOr, LPisosOr), member(PisoOr, LPisosOr),
   pisos(EdDest, LPisosDest), member(PisoDest, LPisosDest),
   caminho_edificios(EdOr, EdDest, LEdCam),
-  !, % Cut to prevent backtracking on the caminho_edificios/3 predicate
+  %!, % Cut to prevent backtracking on the caminho_edificios/3 predicate
   segue_pisos(PisoOr, PisoDest, LEdCam, LLig, LPiCam2),
   append([PisoOr], LPiCam2, LPiCam).
 
-segue_pisos(PisoDest, PisoDest, _, [], []):- !.
+segue_pisos(PisoDest, PisoDest, _, [], []).
 
 segue_pisos(PisoDest1, PisoDest, [EdDest], [elev(PisoDest1, PisoDest)], [PisoDest | ListaPisos]):-
   PisoDest \== PisoDest1,
-  elevador(EdDest, LPisos), member(PisoDest1, LPisos), member(PisoDest, LPisos),
-  !. % Cut to prevent backtracking
+  elevador(EdDest, LPisos), member(PisoDest1, LPisos), member(PisoDest, LPisos).
+  %!. % Cut to prevent backtracking
 
 segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [cor(PisoAct, PisoSeg) | LOutrasLig], [PisoSeg | ListaPisos]):-
-  (corredor(EdAct, EdSeg, PisoAct, PisoSeg), !; corredor(EdSeg, EdAct, PisoSeg, PisoAct), !),
-  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos),
-  !. % Cut to prevent backtracking
+  (corredor(EdAct, EdSeg, PisoAct, PisoSeg); corredor(EdSeg, EdAct, PisoSeg, PisoAct)),
+  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos).
+  %!. % Cut to prevent backtracking
 
 segue_pisos(PisoAct, PisoDest, [EdAct, EdSeg | LOutrosEd], [elev(PisoAct, PisoAct1), cor(PisoAct1, PisoSeg) | LOutrasLig], [PisoAct1, PisoSeg | ListaPisos]):-
-  (corredor(EdAct, EdSeg, PisoAct1, PisoSeg), !; corredor(EdSeg, EdAct, PisoSeg, PisoAct1), !),
+  (corredor(EdAct, EdSeg, PisoAct1, PisoSeg); corredor(EdSeg, EdAct, PisoSeg, PisoAct1)),
   PisoAct1 \== PisoAct,
   elevador(EdAct, LPisos), member(PisoAct, LPisos), member(PisoAct1, LPisos),
-  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos),
-  !. % Cut to prevent backtracking
+  segue_pisos(PisoSeg, PisoDest, [EdSeg | LOutrosEd], LOutrasLig, ListaPisos).
+  %!. % Cut to prevent backtracking
 
 caminho_edificios(EdOr, EdDest, LEdCam):-
-  caminho_edificios2(EdOr, EdDest, [EdOr], LEdCam),
-  !. % Cut to prevent backtracking
+  caminho_edificios2(EdOr, EdDest, [EdOr], LEdCam).
+  %!. % Cut to prevent backtracking
 
 caminho_edificios2(EdX, EdX, LEdInv, LEdCam):-
   !, reverse(LEdInv, LEdCam).
 
 caminho_edificios2(EdAct, EdDest, LEdPassou, LEdCam):-
-  (liga(EdAct, EdInt), !; liga(EdInt, EdAct)),
+  (liga(EdAct, EdInt); liga(EdInt, EdAct)),
   \+member(EdInt, LEdPassou),
-  caminho_edificios2(EdInt, EdDest, [EdInt | LEdPassou], LEdCam),
-  !. % Cut to prevent backtracking
+  caminho_edificios2(EdInt, EdDest, [EdInt | LEdPassou], LEdCam).
+  %!. % Cut to prevent backtracking
 
 
 % Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
@@ -426,10 +419,10 @@ cria_grafo(Col,Lin,Piso):-
 cria_grafo_lin(0,_,_):-!.
 
 cria_grafo_lin(Col,Lin,Piso):-
-  ((corr_pos(Col, Lin, Piso),%Piso == "A1",trace,
+  ((corr_pos(_, Col, Lin, Piso),%Piso == "A1",trace,
   node(Id1, Col, Lin, _, Piso))
   ;
-  (elev_pos(Col, Lin, Piso),%Piso == "A1",trace,
+  (elev_pos(_, Col, Lin, Piso),%Piso == "A1",trace,
   node(Id1, Col, Lin, _, Piso))
   ;
   (ponto_acesso(_, Col, Lin, Piso),%trace,

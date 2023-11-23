@@ -9,24 +9,47 @@
       <table>
         <tr>
           <mat-form-field>
-            <mat-label>Sala Origem</mat-label>
-            <mat-select [(ngModel)]="caminhoEntrePisos.origem">
-              <mat-option *ngFor="let sala of salas" [value]="sala">{{sala}}</mat-option>
+            <mat-label>Ponto de acesso origem</mat-label>
+            <mat-select [(ngModel)]="selectedType">
+              <mat-option value="Sala">Sala</mat-option>
+              <mat-option value="Elevador">Elevador</mat-option>
+              <mat-option value="Corredor">Corredor</mat-option>
             </mat-select>
           </mat-form-field>
         </tr>
         <tr>
           <mat-form-field>
-            <mat-label>Sala Destino</mat-label>
+            <mat-label>{{ selectedType === 'Sala' ? 'Sala' : (selectedType === 'Elevador' ? 'Elevador' : 'Corredor') }}
+              Origem</mat-label>
+            <mat-select [(ngModel)]="caminhoEntrePisos.origem">
+              <mat-option *ngFor="let item of getOptions()" [value]="item">{{ item }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </tr>
+        <tr>
+        <tr>
+          <mat-form-field>
+            <mat-label>Ponto de acesso destino</mat-label>
+            <mat-select [(ngModel)]="selectedType2">
+              <mat-option value="Sala">Sala</mat-option>
+              <mat-option value="Elevador">Elevador</mat-option>
+              <mat-option value="Corredor">Corredor</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </tr>
+        <tr>
+          <mat-form-field>
+            <mat-label>{{ selectedType2 === 'Sala' ? 'Sala' : (selectedType2 === 'Elevador' ? 'Elevador' : 'Corredor') }}
+              Destino</mat-label>
             <mat-select [(ngModel)]="caminhoEntrePisos.destino">
-              <mat-option *ngFor="let sala of salas" [value]="sala">{{sala}}</mat-option>
+              <mat-option *ngFor="let item of getOptions2()" [value]="item">{{ item }}</mat-option>
             </mat-select>
           </mat-form-field>
         </tr>
       </table>
     </div>
     <div>
-      <button (click)="calcularCaminho()">Add</button>
+      <button (click)="calcularCaminho()">Calculate path</button>
       <button (click)="goBack()">Back</button>
     </div>
   </div>
