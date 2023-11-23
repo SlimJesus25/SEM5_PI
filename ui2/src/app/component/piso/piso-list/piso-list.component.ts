@@ -6,6 +6,7 @@ import { Piso } from '../../../model/piso';
 import { PisoService } from '../../../service/piso/piso.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort } from '@angular/material/sort';
+import { PassagemService } from '../../../service/passagem/passagem.service';
 @Component({
   selector: 'app-piso-list',
   templateUrl: './piso-list.component.html',
@@ -24,7 +25,7 @@ export class PisoListComponent {
 
   ngOnInit(): void {
   }
-
+  
   listPisos() {
     this.pisoService.listPisos(this.codigoEdificio)
         .subscribe(pisos => {

@@ -5,16 +5,16 @@
 
 <body>
     <div class="box">
-
+    <mat-form-field>
         <table>
             <tr>
                 <td><label>Codigo Edificio: </label></td>
-                <td><input type="text" [(ngModel)]="codigoEdificio"> <br></td>
+                <td><input matInput type="text" [(ngModel)]="codigoEdificio"> <br></td>
             </tr>
         </table>
         <button (click)="listPisos()">Search</button>
         <br> <br>
-
+    </mat-form-field>
         <div>
             <div class="search-container">
                 <mat-form-field appearance="fill">
