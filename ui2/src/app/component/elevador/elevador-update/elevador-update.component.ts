@@ -4,6 +4,7 @@ import { MessageService } from '../../../service/message/message.service';
 import { ElevadorService } from '../../../service/elevador/elevador.service';
 import { PisoService } from '../../../service/piso/piso.service';
 import { EdificioService } from '../../../service/edificio/edificio.service';
+import { Elevador } from '../../../model/elevador';
 @Component({
   selector: 'app-edificio-update',
   templateUrl: './elevador-update.component.html',
@@ -24,7 +25,7 @@ export class ElevadorUpdateComponent implements OnInit {
     private messageService: MessageService
   ) { 
     this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
-    this.elevadorService.getElevadores().subscribe(elevadores => this.elevadores = elevadores.map(elevador => elevador.numeroIdentificativo));
+    
   }
 
   submitEdificio(){
@@ -37,6 +38,7 @@ export class ElevadorUpdateComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.elevadorService.getElevadores().subscribe(elevadores => this.elevadores = elevadores.map(elevador => elevador.numeroIdentificativo));
   }
 
   updateElevador() {

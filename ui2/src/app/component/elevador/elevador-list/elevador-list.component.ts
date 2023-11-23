@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource } from '@angular/material/table';
 import { ElevadorService } from '../../../service/elevador/elevador.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -21,7 +22,8 @@ export class ElevadorListComponent {
   @ViewChild(MatSort) sort !: MatSort;
 
   constructor(private elevadorService: ElevadorService, private location: Location, private _liveAnnouncer: LiveAnnouncer) { }
-
+  
+  
   ngOnInit(): void {
   }
 
