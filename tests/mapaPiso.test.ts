@@ -32,10 +32,18 @@ describe('MapaPiso', () => {
     
 
     it('MapaPiso succeeds', () =>{
+
+        let out : JSON = <JSON><unknown>{
+            "A" : 1,
+            "B" : 2
+        };
+
       const body = {
-       mapa : "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2" ,
+       mapa : out ,
        piso : pisodummy.getValue()
       };
+
+      
 
       // Venancio: Comentei isto para conseguir correr os testes.
         const mapaPiso = MapaPiso.create({
@@ -43,7 +51,7 @@ describe('MapaPiso', () => {
             piso : body.piso
         });
 
-        sinon.assert.match(mapaPiso.getValue().mapa, "MAPA DE PISO 100 X 100 COM 5 ENTRADAS E 1 SAÍDA E COM UMA PROFUNDIDADE DE 2");
+        sinon.assert.match(mapaPiso.getValue().mapa, out);
         sinon.assert.match(mapaPiso.getValue().piso.descricao, pisodummy.getValue().descricao);
     });
 });

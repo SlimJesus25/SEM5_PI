@@ -53,12 +53,6 @@ path_between_floors(Request):-
   % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
   busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
-  open('teste.txt', append, Stream),
-  write(Stream, PisoOr),nl(Stream),
-  write(Stream, PisoDest),nl(Stream),
-  write(Stream, PisosPer),nl(Stream),
-  close(Stream),
-
   % Calcula o trajeto entre pisos.
   caminho_pisos(PisoOr, PisoDest, _, Cam, PisosPer),
 

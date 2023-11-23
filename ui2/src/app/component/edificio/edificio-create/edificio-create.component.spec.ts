@@ -6,8 +6,6 @@ import { of, throwError } from 'rxjs';
 import { EdificioCreateComponent } from './edificio-create.component';
 import { Edificio } from '../../../model/edificio';
 import { MessageService } from '../../../service/message/message.service';
-import { EdificioService } from '../../../service/edificio/edificio.service';
-import { CodigoEdificio } from '../../../../../../src/domain/codigoEdificio';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 

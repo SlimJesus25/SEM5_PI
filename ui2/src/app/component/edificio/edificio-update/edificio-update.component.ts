@@ -17,7 +17,7 @@ export class EdificioUpdateComponent implements OnInit {
     private edificioService: EdificioService,
     private messageService: MessageService
   ) {
-    this.edificioService.getEdificios().subscribe(edificiosX => this.edificios = edificiosX.map(edificioP => edificioP.codigoEdificio));
+    
   }
 
 
@@ -25,6 +25,7 @@ export class EdificioUpdateComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.edificioService.getEdificios().subscribe(edificiosX => this.edificios = edificiosX.map(edificioP => edificioP.codigoEdificio));
   }
 
   updateEdificio() {

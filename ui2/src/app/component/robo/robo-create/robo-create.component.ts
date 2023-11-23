@@ -38,7 +38,8 @@ export class RoboCreateComponent implements OnInit {
 
       (error: any) => {
         //error
-        error(error.error);
+        console.error(error.error);
+        alert(error.error);
       }
     );
 

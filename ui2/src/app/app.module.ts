@@ -87,7 +87,8 @@ import { ViewerComponent } from './component/spa/viewer.component';
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    NgModule
   ],
   declarations: [
     AppComponent,
