@@ -28,19 +28,24 @@ describe('mapaPiso Map', () => {
         "edificio": dummyEdificio
     }).getValue();
 
+    let out : JSON = <JSON><unknown>{
+        "A" : 1,
+        "B" : 2
+    };
+
     const mapaPiso = MapaPiso.create({
-        mapa: "mapa do piso",
+        mapa: out,
         piso : piso
     }).getValue();
 
     const expectedDTO = {
         id: 't12345',
-        mapa: "mapa do piso",
+        mapa: out,
     };
 
     const expectedPersistence = {
         domainId: "t12345",
-        mapa: "mapa do piso"
+        mapa: out
     };
 
     const document = {
