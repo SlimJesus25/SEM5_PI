@@ -1,0 +1,26 @@
+.mat-toolbar {
+    background-color: #2196F3;
+    color: #FFFFFF;
+    height: 70px;
+    font-size: 1.2em;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .h1 {
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+  
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+  }
+  
+
+  

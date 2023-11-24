@@ -45,6 +45,7 @@ import { PassagemUpdateComponent } from './component/passagem/passagem-update/pa
 import { SalaCreateComponent } from './component/sala/sala-create/sala-create.component';
 import { PlanningComponent } from './component/planeamento/planning.component';
 import { VisualizacaoComponent } from './component/visualizacao/visualizacao.component';
+import { MbcoComponent } from './component/asist/mbco.component';
 
 const routes: Routes = [
 
@@ -104,7 +105,8 @@ const routes: Routes = [
   { path: 'mainMenu', component: MainMenuComponent },
 
   { path: 'planning', component: PlanningComponent },
-  { path: 'view', component: VisualizacaoComponent }
+  { path: 'view', component: VisualizacaoComponent },
+  { path: 'mbco', component: MbcoComponent }
 ];
 
 

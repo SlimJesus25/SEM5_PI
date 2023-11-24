@@ -90,4 +90,8 @@ export class MainMenuComponent implements OnInit {
   view(){
     this.router.navigate(['view']);
   }
+
+  mbco(){
+    this.router.navigate(['mbco']);
+  }
 }

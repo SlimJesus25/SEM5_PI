@@ -67,6 +67,7 @@ import { PassagemUpdateComponent } from './component/passagem/passagem-update/pa
 import { SalaCreateComponent } from './component/sala/sala-create/sala-create.component';
 import { PlanningComponent } from './component/planeamento/planning.component';
 import { VisualizacaoComponent } from './component/visualizacao/visualizacao.component';
+import { MbcoComponent } from './component/asist/mbco.component';
 
 
 @NgModule({
@@ -145,7 +146,8 @@ import { VisualizacaoComponent } from './component/visualizacao/visualizacao.com
     AboutUsComponent,
     MainMenuComponent,
     PlanningComponent,
-    VisualizacaoComponent
+    VisualizacaoComponent,
+    MbcoComponent
   ],
   bootstrap: [ AppComponent ]
 })
