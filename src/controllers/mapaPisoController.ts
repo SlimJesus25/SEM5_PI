@@ -11,6 +11,7 @@ import IDeleteMapaPisoDTO from '../dto/IDeleteMapaPisoDTO';
 import ICaminhoEntrePisosDTO from '../dto/ICaminhoEntrePisosDTO';
 import ISolucaoCaminhoDTO from '../dto/ISolucaoCaminhoDTO'
 import IListMapaPisoDTO from '../dto/IListMapaPisoDTO';
+import IMapaJsonDTO from '../dto/IMapaJsonDTO';
 
 @Service()
 export default class MapaPisoController implements IMapaPisoController /* TODO: extends ../core/infra/BaseController */ {
@@ -110,7 +111,7 @@ export default class MapaPisoController implements IMapaPisoController /* TODO: 
     try {
       //const pisoOrError = await this.pisoServiceInstance.listPisos(req.body as IListPisosDTO) as Result<IPisoDTO[]>;
 
-      const mapaPisoOrError = await this.mapaPisoServiceInstance.listMapaPiso({piso} as IListMapaPisoDTO) as Result<IMapaPisoDTO>;
+      const mapaPisoOrError = await this.mapaPisoServiceInstance.listMapaPiso({piso} as IListMapaPisoDTO) as Result<IMapaJsonDTO>;
       if (mapaPisoOrError.isFailure) {
         return res.status(404).send("Erro: " + mapaPisoOrError.errorValue());
       }
