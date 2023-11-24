@@ -14,6 +14,7 @@ import ISolucaoCaminhoDTO from '../dto/ISolucaoCaminhoDTO';
 import { CaminhoEntrePisosSolucao } from '../domain/caminhoEntrePisosSolucao';
 import ICaminhoEntrePisosDTO from '../dto/ICaminhoEntrePisosDTO';
 import IListMapaPisoDTO from '../dto/IListMapaPisoDTO';
+import IMapaJsonDTO from '../dto/IMapaJsonDTO';
 const http = require('http');
 
 @Service()
@@ -170,7 +171,7 @@ export default class MapaPisoService implements IMapaPisoService {
 
   }
 
-  public async listMapaPiso(listMapaPisoDTO: IListMapaPisoDTO): Promise<Result<IMapaPisoDTO>> {
+  public async listMapaPiso(listMapaPisoDTO: IListMapaPisoDTO): Promise<Result<IMapaJsonDTO>> {
     try {
 
       const piso = await this.mapaPisoRepo.findByPiso(listMapaPisoDTO.piso);
@@ -187,10 +188,10 @@ export default class MapaPisoService implements IMapaPisoService {
 
       
       let mapaPisoDTO = MapaPisoMap.toDTO(piso);
-      
+      let mapaJsonDTO = mapaPisoDTO.mapa;
 
 
-      return Result.ok<IMapaPisoDTO>(mapaPisoDTO)
+      return Result.ok<IMapaJsonDTO>(mapaJsonDTO as unknown as IMapaJsonDTO)
     } catch (e) {
       throw e;
     }
