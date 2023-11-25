@@ -1,4 +1,11 @@
 export interface MapaPiso {
-    piso : string,
-    mapa : string,
+    
+    piso: string;
+    largura: number;
+    profundidade: number;
+    mapa: number[][];
+    saidas: number[][];
+    elevador: number[][];
+    saidaLocalizacao: number[];
+  
 }

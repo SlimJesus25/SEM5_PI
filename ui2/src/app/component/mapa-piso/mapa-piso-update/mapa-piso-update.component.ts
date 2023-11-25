@@ -9,7 +9,7 @@ import { MapaPisoService } from '../../../service/mapaPiso/mapaPiso.service';
 })
 export class MapaPisoUpdateComponent implements OnInit {
 
-  mapaPiso = {piso : "", mapa : ""}
+  mapaPiso = {piso : "", mapa : JSON}
 
   constructor(
     private location: Location,
@@ -25,7 +25,7 @@ export class MapaPisoUpdateComponent implements OnInit {
   }
 
   updateMapaPiso() {
-    let errorOrSuccess: any = this.MapaPisoService.updateMapaPiso(this.mapaPiso);
+    let errorOrSuccess: any = null;//this.MapaPisoService.updateMapaPiso(this.mapaPiso);
     errorOrSuccess.subscribe(
       (data: any) => {
         //success

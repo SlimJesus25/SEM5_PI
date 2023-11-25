@@ -135,6 +135,14 @@
                     <td>
                         <input type="button" id="reset" value="Reset view">
                     </td>
+                    <td>
+                        <select [(ngModel)]="codigoEdificio" (change)="listPisos(codigoEdificio)" id="view">
+                            <option value="">Seleciona um edificio</option>
+                            <option *ngFor="let edificio of edificios" [value]="edificio.codigoEdificio"> {{
+                                edificio.codigoEdificio }}
+                            </option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -154,6 +162,13 @@
                     </td>
                     <td>
                         <input type="button" id="reset-all" value="Reset all views">
+                    </td>
+                    <td>
+                        <select [(ngModel)]="designacaoPiso" (change)="renderCanvas()" id="view">
+                            <option value="">Seleciona um piso</option>
+                            <option *ngFor="let piso of pisos" [value]="piso.designacao"> {{ piso.designacao }}
+                            </option>
+                        </select>
                     </td>
                 </tr>
             </table>
@@ -301,4 +316,5 @@
         </div>
     </div>
 </body>
+
 </html>

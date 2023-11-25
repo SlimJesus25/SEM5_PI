@@ -30,7 +30,6 @@ export class MapaPisoService {
 
   getMapasPiso(): Observable<MapaPiso[]> {
     const mapas = this.http.get<MapaPiso[]>(this.LogisticAPI_URL+ "/listMapasPiso");
-
     return mapas;
   }
 

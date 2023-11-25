@@ -10,7 +10,7 @@ import { PisoService } from '../../../service/piso/piso.service';
 })
 export class MapaPisoCreateComponent implements OnInit {
 
-  mapaPiso = {piso : "", mapa : ""}
+  mapaPiso = {piso : "", mapa : JSON}
   pisos: string[] = [];
 
   constructor(
@@ -57,7 +57,7 @@ export class MapaPisoCreateComponent implements OnInit {
 
   
   createMapaPiso() {
-      let errorOrSuccess: any = this.MapaPisoService.createMapaPiso(this.mapaPiso);
+      let errorOrSuccess: any = null;//this.MapaPisoService.createMapaPiso();
       errorOrSuccess.subscribe(
         (data: any) => {
           alert("Success Mapa Piso creation!");

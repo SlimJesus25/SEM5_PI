@@ -155,7 +155,7 @@ export default class ThumbRaiser {
         //const userInteractionInstance = new UserInterface();
         //this.mazeParameters = merge({}, userInteractionInstance.mazeData, mazeParameters);
         this.generalParameters = merge({}, generalData, generalParameters);
-        this.mazeParameters = merge({}, mazeData, mazeParameters);
+        this.mazeParameters = merge({}, mazeParameters);
         this.playerParameters = merge({}, playerData, playerParameters);
         this.lightsParameters = merge({}, lightsData, lightsParameters);
         this.fogParameters = merge({}, fogData, fogParameters);
