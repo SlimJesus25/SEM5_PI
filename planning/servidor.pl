@@ -63,9 +63,11 @@ path_between_floors(Request):-
   edge(Y1, Y, _, PisoDest),
   
   % Calcula o trajeto dentro de cada piso.
-  aStar_piso(PisosPer, CamPorPiso, Cam, X, Y),
+  aStar_piso(PisosPer, CamPorPiso2, Cam, X, Y),
 
   converte_cam_final(Cam, CamF),
+
+  eliminate_redundant(CamPorPiso2, CamPorPiso),
 
   R = json([sol1=CamF, sol2=CamPorPiso]),
   prolog_to_json(R, JSONObject),
@@ -458,3 +460,22 @@ estimativa(Nodo1,Nodo2,Estimativa,Piso):-
 	node(Nodo1,X1,Y1,_,Piso),
 	node(Nodo2,X2,Y2,_,Piso),
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
+
+
+  eliminate_redundant([], []).
+eliminate_redundant([X|Xs], Result) :-
+    (is_list(X) ->
+        flatten(X, Flattened),
+        eliminate_redundant(Xs, Rest),
+        Result = [Flattened|Rest]
+    ;
+        eliminate_redundant(Xs, Rest),
+        Result = [X|Rest]
+    ).
+
+flatten([], []).
+flatten([X|Xs], Flat) :-
+    flatten(X, FlatX),
+    flatten(Xs, FlatRest),
+    append(FlatX, FlatRest, Flat).
+flatten(X, [X]).
