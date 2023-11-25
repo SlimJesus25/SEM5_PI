@@ -1,4 +1,4 @@
 export interface SolucaoCaminho {
-    caminhoEntrePisos: string[];
-    caminhoPorPiso: number[];
+    caminhoEntrePisos: string[][];
+    caminhoPorPiso: number[][][];
   }

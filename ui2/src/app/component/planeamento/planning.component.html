@@ -39,7 +39,8 @@
         </tr>
         <tr>
           <mat-form-field>
-            <mat-label>{{ selectedType2 === 'Sala' ? 'Sala' : (selectedType2 === 'Elevador' ? 'Elevador' : 'Corredor') }}
+            <mat-label>{{ selectedType2 === 'Sala' ? 'Sala' : (selectedType2 === 'Elevador' ? 'Elevador' : 'Corredor')
+              }}
               Destino</mat-label>
             <mat-select [(ngModel)]="caminhoEntrePisos.destino">
               <mat-option *ngFor="let item of getOptions2()" [value]="item">{{ item }}</mat-option>
@@ -52,5 +53,10 @@
       <button (click)="calcularCaminho()">Calculate path</button>
       <button (click)="goBack()">Back</button>
     </div>
+    <div *ngIf="resultMessage" class="box">
+      <p>Caminho entre pisos: {{ resultMessage[0] }}</p>
+      <p>Caminho por piso: {{ resultMessage[1] }}</p>
+    </div>
+    
   </div>
 </body>

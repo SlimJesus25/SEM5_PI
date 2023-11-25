@@ -134,10 +134,10 @@ export default class MapaPisoService implements IMapaPisoService {
 
   public async caminhoEntrePisos(cep: ICaminhoEntrePisosDTO): Promise<Result<ISolucaoCaminhoDTO>> {
 
-    let sol1: string[];
-    let sol2: number[];
+    let sol1: string[][];
+    let sol2: number[][];
 
-    if(cep.destino == cep.origem)
+    if (cep.destino == cep.origem)
       return Result.fail<ISolucaoCaminhoDTO>("A origem e o destino devem ser diferentes.");
 
     const uri = config.planningConnectionString + "/path_between_floors?origem=" + cep.origem +
@@ -186,7 +186,7 @@ export default class MapaPisoService implements IMapaPisoService {
       pisos.forEach(p => pisosDTO.push(PisoMap.toDTO(p)));
       */
 
-      
+
       let mapaPisoDTO = MapaPisoMap.toDTO(piso);
       let mapaJsonDTO = mapaPisoDTO.mapa;
 

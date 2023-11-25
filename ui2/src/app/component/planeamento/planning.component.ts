@@ -18,8 +18,8 @@ export class PlanningComponent implements OnInit {
   salas: string[] = [];
   elevadores: string[] = [];
   corredores: string[] = [];
-  caminhoEntrePisos = { origem: "", destino: "" }
-
+  caminhoEntrePisos = { origem: "", destino: "" };
+  resultMessage : string[] = [];
 
   constructor(
     private location: Location,
@@ -70,7 +70,11 @@ export class PlanningComponent implements OnInit {
     let errorOrSuccess: any = this.mapaPisoService.calcularCaminho(this.caminhoEntrePisos);
     errorOrSuccess.subscribe(
       (data: SolucaoCaminho) => {
-        alert("Caminho entre pisos: " + data.caminhoEntrePisos + "\nCaminho por piso: " + data.caminhoPorPiso);
+        this.resultMessage = [
+          "Caminho entre pisos: " + data.caminhoEntrePisos,
+          "Caminho por piso: " + data.caminhoPorPiso
+        ];
+        // alert("Caminho entre pisos: " + data.caminhoEntrePisos + "\nCaminho por piso: " + data.caminhoPorPiso);
       },
 
       (error: any) => {

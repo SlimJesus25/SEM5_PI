@@ -4,8 +4,8 @@ import { Result } from "../core/logic/Result";
 import { Guard } from "../core/logic/Guard";
 
 interface CaminhoEntrePisosSolucaoProps{
-  caminhoEntrePisos: string[];
-  caminhoPorPiso: number[];
+  caminhoEntrePisos: string[][];
+  caminhoPorPiso: number[][];
 }
 
 export class CaminhoEntrePisosSolucao extends AggregateRoot<CaminhoEntrePisosSolucaoProps> {
@@ -14,11 +14,11 @@ export class CaminhoEntrePisosSolucao extends AggregateRoot<CaminhoEntrePisosSol
     return this._id;
   }
 
-  get caminhoEntrePisos (): string[] {
+  get caminhoEntrePisos (): string[][] {
     return this.props.caminhoEntrePisos;
   }
 
-  get caminhoPorPiso (): number[] {
+  get caminhoPorPiso (): number[][] {
     return this.props.caminhoPorPiso;
   }
 
