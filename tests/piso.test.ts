@@ -43,7 +43,7 @@ describe('Piso', () => {
   });
 
   it('designacao cant exceed 50 characters', () => {
-    p.designacao = "aa";
+    p.designacao = "edificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificioedificio";
 
     sinon.assert.match(Result.fail<Piso>("Designação do piso excede 50 caracteres"), Piso.create(p));
 
