@@ -14,7 +14,7 @@ import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
 import { generalData, playerData, lightsData, fogData, cameraData } from "./default_data.js";
-//import { mazeData} from "./user_interface.js"
+import { mazeData} from "./user_interface.js"
 import { merge } from "./merge.js";
 import Maze from "./maze.js";
 import Player from "./player.js";
@@ -152,9 +152,10 @@ import UserInterface from "./user_interface.js";
 
 export default class ThumbRaiser {
     constructor(generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
-        const userInteractionInstance = new UserInterface();
+        //const userInteractionInstance = new UserInterface();
+        //this.mazeParameters = merge({}, userInteractionInstance.mazeData, mazeParameters);
         this.generalParameters = merge({}, generalData, generalParameters);
-        this.mazeParameters = merge({}, userInteractionInstance.mazeData, mazeParameters);
+        this.mazeParameters = merge({}, mazeData, mazeParameters);
         this.playerParameters = merge({}, playerData, playerParameters);
         this.lightsParameters = merge({}, lightsData, lightsParameters);
         this.fogParameters = merge({}, fogData, fogParameters);
@@ -671,7 +672,7 @@ export default class ThumbRaiser {
                 this.player.direction = this.maze.initialDirection;
 
                 // Create the user interface
-                this.userInterface = new UserInterface(this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations);
+                this.userInterface = new UserInterface(this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations,this.maze);
 
                 // Start the game
                 this.gameRunning = true;

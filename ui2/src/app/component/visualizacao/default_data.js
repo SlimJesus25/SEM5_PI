@@ -6,9 +6,9 @@ export const generalData = {
 }
 
 export const mazeData = {
-    url: "../../assets/mazes/Loquitas.json",
-    credits: "Maze designed by Cecília Fernandes and Nikita.",
-    scale: new THREE.Vector3(1.0, 1.0, 1.0)
+    //url: "../../assets/mazes/Loquitas.json",
+    //credits: "Maze designed by Cecília Fernandes and Nikita.",
+    //scale: new THREE.Vector3(1.0, 1.0, 1.0)
 }
 
 export const playerData = {

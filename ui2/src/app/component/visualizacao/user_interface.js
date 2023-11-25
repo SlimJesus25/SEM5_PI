@@ -1,16 +1,20 @@
 import * as THREE from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { __await } from "tslib";
+import Maze from "./maze.js";
+import { merge } from "./merge.js";
+import { VisualizacaoComponent } from "./visualizacao.component.ts";
 
-/*export const mazeData = {
+export const mazeData = {
     url: "../../assets/mazes/Loquitas.json",
-    credits: "Maze designed by Cecília Fernandes and Nikita.",
-    scale: new THREE.Vector3(1.0, 1.0, 1.0)
-}*/
+    //credits: "Maze designed by Cecília Fernandes and Nikita.",
+    //scale: new THREE.Vector3(1.0, 1.0, 1.0)
+}
 
 export default class UserInteraction {
 
-    
-    constructor(scene, renderer, lights, fog, object, animations) {
+
+    constructor(scene, renderer, lights, fog, object, animations,maze) {
 
         function colorCallback(object, color) {
             object.color.set(color);
@@ -35,86 +39,78 @@ export default class UserInteraction {
 
         // Create the graphical user interface
         this.gui = new GUI({ hideable: false });
-
+        let obj = { edificio: '', piso: '' };
         const campusFolder = this.gui.addFolder("Campus");
 
         const edificiosFolder = campusFolder.addFolder("Edificio");
         const pisosFolder = campusFolder.addFolder("Piso");
+        let edificiosTeste =[];
+        
 
-        function fetchEdificios(callback) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://localhost:3000/api/edificio/listEdificios', true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        var contentType = xhr.getResponseHeader('Content-Type');
-                        if (contentType.includes('application/json')) {
-                            var jsonResponse = JSON.parse(xhr.responseText);
-                            var edificios = jsonResponse.map(function (edificio) {
-                                return edificio.codigoEdificio;
-                            });
+        async function fetchEdificios() {
+            try {
+                let response = await fetch('http://localhost:3000/api/edificio/listEdificios');
 
-                            callback(edificios);
-                        }
-                    } else {
-                        console.error('Error fetching edificios. Status:', xhr.status);
-                        callback([]);
-                    }
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-            };
-            xhr.send();
-        }
 
-        async function fetchPisos(edificio, callback) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://localhost:3000/api/piso/listPisos/' + edificio, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        var contentType = xhr.getResponseHeader('Content-Type');
-                        if (contentType.includes('application/json')) {
-                            var jsonResponse = JSON.parse(xhr.responseText);
-                            var pisos = jsonResponse.map(function (piso) {
-                                return piso.designacao;
-                            });
-
-                            callback(pisos);
-                        }
-                    } else {
-                        console.error('Error fetching pisos. Status:', xhr.status);
-                        callback([]);
-                    }
-                }
-            };
-            xhr.send();
-        }
-        let select = [];
-        let pisos = [];
-        let obj = { edificio: '', piso: '' };
-        const a = fetchEdificios(function (edificios) {
-            edificiosFolder.r
-            edificiosFolder.add(obj, 'edificio', edificios).name('Selecionar edificio').onChange(edificio => {
-                fetchPisos(edificio, function (pisos) {
-                    select = pisos;
-                    pisosFolder.add(obj, 'piso', []).name('Selecionar piso').options(pisos);
+                let jsonResponse = await response.json();
+                edificiosTeste = jsonResponse.map(function (edificio) {
+                    return edificio.codigoEdificio;
                 });
-            });
-        });
+                return edificiosTeste;
 
-        this.mazeData = {
-            url: "../../assets/mazes/Loquitas.json",
-            credits: "Maze",
-            scale: new THREE.Vector3(1.0, 1.0, 1.0)
-        };
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
 
+        async function fetchPisos(edificio) {
+            try {
+                let response = await fetch('http://localhost:3000/api/piso/listPisos/'+edificio);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                let jsonResponse = await response.json();
+                var pisos = jsonResponse.map(function (piso) {
+                    return piso.designacao;
+                });
+                return pisos;
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        let edificios = fetchEdificios();
+        edificios.then(resultEdificio => edificiosFolder.add(obj, 'edificio', resultEdificio).name('Selecionar edificio').onChange(edificio => {
+            let pisos = fetchPisos(edificio);
+            pisos.then(resultPiso => pisosFolder.add(obj, 'piso', resultPiso).name('Selecionar piso').onChange(piso => {
+                mazeData.url = 'http://localhost:3000/api/mapaPiso/listMapaPiso/'+piso;
+            }));
+        }));
+        
         const bg = {
             display: function display() {
-                alert("Edificio:" + obj.edificio + " Piso:" + obj.piso);
+                const vis = new VisualizacaoComponent();
+                vis.ngOnDestroy();
+                vis.initialize(); 
+                vis.animate = vis.animate.bind(vis);
+			    vis.animate();
+            },
+            add: function add(){
+                scene.add(maze);
             }
         }
 
         const displayFolder = this.gui.addFolder("Display");
         displayFolder.add(bg, 'display');
+        displayFolder.add(bg, 'add');
+
+        
 
         /*fetchEdificios(function (edificios) {
             const controls = {
@@ -125,7 +121,7 @@ export default class UserInteraction {
             edificiosFolder.onChange(function (valorEdificio) {
                 edificio = valorEdificio.value;
                 fetchPisos(edificio, function (pisos) {
-                    /*selectPisos.selectedPiso = '';
+                    selectPisos.selectedPiso = '';
                     selectPisos.options = pisos;
                     pisosFolder.__controllers[0].updateDisplay();
                     pisosFolder.onChange(function (value) {
@@ -134,14 +130,13 @@ export default class UserInteraction {
                     //console.log("teste");
                 });
             });
-        });
-        console.log("Edificio:",edificio);
+        });*/
         //pisosFolder.add(selectPisos, 'selectedPiso').name('Selecionar piso');
 
 
 
         // Create the lights folder
-        /*const lightsFolder = this.gui.addFolder("Lights");
+        const lightsFolder = this.gui.addFolder("Lights");
 
         // Create the ambient light folder
         const ambientLightFolder = lightsFolder.addFolder("Ambient light");
@@ -200,7 +195,7 @@ export default class UserInteraction {
         const expressions = Object.keys(face.morphTargetDictionary);
         for (let i = 0; i < expressions.length; i++) {
             expressionsFolder.add(face.morphTargetInfluences, i, 0.0, 1.0, 0.01).name(expressions[i]);
-        }*/
+        }
     }
 
     setVisibility(visible) {
@@ -212,3 +207,4 @@ export default class UserInteraction {
         }
     }
 }
+
