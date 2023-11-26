@@ -24,6 +24,8 @@ export class VisualizacaoComponent implements OnInit {
   @ViewChild('myCanvas') private canvasRef!: ElementRef;
   @ViewChild('fileInput') fileInput: any;
   private animationId: number | null = null;
+  //url: string;
+  
 
   constructor(private edificioService: EdificioService, private pisoService: PisoService, private mapaPisoService: MapaPisoService) {
 
@@ -45,16 +47,16 @@ export class VisualizacaoComponent implements OnInit {
     const reader: FileReader = new FileReader();
   
     reader.onload = (e: any) => {
-      const fileContent: string = e.target.result;
+      const dataUrl: string = e.target.result;
       // Handle the file content (e.g., parse JSON)
-      console.log(fileContent);
       // Assuming you want to assign it to the 'mapa' variable
-      this.mapaPiso.mapa = JSON.parse(fileContent);
+      this.url = dataUrl;
+      console.log(this.url);
     };
   
-    reader.readAsText(file);
-  }*/
-
+    reader.readAsDataURL(file);
+  }
+*/
 
   thumbRaiser!: ThumbRaiser;
 
