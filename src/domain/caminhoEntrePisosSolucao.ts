@@ -22,6 +22,14 @@ export class CaminhoEntrePisosSolucao extends AggregateRoot<CaminhoEntrePisosSol
     return this.props.caminhoPorPiso;
   }
 
+  set caminhoEntrePisos (caminhoEntrePisos : string[][]) {
+    this.props.caminhoEntrePisos = caminhoEntrePisos;
+  }
+
+  set caminhoPorPiso (caminhoPorPiso : number[][]) {
+    this.props.caminhoPorPiso = caminhoPorPiso;
+  }
+
   private constructor (props: CaminhoEntrePisosSolucaoProps, id?: UniqueEntityID) {
     super(props, id);
   }
