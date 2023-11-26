@@ -94,4 +94,12 @@ export class MainMenuComponent implements OnInit {
   mbco(){
     this.router.navigate(['mbco']);
   }
+
+  rgpd(){
+    this.router.navigate(['rgpd']);
+  }
+
+  backup(){
+    this.router.navigate(['backup']);
+  }
 }

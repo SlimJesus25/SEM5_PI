@@ -38,14 +38,16 @@ import { ElevadorCreateComponent } from './component/elevador/elevador-create/el
 import { LoginComponent } from './component/login/login.component';
 import { MapaPisoCreateComponent } from './component/mapa-piso/mapa-piso-create/mapa-piso-create.component';
 import { MapaPisoUpdateComponent } from './component/mapa-piso/mapa-piso-update/mapa-piso-update.component';
-import { AboutUsComponent } from './component/aboutus/aboutus.component';
+import { AboutUsComponent } from './component/info/aboutus/aboutus.component';
 import { MainMenuComponent } from './component/main-menu/main-menu.component';
 import { PassagemListComponent } from './component/passagem/passagem-list/passagem-list.component';
 import { PassagemUpdateComponent } from './component/passagem/passagem-update/passagem-update.component';
 import { SalaCreateComponent } from './component/sala/sala-create/sala-create.component';
 import { PlanningComponent } from './component/planeamento/planning.component';
 import { VisualizacaoComponent } from './component/visualizacao/visualizacao.component';
-import { MbcoComponent } from './component/asist/mbco.component';
+import { MbcoComponent } from './component/asist/mbco/mbco.component';
+import { RgpdComponent } from './component/info/rgpd/rgpd.component';
+import { BackupComponent } from './component/asist/backup/backup.component';
 
 const routes: Routes = [
 
@@ -106,7 +108,9 @@ const routes: Routes = [
 
   { path: 'planning', component: PlanningComponent },
   { path: 'view', component: VisualizacaoComponent },
-  { path: 'mbco', component: MbcoComponent }
+  { path: 'mbco', component: MbcoComponent },
+  { path: 'rgpd', component: RgpdComponent },
+  { path: 'backup', component: BackupComponent }
 ];
 
 

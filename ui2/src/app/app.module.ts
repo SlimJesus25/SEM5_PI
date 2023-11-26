@@ -23,7 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './component/appcomponent/app.component';
-import { AboutUsComponent } from './component/aboutus/aboutus.component';
+import { AboutUsComponent } from './component/info/aboutus/aboutus.component';
 import { EdificioGeralComponent } from './component/edificio/edificio-geral/edificio-geral.component';
 import { EdificioCreateComponent } from './component/edificio/edificio-create/edificio-create.component';
 import { EdificioListComponent } from './component/edificio/edificio-list/edificio-list.component';
@@ -67,7 +67,9 @@ import { PassagemUpdateComponent } from './component/passagem/passagem-update/pa
 import { SalaCreateComponent } from './component/sala/sala-create/sala-create.component';
 import { PlanningComponent } from './component/planeamento/planning.component';
 import { VisualizacaoComponent } from './component/visualizacao/visualizacao.component';
-import { MbcoComponent } from './component/asist/mbco.component';
+import { MbcoComponent } from './component/asist/mbco/mbco.component';
+import { RgpdComponent } from './component/info/rgpd/rgpd.component';
+import { BackupComponent } from './component/asist/backup/backup.component';
 
 
 @NgModule({
@@ -147,7 +149,9 @@ import { MbcoComponent } from './component/asist/mbco.component';
     MainMenuComponent,
     PlanningComponent,
     VisualizacaoComponent,
-    MbcoComponent
+    MbcoComponent,
+    RgpdComponent,
+    BackupComponent
   ],
   bootstrap: [ AppComponent ]
 })

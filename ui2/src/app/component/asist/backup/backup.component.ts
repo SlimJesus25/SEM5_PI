@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-asist',
-  templateUrl: './mbco.component.html',
+  selector: 'app-backup',
+  templateUrl: './backup.component.html',
 })
-export class MbcoComponent {
+export class BackupComponent {
   constructor(private router: Router) { }
 }

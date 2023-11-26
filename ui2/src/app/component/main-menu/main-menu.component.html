@@ -78,14 +78,14 @@
   <button mat-button [matMenuTriggerFor]="asistMenu">Asist</button>
   <mat-menu #asistMenu="matMenu">
     <button mat-menu-item (click)="mbco()">MBCO</button>
-    <button mat-menu-item (click)="createPiso()">Estratégia de recuperação de dados</button>
+    <button mat-menu-item (click)="backup()">Estratégia de recuperação de dados</button>
   </mat-menu>
 
   <!--Info Menu-->
   <button mat-button [matMenuTriggerFor]="infoMenu" class="spacer">Info</button>
   <mat-menu #infoMenu="matMenu">
     <button mat-menu-item (click)="openAboutUs()">About Us</button>
-    <button mat-menu-item (click)="createPiso()">Relatório RGPD</button>
+    <button mat-menu-item (click)="rgpd()">Relatório RGPD</button>
   </mat-menu>
 
 </mat-toolbar>
