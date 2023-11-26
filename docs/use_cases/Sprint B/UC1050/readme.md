@@ -90,13 +90,8 @@ Para solucionar este problema, foi pensado num agregado para esta entidade, Edif
 
 Os padrões aplicados são:
 
-- REST + ONION (padrões arquiteturais);
-- DTO;
-- Persistence;
-- Controller;
-- Service;
-- Interfaces;
-- Schema;
-- Mapper;
-- Repository;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.

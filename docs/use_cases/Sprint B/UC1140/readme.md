@@ -80,8 +80,8 @@
 
 Os padrões aplicados são:
 
-- ONION (padrões arquiteturais);
-- DTO;
-- Service;
-- Interfaces;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.

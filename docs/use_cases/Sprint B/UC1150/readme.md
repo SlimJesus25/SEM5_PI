@@ -92,8 +92,8 @@ Editar um elevador é um requisito relevante do domínio que deve ser capaz de a
 
 Os padrões aplicados são:
 
-- ONION (padrões arquiteturais);
-- DTO;
-- Service;
-- Interfaces;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.

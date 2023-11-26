@@ -82,8 +82,8 @@ Criar um elevador é um requisito relevante do domínio que deve ser capaz de cr
 
 Os padrões aplicados são:
 
-- ONION (padrões arquiteturais);
-- DTO;
-- Service;
-- Interfaces;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.

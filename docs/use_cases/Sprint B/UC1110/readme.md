@@ -2,7 +2,7 @@
 
 ## 1. Requisitos
 
-**UC1080** - Como gestor de Campus pretendo editar a informação (total ou parcial) de Piso
+**UC1110** - Como gestor de Campus pretendo editar a informação (total ou parcial) de Piso
 
 ## 2. Análise
 

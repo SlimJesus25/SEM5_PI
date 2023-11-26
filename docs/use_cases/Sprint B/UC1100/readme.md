@@ -2,7 +2,7 @@
 
 ## 1. Requisitos
 
-**UC1080** - Como gestor de Campus pretendo listar todos os Pisos de um Edifício
+**UC1100** - Como gestor de Campus pretendo listar todos os Pisos de um Edifício
 
 ## 2. Análise
 
