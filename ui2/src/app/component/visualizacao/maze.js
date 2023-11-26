@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Ground from "./ground.js";
 import Wall from "./wall.js";
-import * as TWEEN from '@tweenjs/tween.js';
+//import * as TWEEN from '@tweenjs/tween.js';
 
 /*
  * parameters = {
@@ -66,7 +66,7 @@ export default class Maze {
                     //Elevador vertical
                     if (description.mazeData.map[j][i] == 4) {
                         this.elevator = new Wall({ textureUrl: "../../assets/textures/elevator.jpg" });
-                        elevatorObject = this.wall.object.clone();
+                        elevatorObject = this.elevator.object.clone();
                         elevatorObject.rotateY(Math.PI / 2.0);
                         elevatorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
                         this.object.add(elevatorObject);
@@ -74,14 +74,14 @@ export default class Maze {
                     //Elevador horizontal
                     if (description.mazeData.map[j][i] == 5) {
                         this.elevator = new Wall({ textureUrl: "../../assets/textures/elevator.jpg" });
-                        elevatorObject = this.wall.object.clone();
+                        elevatorObject = this.elevator.object.clone();
                         elevatorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
                         this.object.add(elevatorObject);
                     }
                     //Porta vertical
                     if (description.mazeData.map[j][i] == 6) {
                         this.door = new Wall({ textureUrl: "../../assets/textures/door.jpg" });
-                        doorObject = this.wall.object.clone();
+                        doorObject = this.door.object.clone();
                         doorObject.rotateY(Math.PI / 2.0);
                         doorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
                         this.object.add(doorObject);
@@ -96,7 +96,7 @@ export default class Maze {
                     //Corredor vertical
                     if (description.mazeData.map[j][i] == 8) {
                         this.passagem = new Wall({ textureUrl: "../../assets/textures/passagem.jpg" });
-                        passagemObject = this.wall.object.clone();
+                        passagemObject = this.passagem.object.clone();
                         passagemObject.rotateY(Math.PI / 2.0);
                         passagemObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
                         this.object.add(passagemObject);
@@ -104,7 +104,7 @@ export default class Maze {
                     //Corredor horizontal
                     if (description.mazeData.map[j][i] == 9) {
                         this.passagem = new Wall({ textureUrl: "../../assets/textures/passagem.jpg" });
-                        passagemObject = this.wall.object.clone();
+                        passagemObject = this.passagem.object.clone();
                         passagemObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
                         this.object.add(passagemObject);
                     }
