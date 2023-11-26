@@ -12,13 +12,9 @@ Implementar a interface de utilizador para listar edificios com min e max de pis
 
 ### 2.2 Testes ao requisito
 
-**Test 1:** *Listar edficio min max com sucesso (controlador, 201 PUT)*
+**Test 1:** *Listar edficio min max successfully*
 
-**Test 2:** *Listar edficio min max com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Listar edficio min max com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Listar edficio min max com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 1:** *Listar edficio min max unsuccessfully*
 
 ## 3. Desenho
 

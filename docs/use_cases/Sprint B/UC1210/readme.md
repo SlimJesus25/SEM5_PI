@@ -12,13 +12,9 @@ Implementar a interface de utilizador para criar uma sala num piso de edificio
 
 ### 2.2 Testes ao requisito
 
-**Test 1:** *Criar sala com sucesso (controlador, 201 PUT)*
+**Test 1:** *Criar sala successfully*
 
-**Test 2:** *Criar sala com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Criar sala com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Criar sala com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 2:** *Criar sala unsuccessfully*
 
 ## 3. Desenho
 

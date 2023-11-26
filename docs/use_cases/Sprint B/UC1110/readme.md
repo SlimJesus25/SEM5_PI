@@ -12,13 +12,9 @@ Implementar a interface de utilizador para editar pisos
 
 ### 2.2 Testes ao requisito
 
-**Test 1:** *Editar pisos com sucesso (controlador, 201 PUT)*
+**Test 1:** *Editar pisos successfully*
 
-**Test 2:** *Editar pisos com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Editar pisos com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Editar pisos com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 2:** *Editar pisos unsuccessfully*
 
 ## 3. Desenho
 

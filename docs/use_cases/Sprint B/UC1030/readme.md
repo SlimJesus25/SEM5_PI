@@ -12,13 +12,9 @@ Implementar todo o trabalho feito no backend numa UI para o Gestor de Frota
 
 ### 2.2 Testes ao requisito
 
-**Teste 1:** *Listar robos com sucesso (controlador, 201 OK)*
+**Teste 1:** *Listar robos successful case*
 
-**Teste 2:** *Listar robos com insucesso (controlador, 404 NOT FOUND)*
-
-**Teste 3:** *Listar robos com sucesso (controlador + serviço, 201 OK)*
-
-**Teste 4:** *Listar robos com insucesso (controlador + serviço, 404 NOT FOUND)*
+**Teste 2:** *Listar robos unsuccessful case*
 
 ## 3. Desenho
 

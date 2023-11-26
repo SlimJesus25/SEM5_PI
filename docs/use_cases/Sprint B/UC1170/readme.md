@@ -12,13 +12,9 @@ Implementar a interface de utilizador para criar uma passagem
 
 ### 2.2 Testes ao requisito
 
-**Test 1:** *Criar passagem com sucesso (controlador, 201 PUT)*
+**Test 1:** *Criar passagem successfully*
 
-**Test 2:** *Criar passagem com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Criar passagem com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Criar passagem com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 2:** *Criar passagem unsuccessfully*
 
 ## 3. Desenho
 

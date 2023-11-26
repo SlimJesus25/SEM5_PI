@@ -12,13 +12,9 @@ Implementar a interface de utilizador para listar pisos de um edificio
 
 ### 2.2 Testes ao requisito
 
-**Test 1:** *Listar pisos com sucesso (controlador, 201 PUT)*
+**Test 1:** *Listar pisos successfully*
 
-**Test 2:** *Listar pisos com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Listar pisos com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Listar pisos com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 2:** *Listar pisos unsuccessfully*
 
 ## 3. Desenho
 
