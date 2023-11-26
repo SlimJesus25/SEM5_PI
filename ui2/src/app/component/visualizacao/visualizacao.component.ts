@@ -24,39 +24,16 @@ export class VisualizacaoComponent implements OnInit {
   @ViewChild('myCanvas') private canvasRef!: ElementRef;
   @ViewChild('fileInput') fileInput: any;
   private animationId: number | null = null;
-  //url: string;
+  //public file: File | undefined;
   
 
   constructor(private edificioService: EdificioService, private pisoService: PisoService, private mapaPisoService: MapaPisoService) {
-
   }
 
   /*onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-  
-    if (file) {
-      this.readFile(file);
-    }
-  }
-  
-  openFileExplorer(): void {
-    this.fileInput.nativeElement.click();
-  }
-  
-  private readFile(file: File): void {
-    const reader: FileReader = new FileReader();
-  
-    reader.onload = (e: any) => {
-      const dataUrl: string = e.target.result;
-      // Handle the file content (e.g., parse JSON)
-      // Assuming you want to assign it to the 'mapa' variable
-      this.url = dataUrl;
-      console.log(this.url);
-    };
-  
-    reader.readAsDataURL(file);
-  }
-*/
+    this.file= event.target.files[0];
+  }*/
+
 
   thumbRaiser!: ThumbRaiser;
 
@@ -145,7 +122,7 @@ export class VisualizacaoComponent implements OnInit {
       map: mapa.mapa,
       initialPosition: [5, 5],
       initialDirection: 0.0,
-      exitLocation: mapa.saidaLocalizacao
+      exitLocation: [-1,-1]
     } as IMapaPisoFinal;
   }
 }
