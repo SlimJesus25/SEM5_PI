@@ -54,14 +54,3 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     environment: Production
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'Azure for Students (e67cf58b-691e-4822-929e-cbff58b20bf8)'
-              appType: 'webApp'
-              appName: 'ui-rob-drone-go'
-              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              deploymentMethod: 'auto'
