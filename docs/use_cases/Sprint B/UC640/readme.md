@@ -14,7 +14,7 @@ O que é o plano de testes?
 
 ### 2.2 Testes ao requisito
 
-**Teste 1:** *...*
+Todos os testes de unidade.
 
 ## 3. Desenho
 
