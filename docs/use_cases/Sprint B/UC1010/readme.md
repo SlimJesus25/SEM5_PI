@@ -74,7 +74,7 @@ Para resolvermos este problema o grupo decidiu tratar do robô como um único ag
 
 ##### 3.1.5.1 Nível 2
 
-![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
+![vista física 2](/docs/physical_view/level2/sprint2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
 
