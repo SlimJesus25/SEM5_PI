@@ -61,6 +61,34 @@ dfs2(Act,Dest,LA,Cam,Custo):-edge(Act,X, CustoA),\+ member(X,LA),
 
 all_dfs(Orig,Dest,LCam,Custo,Tempo):-findall(Cam,dfs(Orig,Dest,Cam,Custo,Tempo),LCam).
 
+melhor_dfs(Orig, Dest, Best, Custo, TSol):-
+ get_time(Ti),
+ all_dfs(Orig, Dest, [H|T], _, _),
+ get_best(T, H, LCam, Best), 
+ get_custo(Best, Custo),
+ get_time(Tf), 
+ TSol is Tf-Ti.
+
+get_best([], MCA2, MCA2, MCA2):-!.
+
+get_best([H|T], MelhorCamAtual, Melhor, A):-
+    get_best2(H, MelhorCamAtual, Melhor),
+    get_best(T, Melhor, MelhorCamFinal, A).
+
+get_best2(C1, C2, MelhorCamAtual):-
+    get_custo(C1, Custo1),
+    get_custo(C2, Custo2),
+    (Custo1 > Custo2, append(C2, [], MelhorCamAtual),!)
+    ;
+    (append(C1, [], MelhorCamAtual)).
+
+get_custo([_|[]], 0):-!.
+
+get_custo([N1, N2|T], Custo):-
+    edge(N1, N2, C),
+    get_custo([N2|T], Custo2),
+    Custo is C + Custo2.
+
 
 % BFS
 bfs(Orig,Dest,Cam,Custo,TSol):-
