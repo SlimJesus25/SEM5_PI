@@ -3,15 +3,27 @@
 // with Intellisense and code completion in your
 // IDE or Text Editor.
 // ***********************************************
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     customCommand(param: any): typeof customCommand;
-//   }
-// }
-//
-// function customCommand(param: any): void {
-//   console.warn(param);
-// }
+declare namespace Cypress {
+   interface Chainable<Subject = any> {
+    login(login?: string, password?: string): typeof login;
+   }
+}
+
+function login(login: string = "asist", password: string = "teste1234"): void {
+	cy.visit('http://localhost:4200/login'); // Adjust the path if needed
+	
+	cy.get('input[name="username"]').type(login);
+	cy.get('input[name="password"]').type(password); // Replace with a valid password
+	
+	// Click the login button
+	cy.get('button').click();
+	
+	cy.url().should('include', '/mainMenu');
+}
+
+Cypress.Commands.add("login", login)
+
+
 //
 // NOTE: You can use it like so:
 // Cypress.Commands.add('customCommand', customCommand);
@@ -28,7 +40,6 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
 //
 //
 // -- This is a child command --
