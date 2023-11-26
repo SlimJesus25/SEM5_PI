@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, OnInit, Output, ViewChild } from '@angular/core';
 import * as THREE from "three";
 import ThumbRaiser from './thumb_raiser';
 import Orientation from './orientation';
@@ -21,10 +21,39 @@ import { map } from 'rxjs/operators';
   providers: [EdificioService, PisoService, MapaPisoService]
 })
 export class VisualizacaoComponent implements OnInit {
+  @ViewChild('myCanvas') private canvasRef!: ElementRef;
+  @ViewChild('fileInput') fileInput: any;
+  private animationId: number | null = null;
 
   constructor(private edificioService: EdificioService, private pisoService: PisoService, private mapaPisoService: MapaPisoService) {
 
   }
+
+  /*onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+  
+    if (file) {
+      this.readFile(file);
+    }
+  }
+  
+  openFileExplorer(): void {
+    this.fileInput.nativeElement.click();
+  }
+  
+  private readFile(file: File): void {
+    const reader: FileReader = new FileReader();
+  
+    reader.onload = (e: any) => {
+      const fileContent: string = e.target.result;
+      // Handle the file content (e.g., parse JSON)
+      console.log(fileContent);
+      // Assuming you want to assign it to the 'mapa' variable
+      this.mapaPiso.mapa = JSON.parse(fileContent);
+    };
+  
+    reader.readAsText(file);
+  }*/
 
 
   thumbRaiser!: ThumbRaiser;
@@ -39,8 +68,7 @@ export class VisualizacaoComponent implements OnInit {
 
     // Create the game
     this.thumbRaiser = new ThumbRaiser(
-
-
+      this.canvas,
       {}, // General Parameters
       { scale: new THREE.Vector3(1.0, 1, 1.0), mazeData: this.updateFloorFile(mapaPiso) }, // Maze parameters
       {}, // Player parameters
@@ -68,63 +96,39 @@ export class VisualizacaoComponent implements OnInit {
   }
 
   getMapaPiso(desginacaoPiso: string): Observable<MapaPiso> {
-
-    /*
-    this.mapaPisoService.getMapasPiso().subscribe((mapas) => {
-      mapas.forEach(m => {
-        if(m.piso === this.designacaoPiso)
-          return m;
-      });
-    })*/
-
     return this.mapaPisoService.getMapasPiso().pipe(
       map((mapas: MapaPiso[]) => {
-        // console.log("MAPAPISO: " + mapas[0].elevador);
         const ms = mapas.find(v => v.piso === desginacaoPiso);
-        // console.log("Found: " + ms?.piso);
         return ms!;
       })
     );
-
-    /*
-    let ms: any;
-
-    this.mapaPisoService.getMapasPiso().subscribe((mapas: MapaPiso[]) => {
-      console.log(mapas);
-      mapas.forEach(v => {
-        if (v.piso == desginacaoPiso) {
-          console.log("Aqui: " + v.piso);
-          ms = v;
-        }
-      });
-    });
-
-    console.log("Aqui2: " + ms);
-
-    return ms!;
-    */
-
   }
 
   ngOnInit(): void {
     this.edificioService.getEdificios().subscribe((edificios: Edificio[]) => {
       this.edificios = edificios;
     });
+  }
 
-    //this.initialize();
-    //this.animate();
+  private get canvas(): HTMLCanvasElement {
+    return this.canvasRef.nativeElement;
   }
 
   ngOnDestroy(): void {
-    this.thumbRaiser.destroy();
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    this.canvas.parentElement?.removeChild(this.canvas);
+    if (this.thumbRaiser.userInterface) {
+      this.thumbRaiser.userInterface.gui.destroy();
+    }
   }
 
+
   renderCanvas(): void {
-
     const piso = this.pisos.find((piso: Piso) => piso.designacao == this.designacaoPiso);
-
     const mapa = this.getMapaPiso(piso!.designacao).subscribe((res) => {
-      console.log("Res: " + res.mapa);
+      //console.log("Res: " + res.mapa);
       this.initialize(res);
       this.animate();
     });
@@ -132,146 +136,14 @@ export class VisualizacaoComponent implements OnInit {
   }
 
   updateFloorFile(mapa: MapaPiso): IMapaPisoFinal {
-
-    /*const a = {
-      maze: {
-        size: {
-          width: m.maze.size.width,
-          height: m.maze.size.height,
-          depth: m.maze.size.depth,
-        },
-        map: m.maze.map,
-        exits: m.maze.exits,
-        elevators: m.maze.elevators,
-        rooms: m.maze.rooms,
-        exitLocation: m.maze.exitLocation,
-      },
-      ground: {
-        size: {
-          width: m.ground.size.width,
-          height: m.ground.size.height,
-          depth: m.ground.size.depth,
-        },
-        segments: {
-          width: m.ground.segments.width,
-          height: m.ground.segments.height,
-          depth: m.ground.segments.depth,
-        },
-        primaryColor: m.ground.primaryColor,
-        maps: {
-          color: {
-            url: m.ground.maps.color.url,
-          },
-          ao: {
-            url: m.ground.maps.ao.url,
-            intensity: m.ground.maps.ao.intensity,
-          },
-          displacement: {
-            url: m.ground.maps.displacement.url,
-            scale: m.ground.maps.displacement.scale,
-            bias: m.ground.maps.displacement.bias,
-          },
-          normal: {
-            url: m.ground.maps.normal.url,
-            type: m.ground.maps.normal.type,
-            scale: {
-              x: m.ground.maps.normal.scale.x,
-              y: m.ground.maps.normal.scale.y,
-            },
-          },
-          bump: {
-            url: m.ground.maps.bump.url,
-            scale: m.ground.maps.bump.scale,
-          },
-          roughness: {
-            url: m.ground.maps.roughness.url,
-            rough: m.ground.maps.roughness.rough,
-          },
-        },
-        wrapS: m.ground.wrapS,
-        wrapT: m.ground.wrapT,
-        repeat: {
-          u: m.ground.repeat.u,
-          v: m.ground.repeat.v,
-        },
-        magFilter: m.ground.magFilter,
-        minFilter: m.ground.minFilter,
-        secondaryColor: m.ground.secondaryColor,
-      },
-      wall: {
-        segments: {
-          width: m.wall.segments.width,
-          height: m.wall.segments.height,
-          depth: m.wall.segments.depth,
-        },
-        primaryColor: m.wall.primaryColor,
-        maps: {
-          color: {
-            url: m.wall.maps.color.url,
-          },
-          ao: {
-            url: m.wall.maps.ao.url,
-            intensity: m.wall.maps.ao.intensity,
-          },
-          displacement: {
-            url: m.wall.maps.displacement.url,
-            scale: m.wall.maps.displacement.scale,
-            bias: m.wall.maps.displacement.bias,
-          },
-          normal: {
-            url: m.wall.maps.normal.url,
-            type: m.wall.maps.normal.type,
-            scale: {
-              x: m.wall.maps.normal.scale.x,
-              y: m.wall.maps.normal.scale.y,
-            },
-          },
-          bump: {
-            url: m.wall.maps.bump.url,
-            scale: m.wall.maps.bump.scale,
-          },
-          roughness: {
-            url: m.wall.maps.roughness.url,
-            rough: m.wall.maps.roughness.rough,
-          },
-        },
-        wrapS: m.wall.wrapS,
-        wrapT: m.wall.wrapT,
-        repeat: {
-          u: m.wall.repeat.u,
-          v: m.wall.repeat.v,
-        },
-        magFilter: m.wall.magFilter,
-        minFilter: m.wall.minFilter,
-        secondaryColor: m.wall.secondaryColor,
-      },
-      player: {
-        initialPosition: m.player.initialPosition,
-        initialDirection: m.player.initialDirection,
-      },
-    };*/
-    /*
     return {
       groundTextureUrl: "../../assets/textures/ground.jpg",
       wallTextureUrl: "../../assets/textures/wall.jpg",
-      size: { width: a.maze.size.width, height: a.maze.size.height},
-      map: a.maze.map,
-      initialPosition: a.player.initialPosition,
-      initialDirection: a.player.initialDirection,
-      exitLocation: a.maze.exitLocation
-    } as IMapaPisoFinal;*/
-
-    console.log("1." + mapa.largura + "\n2. " + mapa.profundidade);
-
-    return {
-      groundTextureUrl: "../../assets/texture/ground.jpg",
-      wallTextureUrl: "../../assets/texture/wall.png",
-      size: { width: mapa.largura+1, height: mapa.profundidade+1 },
+      size: { width: mapa.largura, height: mapa.profundidade },
       map: mapa.mapa,
-      initialPosition: [3,3],
-      initialDirection: [0,3],
+      initialPosition: [5, 5],
+      initialDirection: 0.0,
       exitLocation: mapa.saidaLocalizacao
-    }as IMapaPisoFinal;
-
+    } as IMapaPisoFinal;
   }
 }

@@ -15,5 +15,5 @@ export default interface IMapaPisoFinal {
     wallTextureUrl: string;
 
     initialPosition: number[];
-    initialDirection: number[];
+    initialDirection: number;
 }

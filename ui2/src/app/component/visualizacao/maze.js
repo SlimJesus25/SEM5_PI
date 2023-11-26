@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Ground from "./ground.js";
 import Wall from "./wall.js";
+import * as TWEEN from '@tweenjs/tween.js';
 
 /*
  * parameters = {
@@ -13,9 +14,6 @@ import Wall from "./wall.js";
 export default class Maze {
     constructor(parameters) {
         this.onLoad = function (description) {
-
-            console.log("AQUI: " + description);
-
             // Store the maze's map and size
             this.map = description.mazeData.map;
             this.size = description.mazeData.size;
@@ -31,16 +29,19 @@ export default class Maze {
             this.object = new THREE.Group();
 
             // Create the ground
-            this.ground = new Ground({ textureUrl: "../../assets/textures/ground.jpg", size: {width:this.map[0].length, height: this.map.length}});
+            this.ground = new Ground({ textureUrl: description.mazeData.groundTextureUrl, size: description.mazeData.size });
             this.object.add(this.ground.object);
 
             // Create a wall
-            this.wall = new Wall({ textureUrl: "" });
+            this.wall = new Wall({ textureUrl: description.mazeData.wallTextureUrl });
 
             // Build the maze
             let wallObject;
-            for (let i = 0; i <= this.map.length; i++) { // In order to represent the eastmost walls, the map width is one column greater than the actual maze width
-                for (let j = 0; j <= this.map[0].length; j++) { // In order to represent the southmost walls, the map height is one row greater than the actual maze height
+            let elevatorObject;
+            let doorObject;
+            let passagemObject;
+            for (let i = 0; i <= description.mazeData.size.width; i++) { // In order to represent the eastmost walls, the map width is one column greater than the actual maze width
+                for (let j = 0; j <= description.mazeData.size.height; j++) { // In order to represent the southmost walls, the map height is one row greater than the actual maze height
                     /*
                      * description.map[][] | North wall | West wall
                      * --------------------+------------+-----------
@@ -49,20 +50,65 @@ export default class Maze {
                      *          2          |    Yes     |     No
                      *          3          |    Yes     |    Yes
                      */
-
-                    console.log("I: " + i + "\nJ: " + j);
-
-                    if (description.mazeData.map[j][i] == 2 || description.mazeData.map[j][i] == 3) {
-                        wallObject = this.wall.object.clone();
-                        wallObject.position.set(i - this.map[0].length / 2.0 + 0.5, 0.5, j - this.map.length / 2.0);
-                        this.object.add(wallObject);
-                    }
+                    //Vertical
                     if (description.mazeData.map[j][i] == 1 || description.mazeData.map[j][i] == 3) {
                         wallObject = this.wall.object.clone();
                         wallObject.rotateY(Math.PI / 2.0);
-                        wallObject.position.set(i - this.map[0].length / 2.0, 0.5, j - this.map.length / 2.0 + 0.5);
+                        wallObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
                         this.object.add(wallObject);
                     }
+                    //Horizontal
+                    if (description.mazeData.map[j][i] == 2 || description.mazeData.map[j][i] == 3) {
+                        wallObject = this.wall.object.clone();
+                        wallObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
+                        this.object.add(wallObject);
+                    }
+                    //Elevador vertical
+                    if (description.mazeData.map[j][i] == 4) {
+                        this.elevator = new Wall({ textureUrl: "../../assets/textures/elevator.jpg" });
+                        elevatorObject = this.wall.object.clone();
+                        elevatorObject.rotateY(Math.PI / 2.0);
+                        elevatorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
+                        this.object.add(elevatorObject);
+                    }
+                    //Elevador horizontal
+                    if (description.mazeData.map[j][i] == 5) {
+                        this.elevator = new Wall({ textureUrl: "../../assets/textures/elevator.jpg" });
+                        elevatorObject = this.wall.object.clone();
+                        elevatorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
+                        this.object.add(elevatorObject);
+                    }
+                    //Porta vertical
+                    if (description.mazeData.map[j][i] == 6) {
+                        this.door = new Wall({ textureUrl: "../../assets/textures/door.jpg" });
+                        doorObject = this.wall.object.clone();
+                        doorObject.rotateY(Math.PI / 2.0);
+                        doorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
+                        this.object.add(doorObject);
+                    }
+                    //Porta horizontal
+                    if (description.mazeData.map[j][i] == 7) {
+                        this.door = new Wall({ textureUrl: "../../assets/textures/door.jpg" });
+                        doorObject = this.door.object.clone();
+                        doorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
+                        this.object.add(doorObject);
+                    }
+                    //Corredor vertical
+                    if (description.mazeData.map[j][i] == 8) {
+                        this.passagem = new Wall({ textureUrl: "../../assets/textures/passagem.jpg" });
+                        passagemObject = this.wall.object.clone();
+                        passagemObject.rotateY(Math.PI / 2.0);
+                        passagemObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
+                        this.object.add(passagemObject);
+                    }
+                    //Corredor horizontal
+                    if (description.mazeData.map[j][i] == 9) {
+                        this.passagem = new Wall({ textureUrl: "../../assets/textures/passagem.jpg" });
+                        passagemObject = this.wall.object.clone();
+                        passagemObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
+                        this.object.add(passagemObject);
+                    }
+
                 }
             }
 
@@ -91,9 +137,9 @@ export default class Maze {
 
         // Set the response type: the resource file will be parsed with JSON.parse()
         loader.setResponseType("json");
-        /*
+
         // Load a maze description resource file
-        loader.load(
+        /*loader.load(
             //Resource URL
             this.url,
 
@@ -105,9 +151,7 @@ export default class Maze {
 
             // onError callback
             error => this.onError(this.url, error)
-        );
-        */
-
+        );*/
         this.onLoad(parameters);
     }
 

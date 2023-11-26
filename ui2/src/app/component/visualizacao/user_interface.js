@@ -39,7 +39,7 @@ export default class UserInteraction {
 
         // Create the graphical user interface
         this.gui = new GUI({ hideable: false });
-        let obj = { edificio: '', piso: '' };
+        /*let obj = { edificio: '', piso: '' };
         const campusFolder = this.gui.addFolder("Campus");
 
         const edificiosFolder = campusFolder.addFolder("Edificio");
@@ -96,7 +96,6 @@ export default class UserInteraction {
         const bg = {
             display: function display() {
                 const vis = new VisualizacaoComponent();
-                vis.ngOnDestroy();
                 vis.initialize(); 
                 vis.animate = vis.animate.bind(vis);
 			    vis.animate();
@@ -131,7 +130,7 @@ export default class UserInteraction {
                 });
             });
         });*/
-        //pisosFolder.add(selectPisos, 'selectedPiso').name('Selecionar piso');
+        //pisosFolder.add(selectPisos, 'selectedPiso').name('Selecionar piso');*/
 
 
 
