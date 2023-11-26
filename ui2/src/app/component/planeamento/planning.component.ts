@@ -71,8 +71,8 @@ export class PlanningComponent implements OnInit {
     errorOrSuccess.subscribe(
       (data: SolucaoCaminho) => {
         this.resultMessage = [
-          "Caminho entre pisos: " + data.props.caminhoEntrePisos,
-          "Caminho por piso: " + data.props.caminhoPorPiso
+          "" + data.props.caminhoEntrePisos,
+          "" + data.props.caminhoPorPiso
         ];
         // alert("Caminho entre pisos: " + data.caminhoEntrePisos + "\nCaminho por piso: " + data.caminhoPorPiso);
       },
