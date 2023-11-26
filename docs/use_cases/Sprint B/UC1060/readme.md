@@ -12,13 +12,9 @@ Implementar a interface de utilizador para listar edificios
 
 ### 2.3 Testes ao requisito
 
-**Test 1:** *Listar edficio com sucesso (controlador, 201 PUT)*
+**Test 1:** *Listar edficio successful case*
 
-**Test 2:** *Listar edificio com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Listar edificio com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Listar edificio com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 2:** *Listar edficio unsuccessful case*
 
 ## 3. Desenho
 
@@ -48,15 +44,15 @@ Para resolver este problema, é listado automaticamente edificos em função do 
 
 ##### 3.1.3.1 Nível 1
 
-![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
+![vista logica 1](/docs/logical_view/sprint2/level1/vl1.svg "Vista lógica - nível 1")
 
 ##### 3.1.3.2 Nível 2
 
-![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+![vista logica 2](/docs/logical_view/sprint2/level2/vl2.svg "Vista lógica - nível 2")
 
 ##### 3.1.3.3 Nível 3
 
-![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+![vista logica 3](/docs/logical_view/sprint2/level3/vl3.svg "Vista lógica - nível 3")
 
 #### 3.1.3 Vista de cenários
 
@@ -72,7 +68,7 @@ Para resolver este problema, é listado automaticamente edificos em função do 
 
 ##### 3.1.3.1 Nível 3
 
-![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+![vista implementacao 3](/docs/implementation_view/sprint2/iv3.svg "Vista implementação - nível 3")
 
 #### 3.1.5 Vista física
 

@@ -12,13 +12,9 @@ Implementar a interface de utilizador para editar edificio
 
 ### 2.2 Testes ao requisito (Alterar consoante necessidade!)
 
-**Test 1:** *Editar edficio com sucesso (controlador, 201 PUT)*
+**Test 1:** *Editar edficio successfully*
 
-**Test 2:** *Editar edificio com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Editar edificio com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Editar edificio com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 2:** *Editar edficio unsuccessfully*
 
 ## 3. Desenho
 

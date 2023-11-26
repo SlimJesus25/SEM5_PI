@@ -50,15 +50,15 @@ Para resolver este problema, implementamos um parâmetro nos robôs que define o
 
 ##### 3.1.2.1 Nível 1
 
-![vista logica 1](/docs/logical_view/level1/vl1.svg "Vista lógica - nível 1")
+![vista logica 1](/docs/logical_view/sprint2/level1/vl1.svg "Vista lógica - nível 1")
 
 ##### 3.1.2.2 Nível 2
 
-![vista logica 2](/docs/logical_view/level2/vl2.svg "Vista lógica - nível 2")
+![vista logica 2](/docs/logical_view/sprint2/level2/vl2.svg "Vista lógica - nível 2")
 
 ##### 3.1.2.3 Nível 3
 
-![vista logica 3](/docs/logical_view/level3/vl3.svg "Vista lógica - nível 3")
+![vista logica 3](/docs/logical_view/sprint2/level3/vl3.svg "Vista lógica - nível 3")
 
 #### 3.1.3 Vista de cenários
 
@@ -74,25 +74,20 @@ Para resolver este problema, implementamos um parâmetro nos robôs que define o
 
 ##### 3.1.3.1 Nível 3
 
-![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+![vista implementacao 3](/docs/implementation_view/sprint2/iv3.svg "Vista implementação - nível 3")
 
 #### 3.1.5 Vista física
 
 ##### 3.1.5.1 Nível 2
 
-![vista física 2](/docs/physical_view/level2/vf2.svg "Vista física - nível 2")
+![vista física 2](/docs/physical_view/level2/sprint2/vf2.svg "Vista física - nível 2")
 
 ### 3.2. Padrões aplicados
 
 Os padrões aplicados são:
 
-- REST + ONION (padrões arquiteturais);
-- DTO;
-- Persistence;
-- Controller;
-- Service;
-- Interfaces;
-- Schema;
-- Mapper;
-- Repository;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.

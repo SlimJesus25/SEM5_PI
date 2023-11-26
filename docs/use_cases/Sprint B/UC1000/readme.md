@@ -10,15 +10,11 @@
 
 Implementar todo o trabalho feito no backend numa UI para o Gestor de Frota
 
-### 2.2 Testes ao requisito (Alterar consoante necessidade!)
+### 2.2 Testes ao requisito
 
-**Teste 1:** *Criar Tipo Robo com sucesso (controlador, 201 OK)*
+**Teste 1:** *Tipo de Robo Should be successful created*
 
-**Teste 2:** *Criar Tipo Robo com insucesso (controlador, 404 NOT FOUND)*
-
-**Teste 3:** *Criar Tipo Robo com sucesso (controlador + serviço, 201 OK)*
-
-**Teste 4:** *Criar Tipo Robo com insucesso (controlador + serviço, 404 NOT FOUND)*
+**Teste 2:** *Tipo de Robo Should be unsuccessful created*
 
 ## 3. Desenho
 
@@ -78,14 +74,9 @@ Implementar todo o trabalho feito no backend numa UI para o Gestor de Frota
 
 Os padrões aplicados são:
 
-- REST + ONION (padrões arquiteturais);
-- DTO;
-- Persistence;
-- Controller;
-- Service;
-- Interfaces;
-- Schema;
-- Mapper;
-- Repository;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.
 

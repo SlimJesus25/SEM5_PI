@@ -16,19 +16,9 @@ Implementar a interface de utilizador para a criação do edificio
 
 ### 2.3 Testes ao requisito
 
-**Test 1:** *Criar edifício com sucesso (controlador, 201 POST)*
+**Test 1:** *Create elevador successful case*
 
-**Test 2:** *Criar edifício com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Criar edifício com sucesso (controlador + serviço, 201 POST)*
-
-**Test 4:** *Criar edifício com insucesso (controlador + serviço, 403 FORBIDDEN)*
-
-**Test 5:** *Código de edifício segue regras de negócio.*
-
-**Test 6:** *Nome opcional segue regras de negócio.*
-
-**Test 7:** *Descrição segue regras de negócio*
+**Test 2:** *Create elevador unsuccessful case*
 
 ## 3. Desenho
 

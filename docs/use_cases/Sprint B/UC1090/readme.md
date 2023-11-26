@@ -2,7 +2,7 @@
 
 ## 1. Requisitos
 
-**UC1080** - Como gestor de Campus pretendo criar um Piso indicando [...]
+**UC1090** - Como gestor de Campus pretendo criar um Piso indicando [...]
 
 ## 2. Análise
 
@@ -12,13 +12,9 @@ Implementar a interface de utilizador para criar um piso.
 
 ### 2.2 Testes ao requisito
 
-**Test 1:** *Criar piso min max com sucesso (controlador, 201 PUT)*
+**Test 1:** *Criar piso successfully*
 
-**Test 2:** *Criar piso min max com insucesso (controlador, 403 FORBIDDEN)*
-
-**Test 3:** *Criar piso min max com sucesso (controlador + serviço, 201 PUT)*
-
-**Test 4:** *Criar piso min max com insucesso, codigo de edificio em uso (controlador + serviço, 403 FORBIDDEN)*
+**Test 2:** *Criar piso unsuccessfully*
 
 ## 3. Desenho
 

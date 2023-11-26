@@ -22,15 +22,9 @@ Editar um elevador é um requisito relevante do domínio que deve ser capaz de a
 
 ### 2.2 Testes ao requisito (Alterar consoante necessidade!)
 
-**Teste 1:** *Editar elevador com sucesso (controlador, 201 OK)*
+**Teste 1:** *Editar elevador successfully*
 
-**Teste 2:** *Editar elevador com insucesso (controlador, 404 NOT FOUND)*
-
-**Teste 3:** *Editar elevador com sucesso (controlador + serviço, 201 OK)*
-
-**Teste 4:** *Editar elevador com insucesso (controlador + serviço, 404 NOT FOUND)*
-
-**Teste 5:** *Editar elevador com insucesso, novo edificio não existe (controlador + serviço, 404 NOT FOUND)*
+**Teste 2:** *Editar elevador unsuccessfully*
 
 **Teste 6:** *Editar elevador com insucesso, novos pisos servidos não existem/não pertecem ao edifício (controlador + serviço, 404 NOT FOUND)*
 
@@ -80,7 +74,7 @@ Editar um elevador é um requisito relevante do domínio que deve ser capaz de a
 
 ##### 3.1.5.1 Nível 3
 
-![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+![vista implementacao 3](/docs/implementation_view/sprint2/iv3.svg "Vista implementação - nível 3")
 
 #### 3.1.6 Vista física
 
@@ -92,8 +86,8 @@ Editar um elevador é um requisito relevante do domínio que deve ser capaz de a
 
 Os padrões aplicados são:
 
-- ONION (padrões arquiteturais);
-- DTO;
-- Service;
-- Interfaces;
+- Component;
+- Services;
+- Pipes;
+- Diretivas;
 - Modelo.
