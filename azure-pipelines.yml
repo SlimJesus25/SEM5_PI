@@ -24,8 +24,8 @@ stages:
 
       - script: |
           cd ui2
-          npm install -g @angular/cli
-          npm install --force
+          npm install -g @angular/cli --legacy-peer-deps
+          npm install --force --legacy-peer-deps
           ng build --configuration production
         displayName: 'npm install and build'
         workingDirectory: '$(Build.SourcesDirectory)'
