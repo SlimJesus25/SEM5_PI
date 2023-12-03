@@ -16,9 +16,9 @@ Implementar a interface de utilizador para a criação do edificio
 
 ### 2.3 Testes ao requisito
 
-**Test 1:** *Create elevador successful case*
+**Test 1:** *Create edificio successful case*
 
-**Test 2:** *Create elevador unsuccessful case*
+**Test 2:** *Create edificio unsuccessful case*
 
 ## 3. Desenho
 
