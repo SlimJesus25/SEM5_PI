@@ -356,7 +356,10 @@ caminho_edificios2(EdAct, EdDest, LEdPassou, LEdCam):-
 
 
 % Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
+melhor_caminho_pisos(P, P, [], [P]):-!.
+
 melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor,LPiCam):-
+
   findall(LLig,caminho_pisos(PisoOr,PisoDest,_,LLig),LLLig),
   menos_elevadores(LLLig,LLigMelhor,_,_),
   enumera_pisos(LLigMelhor, LPiCam).
