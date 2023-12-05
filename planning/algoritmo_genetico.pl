@@ -140,7 +140,7 @@ cruzamento([Ind*_],[Ind],_).
 %  2 - Não são cruzados pares consecutivos (1º e 2º, 3º e 4º...).
 % Como?
 %  1 - Se se tratar do primeiro índice, ou seja, indivíduo com melhor prestação, vai ser diretamente passado para a próxima geração;
-%  2 - É feito um shuffle à lista (excepto o melhor indivíduo). 
+%  2 - É feito um shuffle à lista (excepto o melhor indivíduo).
 cruzamento([Ind1*_|Resto], [Ind1|Resto1], 1):-
 	!,
 	Index is 2,
