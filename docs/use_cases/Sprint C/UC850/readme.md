@@ -11,6 +11,10 @@
 
 ## 2. Análise
 
+***Dependência:*** US 840
+
+
+
 ## 3. Desenho
 
 ## 4. Referência
