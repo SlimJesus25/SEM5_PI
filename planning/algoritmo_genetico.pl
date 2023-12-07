@@ -2,7 +2,12 @@
 :-dynamic populacao/1.
 :-dynamic prob_cruzamento/1.
 :-dynamic prob_mutacao/1.
-
+:-dynamic prob_pior_individuo/1.
+:-dynamic tempo_maximo/1.
+:-dynamic estabilizacao_solucao/1.
+:-dynamic inicio/1.
+:-dynamic fim/1.
+:-dynamic melhor_solucao_atual/2.
 
 
 % tarefa(Id,TempoProcessamento,TempConc,PesoPenalizacao).
@@ -15,19 +20,37 @@ tarefa(t5,3,8,2).
 % tarefas(NTarefas).
 tarefas(5).
 
-% parameteriza��o
-inicializa:-write('Numero de novas Geracoes: '),read(NG), 			(retract(geracoes(_));true), asserta(geracoes(NG)),
+% parameteriza  o
+inicializa:-write('Numero de novas Geracoes: '),read(NG),
+	(retract(geracoes(_));true), asserta(geracoes(NG)),
+
 	write('Dimensao da Populacao: '),read(DP),
 	(retract(populacao(_));true), asserta(populacao(DP)),
+
 	write('Probabilidade de Cruzamento (%):'), read(P1),
 	PC is P1/100, 
 	(retract(prob_cruzamento(_));true), 	asserta(prob_cruzamento(PC)),
+
 	write('Probabilidade de Mutacao (%):'), read(P2),
 	PM is P2/100, 
-	(retract(prob_mutacao(_));true), asserta(prob_mutacao(PM)).
+	(retract(prob_mutacao(_));true), asserta(prob_mutacao(PM)),
 
+	write('Prob. pior indiviuo gerar (%):'),read(PPI2),
+	PPI is PPI2/100,
+	(retract(prob_pior_individuo(_));true), asserta(prob_pior_individuo(PPI)),
+
+	write('Tempo máximo de cálculo (segundos):'),read(TMC2),
+	TMC is TMC2 * 10,
+	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)),
+
+	write('Estabilização da solução (nº):'),read(ES),
+	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)).
 
 gera:-
+	(retract(inicio(_));true),
+	(retract(fim(_));true),
+	get_time(V),
+	asserta(inicio(V)),
 	inicializa,
 	gera_populacao(Pop),
 	write('Pop='),write(Pop),nl,
@@ -35,7 +58,8 @@ gera:-
 	write('PopAv='),write(PopAv),nl,
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
-	gera_geracao(0,NG,PopOrd).
+	PopOrd = [FS|_],
+	gera_geracao(0,NG,PopOrd,[FS,FS,0]).
 
 gera_populacao(Pop):-
 	populacao(TamPop),
@@ -105,17 +129,49 @@ btroca([X*VX,Y*VY|L1],[Y*VY|L2]):-
 btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 
-gera_geracao(G,G,Pop):-!,
-	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
+% Número de gerações máximo atingido.
+gera_geracao(G,G,Pop,_):-!,
+	write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+	write('Número de gerações máximo atingido!').
 
-gera_geracao(N,G,Pop):-
+% Número de estabilização máximo atingido.
+gera_geracao(N,_,Pop,[_,_,X]):-
+	estabilizacao_solucao(X),
+	!,
+	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	write('Estabilização máxima atingida!').
+
+% Tempo máximo atingido.
+% TODO: Consertar os segundos a mais que isto roda.
+gera_geracao(N,_,Pop,_):-
+	get_time(Tempo),
+	verifica_tempo(Tempo),
+	!,
+	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	write('Tempo máximo atingido!').
+
+gera_geracao(N,G,Pop,[SolAct,SolAct,X]):-
+	X2 is X+1,
+	gera_geracao2(N,G,Pop,[SolAct,SolAct,X2]).
+
+gera_geracao(N,G,Pop,[SolAnt,SolAct,_]):-
+	gera_geracao2(N,G,Pop,[SolAnt,SolAct,1]).
+
+gera_geracao2(N, G, Pop, [SolAnt, SolAct, X]):-
+	%trace,
 	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
 	cruzamento(Pop,NPop1,1),
-	mutacao(NPop1,NPop),
+	NPop1 = [NSol|_],
+	mutacao(NPop1,NPop,1),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
 	N1 is N+1,
-	gera_geracao(N1,G,NPopOrd).
+	gera_geracao(N1,G,NPopOrd,[SolAct, NSol, X]).
+
+verifica_tempo(TempoAct):-
+	inicio(Ini),
+	tempo_maximo(Max),
+	TempoAct - Ini >= Max.
 
 gerar_pontos_cruzamento(P1,P2):-
 	gerar_pontos_cruzamento1(P1,P2).
@@ -127,13 +183,14 @@ gerar_pontos_cruzamento1(P1,P2):-
 	random(1,NTemp,P21),
 	P11\==P21,!,
 	((P11<P21,!,P1=P11,P2=P21);(P1=P21,P2=P11)).
+
 gerar_pontos_cruzamento1(P1,P2):-
 	gerar_pontos_cruzamento1(P1,P2).
 
 % Passar sempre o melhor indivíduo + fazer cruzamentos aleatórios e não sucessivos (1º com 2º, 3º com 4º...)
 cruzamento([],[],_).
 
-cruzamento([Ind*_],[Ind],_).
+%cruzamento([Ind*_],[Ind],_).
 
 % Predicado intermédio que vai garantir que:
 %  1 - O melhor indíviduo é passado para a próxima geração;
@@ -143,12 +200,10 @@ cruzamento([Ind*_],[Ind],_).
 %  2 - É feito um shuffle à lista (excepto o melhor indivíduo).
 cruzamento([Ind1*_|Resto], [Ind1|Resto1], 1):-
 	!,
-	Index is 2,
 	random_permutation(Resto, RestoBaralhado),
-	cruzamento(RestoBaralhado, Resto1, Index).
+	cruzamento(RestoBaralhado, Resto1, 2).
 
 cruzamento([Ind1*_,Ind2*_|Resto],[NInd1,NInd2|Resto1],Index):-
-    %((Index == 0,);true),
 	gerar_pontos_cruzamento(P1,P2),
 	prob_cruzamento(Pcruz),random(0.0,1.0,Pc),
 	((Pc =< Pcruz,!,
@@ -239,12 +294,18 @@ eliminah([h|R1],R2):-!,
 eliminah([X|R1],[X|R2]):-
 	eliminah(R1,R2).
 
-mutacao([],[]).
-mutacao([Ind|Rest],[NInd|Rest1]):-
+mutacao([],[],_).
+
+mutacao([Ind1|Rest],[Ind1|Rest1], 1):-
+	!,
+	mutacao(Rest, Rest1, 2).
+
+mutacao([Ind|Rest],[NInd|Rest1], V):-
 	prob_mutacao(Pmut),
 	random(0.0,1.0,Pm),
 	((Pm < Pmut,!,mutacao1(Ind,NInd));NInd = Ind),
-	mutacao(Rest,Rest1).
+	V2 is V+1,
+	mutacao(Rest,Rest1,V2).
 
 mutacao1(Ind,NInd):-
 	gerar_pontos_cruzamento(P1,P2),
