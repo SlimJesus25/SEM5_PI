@@ -31,10 +31,81 @@
 
 % Rela��o entre pedidos HTTP e predicados que os processam
 :- http_handler('/path_between_floors', path_between_floors, []).
+:- http_handler('/best_task_order', best_task_order, []).
 
 % Cria��o de servidor HTTP no porto 'Port'					
 server(Port) :-						
   http_server(http_dispatch, [port(Port)]).
+
+append_to_file(File, Items) :-
+    open(File, append, Stream),
+    write_items(Stream, Items),
+    close(Stream).
+
+write_items(_, []).
+write_items(Stream, [Item | Rest]) :-
+    write(Stream, Item),
+    nl(Stream),
+    write_items(Stream, Rest).
+
+request_dados():-
+  request_edificios(),
+  request_elevadores(),
+  request_pisos(),
+  request_passagens(),
+  request_mapa_pisos().
+
+% Deverá receber algo semelhante a:
+%
+% {
+%	 "t1" : ["pickupNdelivery", "B203TT", "B301TT"],
+%	 "t2" : ["pickupNdelivery", "C101TT", "C202TT"],
+%	 "t3" : ["pickupNdelivery", "C304TT", "B203TT"]
+% }
+% 
+%
+best_task_order(Request):-
+  cors_enable(Request, [methods([get])]),
+  http_parameters(Request, [tarefas(Tarefas, [])]),
+  
+  % request_dados(),
+
+  % Predicado que retira as designações das salas.
+  % ...
+  % Deverá receber uma lista de listas com este aspeto:
+  % [[B203, [C202TT, B203TT]], [C101TT, [B301TT, B203TT]], [C304TT, [C202TT, B301TT]]] 
+  calcula_caminhos(Salas),
+
+
+  R = json([]),
+  prolog_to_json(R, JSONObject),
+  reply_json(JSONObject, [json_object(dict)]).
+
+calcula_caminhos([]):-!.
+
+calcula_caminhos([Atual|Restantes]):-
+  calcula_caminhos2(Atual),
+  calcula_caminhos(Restantes).
+
+calcula_caminhos2([]):-!.
+
+calcula_caminhos2([Origem, Destinos]):-
+  calcula_caminhos3(Origem, Destinos).
+
+calcula_caminhos3(_, []):-!.
+
+calcula_caminhos3(Origem, [Destino|Restantes]):-
+  ponto_acesso(Origem, ColO, LinO, PisoO),
+  ponto_acesso(Destino, ColD, LinD, PisoD),
+  
+  melhor_caminho_pisos(PisoO, PisoD, Cam, PisosPer),
+  node(X1, ColO, LinO, _, PisoO), 
+  edge(X1, X, _, PisoO),
+
+  node(Y1, ColD, LinD, _, PisoD), 
+  edge(Y1, Y, _, PisoD),
+
+  aStar_piso(PisosPer, CamPorPiso2, Cam, X, Y).
 
 path_between_floors(Request):-
   cors_enable(Request, [methods([get])]),
@@ -44,11 +115,7 @@ path_between_floors(Request):-
   atom_string(Destino, Dest),
   
   % Faz os pedidos ao backend dos dados.
-  request_edificios(),
-  request_elevadores(),
-  request_pisos(),
-  request_passagens(),
-  request_mapa_pisos(),
+  request_dados(),
 
   % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
   busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),

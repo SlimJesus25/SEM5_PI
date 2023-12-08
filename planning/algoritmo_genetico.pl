@@ -8,7 +8,19 @@
 :-dynamic inicio/1.
 :-dynamic fim/1.
 :-dynamic melhor_solucao_atual/2.
+:- [servidor].
 
+% Tempos predefinidos.
+tempo_atravessar_corredor(5).
+tempo_andar_elevador(30).
+movimento_vertical(1).
+movimento_horizontal(1).
+movimento_diagonal(X):-
+	X is sqrt(2).
+
+
+% Tarefa Robo
+tarefa_robo(t1).
 
 % tarefa(Id,TempoProcessamento,TempConc,PesoPenalizacao).
 tarefa(t1,2,5,1).
@@ -41,10 +53,12 @@ inicializa:-write('Numero de novas Geracoes: '),read(NG),
 
 	write('Tempo máximo de cálculo (segundos):'),read(TMC2),
 	TMC is TMC2 * 10,
-	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)),
 
 	write('Estabilização da solução (nº):'),read(ES),
-	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)).
+	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)),
+
+	% Colocado propositadamente aqui para não começar a contar antes do suposto.
+	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)).
 
 gera:-
 	(retract(inicio(_));true),
@@ -157,7 +171,7 @@ gera_geracao(N,G,Pop,[SolAct,SolAct,X]):-
 gera_geracao(N,G,Pop,[SolAnt,SolAct,_]):-
 	gera_geracao2(N,G,Pop,[SolAnt,SolAct,1]).
 
-gera_geracao2(N, G, Pop, [SolAnt, SolAct, X]):-
+gera_geracao2(N, G, Pop, [_, SolAct, X]):-
 	%trace,
 	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
 	cruzamento(Pop,NPop1,1),
