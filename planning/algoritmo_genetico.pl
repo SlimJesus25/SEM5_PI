@@ -8,7 +8,8 @@
 :-dynamic inicio/1.
 :-dynamic fim/1.
 :-dynamic melhor_solucao_atual/2.
-:- [servidor].
+:-dynamic tarefa/4.
+:-dynamic tarefa2/3.
 
 % Tempos predefinidos.
 tempo_atravessar_corredor(5).
@@ -23,14 +24,14 @@ movimento_diagonal(X):-
 tarefa_robo(t1).
 
 % tarefa(Id,TempoProcessamento,TempConc,PesoPenalizacao).
-tarefa(t1,2,5,1).
-tarefa(t2,4,7,6).
-tarefa(t3,1,11,2).
-tarefa(t4,3,9,3).
-tarefa(t5,3,8,2).
+%tarefa(t1,2,5,1).
+%tarefa(t2,4,7,6).
+%tarefa(t3,1,11,2).
+%tarefa(t4,3,9,3).
+%tarefa(t5,3,8,2).
 
 % tarefas(NTarefas).
-tarefas(5).
+%tarefas(5).
 
 % parameteriza  o
 inicializa:-write('Numero de novas Geracoes: '),read(NG),
@@ -60,6 +61,53 @@ inicializa:-write('Numero de novas Geracoes: '),read(NG),
 	% Colocado propositadamente aqui para não começar a contar antes do suposto.
 	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)).
 
+inicializa_aut:-
+	NG = 100,
+	(retract(geracoes(_));true), asserta(geracoes(NG)),
+
+	DP = 5,
+	(retract(populacao(_));true), asserta(populacao(DP)),
+
+	P1 is 70,
+	PC is P1/100, 
+	(retract(prob_cruzamento(_));true), 	asserta(prob_cruzamento(PC)),
+
+	P2 is 5,
+	PM is P2/100, 
+	(retract(prob_mutacao(_));true), asserta(prob_mutacao(PM)),
+
+	PPI2 is 10,
+	PPI is PPI2/100,
+	(retract(prob_pior_individuo(_));true), asserta(prob_pior_individuo(PPI)),
+
+	TMC2 is 5,
+	TMC is TMC2 * 10,
+
+	ES is 100,
+	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)),
+
+	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)).
+
+cria_tarefas([Tarefa|RestanteTarefas], [Tempo|RestanteTempos]):-
+	%assert das tarefas.
+	%asserta(tarefa)
+	cria_tarefas(RestanteTarefas, RestanteTempos).
+
+gera_aut:-
+	(retract(inicio(_));true),
+	(retract(fim(_));true),
+	get_time(V),
+	asserta(inicio(V)),
+	inicializa_aut,
+	gera_populacao(Pop),
+	write('Pop='),write(Pop),nl,
+	avalia_populacao(Pop,PopAv),
+	write('PopAv='),write(PopAv),nl,
+	ordena_populacao(PopAv,PopOrd),
+	geracoes(NG),
+	PopOrd = [FS|_],
+	gera_geracao(0,NG,PopOrd,[FS,FS,0]).
+
 gera:-
 	(retract(inicio(_));true),
 	(retract(fim(_));true),
@@ -68,6 +116,7 @@ gera:-
 	inicializa,
 	gera_populacao(Pop),
 	write('Pop='),write(Pop),nl,
+	trace,
 	avalia_populacao(Pop,PopAv),
 	write('PopAv='),write(PopAv),nl,
 	ordena_populacao(PopAv,PopOrd),
@@ -111,19 +160,16 @@ avalia_populacao([Ind|Resto],[Ind*V|Resto1]):-
 	avalia_populacao(Resto,Resto1).
 
 avalia(Seq,V):-
-	avalia(Seq,0,V).
+	Seq = [PT|T],
+	avalia(T,PT,V).
 
 avalia([],_,0).
-avalia([T|Resto],Inst,V):-
-	tarefa(T,Dur,Prazo,Pen),
-	InstFim is Inst+Dur,
-	avalia(Resto,InstFim,VResto),
-	(
-		(InstFim =< Prazo,!, VT is 0)
-  ;
-		(VT is (InstFim-Prazo)*Pen)
-	),
-	V is VT+VResto.
+avalia([Tarefa|Resto],TarefaAnt,V):-
+	tarefa2(Tarefa, _, _),
+	avalia(Resto,Tarefa,VResto),
+
+	tempo_caminho(TarefaAnt, Tarefa, Tempo),
+	V is Tempo+VResto.
 
 ordena_populacao(PopAv,PopAvOrd):-
 	bsort(PopAv,PopAvOrd).
@@ -146,23 +192,33 @@ btroca([X|L1],[X|L2]):-btroca(L1,L2).
 % Número de gerações máximo atingido.
 gera_geracao(G,G,Pop,_):-!,
 	write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+	Pop = [Lista*Tempo|_],
+	(retractall(bto(_,_)),!;true),
+	asserta(bto(Lista, Tempo)),
 	write('Número de gerações máximo atingido!').
-
+	
 % Número de estabilização máximo atingido.
 gera_geracao(N,_,Pop,[_,_,X]):-
 	estabilizacao_solucao(X),
 	!,
 	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	Pop = [Lista*Tempo|_],
+	(retractall(bto(_,_)),!;true),
+	asserta(bto(Lista, Tempo)),
 	write('Estabilização máxima atingida!').
+	% asserta(melhor_individuo()).
 
-% Tempo máximo atingido.
-% TODO: Consertar os segundos a mais que isto roda.
+% Tempo máximo atingido. TODO: Consertar os segundos a mais que isto roda.
 gera_geracao(N,_,Pop,_):-
 	get_time(Tempo),
 	verifica_tempo(Tempo),
 	!,
 	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	Pop = [Lista*Tempo|_],
+	(retractall(bto(_,_)),!;true),
+	asserta(bto(Lista, Tempo)),
 	write('Tempo máximo atingido!').
+	% asserta(melhor_individuo()).
 
 gera_geracao(N,G,Pop,[SolAct,SolAct,X]):-
 	X2 is X+1,
