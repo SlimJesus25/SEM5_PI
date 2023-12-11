@@ -78,8 +78,6 @@ best_task_order(Request):-
   http_parameters(Request, [tarefas(Tarefas, []), camsCalc(CamsCalc, [])]),
   
   request_dados(),
-
-  append_to_file('teste.txt', ['Aqui: ', Tarefas]),
   
   cria_tarefas(Tarefas),
 
@@ -159,10 +157,22 @@ calculo2(Tarefa, [[TDest, _, Destino]|T], Atual, Ind):-
   edge(Y1, Y, _, PisoD),
 
   aStar_piso(PisosPer, _, Cam, X, Y, Tempo),
-  asserta(tempo_caminho(TOrig, TDest, Tempo)),
-  asserta(tempo_caminho(TDest, TOrig, Tempo)),
+  tempo_passagens(Cam, Tempo, NTempo),
+  asserta(tempo_caminho(TOrig, TDest, NTempo)),
+  asserta(tempo_caminho(TDest, TOrig, NTempo)),
   Ind2 is Ind+1,
   calculo2(Tarefa, T, Atual, Ind2).
+
+tempo_passagens([], Tempo, Tempo):-!.
+
+tempo_passagens([elev(_,_)|T], Tempo, NTempo):-
+  tempo_passagens(T, Tempo, NTempo2),
+  NTempo is NTempo2 + 30. % Tempo por defeito de andar de elevador.
+
+tempo_passagens([cor(_,_)|T], Tempo, NTempo):-
+  tempo_passagens(T, Tempo, NTempo2),
+  NTempo is Tempo + 5. % Tempo por defeito de andar no corredor externo.
+
 
 calcula_caminhos([], []):-!.
 

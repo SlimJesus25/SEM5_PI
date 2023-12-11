@@ -83,7 +83,7 @@ inicializa_aut:-
 	TMC2 is 5,
 	TMC is TMC2 * 10,
 
-	ES is 100,
+	ES is 75,
 	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)),
 
 	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)).
