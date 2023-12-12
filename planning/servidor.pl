@@ -9,7 +9,6 @@
 :- use_module(library(http/http_open)).
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_error)).
-:- use_module(library(http/http_dispatch)).
 :- [algoritmo_genetico].
 
 :-dynamic edificio/1. % edificio(A), edificio(B)...
@@ -28,69 +27,35 @@
 
 :-dynamic tempo_caminho/3. % tempo_caminho(Tarefa1, Tarefa2, Tempo)...
 
+:-dynamic tarefas/1. % tarefas(5)... => nº de tarefas a gerar o plano.
+
 :-dynamic bto/2. % bto([T3, T1, T2], 30.2391)... => tem a melhor ordem e o respetivo tempo.
 
 :-set_prolog_flag(answer_write_options,[max_depth(0)]).
 :-set_prolog_flag(report_error,true).
 :-set_prolog_flag(unknown,error). 
 
-% Rela��o entre pedidos HTTP e predicados que os processam
+% Relação entre pedidos HTTP e predicados que os processam
 :- http_handler('/path_between_floors', path_between_floors, []).
 :- http_handler('/best_task_order', best_task_order, []).
 
-% Cria��o de servidor HTTP no porto 'Port'					
+% Criação de servidor HTTP no porto 'Port'					
 server(Port) :-						
   http_server(http_dispatch, [port(Port)]).
 
-append_to_file(File, Items) :-
-    open(File, append, Stream),
-    write_items(Stream, Items),
-    close(Stream).
+% Interromper servidor HTTP.
+int_server(Port):-
+  http_stop_server(Port, _).
 
-write_items(_, []).
-write_items(Stream, [Item | Rest]) :-
-    write(Stream, Item),
-    nl(Stream),
-    write_items(Stream, Rest).
-
-request_dados():-
-  request_edificios(),
-  request_elevadores(),
-  request_pisos(),
-  request_passagens(),
-  request_mapa_pisos().
-
-% Deverá receber algo semelhante a:
-%
-% {
-%  "tarefas" : [["t1", "B203TT", "B301TT"], 
-%               ["t2", "B203TT", "B301TT"],
-%               ["t3", "B203TT", "B301TT"]],
-%
-%  "camsCalc" : [[B203, [C202TT, B203TT]],
-%               [C101TT, [B301TT, B203TT]],
-%               [C304TT, [C202TT, B301TT]]]
-% }
-% 
-%
+% Predicado que recebe pedidos HTTP para gerar o plano de execução das tarefas.
 best_task_order(Request):-
+
   cors_enable(Request, [methods([get])]),
   http_parameters(Request, [tarefas(Tarefas, []), camsCalc(CamsCalc, [])]),
   
   request_dados(),
   
   cria_tarefas(Tarefas),
-
-  % Predicado que retira as designações das salas.
-  % ...
-  % Deverá receber uma lista de listas com este aspeto:
-  % [[B203, [C202TT, B203TT]], [C101TT, [B301TT, B203TT]], [C304TT, [C202TT, B301TT]]] 
-  % calcula_caminhos(Salas),
-
-  % TODO: O backend que arranje e envie para aqui.
-  % arranja_salas(Tarefas, LArranjada),
-
-  %calcula_caminhos(LArranjada, OrdemTarefas),
   calculo(CamsCalc, CamsCalc, 1),
   gera_aut,
 
@@ -98,12 +63,14 @@ best_task_order(Request):-
   prolog_to_json(R, JSONObject),
   reply_json(JSONObject, [json_object(dict)]).
 
-remove_tarefas:-
-  (retractall(tarefas(_)),!;true),
-  (retractall(tarefa(_,_,_,_)),!;true),
-  (retractall(tarefa2(_,_,_)),!;true),
-  (retractall(tempo_caminho(_,_,_)),!;true).
-
+% % %
+% Faz assert do predicado:
+%   1 - tarefas/1, que contém o nº de tarefas.
+%   2 - tarefa2/3, que contém a designação da tarefa, ponto de acesso origem e ponto de acesso destino.
+%
+% Recebe como parâmetro a lista de tarefas.
+% Nota: Na ocasião de ser uma tarefa de vigilância, o destino é igual à origem.
+% % %
 cria_tarefas(L):-
   remove_tarefas,
   length(L, Len),
@@ -114,20 +81,20 @@ cria_tarefas2([]):-!.
 
 cria_tarefas2([H|T]):-
   H = [Tarefa, Origem, Destino],
-  asserta(tarefa(Tarefa, 0, 0, 0)),
   asserta(tarefa2(Tarefa, Origem, Destino)),
   cria_tarefas2(T).
 
-%
-% [
-%   ["T1", "B203TT", "B301TT"], <-- pNd
-%   ["T2", "C101TT", "C201TT"], <-- pNd
-%   ["T3", "C304TT", "B203TT"], <-- pNd
-%   ["T4", "C101TT", "C101TT"] <-- limpeza
-% ]
-%
+remove_tarefas:-
+  (retractall(tarefas(_)),!;true),
+  (retractall(tarefa(_,_,_,_)),!;true),
+  (retractall(tarefa2(_,_,_)),!;true),
+  (retractall(tempo_caminho(_,_,_)),!;true).
 
 
+% % %
+% Determina quais os caminhos que tem que calcular (origem e destino) e invoca o predicado feito no sprint passado para os calcular. Faz assert dos factos tempo_caminho/3, onde tem 
+% Recebe como parâmetro a lista de tarefas, a mesma lista de tarefas e um 1.
+% % %
 
 calculo([], _, _):-!.
 
@@ -166,43 +133,13 @@ calculo2(Tarefa, [[TDest, _, Destino]|T], Atual, Ind):-
 tempo_passagens([], Tempo, Tempo):-!.
 
 tempo_passagens([elev(_,_)|T], Tempo, NTempo):-
+  !,
   tempo_passagens(T, Tempo, NTempo2),
   NTempo is NTempo2 + 30. % Tempo por defeito de andar de elevador.
 
 tempo_passagens([cor(_,_)|T], Tempo, NTempo):-
   tempo_passagens(T, Tempo, NTempo2),
-  NTempo is Tempo + 5. % Tempo por defeito de andar no corredor externo.
-
-
-calcula_caminhos([], []):-!.
-
-calcula_caminhos([Atual|Restantes], OrdemTarefas):-
-  calcula_caminhos2(Atual, Tempos),
-  calcula_caminhos(Restantes, OrdemTarefas2),
-  gera_aut().
-
-calcula_caminhos2([], _):-!.
-
-calcula_caminhos2([Origem, Destinos], Tempos):-
-  calcula_caminhos3(Origem, Destinos, Tempos).
-
-calcula_caminhos3(_, [], []):-!.
-
-% TODO: Adicionar soma dos tempos de elevadores e corredores.
-calcula_caminhos3(Origem, [Destino|Restantes], [Tempo|Restantes2]):-
-  ponto_acesso(Origem, ColO, LinO, PisoO),
-  ponto_acesso(Destino, ColD, LinD, PisoD),
-  
-  melhor_caminho_pisos(PisoO, PisoD, Cam, PisosPer),
-  node(X1, ColO, LinO, _, PisoO), 
-  edge(X1, X, _, PisoO),
-
-  node(Y1, ColD, LinD, _, PisoD), 
-  edge(Y1, Y, _, PisoD),
-
-  aStar_piso(PisosPer, _, Cam, X, Y, Tempo),
-  asserta(tempo_caminho(Origem, Destino, Tempo)),
-  calcula_caminhos3(Origem, Restantes, Restantes2).
+  NTempo is Tempo2 + 5. % Tempo por defeito de andar no corredor externo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Caminhos entre pisos. %
@@ -240,6 +177,13 @@ path_between_floors(Request):-
   prolog_to_json(R, JSONObject),
 
   reply_json(JSONObject, [json_object(dict)]).
+
+request_dados():-
+  request_edificios(),
+  request_elevadores(),
+  request_pisos(),
+  request_passagens(),
+  request_mapa_pisos().
 
 busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest):-
   ((ponto_acesso(Or, COr, LOr, PisoOr);corr_pos(Or, COr, LOr, PisoOr);elev_pos(Or, COr, LOr, PisoOr)),
@@ -302,11 +246,11 @@ extrai_pisos([H|T], [[H.edificio, H.pisos]|T2]):-
 arranja_piso(Designacao, Edificio, [Edificio, [Designacao]|[]]).
 
 % Caso base: Edifício identificado.
-arranja_piso(Designacao, Edificio, [[Edificio|T1]|T2]):-
-  append(T1, Designacao, X).
+arranja_piso(Designacao, Edificio, [[Edificio|T1]|_]):-
+  append(T1, Designacao, _).
 
 arranja_piso(Designacao, Edificio, [_|LAtual]):-
-  arranja_piso(Designacao, Edificio, Latual).
+  arranja_piso(Designacao, Edificio, LAtual).
 
 cria_pisos([]).
 
@@ -420,7 +364,7 @@ extrai_mapa_pisos([H|T], [[H.piso, [H.largura, H.profundidade], H.mapa, H.saidas
 
 cria_mapa_pisos([], _):-!.
 
-cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[IdElev, ColE, LinE]|_], Salas, SaidaLocalizacao]|T], Id):-
+cria_mapa_pisos([[Piso, [Largura, Profundidade], Mapa, Saidas, [[IdElev, ColE, LinE]|_], Salas, _]|T], _):-
   cria_mapa(Mapa, Piso, 1, 1, 1),
   identifica_corredores(Saidas, Piso),
   identifica_salas(Salas, Piso),
@@ -609,7 +553,7 @@ aStar(Orig,Dest,Cam,Custo,Piso):-
     aStar2(Dest,[(_,0,[Orig])],Cam,Custo,Piso).
 
 % Se for preciso apenas o melhor caminho, colocar cut a seguir ao reverse.
-aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo,Piso):-
+aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo,_):-
 	reverse([Dest|T],Cam),!.
 
 aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo,Piso):-

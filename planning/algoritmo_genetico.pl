@@ -11,29 +11,10 @@
 :-dynamic tarefa/4.
 :-dynamic tarefa2/3.
 
-% Tempos predefinidos.
-tempo_atravessar_corredor(5).
-tempo_andar_elevador(30).
-movimento_vertical(1).
-movimento_horizontal(1).
-movimento_diagonal(X):-
-	X is sqrt(2).
-
 
 % Tarefa Robo
 tarefa_robo(t1).
 
-% tarefa(Id,TempoProcessamento,TempConc,PesoPenalizacao).
-%tarefa(t1,2,5,1).
-%tarefa(t2,4,7,6).
-%tarefa(t3,1,11,2).
-%tarefa(t4,3,9,3).
-%tarefa(t5,3,8,2).
-
-% tarefas(NTarefas).
-%tarefas(5).
-
-% parameteriza  o
 inicializa:-write('Numero de novas Geracoes: '),read(NG),
 	(retract(geracoes(_));true), asserta(geracoes(NG)),
 
@@ -62,36 +43,39 @@ inicializa:-write('Numero de novas Geracoes: '),read(NG),
 	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)).
 
 inicializa_aut:-
+
+	% Condição de paragem: Nº de gerações.
 	NG = 100,
 	(retract(geracoes(_));true), asserta(geracoes(NG)),
 
+	% População. Nº de indíviduos por geração.
 	DP = 5,
 	(retract(populacao(_));true), asserta(populacao(DP)),
 
+	% Percentagem de cruzamento.
 	P1 is 70,
 	PC is P1/100, 
 	(retract(prob_cruzamento(_));true), 	asserta(prob_cruzamento(PC)),
 
+	% Percentagem de mutação.
 	P2 is 5,
 	PM is P2/100, 
 	(retract(prob_mutacao(_));true), asserta(prob_mutacao(PM)),
 
+	% Percentagem de pior indivíduo gerar.
 	PPI2 is 10,
 	PPI is PPI2/100,
 	(retract(prob_pior_individuo(_));true), asserta(prob_pior_individuo(PPI)),
 
+	% Condição de paragem: Tempo.
 	TMC2 is 5,
 	TMC is TMC2 * 10,
 
+	% Condição de paragem: Estabilização do melhor indivíduo.
 	ES is 75,
 	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)),
 
 	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)).
-
-cria_tarefas([Tarefa|RestanteTarefas], [Tempo|RestanteTempos]):-
-	%assert das tarefas.
-	%asserta(tarefa)
-	cria_tarefas(RestanteTarefas, RestanteTempos).
 
 gera_aut:-
 	(retract(inicio(_));true),
@@ -100,9 +84,7 @@ gera_aut:-
 	asserta(inicio(V)),
 	inicializa_aut,
 	gera_populacao(Pop),
-	write('Pop='),write(Pop),nl,
 	avalia_populacao(Pop,PopAv),
-	write('PopAv='),write(PopAv),nl,
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
 	PopOrd = [FS|_],
