@@ -137,9 +137,9 @@ tempo_passagens([elev(_,_)|T], Tempo, NTempo):-
   tempo_passagens(T, Tempo, NTempo2),
   NTempo is NTempo2 + 30. % Tempo por defeito de andar de elevador.
 
-tempo_passagens([cor(_,_)|T], Tempo, NTempo):-
+tempo_passagens([cor(_,_,_)|T], Tempo, NTempo):-
   tempo_passagens(T, Tempo, NTempo2),
-  NTempo is Tempo2 + 5. % Tempo por defeito de andar no corredor externo.
+  NTempo is NTempo2 + 5. % Tempo por defeito de andar no corredor externo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Caminhos entre pisos. %
