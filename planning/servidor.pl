@@ -10,6 +10,7 @@
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_error)).
 :- use_module(library(http/http_dispatch)).
+:- [algoritmo_genetico].
 
 :-dynamic edificio/1. % edificio(A), edificio(B)...
 :-dynamic pisos/2. % pisos(A, [A1, A2, A3])...
@@ -25,17 +26,187 @@
 :-dynamic corr_pos/4. % corr_pos(Identificador, Col, Lin, Piso)...
 :-dynamic ponto_acesso/4. % ponto_acesso(Identificador, Col, Lin, Piso)...
 
+:-dynamic tempo_caminho/3. % tempo_caminho(Tarefa1, Tarefa2, Tempo)...
+
+:-dynamic bto/2. % bto([T3, T1, T2], 30.2391)... => tem a melhor ordem e o respetivo tempo.
+
 :-set_prolog_flag(answer_write_options,[max_depth(0)]).
 :-set_prolog_flag(report_error,true).
 :-set_prolog_flag(unknown,error). 
 
 % Rela��o entre pedidos HTTP e predicados que os processam
 :- http_handler('/path_between_floors', path_between_floors, []).
+:- http_handler('/best_task_order', best_task_order, []).
 
 % Cria��o de servidor HTTP no porto 'Port'					
 server(Port) :-						
   http_server(http_dispatch, [port(Port)]).
 
+append_to_file(File, Items) :-
+    open(File, append, Stream),
+    write_items(Stream, Items),
+    close(Stream).
+
+write_items(_, []).
+write_items(Stream, [Item | Rest]) :-
+    write(Stream, Item),
+    nl(Stream),
+    write_items(Stream, Rest).
+
+request_dados():-
+  request_edificios(),
+  request_elevadores(),
+  request_pisos(),
+  request_passagens(),
+  request_mapa_pisos().
+
+% Deverá receber algo semelhante a:
+%
+% {
+%  "tarefas" : [["t1", "B203TT", "B301TT"], 
+%               ["t2", "B203TT", "B301TT"],
+%               ["t3", "B203TT", "B301TT"]],
+%
+%  "camsCalc" : [[B203, [C202TT, B203TT]],
+%               [C101TT, [B301TT, B203TT]],
+%               [C304TT, [C202TT, B301TT]]]
+% }
+% 
+%
+best_task_order(Request):-
+  cors_enable(Request, [methods([get])]),
+  http_parameters(Request, [tarefas(Tarefas, []), camsCalc(CamsCalc, [])]),
+  
+  request_dados(),
+  
+  cria_tarefas(Tarefas),
+
+  % Predicado que retira as designações das salas.
+  % ...
+  % Deverá receber uma lista de listas com este aspeto:
+  % [[B203, [C202TT, B203TT]], [C101TT, [B301TT, B203TT]], [C304TT, [C202TT, B301TT]]] 
+  % calcula_caminhos(Salas),
+
+  % TODO: O backend que arranje e envie para aqui.
+  % arranja_salas(Tarefas, LArranjada),
+
+  %calcula_caminhos(LArranjada, OrdemTarefas),
+  calculo(CamsCalc, CamsCalc, 1),
+  gera_aut,
+
+  R = json([]),
+  prolog_to_json(R, JSONObject),
+  reply_json(JSONObject, [json_object(dict)]).
+
+remove_tarefas:-
+  (retractall(tarefas(_)),!;true),
+  (retractall(tarefa(_,_,_,_)),!;true),
+  (retractall(tarefa2(_,_,_)),!;true),
+  (retractall(tempo_caminho(_,_,_)),!;true).
+
+cria_tarefas(L):-
+  remove_tarefas,
+  length(L, Len),
+  asserta(tarefas(Len)),
+  cria_tarefas2(L).
+
+cria_tarefas2([]):-!.
+
+cria_tarefas2([H|T]):-
+  H = [Tarefa, Origem, Destino],
+  asserta(tarefa(Tarefa, 0, 0, 0)),
+  asserta(tarefa2(Tarefa, Origem, Destino)),
+  cria_tarefas2(T).
+
+%
+% [
+%   ["T1", "B203TT", "B301TT"], <-- pNd
+%   ["T2", "C101TT", "C201TT"], <-- pNd
+%   ["T3", "C304TT", "B203TT"], <-- pNd
+%   ["T4", "C101TT", "C101TT"] <-- limpeza
+% ]
+%
+
+
+
+calculo([], _, _):-!.
+
+calculo([H|T], Intacta, IndexAct):-
+  calculo2(H, Intacta, IndexAct, 1),
+  Next is IndexAct + 1,
+  calculo(T, Intacta, Next).
+
+calculo2(_, [], _, _):-!.
+
+calculo2(TarefaAtual, [_|T], Atual, Atual):-
+  !,
+  Next is Atual+1,
+  calculo2(TarefaAtual, T, Atual, Next).
+
+calculo2(Tarefa, [[TDest, _, Destino]|T], Atual, Ind):-
+
+  Tarefa = [TOrig, Origem, _],
+  ponto_acesso(Origem, ColO, LinO, PisoO),
+  ponto_acesso(Destino, ColD, LinD, PisoD),
+  
+  melhor_caminho_pisos(PisoO, PisoD, Cam, PisosPer),
+  node(X1, ColO, LinO, _, PisoO), 
+  edge(X1, X, _, PisoO),
+
+  node(Y1, ColD, LinD, _, PisoD), 
+  edge(Y1, Y, _, PisoD),
+
+  aStar_piso(PisosPer, _, Cam, X, Y, Tempo),
+  tempo_passagens(Cam, Tempo, NTempo),
+  asserta(tempo_caminho(TOrig, TDest, NTempo)),
+  asserta(tempo_caminho(TDest, TOrig, NTempo)),
+  Ind2 is Ind+1,
+  calculo2(Tarefa, T, Atual, Ind2).
+
+tempo_passagens([], Tempo, Tempo):-!.
+
+tempo_passagens([elev(_,_)|T], Tempo, NTempo):-
+  tempo_passagens(T, Tempo, NTempo2),
+  NTempo is NTempo2 + 30. % Tempo por defeito de andar de elevador.
+
+tempo_passagens([cor(_,_)|T], Tempo, NTempo):-
+  tempo_passagens(T, Tempo, NTempo2),
+  NTempo is Tempo + 5. % Tempo por defeito de andar no corredor externo.
+
+
+calcula_caminhos([], []):-!.
+
+calcula_caminhos([Atual|Restantes], OrdemTarefas):-
+  calcula_caminhos2(Atual, Tempos),
+  calcula_caminhos(Restantes, OrdemTarefas2),
+  gera_aut().
+
+calcula_caminhos2([], _):-!.
+
+calcula_caminhos2([Origem, Destinos], Tempos):-
+  calcula_caminhos3(Origem, Destinos, Tempos).
+
+calcula_caminhos3(_, [], []):-!.
+
+% TODO: Adicionar soma dos tempos de elevadores e corredores.
+calcula_caminhos3(Origem, [Destino|Restantes], [Tempo|Restantes2]):-
+  ponto_acesso(Origem, ColO, LinO, PisoO),
+  ponto_acesso(Destino, ColD, LinD, PisoD),
+  
+  melhor_caminho_pisos(PisoO, PisoD, Cam, PisosPer),
+  node(X1, ColO, LinO, _, PisoO), 
+  edge(X1, X, _, PisoO),
+
+  node(Y1, ColD, LinD, _, PisoD), 
+  edge(Y1, Y, _, PisoD),
+
+  aStar_piso(PisosPer, _, Cam, X, Y, Tempo),
+  asserta(tempo_caminho(Origem, Destino, Tempo)),
+  calcula_caminhos3(Origem, Restantes, Restantes2).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Caminhos entre pisos. %
+%%%%%%%%%%%%%%%%%%%%%%%%%
 path_between_floors(Request):-
   cors_enable(Request, [methods([get])]),
   http_parameters(Request, [origem(Origem, []), destino(Destino, [])]),
@@ -44,11 +215,7 @@ path_between_floors(Request):-
   atom_string(Destino, Dest),
   
   % Faz os pedidos ao backend dos dados.
-  request_edificios(),
-  request_elevadores(),
-  request_pisos(),
-  request_passagens(),
-  request_mapa_pisos(),
+  request_dados(),
 
   % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
   busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),
@@ -63,7 +230,7 @@ path_between_floors(Request):-
   edge(Y1, Y, _, PisoDest),
   
   % Calcula o trajeto dentro de cada piso.
-  aStar_piso(PisosPer, CamPorPiso2, Cam, X, Y),
+  aStar_piso(PisosPer, CamPorPiso2, Cam, X, Y, _),
 
   converte_cam_final(Cam, CamF),
 
@@ -97,22 +264,23 @@ define_dados([PO, [ColOr, LinOr], PD, [ColDest, LinDest]], PO, ColOr, LinOr, PD,
 % Vai aplicar o A-Star a cada um dos pisos da solução de melhor_caminho_pisos ou caminho_pisos.
 % 1º - Lista de pisos da solução.
 % 2º - Lista de listas contendo as soluções do A-Star para cada piso.
-aStar_piso([PisoDest|[]], [UltCaminho|[]], [], Or, Dest):-
+aStar_piso([PisoDest|[]], [UltCaminho|[]], [], Or, Dest, Custo):-
   aStar(Or, Dest, UltCaminho, Custo, PisoDest),
   !.
 
-aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Travessias], IdInicial, Dest):-
+aStar_piso([PisoAct, PisoProx|ProxPisos], [[CamPiso]|Restante], [TravessiaEd|Travessias], IdInicial, Dest, Custo):-
 
   ((TravessiaEd == elev(PisoAct, PisoProx), elev_pos(_, Col, Lin, PisoAct), node(IdElev, Col, Lin, _, PisoAct),
-  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), elev_pos(_, Col1, Lin1, PisoProx),
+  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo1, PisoAct), elev_pos(_, Col1, Lin1, PisoProx),
   node(IdElevProxPiso, Col1, Lin1, _, PisoProx), edge(IdElevProxPiso, IdInicialProxPiso, _, PisoProx),!)
   ;
   (TravessiaEd = cor(Des, PisoAct, PisoProx), corr_pos(Des, Col, Lin, PisoAct), node(IdCorr, Col, Lin, _, PisoAct), % no início TravessiaEd == cor(_, PisoAct, PisoProx),
-  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo, PisoAct), corr_pos(_, Col1, Lin1, PisoProx),
+  edge(IdCorr, IdFinal, _, PisoAct), aStar(IdInicial, IdFinal, CamPiso, Custo1, PisoAct), corr_pos(_, Col1, Lin1, PisoProx),
   node(IdCorrProxPiso, Col1, Lin1, _, PisoProx), edge(IdCorrProxPiso, IdInicialProxPiso, _, PisoProx))),
 
   append([PisoProx], ProxPisos, L),
-  aStar_piso(L, Restante, Travessias, IdInicialProxPiso, Dest).
+  aStar_piso(L, Restante, Travessias, IdInicialProxPiso, Dest, Custo2),
+  Custo is Custo1 + Custo2.
 
 % Vai fazer o GET e fazer os asserts para criar os factos.
 % São aproveitados o edifíidentifica_salascio a que pertence o piso e a sua designação: pisos(B, [B1, B2, B3]). pisos(C, [C1, C2]).
@@ -406,26 +574,26 @@ cria_grafo_lin(0,_,_):-!.
 
 cria_grafo_lin(Col,Lin,Piso):-
   ((corr_pos(_, Col, Lin, Piso),%Piso == "A1",trace,
-  node(Id1, Col, Lin, _, Piso))
+  !,node(Id1, Col, Lin, _, Piso))
   ;
   (elev_pos(_, Col, Lin, Piso),%Piso == "A1",trace,
-  node(Id1, Col, Lin, _, Piso))
+  !,node(Id1, Col, Lin, _, Piso))
   ;
   (ponto_acesso(_, Col, Lin, Piso),%trace,
-  node(Id1, Col, Lin, _, Piso))
-  ;
-  node(Id1,Col,Lin,0,Piso)),
+  !,node(Id1, Col, Lin, _, Piso))
+  ; % Sem obstáculos (0), porta vertical (6) e porta horizontal (7).
+  (node(Id1,Col,Lin,0,Piso),!) ; (node(Id1, Col, Lin, 6, Piso),!) ; (node(Id1, Col, Lin, 7, Piso),!)),
   !,
   ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-  ((node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id2, 1, Piso));true)), % Verifca à direita.
-  ((node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id3, 1, Piso));true)), % Verifca à esquerda.
-  ((node(Id4,Col,LinS,0,Piso), assertz(edge(Id1, Id4, 1, Piso));true)), % Verifica abaixo.
-  ((node(Id5,Col,LinA,0,Piso), assertz(edge(Id1, Id5, 1, Piso));true)), % Verifica acima.
+  (((node(Id2,ColS,Lin,0,Piso),! ; node(Id2,ColS,Lin,6,Piso),! ; node(Id2,ColS,Lin,7,Piso)), assertz(edge(Id1, Id2, 1, Piso));true)), % Verifca à direita.
+  (((node(Id3,ColA,Lin,0,Piso),! ; node(Id3,ColA,Lin,6,Piso),! ; node(Id3,ColA,Lin,7,Piso)), assertz(edge(Id1, Id3, 1, Piso));true)), % Verifca à esquerda.
+  (((node(Id4,Col,LinS,0,Piso),! ; node(Id4,Col,LinS,6,Piso),! ; node(Id4,Col,LinS,7,Piso)), assertz(edge(Id1, Id4, 1, Piso));true)), % Verifica abaixo.
+  (((node(Id5,Col,LinA,0,Piso),! ; node(Id5,Col,LinA,6,Piso),! ; node(Id5,Col,LinA,7,Piso)), assertz(edge(Id1, Id5, 1, Piso));true)), % Verifica acima.
   C is sqrt(2),
-  ((node(Id6,ColS,LinA,0,Piso), assertz(edge(Id1, Id6, C, Piso));true)), % Verifica diagonal superior direita.
-  ((node(Id7,ColA,LinA,0,Piso), assertz(edge(Id1, Id7, C, Piso));true)), % Verifica diagonal superior esquerda.
-  ((node(Id8,ColS,LinS,0,Piso), assertz(edge(Id1, Id8, C, Piso));true)), % Verifica diagonal inferior direita.
-  ((node(Id9,ColA,LinS,0,Piso), assertz(edge(Id1, Id9, C, Piso));true)), % Verifica diagonal inferior esquerda.
+  (((node(Id6,ColS,LinA,0,Piso),! ; node(Id6,ColS,LinA,6,Piso),! ; node(Id6,ColS,LinA,7,Piso)), asserta(edge(Id1, Id6, C, Piso));true)), % Verifica diagonal superior direita.
+  (((node(Id7,ColA,LinA,0,Piso),! ; node(Id7,ColA,LinA,6,Piso),! ; node(Id7,ColA,LinA,7,Piso)), asserta(edge(Id1, Id7, C, Piso));true)), % Verifica diagonal superior esquerda.
+  (((node(Id8,ColS,LinS,0,Piso),! ; node(Id8,ColS,LinS,6,Piso),! ; node(Id8,ColS,LinS,7,Piso)), asserta(edge(Id1, Id8, C, Piso));true)), % Verifica diagonal inferior direita.
+  (((node(Id9,ColA,LinS,0,Piso),! ; node(Id9,ColA,LinS,6,Piso),! ; node(Id9,ColA,LinS,7,Piso)), asserta(edge(Id1, Id9, C, Piso));true)), % Verifica diagonal inferior esquerda.
 
 
   
@@ -445,7 +613,9 @@ aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo,Piso):-
 	reverse([Dest|T],Cam),!.
 
 aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo,Piso):-
+  %trace,
 	LA=[Act|_],
+  %notrace,nodebug,
 	findall((CEX,CaX,[X|LA]),
 		(Dest\==Act,edge(Act,X,CustoX,Piso),\+ member(X,LA),
 		CaX is CustoX + Ca, estimativa(X,Dest,EstX,Piso),
