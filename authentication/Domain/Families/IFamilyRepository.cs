@@ -1,7 +1,7 @@
-using DDDSample1.Domain.Shared;
+using RobDroneGO.Domain.Shared;
 
 
-namespace DDDSample1.Domain.Families
+namespace RobDroneGO.Domain.Families
 {
     public interface IFamilyRepository:IRepository<Family,FamilyId>
     {

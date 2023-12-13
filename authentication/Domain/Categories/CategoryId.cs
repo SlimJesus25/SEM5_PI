@@ -1,8 +1,8 @@
 using System;
-using DDDSample1.Domain.Shared;
+using RobDroneGO.Domain.Shared;
 using Newtonsoft.Json;
 
-namespace DDDSample1.Domain.Categories
+namespace RobDroneGO.Domain.Categories
 {
     public class CategoryId : EntityId
     {

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DDDSample1.Domain.Shared
+namespace RobDroneGO.Domain.Shared
 {
     public interface IUnitOfWork
     {

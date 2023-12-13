@@ -1,11 +1,11 @@
-using DDDSample1.Domain.Products;
-using DDDSample1.Infrastructure.Shared;
+using RobDroneGO.Domain.Products;
+using RobDroneGO.Infrastructure.Shared;
 
-namespace DDDSample1.Infrastructure.Products
+namespace RobDroneGO.Infrastructure.Products
 {
     public class ProductRepository : BaseRepository<Product, ProductId>,IProductRepository
     {
-        public ProductRepository(DDDSample1DbContext context):base(context.Products)
+        public ProductRepository(RobDroneGODbContext context):base(context.Products)
         {
            
         }

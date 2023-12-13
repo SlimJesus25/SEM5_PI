@@ -1,7 +1,7 @@
 
-using DDDSample1.Domain.Shared;
+using RobDroneGO.Domain.Shared;
 
-namespace DDDSample1.Domain.Categories
+namespace RobDroneGO.Domain.Categories
 {
     public interface ICategoryRepository: IRepository<Category, CategoryId>
     {

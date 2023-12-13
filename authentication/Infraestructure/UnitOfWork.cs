@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
-using DDDSample1.Domain.Shared;
+using RobDroneGO.Domain.Shared;
 
-namespace DDDSample1.Infrastructure
+namespace RobDroneGO.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DDDSample1DbContext _context;
+        private readonly RobDroneGODbContext _context;
 
-        public UnitOfWork(DDDSample1DbContext context)
+        public UnitOfWork(RobDroneGODbContext context)
         {
             this._context = context;
         }

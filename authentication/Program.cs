@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+//using TodoApi.Models;
 
-namespace DDDSample1
+namespace RobDroneGO
 {
     public class Program
     {

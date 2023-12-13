@@ -1,8 +1,8 @@
 using System;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Categories;
+using RobDroneGO.Domain.Shared;
+using RobDroneGO.Domain.Categories;
 
-namespace DDDSample1.Domain.Products
+namespace RobDroneGO.Domain.Products
 {
     public class Product : Entity<ProductId>, IAggregateRoot
     {

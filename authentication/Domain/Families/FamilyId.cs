@@ -1,7 +1,7 @@
 using System;
-using DDDSample1.Domain.Shared;
+using RobDroneGO.Domain.Shared;
 
-namespace DDDSample1.Domain.Families
+namespace RobDroneGO.Domain.Families
 {
     public class FamilyId : EntityId
     {

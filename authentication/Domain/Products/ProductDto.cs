@@ -1,7 +1,7 @@
 using System;
-using DDDSample1.Domain.Categories;
+using RobDroneGO.Domain.Categories;
 
-namespace DDDSample1.Domain.Products
+namespace RobDroneGO.Domain.Products
 {
     public class ProductDto
     {

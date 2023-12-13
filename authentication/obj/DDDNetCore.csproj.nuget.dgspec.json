@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\joaog\\Desktop\\FACULDADE\\ARQSI\\SEM5_PI\\authentication\\DDDNetCore.csproj": {}
+    "C:\\Users\\Mateus Fernandes\\Desktop\\ISEP\\SEM5_PI\\authentication\\DDDNetCore.csproj": {}
   },
   "projects": {
-    "C:\\Users\\joaog\\Desktop\\FACULDADE\\ARQSI\\SEM5_PI\\authentication\\DDDNetCore.csproj": {
+    "C:\\Users\\Mateus Fernandes\\Desktop\\ISEP\\SEM5_PI\\authentication\\DDDNetCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\joaog\\Desktop\\FACULDADE\\ARQSI\\SEM5_PI\\authentication\\DDDNetCore.csproj",
+        "projectUniqueName": "C:\\Users\\Mateus Fernandes\\Desktop\\ISEP\\SEM5_PI\\authentication\\DDDNetCore.csproj",
         "projectName": "DDDNetCore",
-        "projectPath": "C:\\Users\\joaog\\Desktop\\FACULDADE\\ARQSI\\SEM5_PI\\authentication\\DDDNetCore.csproj",
-        "packagesPath": "C:\\Users\\joaog\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\joaog\\Desktop\\FACULDADE\\ARQSI\\SEM5_PI\\authentication\\obj\\",
+        "projectPath": "C:\\Users\\Mateus Fernandes\\Desktop\\ISEP\\SEM5_PI\\authentication\\DDDNetCore.csproj",
+        "packagesPath": "C:\\Users\\Mateus Fernandes\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Mateus Fernandes\\Desktop\\ISEP\\SEM5_PI\\authentication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\joaog\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Mateus Fernandes\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp5.0"
@@ -51,6 +51,12 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -58,6 +64,18 @@
             "Microsoft.EntityFrameworkCore.Relational.Design": {
               "target": "Package",
               "version": "[1.1.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "MySql.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.0.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -70,8 +88,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -83,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
         }
       }
     }

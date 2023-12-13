@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using DDDSample1.Domain.Categories;
-using DDDSample1.Domain.Products;
-using DDDSample1.Domain.Families;
-using DDDSample1.Infrastructure.Categories;
-using DDDSample1.Infrastructure.Products;
+using RobDroneGO.Domain.Categories;
+using RobDroneGO.Domain.Products;
+using RobDroneGO.Domain.Families;
+using RobDroneGO.Infrastructure.Categories;
+using RobDroneGO.Infrastructure.Products;
 
-namespace DDDSample1.Infrastructure
+namespace RobDroneGO.Infrastructure
 {
-    public class DDDSample1DbContext : DbContext
+    public class RobDroneGODbContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
 
@@ -15,7 +15,7 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<Family> Families { get; set; }
 
-        public DDDSample1DbContext(DbContextOptions options) : base(options)
+        public RobDroneGODbContext(DbContextOptions options) : base(options)
         {
 
         }
