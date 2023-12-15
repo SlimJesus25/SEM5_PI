@@ -4,7 +4,6 @@ import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Result } from "../core/logic/Result";
 import { AprovacaoId } from "./aprovacaoId";
 
-import IAprovacaoDTO from "../dto/IAprovacaoDTO";
 import { Tarefa } from "./tarefa";
 import { Guard } from "../core/logic/Guard";
 
