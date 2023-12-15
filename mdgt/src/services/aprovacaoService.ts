@@ -7,7 +7,6 @@ import IAprovacaoService from './IServices/IAprovacaoService';
 import { Result } from "../core/logic/Result";
 import { AprovacaoMap } from "../mappers/AprovacaoMap";
 import ITarefaRepo from './IRepos/ITarefaRepo';
-import { Tarefa } from '../domain/tarefa';
 
 @Service()
 export default class AprovacaoService implements IAprovacaoService {
@@ -16,18 +15,17 @@ export default class AprovacaoService implements IAprovacaoService {
         @Inject(config.repos.tarefa.name) private tarefaRepo : ITarefaRepo
         ) { }
 
-    private async procuraTarefa(designacaoTarefa : string) : Promise<Tarefa> {
-        const tarefa = await this.tarefaRepo.findByDesignacao(designacaoTarefa);
-        return tarefa;
-    }
-
     public async aceitarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>> {
         try {
 
-            const tarefa = await this.procuraTarefa(aprovacaoDTO.tarefa);
-            if (tarefa == null){
+            const tarefa = await this.tarefaRepo.findByDesignacao(aprovacaoDTO.tarefa);
+            if (tarefa == null)
                 return Result.fail<IAprovacaoDTO>("Tarefa não encontrada!");
-            }
+
+            const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
+            if (requisicao != null)
+                return Result.fail<IAprovacaoDTO>("Aprovacao já foi dada previamente!")
+            
 
             const aprovacaoOrError = Aprovacao.create({
                 estado: "aceite",
@@ -36,9 +34,9 @@ export default class AprovacaoService implements IAprovacaoService {
                 tarefa: tarefa
             });
 
-            if (aprovacaoOrError.isFailure) {
+            if (aprovacaoOrError.isFailure)
                 return Result.fail<IAprovacaoDTO>(aprovacaoOrError.errorValue());
-            }
+            
 
             const aprovacaoResult = aprovacaoOrError.getValue();
 
@@ -54,13 +52,18 @@ export default class AprovacaoService implements IAprovacaoService {
     public async recusarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>> {
         try {
 
-            const tarefa = await this.procuraTarefa(aprovacaoDTO.tarefa);
+            const tarefa = await this.tarefaRepo.findByDesignacao(aprovacaoDTO.tarefa);
             if (tarefa == null){
                 return Result.fail<IAprovacaoDTO>("Tarefa não encontrada!");
             }
 
-            const aprovacaoOrError = await Aprovacao.create({
-                estado: "recusado",
+            const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
+            if (requisicao != null){
+                return Result.fail<IAprovacaoDTO>("Aprovacao já foi dada previamente!")
+            }
+
+            const aprovacaoOrError = Aprovacao.create({
+                estado: "não aceite",
                 requisitante: aprovacaoDTO.requisitante,
                 tipoDispositivo: aprovacaoDTO.tipoDispositivo,
                 tarefa: tarefa
