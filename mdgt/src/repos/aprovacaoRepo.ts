@@ -62,4 +62,15 @@ export default class AprovacaoRepo implements IAprovacaoRepo {
         else
             return null;
     }
+
+    public async findByTarefaName(designacaoTarefa: string): Promise<Aprovacao> {
+        const query = { tarefa: designacaoTarefa };
+        const aprovacaoRecord = await this.aprovacaoSchema.findOne(query as FilterQuery<IAprovacaoPersistence & Document>);
+
+        if (aprovacaoRecord != null) {
+            return AprovacaoMap.toDomain(aprovacaoRecord);
+        } else {
+            return null;
+        }
+    }
 }

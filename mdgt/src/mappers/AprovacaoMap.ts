@@ -23,7 +23,7 @@ export class AprovacaoMap extends Mapper<Aprovacao> {
   public static async toDomain (raw: any): Promise<Aprovacao> {
     
     const repo = Container.get(TarefaRepo);
-    const tarefa = await repo.findByDesginacao(raw.tarefa);
+    const tarefa = await repo.findByDesignacao(raw.tarefa);
 
     const aprovacaoOrError = Aprovacao.create({
       estado: raw.estado,
