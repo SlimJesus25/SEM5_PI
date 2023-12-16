@@ -4,6 +4,10 @@ using RobDroneGO.Domain.Products;
 using RobDroneGO.Domain.Families;
 using RobDroneGO.Infrastructure.Categories;
 using RobDroneGO.Infrastructure.Products;
+using RobDroneGO.Domain.Roles;
+using RobDroneGO.Domain.Users;
+using RobDroneGO.Infrastructure.Roles;
+using RobDroneGO.Infrastructure.Users;
 
 namespace RobDroneGO.Infrastructure
 {
@@ -15,6 +19,10 @@ namespace RobDroneGO.Infrastructure
 
         public DbSet<Family> Families { get; set; }
 
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
         public RobDroneGODbContext(DbContextOptions options) : base(options)
         {
 
@@ -25,6 +33,8 @@ namespace RobDroneGO.Infrastructure
             modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FamilyEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
         }
     }
 }
