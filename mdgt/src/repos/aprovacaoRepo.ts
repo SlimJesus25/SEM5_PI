@@ -53,7 +53,7 @@ export default class AprovacaoRepo implements IAprovacaoRepo {
     }
 
     public async listarRequisicoesNaoAprovadas(): Promise<Aprovacao[]> {
-        const query = {};
+        const query = {estado : "pendente"};
         const aprovacoes = await this.aprovacaoSchema.find(query as FilterQuery<IAprovacaoPersistence & Document>);
     
         if(aprovacoes.length == 0)
@@ -80,7 +80,7 @@ export default class AprovacaoRepo implements IAprovacaoRepo {
     }
 
     public async findByTarefaName(designacaoTarefa: string): Promise<Aprovacao> {
-        const query = { tarefa: designacaoTarefa };
+        const query = { $and: [{tarefa : designacaoTarefa}, {estado : 'pendente'}] };
         const aprovacaoRecord = await this.aprovacaoSchema.findOne(query as FilterQuery<IAprovacaoPersistence & Document>);
 
         if (aprovacaoRecord != null) {

@@ -6,8 +6,6 @@ participant AprovacaoService as svc
 participant AprovacaoRepo as repoApr
 participant TarefaRepo as repoTar
 participant AprovacaoMapper as mapper
-participant AprovacaoPersistence as pers
-participant Aprovacao as model
 
 activate route
 route -> ctrl : /aceitarRequisicao
@@ -22,7 +20,7 @@ svc -> repoApr : findByTarefaName(tarefa)
 activate repoApr
 repoApr --> svc
 deactivate repoApr
-svc -> model : create(newAprovacao)
+svc -> model : rejeita()
 activate model
 model --> svc
 deactivate model

@@ -9,7 +9,7 @@ box "<<System(C4)>>\n SistemaRobDroneGo"
 participant UI as ui <<Container(C4)>>
 participant "Master Data Gestão Tarefas" as mdgt <<Container(C4)>>
 activate ui
-ui -> mdgt: POST /aceitarRequisicao(corpo)
+ui -> mdgt: PATCH /aceitarRequisicao(corpo)
 activate mdgt
 alt sucesso
 mdgt --> ui: devolve status 201

@@ -278,21 +278,19 @@ describe('aprovacao controller', function () {
             "pontoTermino": "C101T"
         }).getValue();
 
-        const b = {
-            estado: "não aceite",
+        const aprovacao = Aprovacao.create({
+            estado: "",
             requisitante: "João Dias",
             tipoDispositivo: "Polivalente",
             tarefa: tarefa,
-        };
-
-        const aprovacao = Aprovacao.create(b).getValue();
+        }).getValue();
 
         sinon.stub(tarefaRepoInstance, "findByDesignacao").resolves(tarefa);
 
-        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(null);
+        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(aprovacao);
 
         // Não interessa o que retorna o null, o serviço não dá uso e desta forma é possível assegurar que funciona corretamente.
-        sinon.stub(aprovacaoRepoInstance, "save").resolves(null);
+        sinon.stub(aprovacaoRepoInstance, "save").resolves(aprovacao);
 
         let aprovacaoServiceInstance = Container.get("AprovacaoService");
         const aprovacaoServiceSpy = sinon.spy(aprovacaoServiceInstance, "aceitarRequisicao");
@@ -343,7 +341,7 @@ describe('aprovacao controller', function () {
         }).getValue();
 
         const b = {
-            estado: "não aceite",
+            estado: "",
             requisitante: "João Dias",
             tipoDispositivo: "Polivalente",
             tarefa: tarefa,
@@ -353,10 +351,10 @@ describe('aprovacao controller', function () {
 
         sinon.stub(tarefaRepoInstance, "findByDesignacao").resolves(tarefa);
 
-        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(null);
+        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(aprovacao);
 
         // Não interessa o que retorna o null, o serviço não dá uso e desta forma é possível assegurar que funciona corretamente.
-        sinon.stub(aprovacaoRepoInstance, "save").resolves(null);
+        sinon.stub(aprovacaoRepoInstance, "save").resolves(aprovacao);
 
         let aprovacaoServiceInstance = Container.get("AprovacaoService");
         const aprovacaoServiceSpy = sinon.spy(aprovacaoServiceInstance, "recusarRequisicao");

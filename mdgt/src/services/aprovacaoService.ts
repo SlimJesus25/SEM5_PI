@@ -23,26 +23,14 @@ export default class AprovacaoService implements IAprovacaoService {
                 return Result.fail<IAprovacaoDTO>("Tarefa não encontrada!");
 
             const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
-            if (requisicao != null)
-                return Result.fail<IAprovacaoDTO>("Aprovação já foi dada previamente!")
+            if (requisicao == null)
+                return Result.fail<IAprovacaoDTO>("Aprovação já foi dada previamente!");
 
+            requisicao.aceita();
 
-            const aprovacaoOrError = Aprovacao.create({
-                estado: "aceite",
-                requisitante: aprovacaoDTO.requisitante,
-                tipoDispositivo: aprovacaoDTO.tipoDispositivo,
-                tarefa: tarefa
-            });
+            await this.aprovacaoRepo.save(requisicao);
 
-            if (aprovacaoOrError.isFailure)
-                return Result.fail<IAprovacaoDTO>(aprovacaoOrError.errorValue());
-
-
-            const aprovacaoResult = aprovacaoOrError.getValue();
-
-            await this.aprovacaoRepo.save(aprovacaoResult);
-
-            const aprovacaoDTOResult = AprovacaoMap.toDTO(aprovacaoResult) as IAprovacaoDTO;
+            const aprovacaoDTOResult = AprovacaoMap.toDTO(requisicao) as IAprovacaoDTO;
             return Result.ok<IAprovacaoDTO>(aprovacaoDTOResult)
         } catch (e) {
             throw e;
@@ -74,26 +62,15 @@ export default class AprovacaoService implements IAprovacaoService {
             }
 
             const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
-            if (requisicao != null) {
+            if (requisicao == null) {
                 return Result.fail<IAprovacaoDTO>("Aprovação já foi dada previamente!")
             }
 
-            const aprovacaoOrError = Aprovacao.create({
-                estado: "não aceite",
-                requisitante: aprovacaoDTO.requisitante,
-                tipoDispositivo: aprovacaoDTO.tipoDispositivo,
-                tarefa: tarefa
-            });
+            requisicao.rejeita();
 
-            if (aprovacaoOrError.isFailure) {
-                return Result.fail<IAprovacaoDTO>(aprovacaoOrError.errorValue());
-            }
+            await this.aprovacaoRepo.save(requisicao);
 
-            const aprovacaoResult = aprovacaoOrError.getValue();
-
-            await this.aprovacaoRepo.save(aprovacaoResult);
-
-            const aprovacaoDTOResult = AprovacaoMap.toDTO(aprovacaoResult) as IAprovacaoDTO;
+            const aprovacaoDTOResult = AprovacaoMap.toDTO(requisicao) as IAprovacaoDTO;
             return Result.ok<IAprovacaoDTO>(aprovacaoDTOResult)
         } catch (e) {
             throw e;
