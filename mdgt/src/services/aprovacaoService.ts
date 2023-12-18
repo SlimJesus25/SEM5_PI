@@ -24,7 +24,7 @@ export default class AprovacaoService implements IAprovacaoService {
 
             const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
             if (requisicao != null)
-                return Result.fail<IAprovacaoDTO>("Aprovacao já foi dada previamente!")
+                return Result.fail<IAprovacaoDTO>("Aprovação já foi dada previamente!")
             
 
             const aprovacaoOrError = Aprovacao.create({
@@ -59,7 +59,7 @@ export default class AprovacaoService implements IAprovacaoService {
 
             const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
             if (requisicao != null){
-                return Result.fail<IAprovacaoDTO>("Aprovacao já foi dada previamente!")
+                return Result.fail<IAprovacaoDTO>("Aprovação já foi dada previamente!")
             }
 
             const aprovacaoOrError = Aprovacao.create({
