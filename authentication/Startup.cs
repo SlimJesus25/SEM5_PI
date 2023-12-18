@@ -6,14 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RobDroneGO.Infrastructure;
-using RobDroneGO.Infrastructure.Categories;
-using RobDroneGO.Infrastructure.Products;
-using RobDroneGO.Infrastructure.Families;
+using RobDroneGO.Infrastructure.Roles;
+using RobDroneGO.Infrastructure.Users;
 using RobDroneGO.Infrastructure.Shared;
 using RobDroneGO.Domain.Shared;
-using RobDroneGO.Domain.Categories;
-using RobDroneGO.Domain.Products;
-using RobDroneGO.Domain.Families;
+using RobDroneGO.Domain.Roles;
+using RobDroneGO.Domain.Users;
+
 
 namespace RobDroneGO
 {
@@ -75,14 +74,13 @@ namespace RobDroneGO
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<CategoryService>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<RoleService>();
+            services.AddScoped<IRoleService,RoleService>();
 
-            services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<ProductService>();
-
-            services.AddTransient<IFamilyRepository, FamilyRepository>();
-            services.AddTransient<FamilyService>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<UserService>();
+            //services.AddScoped<IUserService,UserService>();
         }
     }
 }

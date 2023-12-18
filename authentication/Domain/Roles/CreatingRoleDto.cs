@@ -2,13 +2,13 @@ namespace RobDroneGO.Domain.Roles
 {
     public class CreatingRoleDto
     {
-        public string RoleName { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
 
 
-        public CreatingRoleDto(string roleName, string description)
+        public CreatingRoleDto(string name, string description)
         {
-            this.RoleName = roleName;
+            this.Name = name;
             this.Description = description;
         }
     }
