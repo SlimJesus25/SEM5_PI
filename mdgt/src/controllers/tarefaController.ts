@@ -2,11 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Inject, Service } from 'typedi';
 import config from "../../config";
 
-import IAprovacaoController from "./IControllers/IAprovacaoController";
 import IAprovacaoService from '../services/IServices/IAprovacaoService';
-import IAprovacaoDTO from '../dto/IAprovacaoDTO';
-
-import { Result } from "../core/logic/Result";
 import ITarefaController from './IControllers/ITarefaController';
 
 @Service()
@@ -17,8 +13,8 @@ export default class TarefaController implements ITarefaController /* TODO: exte
 
 
     public async requisitar(req: Request, res: Response, next: NextFunction) {
-        
+
     };
 
-    
+
 }

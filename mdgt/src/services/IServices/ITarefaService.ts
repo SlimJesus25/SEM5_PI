@@ -4,5 +4,4 @@ import ITarefaDTO from "../../dto/ITarefaDTO";
 
 export default interface ITarefaService {
     requisitarTarefa(tarefaDTO: ITarefaDTO): Promise<Result<ITarefaDTO>>;
-
 }

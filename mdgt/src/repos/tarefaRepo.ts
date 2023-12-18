@@ -7,6 +7,7 @@ import { TarefaMap } from "../mappers/TarefaMap";
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { ITarefaPersistence } from '../dataschema/ITarefaPersistence';
+import { forEach } from 'lodash';
 
 @Service()
 export default class TarefaRepo implements ITarefaRepo {

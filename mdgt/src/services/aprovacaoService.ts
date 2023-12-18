@@ -12,8 +12,8 @@ import ITarefaRepo from './IRepos/ITarefaRepo';
 export default class AprovacaoService implements IAprovacaoService {
     constructor(
         @Inject(config.repos.aprovacao.name) private aprovacaoRepo: IAprovacaoRepo,
-        @Inject(config.repos.tarefa.name) private tarefaRepo : ITarefaRepo
-        ) { }
+        @Inject(config.repos.tarefa.name) private tarefaRepo: ITarefaRepo
+    ) { }
 
     public async aceitarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>> {
         try {
@@ -25,7 +25,7 @@ export default class AprovacaoService implements IAprovacaoService {
             const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
             if (requisicao != null)
                 return Result.fail<IAprovacaoDTO>("Aprovação já foi dada previamente!")
-            
+
 
             const aprovacaoOrError = Aprovacao.create({
                 estado: "aceite",
@@ -36,7 +36,7 @@ export default class AprovacaoService implements IAprovacaoService {
 
             if (aprovacaoOrError.isFailure)
                 return Result.fail<IAprovacaoDTO>(aprovacaoOrError.errorValue());
-            
+
 
             const aprovacaoResult = aprovacaoOrError.getValue();
 
@@ -49,16 +49,32 @@ export default class AprovacaoService implements IAprovacaoService {
         }
     }
 
+    public async listarRequisicoesNaoAprovadas(): Promise<Result<IAprovacaoDTO[]>> {
+        try {
+            const aprovacoes = await this.aprovacaoRepo.listarRequisicoesNaoAprovadas();
+            if (aprovacoes == null)
+                return Result.fail<IAprovacaoDTO[]>("Não existem tarefas por aprovar!");
+            
+
+            let aprovacoesDTO: IAprovacaoDTO[] = [];
+            for (let i=0;i<aprovacoes.length;i++) {
+                aprovacoesDTO.push(AprovacaoMap.toDTO(aprovacoes[i]));
+            }
+        }catch(e){
+            throw e;
+        }
+    }
+
     public async recusarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>> {
         try {
 
             const tarefa = await this.tarefaRepo.findByDesignacao(aprovacaoDTO.tarefa);
-            if (tarefa == null){
+            if (tarefa == null) {
                 return Result.fail<IAprovacaoDTO>("Tarefa não encontrada!");
             }
 
             const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
-            if (requisicao != null){
+            if (requisicao != null) {
                 return Result.fail<IAprovacaoDTO>("Aprovação já foi dada previamente!")
             }
 

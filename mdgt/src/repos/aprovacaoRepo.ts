@@ -52,6 +52,22 @@ export default class AprovacaoRepo implements IAprovacaoRepo {
         }
     }
 
+    public async listarRequisicoesNaoAprovadas(): Promise<Aprovacao[]> {
+        const query = {};
+        const aprovacoes = await this.aprovacaoSchema.find(query as FilterQuery<IAprovacaoPersistence & Document>);
+    
+        if(aprovacoes.length == 0)
+            return null;
+        
+        let requisicoesNaoAprovadas : Aprovacao[] = [];
+        for(const v in aprovacoes){
+            const v2 = await AprovacaoMap.toDomain(v);
+            requisicoesNaoAprovadas.push(v2);
+        }
+
+        return requisicoesNaoAprovadas;
+    }
+
     public async findByDomainId(aprovacaoId: AprovacaoId | string): Promise<Aprovacao> {
         const query = { domainId: aprovacaoId };
         const aprovacaoRecord = await this.aprovacaoSchema.findOne(query as FilterQuery<IAprovacaoPersistence & Document>);
