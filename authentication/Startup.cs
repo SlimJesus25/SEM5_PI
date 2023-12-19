@@ -14,6 +14,9 @@ using RobDroneGO.Domain.Shared;
 using RobDroneGO.Domain.Categories;
 using RobDroneGO.Domain.Products;
 using RobDroneGO.Domain.Families;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace RobDroneGO
 {
@@ -42,7 +45,17 @@ namespace RobDroneGO
 
             ConfigureMyServices(services);
 
-
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
             services.AddControllers().AddNewtonsoftJson();
         }
 
@@ -62,6 +75,8 @@ namespace RobDroneGO
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

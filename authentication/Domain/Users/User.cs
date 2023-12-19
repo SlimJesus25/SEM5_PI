@@ -5,21 +5,21 @@ namespace RobDroneGO.Domain.Users
 {
     public class User : Entity<UserId>, IAggregateRoot
     {
-        public UserName Name {get; private set;}
+        public UserName Name {get; set;}
 
-        public UserEmail Email {get; private set;}
+        public UserEmail Email {get; set;}
 
-        public UserPhoneNumber PhoneNumber {get; private set;}
+        public UserPhoneNumber PhoneNumber {get; set;}
 
-        public UserPassword Password { get ; private set; }
+        public UserPassword Password { get ; set; }
 
-        public RoleId RoleId { get;  private set; }
+        public RoleId RoleId { get; set; }
 
-        public bool Active { get; private set; }
+        public bool Active { get; set; }
 
 
 
-        private User()
+        public User()
         {
             this.Active = true;
         }
