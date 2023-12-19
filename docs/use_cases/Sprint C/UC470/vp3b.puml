@@ -21,7 +21,7 @@ svc -> repoApr : findByTarefaName(tarefa)
 activate repoApr
 repoApr --> svc
 deactivate repoApr
-svc -> model : aceita()
+svc -> model : recusa()
 activate model
 model --> svc
 deactivate model
