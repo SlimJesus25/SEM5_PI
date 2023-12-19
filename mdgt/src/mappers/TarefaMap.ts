@@ -17,7 +17,7 @@ export class TarefaMap extends Mapper<Tarefa> {
         } as ITarefaDTO;
     }
 
-    public static async toDomain(raw: any): Promise<Tarefa> {
+    public static  toDomain(raw: any): Tarefa {
 
         const aprovacaoOrError = Tarefa.create({
             designacaoTarefa : raw.designacaoTarefa,

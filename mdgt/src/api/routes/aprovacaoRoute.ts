@@ -32,4 +32,11 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.recusarRequisicao(req, res, next));
+
+    route.get('/listarTarefasNaoAprovadas',
+    celebrate({
+      body: Joi.object({
+      })
+    }),
+    (req, res, next) => ctrl.listarTarefasNaoAprovadas(req, res, next));
 };

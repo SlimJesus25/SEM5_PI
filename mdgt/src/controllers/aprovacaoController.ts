@@ -7,6 +7,7 @@ import IAprovacaoService from '../services/IServices/IAprovacaoService';
 import IAprovacaoDTO from '../dto/IAprovacaoDTO';
 
 import { Result } from "../core/logic/Result";
+import { AprovacaoMap } from '../mappers/AprovacaoMap';
 
 @Service()
 export default class AprovacaoController implements IAprovacaoController /* TODO: extends ../core/infra/BaseController */ {
@@ -43,6 +44,21 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
             return res.json(aprovacaoDTO).status(201);
         }
         catch (e) {
+            return next(e);
+        }
+    };
+
+    public async listarTarefasNaoAprovadas(req: Request, res: Response, next: NextFunction) {
+        try {
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarRequisicoesNaoAprovadas() as Result<IAprovacaoDTO[]>;
+
+            if (aprovacoesOrError.isFailure) {
+                return res.status(404).send("Error: " + aprovacoesOrError.errorValue());
+            }
+
+            const aprovacoesDTO = aprovacoesOrError.getValue()
+            return res.json(aprovacoesDTO).status(201);
+        } catch (e) {
             return next(e);
         }
     };

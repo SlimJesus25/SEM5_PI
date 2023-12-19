@@ -6,7 +6,5 @@ export default interface IAprovacaoRepo extends Repo<Aprovacao> {
   save(aprovacao: Aprovacao): Promise<Aprovacao>;
   findByDomainId (aprovacaoId: AprovacaoId | string): Promise<Aprovacao>;
   findByTarefaName (designacaoTarefa : string): Promise<Aprovacao>;
-  //findByIds (rolesIds: RoleId[]): Promise<Role[]>;
-  //saveCollection (roles: Role[]): Promise<Role[]>;
-  //removeByRoleIds (roles: RoleId[]): Promise<any>
+  listarRequisicoesNaoAprovadas() : Promise<Aprovacao[]>;
 }

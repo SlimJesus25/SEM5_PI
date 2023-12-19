@@ -21,7 +21,7 @@ namespace RobDroneGO.Domain.Roles
         }
         
         override
-        public String AsString(){
+        public string AsString(){
             Guid obj = (Guid) base.ObjValue;
             return obj.ToString();
         }
