@@ -1,0 +1,49 @@
+@startuml DDD
+
+hide circle
+hide fields
+
+!theme crt-green
+skinparam nodesep 150
+hide empty members
+left to right direction
+
+package "<<agr Pedidos>>" {
+    class Pedidos<<entity>><<root>>{}
+    class Nome<<vo>>{}
+    class Email<<vo>>{}
+    class NumeroTelemovel<<vo>>{}
+    class CC<<vo>>{}
+
+    Pedidos --> "1" Nome
+    Pedidos --> "1" Email
+    Pedidos --> "1" NumeroTelemovel
+    Pedidos --> "1" CC
+}
+
+package "<<agr Utilizadores>>" {
+    class Utilizadores<<entity>><<root>>{}
+    class NomeUtilizador<<vo>>{}
+    class EmailUtilizador<<vo>>{}
+    class NumeroTelemovelUtilizador<<vo>>{}
+    class CCUtilizador<<vo>>{}
+    class Password<<vo>>{}
+
+    Utilizadores --> "1" NomeUtilizador
+    Utilizadores --> "1" EmailUtilizador
+    Utilizadores --> "1" NumeroTelemovelUtilizador
+    Utilizadores --> "1" CCUtilizador
+    Utilizadores --> "1" Password
+}
+
+package "<<agr Roles>>" {
+    class Roles<<entity>><<root>>{}
+    class NomeRole<<vo>>{}
+
+    Roles --> "1" NomeRole
+    Utilizadores "*"--> "1" Roles
+}
+
+
+
+@enduml
