@@ -20,24 +20,27 @@ namespace RobDroneGO.Domain.Roles
 
         public async Task<RoleDto> AddAsync(CreatingRoleDto dto)
         {
-            try{
-                var role = new Role(Guid.NewGuid(),await GenerateId(), dto.Name, dto.Description);
+            try
+            {
+                var role = new Role(await GenerateId(), dto.Name);
                 await this._repo.AddAsync(role);
                 await this._unitOfWork.CommitAsync();
 
-                return new RoleDto(role.Id.AsGuid(),role.IdNumber.toInt(),role.Name.toString(), role.Description.toString(),role.getActive());
-                
-            } catch (BusinessRuleValidationException ex){
+                return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
+
+            }
+            catch (BusinessRuleValidationException ex)
+            {
                 throw new BadHttpRequestException(ex.Message);
             }
         }
 
         public async Task<RoleDto> UpdateAsync(RoleDto dto)
         {
-            var role = await this._repo.GetByNumberIdAsync(new RoleIdNumber(dto.IdNumber)); 
+            var role = await this._repo.GetByNumberIdAsync(new RoleId(dto.Id));
 
             if (role == null)
-                return null;   
+                return null;
 
             // change all fields
             /*if(dto.Description != null){
@@ -46,55 +49,56 @@ namespace RobDroneGO.Domain.Roles
 
             await this._unitOfWork.CommitAsync();
 
-            return new RoleDto(role.Id.AsGuid(), role.IdNumber.toInt(),role.Name.toString(), role.Description.toString(), role.getActive());
+            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
         }
 
-        public async Task<List<RoleDto>> GetAllAsync(){
+        public async Task<List<RoleDto>> GetAllAsync()
+        {
             var list = await this._repo.GetAllAsync();
 
-            List<RoleDto> listDTO = list.ConvertAll<RoleDto>(role => new RoleDto(role.Id.AsGuid(), role.IdNumber.toInt(),role.Name.toString(), role.Description.toString(), role.getActive()));
-        
+            List<RoleDto> listDTO = list.ConvertAll<RoleDto>(role => new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive()));
+
             return listDTO;
         }
-        
-        public async Task<RoleDto> GetByNumberIdAsync(RoleIdNumber id)
+
+        public async Task<RoleDto> GetByNumberIdAsync(RoleId id)
         {
             var role = await this._repo.GetByNumberIdAsync(id);
-            
-            if(role == null)
+
+            if (role == null)
                 return null;
 
-            return new RoleDto(role.Id.AsGuid(), role.IdNumber.toInt(),role.Name.toString(), role.Description.toString(), role.getActive());
+            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
         }
 
-        public async Task<RoleDto> InactivateAsync(RoleIdNumber id)
+        public async Task<RoleDto> InactivateAsync(RoleId id)
         {
-            var role = await this._repo.GetByNumberIdAsync(id); 
+            var role = await this._repo.GetByNumberIdAsync(id);
 
             if (role == null)
-                return null;   
+                return null;
 
             role.MarkAsInative();
-            
+
             await this._unitOfWork.CommitAsync();
 
-            return new RoleDto(role.Id.AsGuid(), role.IdNumber.toInt(),role.Name.toString(), role.Description.toString(), role.getActive());
+            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
         }
 
-        public async Task<RoleDto> DeleteAsync(RoleIdNumber id)
+        public async Task<RoleDto> DeleteAsync(RoleId id)
         {
-            var role = await this._repo.GetByNumberIdAsync(id); 
+            var role = await this._repo.GetByNumberIdAsync(id);
 
             if (role == null)
-                return null;   
+                return null;
 
             if (role.getActive())
                 throw new BusinessRuleValidationException("It is not possible to delete an active role.");
-            
+
             this._repo.Remove(role);
             await this._unitOfWork.CommitAsync();
 
-            return new RoleDto(role.Id.AsGuid(),role.IdNumber.toInt(), role.Name.toString(), role.Description.toString(), role.getActive());
+            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
         }
 
         private async Task<int> GenerateId()

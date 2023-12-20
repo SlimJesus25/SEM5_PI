@@ -1,32 +1,44 @@
 using System;
 using RobDroneGO.Domain.Shared;
-using Newtonsoft.Json;
 
 namespace RobDroneGO.Domain.Roles
 {
     public class RoleId : EntityId
     {
-        [JsonConstructor]
-        public RoleId(Guid value) : base(value)
-        {
-        }
-
-        public RoleId(String value) : base(value)
-        {
-        }
-
-        override
-        protected  Object createFromString(String text){
-            return new Guid(text);
-        }
         
-        override
-        public string AsString(){
-            Guid obj = (Guid) base.ObjValue;
-            return obj.ToString();
+        public int Id { get; private set; } 
+
+        public RoleId(int value): base(value)
+        {
+            Id = value;
         }
-        public Guid AsGuid(){
-            return (Guid) base.ObjValue;
+
+        //public RoleIdNumber(){}
+
+        /*protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return IdNumber;
+        }*/
+
+        public int toInt(){
+            return Id;
+        }
+
+        protected override object createFromString(string text)
+        {
+            if (int.TryParse(text, out int parsedValue))
+            {
+                return new RoleId(parsedValue);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid string format for RoleId");
+            }
+        }
+
+        public override string AsString()
+        {
+            return Id.ToString();
         }
     }
 }
