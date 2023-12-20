@@ -13,22 +13,18 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.aprovacao.name) as IAprovacaoController;
 
-  route.post('/aceitarRequisicao',
+  route.patch('/aceitarRequisicao',
     celebrate({
       body: Joi.object({
-        tipoDispositivo: Joi.string().required(),
         tarefa: Joi.string().required(),
-        requisitante: Joi.string().required()
       })
     }),
     (req, res, next) => ctrl.aceitarRequisicao(req, res, next));
 
-  route.post('/recusarRequisicao',
+  route.patch('/recusarRequisicao',
     celebrate({
       body: Joi.object({
-        tipoDispositivo: Joi.string().required(),
         tarefa: Joi.string().required(),
-        requisitante: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.recusarRequisicao(req, res, next));
