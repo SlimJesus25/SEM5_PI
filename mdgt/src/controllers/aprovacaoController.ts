@@ -7,7 +7,7 @@ import IAprovacaoService from '../services/IServices/IAprovacaoService';
 import IAprovacaoDTO from '../dto/IAprovacaoDTO';
 
 import { Result } from "../core/logic/Result";
-import { AprovacaoMap } from '../mappers/AprovacaoMap';
+import IAprovarDTO from '../dto/IAprovarDTO';
 
 @Service()
 export default class AprovacaoController implements IAprovacaoController /* TODO: extends ../core/infra/BaseController */ {
@@ -18,7 +18,7 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
 
     public async aceitarRequisicao(req: Request, res: Response, next: NextFunction) {
         try {
-            const aprovacaoOrError = await this.aprovacaoServiceInstance.aceitarRequisicao(req.body as IAprovacaoDTO) as Result<IAprovacaoDTO>;
+            const aprovacaoOrError = await this.aprovacaoServiceInstance.aceitarRequisicao(req.body as IAprovarDTO) as Result<IAprovacaoDTO>;
 
             if (aprovacaoOrError.isFailure) {
                 return res.status(403).send("Erro: " + aprovacaoOrError.errorValue());

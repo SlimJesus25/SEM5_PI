@@ -7,6 +7,7 @@ import IAprovacaoService from './IServices/IAprovacaoService';
 import { Result } from "../core/logic/Result";
 import { AprovacaoMap } from "../mappers/AprovacaoMap";
 import ITarefaRepo from './IRepos/ITarefaRepo';
+import IAprovarDTO from '../dto/IAprovarDTO';
 
 @Service()
 export default class AprovacaoService implements IAprovacaoService {
@@ -15,12 +16,12 @@ export default class AprovacaoService implements IAprovacaoService {
         @Inject(config.repos.tarefa.name) private tarefaRepo: ITarefaRepo
     ) { }
 
-    public async aceitarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>> {
+    public async aceitarRequisicao(aprovacaoDTO: IAprovarDTO): Promise<Result<IAprovacaoDTO>> {
         try {
 
             const tarefa = await this.tarefaRepo.findByDesignacao(aprovacaoDTO.tarefa);
             if (tarefa == null)
-                return Result.fail<IAprovacaoDTO>("Tarefa não encontrada!");
+                return Result.fail<IAprovacaoDTO>("Não foi encontrada nenhuma requisição com esta tarefa!");
 
             const requisicao = await this.aprovacaoRepo.findByTarefaName(aprovacaoDTO.tarefa);
             if (requisicao == null)
@@ -48,12 +49,14 @@ export default class AprovacaoService implements IAprovacaoService {
             for (let i=0;i<aprovacoes.length;i++) {
                 aprovacoesDTO.push(AprovacaoMap.toDTO(aprovacoes[i]));
             }
+
+            return Result.ok<IAprovacaoDTO[]>(aprovacoesDTO);
         }catch(e){
             throw e;
         }
     }
 
-    public async recusarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>> {
+    public async recusarRequisicao(aprovacaoDTO: IAprovarDTO): Promise<Result<IAprovacaoDTO>> {
         try {
 
             const tarefa = await this.tarefaRepo.findByDesignacao(aprovacaoDTO.tarefa);

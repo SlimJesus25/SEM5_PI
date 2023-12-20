@@ -1,10 +1,11 @@
 
 import { Result } from "../../core/logic/Result";
 import IAprovacaoDTO from "../../dto/IAprovacaoDTO";
+import IAprovarDTO from "../../dto/IAprovarDTO";
 
 export default interface IAprovacaoService  {
-  aceitarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>>;
-  recusarRequisicao(aprovacaoDTO: IAprovacaoDTO): Promise<Result<IAprovacaoDTO>>;
+  aceitarRequisicao(aprovacaoDTO: IAprovarDTO): Promise<Result<IAprovacaoDTO>>;
+  recusarRequisicao(aprovacaoDTO: IAprovarDTO): Promise<Result<IAprovacaoDTO>>;
   listarRequisicoesNaoAprovadas(): Promise<Result<IAprovacaoDTO[]>>;
 
   /**
