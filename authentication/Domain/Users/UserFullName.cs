@@ -2,16 +2,16 @@ using RobDroneGO.Domain.Shared;
 
 namespace RobDroneGO.Domain.Users
 {
-    public class Username : IValueObject
+    public class UserFullName : IValueObject
     {
         public string Name { get; private set; } 
 
-        public Username(string value)
+        public UserFullName(string value)
         {
             Name = value;
         }
 
-        public Username(){}
+        public UserFullName(){}
 
         /*protected override IEnumerable<object> GetEqualityComponents()
         {

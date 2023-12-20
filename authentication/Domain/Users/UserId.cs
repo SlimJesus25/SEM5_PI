@@ -1,32 +1,44 @@
 using System;
 using RobDroneGO.Domain.Shared;
-using Newtonsoft.Json;
 
 namespace RobDroneGO.Domain.Users
 {
     public class UserId : EntityId
     {
-        [JsonConstructor]
-        public UserId(Guid value) : base(value)
-        {
-        }
-
-        public UserId(String value) : base(value)
-        {
-        }
-
-        override
-        protected  Object createFromString(String text){
-            return new Guid(text);
-        }
         
-        override
-        public String AsString(){
-            Guid obj = (Guid) base.ObjValue;
-            return obj.ToString();
+        public int Id { get; private set; } 
+
+        public UserId(int value): base(value)
+        {
+            Id = value;
         }
-        public Guid AsGuid(){
-            return (Guid) base.ObjValue;
+
+        //public UserIdNumber(){}
+
+        /*protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return IdNumber;
+        }*/
+
+        public int toInt(){
+            return Id;
+        }
+
+        protected override object createFromString(string text)
+        {
+            if (int.TryParse(text, out int parsedValue))
+            {
+                return new UserId(parsedValue);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid string format for UserId");
+            }
+        }
+
+        public override string AsString()
+        {
+            return Id.ToString();
         }
     }
 }
