@@ -43,7 +43,7 @@ export class AprovacaoMap extends Mapper<Aprovacao> {
       domainId: aprovacao.id.toString(),
       estado: aprovacao.estado,
       tipoDispositivo: aprovacao.tipoDispositivo,
-      tarefa: aprovacao.tarefa,
+      tarefa: aprovacao.tarefa.designacaoTarefa,
       requisitante: aprovacao.requisitante,
     }
     return a;
