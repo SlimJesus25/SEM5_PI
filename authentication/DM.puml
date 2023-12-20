@@ -1,4 +1,4 @@
-@startuml DDD
+@startuml DM
 
 hide circle
 hide fields
@@ -14,11 +14,13 @@ package "<<agr Pedidos>>" {
     class Email<<vo>>{}
     class NumeroTelemovel<<vo>>{}
     class CC<<vo>>{}
+    class Estado<<enum>>{}
 
     Pedidos --> "1" Nome
     Pedidos --> "1" Email
     Pedidos --> "1" NumeroTelemovel
     Pedidos --> "1" CC
+    Pedidos --> "1" Estado
 }
 
 package "<<agr Utilizadores>>" {
