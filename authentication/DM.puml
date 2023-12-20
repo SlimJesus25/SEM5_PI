@@ -9,35 +9,50 @@ hide empty members
 left to right direction
 
 package "<<agr Pedidos>>" {
-    class Pedidos<<entity>><<root>>{}
-    class Nome<<vo>>{}
-    class Email<<vo>>{}
-    class NumeroTelemovel<<vo>>{}
-    class CC<<vo>>{}
-    class Estado<<enum>>{}
-    class Password<<vo>>{}
+    class Pedidos <<entity>> <<root>> {}
 
-    Pedidos --> "1" Nome
+    class NomeCompleto <<vo>> {}
+    class Username <<vo>> {}
+    class Email <<vo>> {}
+    class NumeroTelemovel <<vo>> {}
+    class CC <<vo>> {}
+
+    enum Estado <<enum>> {
+    }
+
+    class Pendente {}
+    class Aceite {}
+    class Recusado{}
+
+    class Password <<vo>> {}
+
+    Pedidos --> "1" NomeCompleto
+    Pedidos --> "1" Username
     Pedidos --> "1" Email
     Pedidos --> "1" NumeroTelemovel
     Pedidos --> "1" CC
-    Pedidos --> "1" Estado
+    Pedidos --> "1" Estado 
+    Estado --> "1" Pendente
+    Estado --> "1" Aceite
+    Estado --> "1" Recusado
     Pedidos --> "1" Password
 }
 
 package "<<agr Utilizadores>>" {
     class Utilizadores<<entity>><<root>>{}
-    class NomeUtilizador<<vo>>{}
+    class NomeCompletoUtilizador<<vo>>{}
+    class UsernameUtilizador<<vo>>{}
     class EmailUtilizador<<vo>>{}
     class NumeroTelemovelUtilizador<<vo>>{}
     class CCUtilizador<<vo>>{}
-    class Password<<vo>>{}
+    class PasswordUtilizador<<vo>>{}
 
-    Utilizadores --> "1" NomeUtilizador
+    Utilizadores --> "1" UsernameUtilizador
+    Utilizadores --> "1" NomeCompletoUtilizador
     Utilizadores --> "1" EmailUtilizador
     Utilizadores --> "1" NumeroTelemovelUtilizador
     Utilizadores --> "1" CCUtilizador
-    Utilizadores --> "1" Password
+    Utilizadores --> "1" PasswordUtilizador
 }
 
 package "<<agr Roles>>" {
