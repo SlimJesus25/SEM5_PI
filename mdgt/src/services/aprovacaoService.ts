@@ -48,6 +48,8 @@ export default class AprovacaoService implements IAprovacaoService {
             for (let i=0;i<aprovacoes.length;i++) {
                 aprovacoesDTO.push(AprovacaoMap.toDTO(aprovacoes[i]));
             }
+
+            return Result.ok<IAprovacaoDTO[]>(aprovacoesDTO);
         }catch(e){
             throw e;
         }
