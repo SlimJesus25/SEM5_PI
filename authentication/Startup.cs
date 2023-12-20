@@ -10,9 +10,7 @@ using RobDroneGO.Infrastructure.Roles;
 using RobDroneGO.Infrastructure.Users;
 using RobDroneGO.Infrastructure.Shared;
 using RobDroneGO.Domain.Shared;
-using RobDroneGO.Domain.Categories;
-using RobDroneGO.Domain.Products;
-using RobDroneGO.Domain.Families;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -98,7 +96,7 @@ namespace RobDroneGO
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<UserService>();
-            //services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IUserService,UserService>();
         }
     }
 }
