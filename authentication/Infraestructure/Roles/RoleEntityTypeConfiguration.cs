@@ -10,7 +10,6 @@ namespace RobDroneGO.Infrastructure.Roles
         {
             //builder.ToTable("Roles", SchemaNames.RobDroneGO);
             builder.HasKey(b => b.Id);
-            //builder.OwnsOne(b => b.IdNumber).Property(b => b.IdNumber).HasColumnName("IdNumber").IsRequired();
             builder.OwnsOne(b => b.Name).Property(b => b.Name).HasColumnName("Name").IsRequired();
         }
     }
