@@ -35,4 +35,35 @@ export default (app: Router) => {
       })
     }),
     (req, res, next) => ctrl.listarTarefasNaoAprovadas(req, res, next));
+
+    route.get('/pesquisarRequisicaoPorEstado',
+    celebrate({
+      body: Joi.object({
+        estado: Joi.string().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.listarPorEstado(req, res, next));
+
+    route.get('/pesquisarRequisicaoPorTipoDispositivo',
+    celebrate({
+      body: Joi.object({
+        tipoDispositivo: Joi.string().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.listarPorTipoDispositivo(req, res, next));
+
+    route.get('/pesquisarRequisicaoPorUtente',
+    celebrate({
+      body: Joi.object({
+        utente: Joi.string().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.listarPorUtente(req, res, next));
+
+    route.patch('/sequenciaTarefasAprovadas',
+    celebrate({
+      body: Joi.object({
+      }),
+    }),
+    (req, res, next) => ctrl.sequenciaTarefasAprovadas(req, res, next));
 };
