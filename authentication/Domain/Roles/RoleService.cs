@@ -26,7 +26,7 @@ namespace RobDroneGO.Domain.Roles
                 await this._repo.AddAsync(role);
                 await this._unitOfWork.CommitAsync();
 
-                return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
+                return new RoleDto(role.Id.toInt(), role.Name.toString());
 
             }
             catch (BusinessRuleValidationException ex)
@@ -37,7 +37,7 @@ namespace RobDroneGO.Domain.Roles
 
         public async Task<RoleDto> UpdateAsync(RoleDto dto)
         {
-            var role = await this._repo.GetByNumberIdAsync(new RoleId(dto.Id));
+            var role = await this._repo.GetByIdAsync(new RoleId(dto.Id));
 
             if (role == null)
                 return null;
@@ -49,29 +49,29 @@ namespace RobDroneGO.Domain.Roles
 
             await this._unitOfWork.CommitAsync();
 
-            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
+            return new RoleDto(role.Id.toInt(), role.Name.toString());
         }
 
         public async Task<List<RoleDto>> GetAllAsync()
         {
             var list = await this._repo.GetAllAsync();
 
-            List<RoleDto> listDTO = list.ConvertAll<RoleDto>(role => new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive()));
+            List<RoleDto> listDTO = list.ConvertAll<RoleDto>(role => new RoleDto(role.Id.toInt(), role.Name.toString()));
 
             return listDTO;
         }
 
-        public async Task<RoleDto> GetByNumberIdAsync(RoleId id)
+        public async Task<RoleDto> GetByIdAsync(RoleId id)
         {
-            var role = await this._repo.GetByNumberIdAsync(id);
+            var role = await this._repo.GetByIdAsync(id);
 
             if (role == null)
                 return null;
 
-            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
+            return new RoleDto(role.Id.toInt(), role.Name.toString());
         }
 
-        public async Task<RoleDto> InactivateAsync(RoleId id)
+        /*public async Task<RoleDto> InactivateAsync(RoleId id)
         {
             var role = await this._repo.GetByNumberIdAsync(id);
 
@@ -82,10 +82,10 @@ namespace RobDroneGO.Domain.Roles
 
             await this._unitOfWork.CommitAsync();
 
-            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
-        }
+            return new RoleDto(role.Id.toInt(), role.Name.toString());
+        }*/
 
-        public async Task<RoleDto> DeleteAsync(RoleId id)
+        /*public async Task<RoleDto> DeleteAsync(RoleId id)
         {
             var role = await this._repo.GetByNumberIdAsync(id);
 
@@ -98,8 +98,8 @@ namespace RobDroneGO.Domain.Roles
             this._repo.Remove(role);
             await this._unitOfWork.CommitAsync();
 
-            return new RoleDto(role.Id.toInt(), role.Name.toString(), role.getActive());
-        }
+            return new RoleDto(role.Id.toInt(), role.Name.toString());
+        }*/
 
         private async Task<int> GenerateId()
         {

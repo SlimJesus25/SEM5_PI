@@ -5,22 +5,38 @@ namespace RobDroneGO.Domain.Roles
 {
     public class RoleId : EntityId
     {
-        
-        public int Id { get; private set; } 
 
-        public RoleId(int value): base(value)
+        public int Id { get; private set; }
+
+        public RoleId(int value) : base(value)
         {
             Id = value;
         }
 
-        //public RoleIdNumber(){}
+        public RoleId(string value) : base(ParseStringValue(value))
+        {
+            Id = ParseStringValue(value);
+        }
+
+        private static int ParseStringValue(string text)
+        {
+            if (int.TryParse(text, out int parsedValue))
+            {
+                return parsedValue;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid string format for RoleId");
+            }
+        }
 
         /*protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return IdNumber;
         }*/
 
-        public int toInt(){
+        public int toInt()
+        {
             return Id;
         }
 
