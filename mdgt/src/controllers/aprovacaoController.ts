@@ -8,6 +8,10 @@ import IAprovacaoDTO from '../dto/IAprovacaoDTO';
 
 import { Result } from "../core/logic/Result";
 import IAprovarDTO from '../dto/IAprovarDTO';
+import ITipoDispositivoDTO from '../dto/ITipoDispositivoDTO';
+import IUtenteDTO from '../dto/IUtenteDTO';
+import IEstadoDTO from '../dto/IEstadoDTO';
+import ISequenciaDTO from '../dto/ISequenciaDTO';
 
 @Service()
 export default class AprovacaoController implements IAprovacaoController /* TODO: extends ../core/infra/BaseController */ {
@@ -53,7 +57,7 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
             const aprovacoesOrError = await this.aprovacaoServiceInstance.listarRequisicoesNaoAprovadas() as Result<IAprovacaoDTO[]>;
 
             if (aprovacoesOrError.isFailure) {
-                return res.status(404).send("Error: " + aprovacoesOrError.errorValue());
+                return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
             }
 
             const aprovacoesDTO = aprovacoesOrError.getValue()
@@ -64,14 +68,62 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
     };
 
     public async listarPorEstado(req: Request, res: Response, next: NextFunction) {
+        try {
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorEstado(req.body as IEstadoDTO) as Result<IAprovacaoDTO[]>;
 
+            if (aprovacoesOrError.isFailure) {
+                return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
+            }
+
+            const aprovacoesDTO = aprovacoesOrError.getValue()
+            return res.json(aprovacoesDTO).status(201);
+        } catch (e) {
+            return next(e);
+        }
     };
 
     public async listarPorTipoDispositivo(req: Request, res: Response, next: NextFunction) {
+        try {
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorTipoDispositivo(req.body as ITipoDispositivoDTO) as Result<IAprovacaoDTO[]>;
 
+            if (aprovacoesOrError.isFailure) {
+                return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
+            }
+
+            const aprovacoesDTO = aprovacoesOrError.getValue()
+            return res.json(aprovacoesDTO).status(201);
+        } catch (e) {
+            return next(e);
+        }
     };
 
     public async listarPorUtente(req: Request, res: Response, next: NextFunction) {
+        try {
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorUtente(req.body as IUtenteDTO) as Result<IAprovacaoDTO[]>;
 
+            if (aprovacoesOrError.isFailure) {
+                return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
+            }
+
+            const aprovacoesDTO = aprovacoesOrError.getValue()
+            return res.json(aprovacoesDTO).status(201);
+        } catch (e) {
+            return next(e);
+        }
     };
+
+    public async sequenciaTarefasAprovadas(req: Request, res: Response, next: NextFunction){
+        try {
+            const sequenciaOrError = await this.aprovacaoServiceInstance.sequenciaTarefasAprovadas() as Result<ISequenciaDTO>;
+
+            if (sequenciaOrError.isFailure) {
+                return res.status(404).send("Erro: " + sequenciaOrError.errorValue());
+            }
+
+            const sequenciaDTO = sequenciaOrError.getValue()
+            return res.json(sequenciaDTO).status(201);
+        } catch (e) {
+            return next(e);
+        }
+    }
 }

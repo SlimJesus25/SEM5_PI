@@ -27,12 +27,13 @@ namespace RobDroneGO.Controllers
             return await _service.GetAllAsync();
         }
 
-        // GET: api/Roles?idNumber=idNumber
-        [HttpGet("idNumber")]
-        public async Task<ActionResult<RoleDto>> GetGetByIdNumber(int id)
+        // GET: api/Roles?id=id
+        // GET: api/Roles/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RoleDto>> GetGetById(int id)
         {
             try{
-                var del = await _service.GetByNumberIdAsync(new RoleIdNumber(id));
+                var del = await _service.GetByIdAsync(new RoleId(id));
 
                 if (del == null)
                 {
@@ -52,7 +53,7 @@ namespace RobDroneGO.Controllers
         {
             var role = await _service.AddAsync(dto);
 
-            return CreatedAtAction(nameof(GetGetByIdNumber), new { id = role.Id }, role);
+            return CreatedAtAction(nameof(GetGetById), new { id = role.Id }, role);
         }
 
         
@@ -60,7 +61,7 @@ namespace RobDroneGO.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<RoleDto>> Update(int id, RoleDto dto)
         {
-            if (id != dto.IdNumber)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
@@ -82,10 +83,10 @@ namespace RobDroneGO.Controllers
         }
 
         // Inactivate: api/Roles/5
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<ActionResult<RoleDto>> SoftDelete(int id)
         {
-            var role = await _service.InactivateAsync(new RoleIdNumber(id));
+            var role = await _service.InactivateAsync(new RoleId(id));
 
             if (role == null)
             {
@@ -101,7 +102,7 @@ namespace RobDroneGO.Controllers
         {
             try
             {
-                var role = await _service.DeleteAsync(new RoleIdNumber(id));
+                var role = await _service.DeleteAsync(new RoleId(id));
 
                 if (role == null)
                 {
@@ -114,6 +115,6 @@ namespace RobDroneGO.Controllers
             {
                return BadRequest(new {Message = ex.Message});
             }
-        }
+        }*/
     }
 }

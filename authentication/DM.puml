@@ -9,34 +9,46 @@ hide empty members
 left to right direction
 
 package "<<agr Pedidos>>" {
-    class Pedidos<<entity>><<root>>{}
-    class Nome<<vo>>{}
-    class Email<<vo>>{}
-    class NumeroTelemovel<<vo>>{}
-    class CC<<vo>>{}
-    class Estado<<enum>>{}
-    class Password<<vo>>{}
+    class Pedidos <<entity>> <<root>> {}
 
-    Pedidos --> "1" Nome
-    Pedidos --> "1" Email
-    Pedidos --> "1" NumeroTelemovel
-    Pedidos --> "1" CC
-    Pedidos --> "1" Estado
-    Pedidos --> "1" Password
+    class PedidoNome <<vo>> {}
+    class PedidoEmail <<vo>> {}
+    class PedidoNumeroTelemovel <<vo>> {}
+    class PedidoNIF <<vo>> {}
+    enum Estado <<enum>> {
+    }
+    class Pendente <<value>>{}
+    class Aceite<<value>> {}
+    class Recusado <<value>>{}
+    class PedidoPassword <<vo>> {}
+    class DataPedido <<vo>> {}
+    class DataAtualizarEstado <<vo>> {}
+
+    Pedidos --> "1" PedidoNome
+    Pedidos --> "1" PedidoEmail
+    Pedidos --> "1" PedidoNumeroTelemovel
+    Pedidos --> "1" PedidoNIF
+    Pedidos --> "1" DataPedido
+    Pedidos --> "1" DataAtualizarEstado
+    Pedidos --> "1" PedidoPassword
+    Pedidos --> "1" Estado 
+    Estado --> "1" Pendente
+    Estado --> "1" Aceite
+    Estado --> "1" Recusado
 }
 
 package "<<agr Utilizadores>>" {
     class Utilizadores<<entity>><<root>>{}
-    class NomeUtilizador<<vo>>{}
-    class EmailUtilizador<<vo>>{}
-    class NumeroTelemovelUtilizador<<vo>>{}
-    class CCUtilizador<<vo>>{}
+    class Nome<<vo>>{}
+    class Email<<vo>>{}
+    class NumeroTelemovel<<vo>>{}
+    class NIF<<vo>>{}
     class Password<<vo>>{}
 
-    Utilizadores --> "1" NomeUtilizador
-    Utilizadores --> "1" EmailUtilizador
-    Utilizadores --> "1" NumeroTelemovelUtilizador
-    Utilizadores --> "1" CCUtilizador
+    Utilizadores --> "1" Nome
+    Utilizadores --> "1" Email
+    Utilizadores --> "1" NumeroTelemovel
+    Utilizadores --> "1" NIF
     Utilizadores --> "1" Password
 }
 

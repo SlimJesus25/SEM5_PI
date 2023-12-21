@@ -5,41 +5,45 @@ namespace RobDroneGO.Domain.Users
 {
     public class User : Entity<UserId>, IAggregateRoot
     {
-        public UserName Name {get; set;}
+        public UserName Name {get; private set;}
 
-        public UserEmail Email {get; set;}
+        public UserEmail Email {get; private set;}
 
-        public UserPhoneNumber PhoneNumber {get; set;}
+        public UserPhoneNumber PhoneNumber {get; private set;}
 
-        public UserPassword Password { get ; set; }
+        public UserNIF NIF { get ; private set ;}
 
-        public RoleId RoleId { get; set; }
+        public UserPassword Password { get ; private set; }
 
-        public bool Active { get; set; }
-
-
+        public RoleId RoleId { get; private set; }
 
         public User()
         {
-            this.Active = true;
         }
 
-        public User(string name, string email,string phoneNumber, string password, RoleId roleId)
+        public User(int id,string name, string email,string phoneNumber, string nif,string password, RoleId roleId)
         {
             if (roleId == null)
                 throw new BusinessRuleValidationException("Every user needs a role");
-            this.Id = new UserId(Guid.NewGuid());
+            this.Id = new UserId(id);
             this.Name = new UserName(name);
             this.Email = new UserEmail(email);
             this.PhoneNumber = new UserPhoneNumber(phoneNumber);
-            this.RoleId = roleId;
+            this.NIF = new UserNIF(nif);
             this.Password = new UserPassword(password);
-
-            this.Active = true;
+            this.RoleId = roleId;
         }
-        public void MarkAsInative()
+
+        public User(int id,string name, string username, string phoneNumber, string password, RoleId roleId)
         {
-            this.Active = false;
+            if (roleId == null)
+                throw new BusinessRuleValidationException("Every user needs a role");
+            this.Id = new UserId(id);
+            this.Name = new UserName(name);
+            this.Email = new UserEmail(username);
+            this.PhoneNumber = new UserPhoneNumber(phoneNumber);
+            this.Password = new UserPassword(password);
+            this.RoleId = roleId;
         }
     }
 }

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 namespace RobDroneGO.Domain.Roles{
     public interface IRoleService{
         Task<List<RoleDto>> GetAllAsync();
-        Task<RoleDto> GetByNumberIdAsync(RoleIdNumber id);
+        Task<RoleDto> GetByIdAsync(RoleId id);
         Task<RoleDto> AddAsync(CreatingRoleDto dto);
-        Task<RoleDto> InactivateAsync(RoleIdNumber id);
+        //Task<RoleDto> InactivateAsync(RoleId id);
         Task<RoleDto> UpdateAsync(RoleDto dto);
-        Task<RoleDto> DeleteAsync(RoleIdNumber id);
+        //Task<RoleDto> DeleteAsync(RoleId id);
     }
 }

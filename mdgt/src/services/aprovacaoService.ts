@@ -8,6 +8,14 @@ import { Result } from "../core/logic/Result";
 import { AprovacaoMap } from "../mappers/AprovacaoMap";
 import ITarefaRepo from './IRepos/ITarefaRepo';
 import IAprovarDTO from '../dto/IAprovarDTO';
+import IEstadoDTO from '../dto/IEstadoDTO';
+import ITipoDispositivoDTO from '../dto/ITipoDispositivoDTO';
+import IUtenteDTO from '../dto/IUtenteDTO';
+import ISequenciaDTO from '../dto/ISequenciaDTO';
+//const http = require('http');
+import * as http from 'http';
+import * as querystring from 'querystring';
+import { url } from 'inspector';
 
 @Service()
 export default class AprovacaoService implements IAprovacaoService {
@@ -43,15 +51,15 @@ export default class AprovacaoService implements IAprovacaoService {
             const aprovacoes = await this.aprovacaoRepo.listarRequisicoesNaoAprovadas();
             if (aprovacoes == null)
                 return Result.fail<IAprovacaoDTO[]>("Não existem tarefas por aprovar!");
-            
+
 
             let aprovacoesDTO: IAprovacaoDTO[] = [];
-            for (let i=0;i<aprovacoes.length;i++) {
+            for (let i = 0; i < aprovacoes.length; i++) {
                 aprovacoesDTO.push(AprovacaoMap.toDTO(aprovacoes[i]));
             }
 
             return Result.ok<IAprovacaoDTO[]>(aprovacoesDTO);
-        }catch(e){
+        } catch (e) {
             throw e;
         }
     }
@@ -81,16 +89,163 @@ export default class AprovacaoService implements IAprovacaoService {
     }
 
 
-    public async listarPorEstado(): Promise<Result<IAprovacaoDTO>> {
-        return null;
+    public async listarPorEstado(estadoDTO: IEstadoDTO): Promise<Result<IAprovacaoDTO[]>> {
+        try {
+
+            if (!this.validaEstado(estadoDTO.estado))
+                return Result.fail<IAprovacaoDTO[]>("Estado inválido!");
+
+            const aprovacoes = await this.aprovacaoRepo.listarPorEstado(estadoDTO.estado);
+            if (aprovacoes == null)
+                return Result.fail<IAprovacaoDTO[]>("Não existem tarefas com o estado: " + estadoDTO.estado);
+
+
+            let aprovacoesDTO: IAprovacaoDTO[] = [];
+            for (let i = 0; i < aprovacoes.length; i++) {
+                aprovacoesDTO.push(AprovacaoMap.toDTO(aprovacoes[i]));
+            }
+
+            return Result.ok<IAprovacaoDTO[]>(aprovacoesDTO);
+        } catch (e) {
+            throw e;
+        }
     }
 
-    public async listarPorTipoDispositivo(): Promise<Result<IAprovacaoDTO>> {
-        return null;
+    private validaEstado(estado: string): Boolean {
+        return (estado == "pendente" ? true : estado == "não aceite" ? true : estado == "aceite" ? true : false);
     }
 
-    public async listarPorUtente(): Promise<Result<IAprovacaoDTO>> {
-        return null;
+    public async listarPorTipoDispositivo(tipoDispositivoDTO: ITipoDispositivoDTO): Promise<Result<IAprovacaoDTO[]>> {
+        try {
+
+            const aprovacoes = await this.aprovacaoRepo.listarPorTipoDispositivo(tipoDispositivoDTO.tipoDispositivo);
+            if (aprovacoes == null)
+                return Result.fail<IAprovacaoDTO[]>("Não existem tarefas com o tipo de dispositivo: " + tipoDispositivoDTO.tipoDispositivo);
+
+
+            let aprovacoesDTO: IAprovacaoDTO[] = [];
+            for (let i = 0; i < aprovacoes.length; i++) {
+                aprovacoesDTO.push(AprovacaoMap.toDTO(aprovacoes[i]));
+            }
+
+            return Result.ok<IAprovacaoDTO[]>(aprovacoesDTO);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async listarPorUtente(utenteDTO: IUtenteDTO): Promise<Result<IAprovacaoDTO[]>> {
+        try {
+
+            const aprovacoes = await this.aprovacaoRepo.listarPorUtente(utenteDTO.utente);
+            if (aprovacoes == null)
+                return Result.fail<IAprovacaoDTO[]>("Não existem tarefas com o utente: " + utenteDTO.utente);
+
+
+            let aprovacoesDTO: IAprovacaoDTO[] = [];
+            for (let i = 0; i < aprovacoes.length; i++) {
+                aprovacoesDTO.push(AprovacaoMap.toDTO(aprovacoes[i]));
+            }
+
+            return Result.ok<IAprovacaoDTO[]>(aprovacoesDTO);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async sequenciaTarefasAprovadas(): Promise<Result<ISequenciaDTO>> {
+        try {
+
+            const aprovacoesAceitesOrError = await this.aprovacaoRepo.listarPorEstado('aceite');
+
+            if (aprovacoesAceitesOrError == null) {
+                return Result.fail<ISequenciaDTO>("Não existem tarefas aceites para gerar o plano!");
+            }
+
+            let sequencia: string = "";
+
+            if (aprovacoesAceitesOrError.length == 1) {
+                sequencia.concat(aprovacoesAceitesOrError[0].tarefa.designacaoTarefa);
+                return Result.ok<ISequenciaDTO>({ sequencia: sequencia } as ISequenciaDTO);
+            }
+
+            let errorFlag = false;
+            let errorMsg = "";
+
+            let tarefas: string[][] = [];
+
+            aprovacoesAceitesOrError.forEach(val => {
+                let tarefa: string[] = [];
+                tarefa.push(val.tarefa.designacaoTarefa);
+                tarefa.push(val.tarefa.pontoInicial);
+                tarefa.push(val.tarefa.pontoTermino);
+
+                tarefas.push(tarefa);
+            });
+
+            let solucao: string = "";
+
+
+            const serverUrl = "http://localhost:5000/best_task_order";
+            /*
+            const queryString = tarefas.map(task => "tarefas=" + task.map(val => encodeURIComponent(val))
+                .join('&'))
+                .join('&');
+            const urlQuery = serverUrl + '?' + queryString;
+
+            const options: http.RequestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            */
+
+            const queryString = querystring.stringify({ tarefas: JSON.stringify(tarefas) });
+            const urlWithQuery = serverUrl + "?" + queryString;
+
+            const options: http.RequestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+
+            async function makeRequest() {
+                return new Promise<string>((resolve, reject) => {
+                    const request = http.get(urlWithQuery, options, (response) => {
+                        let data = '';
+
+                        response.on('data', (chunk) => {
+                            data += chunk;
+                        });
+
+                        response.on('end', () => {
+                            resolve(data);
+                        });
+                    });
+
+                    request.on('error', (error) => {
+                        reject(error);
+                    });
+
+                    request.end();
+                });
+            }
+
+            const res = await makeRequest();
+
+            // Caso de sucesso atualiza o estado das tarefas.
+            for (let i = 0; i < aprovacoesAceitesOrError.length; i++) {
+                aprovacoesAceitesOrError[i].executa();
+                await this.aprovacaoRepo.save(aprovacoesAceitesOrError[i]);
+            }
+
+            return Result.ok<ISequenciaDTO>({ sequencia: sequencia } as ISequenciaDTO);
+
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
