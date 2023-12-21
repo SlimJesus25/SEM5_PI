@@ -63,6 +63,10 @@ export class Aprovacao extends AggregateRoot<AprovacaoProps> {
         this.estado = 'não aceite';
     }
 
+    public executa(){
+        this.estado = 'executado';
+    }
+
     private constructor(props: AprovacaoProps, id?: UniqueEntityID) {
         super(props, id);
     }

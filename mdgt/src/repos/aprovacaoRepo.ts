@@ -53,14 +53,14 @@ export default class AprovacaoRepo implements IAprovacaoRepo {
     }
 
     public async listarRequisicoesNaoAprovadas(): Promise<Aprovacao[]> {
-        const query = {estado : "pendente"};
+        const query = { estado: "pendente" };
         const aprovacoes = await this.aprovacaoSchema.find(query as FilterQuery<IAprovacaoPersistence & Document>);
-        
-        if(aprovacoes.length == 0)
+
+        if (aprovacoes.length == 0)
             return null;
-        
-        let requisicoesNaoAprovadas : Aprovacao[] = [];
-        for(let i=0;i<aprovacoes.length;i++){
+
+        let requisicoesNaoAprovadas: Aprovacao[] = [];
+        for (let i = 0; i < aprovacoes.length; i++) {
             const v2 = await AprovacaoMap.toDomain(aprovacoes[i]);
             requisicoesNaoAprovadas.push(v2);
         }
@@ -80,7 +80,7 @@ export default class AprovacaoRepo implements IAprovacaoRepo {
     }
 
     public async findByTarefaName(designacaoTarefa: string): Promise<Aprovacao> {
-        const query = { $and: [{tarefa : designacaoTarefa}, {estado : 'pendente'}] };
+        const query = { $and: [{ tarefa: designacaoTarefa }, { estado: 'pendente' }] };
         const aprovacaoRecord = await this.aprovacaoSchema.findOne(query as FilterQuery<IAprovacaoPersistence & Document>);
 
         if (aprovacaoRecord != null) {
@@ -89,4 +89,54 @@ export default class AprovacaoRepo implements IAprovacaoRepo {
             return null;
         }
     }
+
+    public async listarPorEstado(estado: string): Promise<Aprovacao[]> {
+        const query = { estado: estado };
+        const aprovacoes = await this.aprovacaoSchema.find(query as FilterQuery<IAprovacaoPersistence & Document>);
+
+        if (aprovacoes.length == 0)
+            return null;
+
+        let requisicoesNaoAprovadas: Aprovacao[] = [];
+        for (let i = 0; i < aprovacoes.length; i++) {
+            const v2 = await AprovacaoMap.toDomain(aprovacoes[i]);
+            requisicoesNaoAprovadas.push(v2);
+        }
+
+        return requisicoesNaoAprovadas;
+    }
+
+    public async listarPorTipoDispositivo(tipoDispositivo: string): Promise<Aprovacao[]> {
+        const query = { tipoDispositivo: tipoDispositivo };
+        const aprovacoes = await this.aprovacaoSchema.find(query as FilterQuery<IAprovacaoPersistence & Document>);
+
+        if (aprovacoes.length == 0)
+            return null;
+
+        let requisicoesNaoAprovadas: Aprovacao[] = [];
+        for (let i = 0; i < aprovacoes.length; i++) {
+            const v2 = await AprovacaoMap.toDomain(aprovacoes[i]);
+            requisicoesNaoAprovadas.push(v2);
+        }
+
+        return requisicoesNaoAprovadas;
+    }
+
+    public async listarPorUtente(utente: string): Promise<Aprovacao[]> {
+        const query = { requisitante: utente };
+        const aprovacoes = await this.aprovacaoSchema.find(query as FilterQuery<IAprovacaoPersistence & Document>);
+
+        if (aprovacoes.length == 0)
+            return null;
+
+        let requisicoesNaoAprovadas: Aprovacao[] = [];
+        for (let i = 0; i < aprovacoes.length; i++) {
+            const v2 = await AprovacaoMap.toDomain(aprovacoes[i]);
+            requisicoesNaoAprovadas.push(v2);
+        }
+
+        return requisicoesNaoAprovadas;
+    }
+
+
 }

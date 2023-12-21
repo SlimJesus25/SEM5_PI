@@ -7,4 +7,5 @@ export default interface IAprovacaoController  {
   listarPorEstado(req: Request, res: Response, next: NextFunction);
   listarPorTipoDispositivo(req: Request, res: Response, next: NextFunction);
   listarPorUtente(req: Request, res: Response, next: NextFunction);
+  sequenciaTarefasAprovadas(req: Request, res: Response, next: NextFunction);
 }
