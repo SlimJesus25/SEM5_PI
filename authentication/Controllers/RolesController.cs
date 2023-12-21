@@ -28,11 +28,12 @@ namespace RobDroneGO.Controllers
         }
 
         // GET: api/Roles?id=id
-        [HttpGet("id")]
+        // GET: api/Roles/5
+        [HttpGet("{id}")]
         public async Task<ActionResult<RoleDto>> GetGetById(int id)
         {
             try{
-                var del = await _service.GetByNumberIdAsync(new RoleId(id));
+                var del = await _service.GetByIdAsync(new RoleId(id));
 
                 if (del == null)
                 {
@@ -82,7 +83,7 @@ namespace RobDroneGO.Controllers
         }
 
         // Inactivate: api/Roles/5
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<ActionResult<RoleDto>> SoftDelete(int id)
         {
             var role = await _service.InactivateAsync(new RoleId(id));
@@ -114,6 +115,6 @@ namespace RobDroneGO.Controllers
             {
                return BadRequest(new {Message = ex.Message});
             }
-        }
+        }*/
     }
 }

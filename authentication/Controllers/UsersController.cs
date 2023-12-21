@@ -47,14 +47,25 @@ namespace RobDroneGO.Controllers
             
         }
 
-        // POST: api/Users
-        [HttpPost]
-        public async Task<ActionResult<UserDto>> Create(CreatingUserDto dto)
+        // POST: api/Users/
+        [HttpPost("User")]
+        public async Task<ActionResult<UserDto>> CreateUser(CreatingUserDto dto)
         {
-            var user = await _service.AddAsync(dto);
+            var user = await _service.AddUserAsync(dto);
 
             return CreatedAtAction(nameof(GetGetById), new { id = user.Id }, user);
         }
+
+        // POST: api/Users/
+        [HttpPost("Utente")]
+        public async Task<ActionResult<UserDto>> CreateUtente(CreatingUserDto dto)
+        {
+            var user = await _service.AddUtenteAsync(dto);
+
+            return CreatedAtAction(nameof(GetGetById), new { id = user.Id }, user);
+        }
+        
+
 
         
         // PUT: api/Users/5
