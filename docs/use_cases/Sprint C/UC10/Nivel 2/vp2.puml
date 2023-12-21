@@ -1,0 +1,20 @@
+@startuml getPackagingSD
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+box "<<System(C4)>>\n SistemaRobDroneGo"
+participant Visualization as ui <<Container(C4)>>
+participant AuthorizationAuthentication as mdl <<Container(C4)>>
+ui -> mdl: POST createUtilizador(dados de utilizador)
+alt não existe erros durante a operação
+mdl --> ui: 201 utilizador criado
+else existe erros durante a operação
+mdl --> ui: 403 não foi possivel criar utilizador
+end 
+
+end box
+
+@enduml
