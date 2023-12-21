@@ -1,4 +1,4 @@
-@startuml getPackagingSD
+@startuml vp2
 
 skinparam sequence {
 ParticipantBorderColor black

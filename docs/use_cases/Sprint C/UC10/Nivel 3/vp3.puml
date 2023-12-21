@@ -1,4 +1,4 @@
-@startuml sd
+@startuml vp3
 participant View as view
 participant Controller as ctrl
 participant Service as svc
