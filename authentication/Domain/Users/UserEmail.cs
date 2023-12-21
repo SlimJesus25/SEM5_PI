@@ -3,6 +3,9 @@ using RobDroneGO.Domain.Shared;
 using System;
 using Microsoft.Extensions.Configuration;
 using System.Xml;
+using System.Text.RegularExpressions;
+using System.Configuration;
+using System.IO;
 
 namespace RobDroneGO.Domain.Users
 {
@@ -11,16 +14,29 @@ namespace RobDroneGO.Domain.Users
         private readonly string DomainAtt;
         public string Email { get; private set; }
 
-        public UserEmail(string username)
+        public UserEmail(IConfiguration configuration)
         {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        public UserEmail(string email)
+        {
+
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("\\authentication\\emailConfig.xml"); 
+            xmlDoc.Load("emailConfig.xml"); 
+            
 
             XmlNode domainNode = xmlDoc.SelectSingleNode("/emailConfiguration/domainName");
         
             DomainAtt = domainNode.InnerText;
+
+            if (!Regex.IsMatch(email,DomainAtt)){
+                throw new BusinessRuleValidationException("Email tem de pertencer ao dominio @isep.ipp.pt");
+            }
             
-            Email = username + DomainAtt;
+            Email = email;
         }
 
         public UserEmail() { }

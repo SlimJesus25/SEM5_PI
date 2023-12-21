@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using RobDroneGO.Domain.Shared;
 
 namespace RobDroneGO.Domain.Users
@@ -8,6 +9,9 @@ namespace RobDroneGO.Domain.Users
 
         public UserPassword(string value)
         {
+            if (!Regex.IsMatch(value,@"^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{10,}$")){
+                throw new BusinessRuleValidationException("Password deve conter no minimo 10 caracteres, no minimo 1 letra maiuscula, no minimo 1 número e no minimo 1 simbolo");
+            }
             Password = value;
         }
 
