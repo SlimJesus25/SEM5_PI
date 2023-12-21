@@ -33,22 +33,22 @@ inicializa:-write('Numero de novas Geracoes: '),read(NG),
 	PPI is PPI2/100,
 	(retract(prob_pior_individuo(_));true), asserta(prob_pior_individuo(PPI)),
 
-	write('Tempo máximo de cálculo (segundos):'),read(TMC2),
+	write('Tempo maximo de calculo (segundos):'),read(TMC2),
 	TMC is TMC2 * 10,
 
-	write('Estabilização da solução (nº):'),read(ES),
+	write('Estabilizacao da solucao (n):'),read(ES),
 	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)),
 
-	% Colocado propositadamente aqui para não começar a contar antes do suposto.
+	% Colocado propositadamente aqui para nao comecar a contar antes do suposto.
 	(retract(tempo_maximo(_));true), asserta(tempo_maximo(TMC)).
 
 inicializa_aut:-
 
-	% Condição de paragem: Nº de gerações.
+	% Condicao de paragem: Nº de geracoes.
 	NG = 100,
 	(retract(geracoes(_));true), asserta(geracoes(NG)),
 
-	% População. Nº de indíviduos por geração.
+	% Populacao. Nº de indíviduos por geracao.
 	DP = 5,
 	(retract(populacao(_));true), asserta(populacao(DP)),
 
@@ -57,7 +57,7 @@ inicializa_aut:-
 	PC is P1/100, 
 	(retract(prob_cruzamento(_));true), 	asserta(prob_cruzamento(PC)),
 
-	% Percentagem de mutação.
+	% Percentagem de mutacao.
 	P2 is 5,
 	PM is P2/100, 
 	(retract(prob_mutacao(_));true), asserta(prob_mutacao(PM)),
@@ -67,11 +67,11 @@ inicializa_aut:-
 	PPI is PPI2/100,
 	(retract(prob_pior_individuo(_));true), asserta(prob_pior_individuo(PPI)),
 
-	% Condição de paragem: Tempo.
+	% Condicao de paragem: Tempo.
 	TMC2 is 5,
 	TMC is TMC2 * 10,
 
-	% Condição de paragem: Estabilização do melhor indivíduo.
+	% Condicao de paragem: Estabilizacao do melhor indivíduo.
 	ES is 75,
 	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)),
 
@@ -171,35 +171,35 @@ btroca([X*VX,Y*VY|L1],[Y*VY|L2]):-
 btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 
-% Número de gerações máximo atingido.
+% Numero de geracoes maximo atingido.
 gera_geracao(G,G,Pop,_):-!,
-	write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+	write('Geracao '), write(G), write(':'), nl, write(Pop), nl,
 	Pop = [Lista*Tempo|_],
 	(retractall(bto(_,_)),!;true),
 	asserta(bto(Lista, Tempo)),
-	write('Número de gerações máximo atingido!').
+	write('Numero de geracoes maximo atingido!').
 	
-% Número de estabilização máximo atingido.
+% Numero de estabilizacao maximo atingido.
 gera_geracao(N,_,Pop,[_,_,X]):-
 	estabilizacao_solucao(X),
 	!,
-	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
 	Pop = [Lista*Tempo|_],
 	(retractall(bto(_,_)),!;true),
 	asserta(bto(Lista, Tempo)),
-	write('Estabilização máxima atingida!').
+	write('Estabilizacao maxima atingida!').
 	% asserta(melhor_individuo()).
 
-% Tempo máximo atingido. TODO: Consertar os segundos a mais que isto roda.
+% Tempo maximo atingido. TODO: Consertar os segundos a mais que isto roda.
 gera_geracao(N,_,Pop,_):-
 	get_time(Tempo),
 	verifica_tempo(Tempo),
 	!,
-	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
 	Pop = [Lista*Tempo|_],
 	(retractall(bto(_,_)),!;true),
 	asserta(bto(Lista, Tempo)),
-	write('Tempo máximo atingido!').
+	write('Tempo maximo atingido!').
 	% asserta(melhor_individuo()).
 
 gera_geracao(N,G,Pop,[SolAct,SolAct,X]):-
@@ -211,7 +211,7 @@ gera_geracao(N,G,Pop,[SolAnt,SolAct,_]):-
 
 gera_geracao2(N, G, Pop, [_, SolAct, X]):-
 	%trace,
-	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
 	cruzamento(Pop,NPop1,1),
 	NPop1 = [NSol|_],
 	mutacao(NPop1,NPop,1),
@@ -239,16 +239,16 @@ gerar_pontos_cruzamento1(P1,P2):-
 gerar_pontos_cruzamento1(P1,P2):-
 	gerar_pontos_cruzamento1(P1,P2).
 
-% Passar sempre o melhor indivíduo + fazer cruzamentos aleatórios e não sucessivos (1º com 2º, 3º com 4º...)
+% Passar sempre o melhor indivíduo + fazer cruzamentos aleatórios e nao sucessivos (1º com 2º, 3º com 4º...)
 cruzamento([],[],_).
 
 %cruzamento([Ind*_],[Ind],_).
 
 % Predicado intermédio que vai garantir que:
-%  1 - O melhor indíviduo é passado para a próxima geração;
-%  2 - Não são cruzados pares consecutivos (1º e 2º, 3º e 4º...).
+%  1 - O melhor indíviduo é passado para a próxima geracao;
+%  2 - Nao sao cruzados pares consecutivos (1º e 2º, 3º e 4º...).
 % Como?
-%  1 - Se se tratar do primeiro índice, ou seja, indivíduo com melhor prestação, vai ser diretamente passado para a próxima geração;
+%  1 - Se se tratar do primeiro índice, ou seja, indivíduo com melhor prestacao, vai ser diretamente passado para a próxima geracao;
 %  2 - É feito um shuffle à lista (excepto o melhor indivíduo).
 cruzamento([Ind1*_|Resto], [Ind1|Resto1], 1):-
 	!,
