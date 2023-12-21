@@ -30,6 +30,8 @@
 :-dynamic tarefas/1. % tarefas(5)... => nº de tarefas a gerar o plano.
 
 :-dynamic bto/2. % bto([T3, T1, T2], 30.2391)... => tem a melhor ordem e o respetivo tempo.
+:-dynamic btoPath/2.
+:-dynamic ttpl/4.
 
 :-set_prolog_flag(answer_write_options,[max_depth(0)]).
 :-set_prolog_flag(report_error,true).
@@ -47,21 +49,66 @@ server(Port) :-
 int_server(Port):-
   http_stop_server(Port, _).
 
+stringify([], []).
+stringify([Head|Tail], [QuotedHead|QuotedTail]) :-
+    quote_items(Head, QuotedHead),
+    stringify(Tail, QuotedTail).
+
+quote_items([], []).
+quote_items([Item|Rest], [QuotedItem|QuotedRest]) :-
+    format(atom(QuotedItem), '"~w"', [Item]),
+    quote_items(Rest, QuotedRest).
+
+obtem_caminhos:-
+  bto(Ts, _),
+  %Ts = [_, S|_],
+  obtem_caminhos2(Ts, L1, L2),
+  asserta(btoPath(L1, L2)).
+
+obtem_caminhos2([H1, H2|T], [HH|TT], [HH2|TT2]):-
+  ttpl(H1, H2, A, B),
+  HH = A,
+  HH2 = B,
+  obtem_caminhos2([H2|T], TT, TT2).
+
+obtem_caminhos2([_|_], [], []).
+
+
+%obtem_caminhos2([H1|T], Ant, [HH|TT]):-
+%  ttpl(H1, Ant, A, B),
+%  HH = [A, B].
+
 % Predicado que recebe pedidos HTTP para gerar o plano de execução das tarefas.
 best_task_order(Request):-
 
   cors_enable(Request, [methods([get])]),
-  http_parameters(Request, [tarefas(Tarefas, []), camsCalc(CamsCalc, [])]),
+  http_parameters(Request, [tarefas(T, [])]),
+  term_to_atom(Tarefas, T),
+  %stringify(T2, Tar),
+  %remove_outer_single_quotes_from_lists(Tar, Tarefas),
   
   request_dados(),
-  
+
   cria_tarefas(Tarefas),
-  calculo(CamsCalc, CamsCalc, 1),
+
+  calculo(Tarefas, Tarefas, 1, Caminhos),
+
   gera_aut,
 
-  R = json([]),
+  obtem_caminhos,
+  
+  bto(Seq, Tempo),
+  btoPath(CamEntrePiso, CamPorPiso),
+  %round_two(T, Tempo),
+
+  R = json([plano=Seq, tempo=Tempo]),
+  
   prolog_to_json(R, JSONObject),
   reply_json(JSONObject, [json_object(dict)]).
+
+%round_two(N, NN):-
+%  format(atom(Formatted), '~2f', [N]),
+%  atom_number(Formatted, NN).
 
 % % %
 % Faz assert do predicado:
@@ -88,6 +135,8 @@ remove_tarefas:-
   (retractall(tarefas(_)),!;true),
   (retractall(tarefa(_,_,_,_)),!;true),
   (retractall(tarefa2(_,_,_)),!;true),
+  (retractall(ttpl(_, _, _, _)),!;true),
+  (retractall(btoPath(_,_)),!;true),
   (retractall(tempo_caminho(_,_,_)),!;true).
 
 
@@ -96,39 +145,48 @@ remove_tarefas:-
 % Recebe como parâmetro a lista de tarefas, a mesma lista de tarefas e um 1.
 % % %
 
-calculo([], _, _):-!.
+calculo([], _, _, []):-!.
 
-calculo([H|T], Intacta, IndexAct):-
-  calculo2(H, Intacta, IndexAct, 1),
+calculo([H|T], Intacta, IndexAct, [H2|T2]):-
+  calculo2(H, Intacta, IndexAct, 1, H2),
   Next is IndexAct + 1,
-  calculo(T, Intacta, Next).
+  calculo(T, Intacta, Next, T2).
 
-calculo2(_, [], _, _):-!.
+calculo2(_, [], _, _, []):-!.
 
-calculo2(TarefaAtual, [_|T], Atual, Atual):-
+calculo2(TarefaAtual, [_|T], Atual, Atual, L):-
   !,
   Next is Atual+1,
-  calculo2(TarefaAtual, T, Atual, Next).
+  calculo2(TarefaAtual, T, Atual, Next, L).
 
-calculo2(Tarefa, [[TDest, _, Destino]|T], Atual, Ind):-
+calculo2(Tarefa, [[TDest, _, Destino]|T], Atual, Ind, [H2|T2]):-
 
   Tarefa = [TOrig, Origem, _],
+
+  %trace,
   ponto_acesso(Origem, ColO, LinO, PisoO),
   ponto_acesso(Destino, ColD, LinD, PisoD),
-  
+
   melhor_caminho_pisos(PisoO, PisoD, Cam, PisosPer),
+
   node(X1, ColO, LinO, _, PisoO), 
   edge(X1, X, _, PisoO),
 
   node(Y1, ColD, LinD, _, PisoD), 
   edge(Y1, Y, _, PisoD),
 
-  aStar_piso(PisosPer, _, Cam, X, Y, Tempo),
+  aStar_piso(PisosPer, LC, Cam, X, Y, Tempo),
+  eliminate_redundant(LC, LCam),
+  %H2 = [TOrig|TDest->Cam*LCam],
+  assertz(ttpl(TOrig, TDest, Cam, LCam)),
   tempo_passagens(Cam, Tempo, NTempo),
   asserta(tempo_caminho(TOrig, TDest, NTempo)),
   asserta(tempo_caminho(TDest, TOrig, NTempo)),
+  %open('teste.txt', append, Stream),
+  %write(Stream, 'CamTempo: '), write(Stream, TOrig), write(Stream, TDest), write(Stream, NTempo), nl(Stream),
+  %close(Stream),
   Ind2 is Ind+1,
-  calculo2(Tarefa, T, Atual, Ind2).
+  calculo2(Tarefa, T, Atual, Ind2, T2).
 
 tempo_passagens([], Tempo, Tempo):-!.
 
@@ -596,3 +654,28 @@ flatten([X|Xs], Flat) :-
     flatten(Xs, FlatRest),
     append(FlatX, FlatRest, Flat).
 flatten(X, [X]).
+
+% Define a predicate to remove outer single quotes from a list of lists
+remove_outer_single_quotes_from_lists([], []).
+remove_outer_single_quotes_from_lists([H|T], [ProcessedH|ProcessedT]) :-
+    process_list_with_quotes(H, ProcessedH),
+    remove_outer_single_quotes_from_lists(T, ProcessedT).
+
+% Define a predicate to remove outer single quotes from a list
+process_list_with_quotes([], []).
+process_list_with_quotes([H|T], [ProcessedH|ProcessedT]) :-
+    remove_outer_single_quotes(H, ProcessedH),
+    process_list_with_quotes(T, ProcessedT).
+
+% Define a predicate to remove outer single quotes from an atom or list
+remove_outer_single_quotes(X, X) :- atomic(X).
+remove_outer_single_quotes([H|T], [ProcessedH|ProcessedT]) :-
+    remove_outer_single_quotes(H, ProcessedH),
+    remove_outer_single_quotes(T, ProcessedT).
+remove_outer_single_quotes(AtomWithQuotes, AtomWithoutQuotes) :-
+    atom_concat('\'', AtomWithoutQuotesWithQuotes, AtomWithQuotes),
+    atom_concat(AtomWithoutQuotesWithQuotes, '\'', AtomWithoutQuotes).
+
+% Example usage:
+% remove_outer_single_quotes_from_lists([['"T1"', '"D201T"', '"C101T"'], ['"T2"', '"D101T"', '"APF"']], ProcessedLists).
+% The result will be ProcessedLists = [["T1", "D201T", "C101T"], ["T2", "D101T", "APF"]
