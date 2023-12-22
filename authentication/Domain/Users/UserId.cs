@@ -1,6 +1,6 @@
 using System;
 using RobDroneGO.Domain.Shared;
-
+//
 namespace RobDroneGO.Domain.Users
 {
     public class UserId : EntityId

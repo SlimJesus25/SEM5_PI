@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+//
 namespace RobDroneGO.Domain.Users{
     public interface IUserService{
         Task<List<UserDto>> GetAllAsync();

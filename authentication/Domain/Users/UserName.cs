@@ -1,5 +1,5 @@
 using RobDroneGO.Domain.Shared;
-
+//
 namespace RobDroneGO.Domain.Users
 {
     public class UserName : IValueObject

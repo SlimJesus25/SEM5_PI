@@ -1,6 +1,6 @@
 using RobDroneGO.Domain.Roles;
 using RobDroneGO.Domain.Shared;
-using System;
+//
 namespace RobDroneGO.Domain.Users
 {
     public class User : Entity<UserId>, IAggregateRoot

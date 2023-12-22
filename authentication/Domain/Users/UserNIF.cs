@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
 using RobDroneGO.Domain.Shared;
 
 namespace RobDroneGO.Domain.Users
