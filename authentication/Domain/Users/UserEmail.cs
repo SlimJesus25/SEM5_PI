@@ -1,11 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using RobDroneGO.Domain.Shared;
-using System;
 using Microsoft.Extensions.Configuration;
 using System.Xml;
 using System.Text.RegularExpressions;
-using System.Configuration;
-using System.IO;
 
 namespace RobDroneGO.Domain.Users
 {
