@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RobDroneGO.Infrastructure;
 using RobDroneGO.Infrastructure.Roles;
 using RobDroneGO.Infrastructure.Users;
+using RobDroneGO.Infrastructure.Pedidos;
 using RobDroneGO.Infrastructure.Shared;
 using RobDroneGO.Domain.Shared;
 
@@ -16,12 +17,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using RobDroneGO.Domain.Roles;
 using RobDroneGO.Domain.Users;
+using RobDroneGO.Domain.Pedidos;
 
 
 namespace RobDroneGO
 {
     public class Startup
     {
+        static string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -57,6 +60,16 @@ namespace RobDroneGO
                 };
             });
             services.AddControllers().AddNewtonsoftJson();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +84,8 @@ namespace RobDroneGO
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
 
@@ -97,6 +112,10 @@ namespace RobDroneGO
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<UserService>();
             services.AddScoped<IUserService,UserService>();
+
+            services.AddTransient<IPedidoRepository, PedidoRepository>();
+            services.AddTransient<PedidoService>();
+            services.AddScoped<IPedidoService,PedidoService>();
         }
     }
 }
