@@ -49,6 +49,9 @@ import { MbcoComponent } from './component/asist/mbco/mbco.component';
 import { RgpdComponent } from './component/info/rgpd/rgpd.component';
 import { BackupComponent } from './component/asist/backup/backup.component';
 
+//User
+import { RegistarUserComponent } from './component/user/registarUser/registar-user.component';
+
 const routes: Routes = [
 
   // Edificio
@@ -110,7 +113,10 @@ const routes: Routes = [
   { path: 'view', component: VisualizacaoComponent },
   { path: 'mbco', component: MbcoComponent },
   { path: 'rgpd', component: RgpdComponent },
-  { path: 'backup', component: BackupComponent }
+  { path: 'backup', component: BackupComponent },
+
+  //User
+  { path: 'criarUser', component: RegistarUserComponent }
 ];
 
 

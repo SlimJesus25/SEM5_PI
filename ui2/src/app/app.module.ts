@@ -70,6 +70,7 @@ import { VisualizacaoComponent } from './component/visualizacao/visualizacao.com
 import { MbcoComponent } from './component/asist/mbco/mbco.component';
 import { RgpdComponent } from './component/info/rgpd/rgpd.component';
 import { BackupComponent } from './component/asist/backup/backup.component';
+import { RegistarUserComponent } from './component/user/registarUser/registar-user.component';
 
 
 @NgModule({
@@ -151,7 +152,10 @@ import { BackupComponent } from './component/asist/backup/backup.component';
     VisualizacaoComponent,
     MbcoComponent,
     RgpdComponent,
-    BackupComponent
+    BackupComponent,
+
+    //User
+    RegistarUserComponent
   ],
   bootstrap: [ AppComponent ]
 })

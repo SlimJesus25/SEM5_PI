@@ -102,4 +102,8 @@ export class MainMenuComponent implements OnInit {
   backup(){
     this.router.navigate(['backup']);
   }
+
+  criarUser(){
+    this.router.navigate(['criarUser']);
+  }
 }
