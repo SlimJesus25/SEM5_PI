@@ -69,7 +69,8 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
 
     public async listarPorEstado(req: Request, res: Response, next: NextFunction) {
         try {
-            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorEstado(req.body as IEstadoDTO) as Result<IAprovacaoDTO[]>;
+            const estado : IEstadoDTO = {estado : req.query.estado as string}
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorEstado(estado) as Result<IAprovacaoDTO[]>;
 
             if (aprovacoesOrError.isFailure) {
                 return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
@@ -84,7 +85,8 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
 
     public async listarPorTipoDispositivo(req: Request, res: Response, next: NextFunction) {
         try {
-            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorTipoDispositivo(req.body as ITipoDispositivoDTO) as Result<IAprovacaoDTO[]>;
+            const tipoDispositivo : ITipoDispositivoDTO = {tipoDispositivo : req.query.tipoDispositivo as string}
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorTipoDispositivo(tipoDispositivo) as Result<IAprovacaoDTO[]>;
 
             if (aprovacoesOrError.isFailure) {
                 return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
@@ -99,7 +101,8 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
 
     public async listarPorUtente(req: Request, res: Response, next: NextFunction) {
         try {
-            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorUtente(req.body as IUtenteDTO) as Result<IAprovacaoDTO[]>;
+            const utente : IUtenteDTO = {utente : req.query.utente as string}
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorUtente(utente) as Result<IAprovacaoDTO[]>;
 
             if (aprovacoesOrError.isFailure) {
                 return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
