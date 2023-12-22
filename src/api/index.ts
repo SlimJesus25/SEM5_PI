@@ -11,6 +11,8 @@ import robo from './routes/roboRoute';
 import tipoRobo from './routes/tipoRoboRoute';
 import mapaPiso from './routes/mapaPisoRoute';
 import tarefa from './routes/tarefaRoute';
+import aprovacao from './routes/aprovacaoRoute';
+import tarefaAprovacao from './routes/tarefaAprovacaoRoute'
 
 
 export default () => {
@@ -28,6 +30,8 @@ export default () => {
 	tipoRobo(app);
 	mapaPiso(app);
 	tarefa(app);
-	
+	aprovacao(app);
+	tarefaAprovacao(app);
+
 	return app
 }

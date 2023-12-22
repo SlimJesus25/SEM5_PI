@@ -54,7 +54,7 @@ export default (app: Router) => {
 
     route.get('/pesquisarRequisicaoPorUtente',
     celebrate({
-      body: Joi.object({
+      query: Joi.object({
         utente: Joi.string().required(),
       }),
     }),
