@@ -78,6 +78,25 @@ namespace RobDroneGO.Domain.Users
             if (user == null)
                 return null;   
 
+            if (dto.Name != null){
+                user.AlterarNome(dto.Name);
+            }
+
+            if (dto.PhoneNumber != null){
+                user.AlterarPhoneNumber(dto.PhoneNumber);
+            }
+
+            if (dto.NIF != null){
+                user.AlterarNif(dto.NIF);
+            }
+
+            if (dto.Password != null){
+                user.AlterarPassword(dto.Password);
+            }
+            
+            if (dto.RoleId != 0){
+                user.AlterarRoleId(dto.RoleId);
+            }
 
             await this._unitOfWork.CommitAsync();
 

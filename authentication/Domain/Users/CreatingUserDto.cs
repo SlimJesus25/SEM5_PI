@@ -1,5 +1,7 @@
 
 
+using System.Text.Json.Serialization;
+
 namespace RobDroneGO.Domain.Users
 {
     public class CreatingUserDto
@@ -21,15 +23,8 @@ namespace RobDroneGO.Domain.Users
         }
 
 
-        public CreatingUserDto( string name,string email, string phoneNumber,string password, int roleId)
-        {
-            this.Name = name;
-            this.Email = email;
-            this.PhoneNumber = phoneNumber;
-            this.Password = password;
-            this.RoleId = roleId;
-        }
-
+        
+        [JsonConstructor]
         public CreatingUserDto(string name, string email, string phoneNumber, string nif, string password, int roleId)
         {
             this.Name = name;

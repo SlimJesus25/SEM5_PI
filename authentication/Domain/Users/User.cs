@@ -45,5 +45,25 @@ namespace RobDroneGO.Domain.Users
             this.Password = new UserPassword(password);
             this.RoleId = roleId;
         }
+
+        public void AlterarNome(string name){
+            this.Name = new UserName(name);
+        }
+
+        public void AlterarPhoneNumber(string phoneNumber){
+            this.PhoneNumber = new UserPhoneNumber(phoneNumber);
+        }
+
+        public void AlterarNif(string nif){
+            this.NIF = new UserNIF(nif);
+        }
+
+        public void AlterarPassword(string password){
+            this.Password = new UserPassword(password);
+        }
+
+        public void AlterarRoleId(int roleId){
+            this.RoleId = new RoleId(roleId);
+        }
     }
 }
