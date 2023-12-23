@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using RobDroneGO.Domain.Shared;
 using Microsoft.AspNetCore.Http;
 using RobDroneGO.Domain.Roles;
+using RobDroneGO.Infrastructure;
+using System.Linq;
 
 
 
@@ -14,12 +16,17 @@ namespace RobDroneGO.Domain.Users
         private readonly IUserRepository _repo;
 
         private readonly IRoleRepository _repoR;
+        
+        private readonly RobDroneGODbContext _dbContext;
 
-        public UserService(IUnitOfWork unitOfWork, IUserRepository repo, IRoleRepository repoR)
+
+        public UserService(IUnitOfWork unitOfWork, IUserRepository repo, IRoleRepository repoR, RobDroneGODbContext dbContext)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
             this._repoR = repoR;
+            _dbContext = dbContext;
+
         }
 
         public async Task<UserDto> AddUserAsync(CreatingUserDto dto)
@@ -34,7 +41,7 @@ namespace RobDroneGO.Domain.Users
                 await this._repo.AddAsync(user);
                 await this._unitOfWork.CommitAsync();
 
-                return new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(),user.RoleId.toInt());
+                return new UserDto(user.Id.Id,user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(),user.RoleId.toInt());
 
             }
             catch (BusinessRuleValidationException ex)
@@ -55,7 +62,7 @@ namespace RobDroneGO.Domain.Users
                 await this._repo.AddAsync(utente);
                 await this._unitOfWork.CommitAsync();
 
-                return new UserDto(utente.Id.toInt(),utente.Name.toString(),utente.Email.toString(), utente.PhoneNumber.toString(), utente.Password.toString(), utente.NIF.toString(), utente.RoleId.toInt());
+            return new UserDto(utente.Id.toInt(),utente.Name.toString(),utente.Email.toString(), utente.PhoneNumber.toString(), utente.NIF.toString(), utente.Password.toString(), utente.RoleId.toInt());
 
             }
             catch (BusinessRuleValidationException ex)
@@ -85,7 +92,7 @@ namespace RobDroneGO.Domain.Users
         {
             var list = await this._repo.GetAllAsync();
 
-            List<UserDto> listDTO = list.ConvertAll<UserDto>(user => new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(), user.NIF.toString(), user.RoleId.toInt()));
+            List<UserDto> listDTO = list.ConvertAll<UserDto>(user => new UserDto(user.Id.Id,user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(), user.NIF.toString(), user.RoleId.toInt()));
 
             return listDTO;
         }
@@ -97,7 +104,7 @@ namespace RobDroneGO.Domain.Users
             if (user == null)
                 return null;
 
-            return new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(), user.NIF.toString(), user.RoleId.toInt());
+            return new UserDto(user.Id.Id,user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(), user.NIF.toString(), user.RoleId.toInt());
         }
         /*
             public async Task<UserDto> InactivateAsync(UserIdNumber id)
@@ -134,5 +141,19 @@ namespace RobDroneGO.Domain.Users
         {
             return await _repo.CountUsers() + 1;
         }
+
+
+        public async Task<UserDto> Login(UserEmail email, UserPassword password)
+        {
+            var user = await this._repo.Login(email,password);
+
+            if (user == null)
+                return null;
+
+            return new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.NIF.toString(), user.Password.toString(), user.RoleId.toInt());
+        }
+
+
+
     }
 }

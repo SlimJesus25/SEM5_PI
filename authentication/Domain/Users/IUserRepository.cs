@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using RobDroneGO.Domain.Shared;
 
@@ -8,5 +9,6 @@ namespace RobDroneGO.Domain.Users
     {
         Task<User> GetByNumberIdAsync(UserId id);
         Task<int> CountUsers();
+        Task<User> Login(UserEmail email, UserPassword password);
     }
 }

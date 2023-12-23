@@ -5,7 +5,7 @@ namespace RobDroneGO.Domain.Users
 {
     public class UserId : EntityId
     {
-        
+
         public int Id { get; private set; } 
 
         public UserId(int value): base(value)
@@ -32,14 +32,17 @@ namespace RobDroneGO.Domain.Users
 
         //public UserIdNumber(){}
 
-        /*protected override IEnumerable<object> GetEqualityComponents()
+    /*
+        protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return IdNumber;
-        }*/
-
+        }
+*/
         public int toInt(){
             return Id;
         }
+
+        
 
         protected override object createFromString(string text)
         {
