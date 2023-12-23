@@ -10,7 +10,7 @@ import { Role } from '../../model/role';
   providedIn: 'root'
 })
 export class RoleService {
-  private LogisticAPI_URL = 'http://localhost:5000/api/Roles';  // URL to web api
+  private LogisticAPI_URL = 'http://localhost:3000/api/roles';  // URL to web api
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
