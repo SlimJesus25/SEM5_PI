@@ -1,47 +1,32 @@
-# UC 20
+# UC 80
 
 ## 1. Requisitos
 
-**UC20** - Como potencial utente do sistema (ex., aluno, docente) pretendo registar-me como utente do sistema.
+**UC80** - Como administrador do sistema pretendo aprovar ou recusar o registo de um utente.
 
 ## 2. Análise
 
 ### 2.1 Identificar o problema
 
-Implementar um método que permita a um utente se registar no sistema e ficar à espera de uma autorização de um administrador.
+Implementar um método que permita a administrador aceitar ou recusar o registo de novos utentes.
 
 ### 2.2 Respostas do Cliente
-Pergunta:
 
-Na Us de registo de um utente na aplicação deve ser apresentado a este a política de privacidade antes ou depois de ele preencher a sua informação? E caso o mesmo não a aceite como devo proceder, aviso que o registo não é possível sem aceitar a política de privacidade e retorno à home page ou pergunto se se quer registar de novo?
-
-Resposta:
-No formulário de registo deve ser pedida toda a informação e apresentada uma checkbox para aceitação da política de privacidade. No texto dessa checkbox deve existir um link para a política de privacidade.
-O preenchimento da checkbox é obrigatório e se não for preenchido deve ser apresentada uma mensagem
-
-
-Pergunta:
-Que dados são necessários para a criação/registo de um utilizador, para além do seu Role?
-
-Resposta:
-criação de utilizadores e registo de utilizadores são dois casos de uso diferentes e com necessidades distintas.
-a criação de utilizadores serve para os administradores de sistema criarem os diversos utilizadores de backoffice do sistema num dos papeis designados, ex., gestor de campus, gestor de frota, gestor de tarefas o registo de utentes serve para o registo de utilizadores com o papel utente em ambos os casos será necessário obter nome, email e telefone.
-No registo de utentes deve adicionalmente ser recolhido o número de contribuinte para faturação de serviços apenas serão aceites emails da organização, ex., isep.ipp.pt.
-
-Pergunta:
+Pergunta: 
 Como pretende que a atribuição de um Role seja feito?
-Durante o registo do utente pelo próprio utente (US20)
+Durante a aprovação do registo do utente pelo Administrator (US80)
 
 Resposta:
 o administrador atribui o papel na criação de utilizadores.
 os utilizadores que utilizem a funcionalidade de registo serão sempre do tipo "utente"
 
 
+
 ### 2.3 Testes ao requisito
 
-**Test 1:** *Create utente successful case*
+**Test 1:** *UPDATE utente successful case*
 
-**Test 2:** *Create utente unsuccessful case*
+**Test 2:** *UPDATE utente unsuccessful case*
 
 ## 3. Desenho
 
