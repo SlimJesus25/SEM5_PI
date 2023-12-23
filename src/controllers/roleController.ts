@@ -13,20 +13,20 @@ import { Console } from 'console';
 @Service()
 export default class RoleController implements IRoleController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
-      @Inject(config.services.role.name) private roleServiceInstance : IRoleService
-  ) {}
+    @Inject(config.services.role.name) private roleServiceInstance: IRoleService
+  ) { }
 
-  public async criarRole(req: Request, res: Response, next: NextFunction){
+  public async criarRole(req: Request, res: Response, next: NextFunction) {
     try {
       console.log(req.body);
       const roleOrError = await this.roleServiceInstance.criarRole(req.body as ICreatingRoleDTO) as Result<IRoleDTO>;
-        
+
       if (roleOrError.isFailure) {
         return res.status(403).send("Erro: " + roleOrError.errorValue());
       }
 
       const roleDTO = roleOrError.getValue();
-      return res.json( roleDTO ).status(201);
+      return res.json(roleDTO).status(201);
     }
     catch (e) {
       return next(e);
@@ -51,16 +51,31 @@ export default class RoleController implements IRoleController /* TODO: extends 
 
   public async getAllRoles(req: Request, res: Response, next: NextFunction) {
     try {
-        const rolesOrError = await this.roleServiceInstance.getAllRoles() as Result<IRoleDTO[]>;
+      const rolesOrError = await this.roleServiceInstance.getAllRoles() as Result<IRoleDTO[]>;
 
-        if (rolesOrError.isFailure) {
-            return res.status(404).send("Erro: " + rolesOrError.errorValue());
-        }
+      if (rolesOrError.isFailure) {
+        return res.status(404).send("Erro: " + rolesOrError.errorValue());
+      }
 
-        const rolesDTO = rolesOrError.getValue()
-        return res.json(rolesDTO).status(201);
+      const rolesDTO = rolesOrError.getValue()
+      return res.json(rolesDTO).status(201);
     } catch (e) {
-        return next(e);
+      return next(e);
     }
-};
+  };
+
+  public async getRoleById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const rolesOrError = await this.roleServiceInstance.getRoleById(req.params.id) as Result<IRoleDTO>;
+
+      if (rolesOrError.isFailure) {
+        return res.status(404).send("Erro: " + rolesOrError.errorValue());
+      }
+
+      const rolesDTO = rolesOrError.getValue()
+      return res.json(rolesDTO).status(201);
+    } catch (e) {
+      return next(e);
+    }
+  };
 }

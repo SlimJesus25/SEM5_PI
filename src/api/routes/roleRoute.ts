@@ -28,6 +28,13 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.criarRole(req, res, next));
 
+    route.get('/getRoleById/:id',
+    celebrate({
+      body: Joi.object({
+      })
+    }),
+    (req, res, next) => ctrl.getRoleById(req, res, next));
+
   /*route.put('',
     celebrate({
       body: Joi.object({

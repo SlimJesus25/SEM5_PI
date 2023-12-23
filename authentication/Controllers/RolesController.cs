@@ -28,7 +28,7 @@ namespace RobDroneGO.Controllers
         }
 
         // GET: api/Roles/getRole/5
-        [HttpGet("getRole/{id}")]
+        [HttpGet("getRoleById/{id}")]
         public async Task<ActionResult<RoleDto>> GetGetById(int id)
         {
             try{
