@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
 
 import { Container } from 'typedi';
-import IRoleController from '../../controllers/IControllers/IRoleController'; 
+import IRoleController from '../../controllers/IControllers/IRoleController';
 
 import config from "../../../config";
 
@@ -13,20 +13,27 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.role.name) as IRoleController;
 
-  route.post('',
+  route.get('/getAllRoles',
     celebrate({
       body: Joi.object({
-        name: Joi.string().required()
       })
     }),
-    (req, res, next) => ctrl.createRole(req, res, next) );
+    (req, res, next) => ctrl.getAllRoles(req, res, next));
 
-  route.put('',
+  route.post('/criarRole',
+    celebrate({
+      body: Joi.object({
+        name: Joi.string(),
+      })
+    }),
+    (req, res, next) => ctrl.criarRole(req, res, next));
+
+  /*route.put('',
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
         name: Joi.string().required()
       }),
     }),
-    (req, res, next) => ctrl.updateRole(req, res, next) );
+    (req, res, next) => ctrl.updateRole(req, res, next) );*/
 };

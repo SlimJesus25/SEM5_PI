@@ -7,6 +7,8 @@ import IRoleService from '../services/IServices/IRoleService';
 import IRoleDTO from '../dto/IRoleDTO';
 
 import { Result } from "../core/logic/Result";
+import ICreatingRoleDTO from '../dto/ICreatingRoleDTO';
+import { Console } from 'console';
 
 @Service()
 export default class RoleController implements IRoleController /* TODO: extends ../core/infra/BaseController */ {
@@ -14,12 +16,13 @@ export default class RoleController implements IRoleController /* TODO: extends 
       @Inject(config.services.role.name) private roleServiceInstance : IRoleService
   ) {}
 
-  public async createRole(req: Request, res: Response, next: NextFunction) {
+  public async criarRole(req: Request, res: Response, next: NextFunction){
     try {
-      const roleOrError = await this.roleServiceInstance.createRole(req.body as IRoleDTO) as Result<IRoleDTO>;
+      console.log(req.body);
+      const roleOrError = await this.roleServiceInstance.criarRole(req.body as ICreatingRoleDTO) as Result<IRoleDTO>;
         
       if (roleOrError.isFailure) {
-        return res.status(402).send();
+        return res.status(403).send("Erro: " + roleOrError.errorValue());
       }
 
       const roleDTO = roleOrError.getValue();
@@ -30,7 +33,7 @@ export default class RoleController implements IRoleController /* TODO: extends 
     }
   };
 
-  public async updateRole(req: Request, res: Response, next: NextFunction) {
+  /*public async updateRole(req: Request, res: Response, next: NextFunction) {
     try {
       const roleOrError = await this.roleServiceInstance.updateRole(req.body as IRoleDTO) as Result<IRoleDTO>;
 
@@ -44,5 +47,20 @@ export default class RoleController implements IRoleController /* TODO: extends 
     catch (e) {
       return next(e);
     }
-  };
+  };*/
+
+  public async getAllRoles(req: Request, res: Response, next: NextFunction) {
+    try {
+        const rolesOrError = await this.roleServiceInstance.getAllRoles() as Result<IRoleDTO[]>;
+
+        if (rolesOrError.isFailure) {
+            return res.status(404).send("Erro: " + rolesOrError.errorValue());
+        }
+
+        const rolesDTO = rolesOrError.getValue()
+        return res.json(rolesDTO).status(201);
+    } catch (e) {
+        return next(e);
+    }
+};
 }
