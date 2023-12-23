@@ -72,9 +72,9 @@ namespace RobDroneGO.Domain.Pedidos
             return listDTO;
         }
         
-        public async Task<PedidoDto> GetByNumberIdAsync(PedidoId id)
+        public async Task<PedidoDto> GetByIdAsync(PedidoId id)
         {
-            var pedido = await this._repo.GetByNumberIdAsync(id);
+            var pedido = await this._repo.GetByIdAsync(id);
             
             if(pedido == null)
                 return null;

@@ -15,10 +15,6 @@ namespace RobDroneGO.Infrastructure.Pedidos
            this.context = context;
         }
 
-        public async Task<Pedido> GetByNumberIdAsync(PedidoId id){
-            return await this.context.Pedidos.Where(x => id.Id == x.Id.Id).FirstAsync();
-        }
-
         public async Task<int> CountPedidos(){
             return await this.context.Pedidos.CountAsync();
         }
