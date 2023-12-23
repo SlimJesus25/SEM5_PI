@@ -6,7 +6,7 @@ namespace RobDroneGO.Domain.Pedidos{
         Task<List<PedidoDto>> GetAllAsync();
 
         Task<List<PedidoDto>> GetAllPendentesAsync();
-        Task<PedidoDto> GetByNumberIdAsync(PedidoId id);
+        Task<PedidoDto> GetByIdAsync(PedidoId id);
         Task<PedidoDto> AddAsync(CreatingPedidoDto dto);
         Task<PedidoDto> AprovarPedido(PedidoId id);
 

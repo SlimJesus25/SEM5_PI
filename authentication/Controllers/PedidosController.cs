@@ -44,7 +44,7 @@ namespace RobDroneGO.Controllers
         public async Task<ActionResult<PedidoDto>> GetGetById(int id)
         {
             try{
-                var pedido = await _service.GetByNumberIdAsync(new PedidoId(id));
+                var pedido = await _service.GetByIdAsync(new PedidoId(id));
 
                 if (pedido == null)
                 {
