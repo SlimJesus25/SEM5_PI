@@ -20,16 +20,15 @@ namespace RobDroneGO.Controllers
             _service = service;
         }
 
-        // GET: api/Roles
-        [HttpGet]
+        // GET: api/Roles/getAllRoles
+        [HttpGet("getAllRoles")]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetAll()
         {
             return await _service.GetAllAsync();
         }
 
-        // GET: api/Roles?id=id
-        // GET: api/Roles/5
-        [HttpGet("{id}")]
+        // GET: api/Roles/getRole/5
+        [HttpGet("getRole/{id}")]
         public async Task<ActionResult<RoleDto>> GetGetById(int id)
         {
             try{
@@ -47,8 +46,8 @@ namespace RobDroneGO.Controllers
             
         }
 
-        // POST: api/Roles
-        [HttpPost]
+        // POST: api/Roles/criarRole
+        [HttpPost("criarRole")]
         public async Task<ActionResult<RoleDto>> Create(CreatingRoleDto dto)
         {
             var role = await _service.AddAsync(dto);
@@ -56,7 +55,7 @@ namespace RobDroneGO.Controllers
             return CreatedAtAction(nameof(GetGetById), new { id = role.Id }, role);
         }
 
-        
+        /*
         // PUT: api/Roles/5
         [HttpPut("{id}")]
         public async Task<ActionResult<RoleDto>> Update(int id, RoleDto dto)
