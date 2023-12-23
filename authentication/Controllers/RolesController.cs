@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using RobDroneGO.Domain.Shared;
 using RobDroneGO.Domain.Roles;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace RobDroneGO.Controllers
@@ -21,6 +22,7 @@ namespace RobDroneGO.Controllers
         }
 
         // GET: api/Roles/getAllRoles
+        [Authorize(Roles = "GestorCampus")]
         [HttpGet("getAllRoles")]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetAll()
         {

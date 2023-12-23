@@ -15,6 +15,7 @@ using RobDroneGO.Domain.Roles;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
+using System.Linq;
 
 
 namespace RobDroneGO.Controllers
@@ -92,7 +93,7 @@ namespace RobDroneGO.Controllers
                 {
                     return NotFound();
                 }
-                 var token = Generate(user);
+                 var token = GenerateAsync(user);
                 return Ok(token);
             }catch(BadHttpRequestException ex){
                 return BadRequest(new {Message = ex.Message});
@@ -100,17 +101,37 @@ namespace RobDroneGO.Controllers
 
         }
 
-        private string Generate(UserDto user)
+        private async Task<string> GenerateAsync(UserDto user)
         {
             User user1 = new User(user.Id, user.Name, user.Email, user.PhoneNumber,user.NIF, user.Password, new RoleId(user.RoleId));
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new[]
+            var claims = new List<Claim>
             {
               //  new Claim(ClaimTypes.NameIdentifier, user.Email.ToString()),
-                new Claim(ClaimTypes.Email, user1.Email.ToString()),
-                new Claim(ClaimTypes.Role, user1.RoleId.AsString()),
+                new Claim(ClaimTypes.Email, user1.Email.Email),
             };
+
+
+            switch (user1.RoleId.toInt())
+        {
+            case 1:
+                claims.Add(new Claim(ClaimTypes.Role, "GestorUtilizadores"));
+                break;
+            case 2:
+                claims.Add(new Claim(ClaimTypes.Role, "GestorCampus"));
+                break;
+            case 3:
+                claims.Add(new Claim(ClaimTypes.Role, "GestorTarefas"));
+                break;
+            case 4:
+                claims.Add(new Claim(ClaimTypes.Role, "GestorFrota"));
+                break;
+            case 5:
+                claims.Add(new Claim(ClaimTypes.Role, "Utente"));
+                break;
+        }
+
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],

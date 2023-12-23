@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RobDroneGO.Infrastructure;
 using RobDroneGO.Infrastructure.Roles;
 using RobDroneGO.Infrastructure.Users;
-using RobDroneGO.Infrastructure.Pedidos;
+//using RobDroneGO.Infrastructure.Pedidos;
 using RobDroneGO.Infrastructure.Shared;
 using RobDroneGO.Domain.Shared;
 
@@ -17,7 +17,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using RobDroneGO.Domain.Roles;
 using RobDroneGO.Domain.Users;
-using RobDroneGO.Domain.Pedidos;
+using Microsoft.Extensions.Logging;
+//using RobDroneGO.Domain.Pedidos;
 
 
 namespace RobDroneGO
@@ -41,15 +42,24 @@ namespace RobDroneGO
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 */
             services.AddDbContext<RobDroneGODbContext>(opt =>
+            {
                 opt.UseMySQL(Configuration.GetConnectionString("Default"))
-                .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
-
-
+                .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>()
+                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())
+                );
+            });
+            /*
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<RobDroneGODbContext>()
+                .AddDefaultTokenProviders();
+                */
 
             ConfigureMyServices(services);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters{
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -59,6 +69,13 @@ namespace RobDroneGO
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("GestorCampusPolicy", policy =>
+                policy.RequireClaim("Gestor Campus"));
+            });
+
             services.AddControllers().AddNewtonsoftJson();
             services.AddCors(options =>
             {
@@ -107,15 +124,15 @@ namespace RobDroneGO
 
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<RoleService>();
-            services.AddScoped<IRoleService,RoleService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<UserService>();
-            services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IUserService, UserService>();
 
-            services.AddTransient<IPedidoRepository, PedidoRepository>();
-            services.AddTransient<PedidoService>();
-            services.AddScoped<IPedidoService,PedidoService>();
+            // services.AddTransient<IPedidoRepository, PedidoRepository>();
+            // services.AddTransient<PedidoService>();
+            // services.AddScoped<IPedidoService,PedidoService>();
         }
     }
 }
