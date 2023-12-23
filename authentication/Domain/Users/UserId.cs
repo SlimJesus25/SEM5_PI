@@ -13,6 +13,23 @@ namespace RobDroneGO.Domain.Users
             Id = value;
         }
 
+        public UserId(string value) : base(ParseStringValue(value))
+        {
+            Id = ParseStringValue(value);
+        }
+
+        private static int ParseStringValue(string text)
+        {
+            if (int.TryParse(text, out int parsedValue))
+            {
+                return parsedValue;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid string format for RoleId");
+            }
+        }
+
         //public UserIdNumber(){}
 
         /*protected override IEnumerable<object> GetEqualityComponents()
