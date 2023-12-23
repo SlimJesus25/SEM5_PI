@@ -17,12 +17,7 @@ namespace RobDroneGO.Infrastructure.Users
         {
             this.context = context;
         }
-
-        public async Task<User> GetByNumberIdAsync(UserId id)
-        {
-            return await this.context.Users.Where(x => id.Id == x.Id.Id).FirstAsync();
-        }
-
+        
         public async Task<int> CountUsers()
         {
             return await this.context.Users.CountAsync();

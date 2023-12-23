@@ -97,9 +97,9 @@ namespace RobDroneGO.Domain.Users
             return listDTO;
         }
 
-        public async Task<UserDto> GetByNumberIdAsync(UserId id)
+        public async Task<UserDto> GetByIdAsync(UserId id)
         {
-            var user = await this._repo.GetByNumberIdAsync(id);
+            var user = await this._repo.GetByIdAsync(id);
 
             if (user == null)
                 return null;

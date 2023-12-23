@@ -42,12 +42,12 @@ namespace RobDroneGO.Controllers
 
 
         // GET: api/Users?idNumber=idNumber
-        [HttpGet("idNumber")]
+        [HttpGet("idNumber/{ID}")]
         public async Task<ActionResult<UserDto>> GetGetById(int id)
         {
             try
             {
-                var user = await _service.GetByNumberIdAsync(new UserId(id));
+                var user = await _service.GetByIdAsync(new UserId(id));
 
                 if (user == null)
                 {
