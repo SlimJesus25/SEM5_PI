@@ -9,7 +9,8 @@ namespace RobDroneGO.Domain.Users
 
         public UserNIF(string value)
         {
-            if (!Regex.IsMatch(value,@"^\d{9}$")){
+            if (!Regex.IsMatch(value, @"^(\d{9})?$"))
+            {
                 throw new BusinessRuleValidationException("Nif tem de ter 9 digitos");
             }
             NIF = value;

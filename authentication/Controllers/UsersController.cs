@@ -34,7 +34,7 @@ namespace RobDroneGO.Controllers
         }
 
         // GET: api/Users
-        [HttpGet]
+        [HttpGet("getAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
             return await _service.GetAllAsync();
@@ -42,8 +42,8 @@ namespace RobDroneGO.Controllers
 
 
         // GET: api/Users?idNumber=idNumber
-        [HttpGet("idNumber/{ID}")]
-        public async Task<ActionResult<UserDto>> GetGetById(int id)
+        [HttpGet("getById/{ID}")]
+        public async Task<ActionResult<UserDto>> GetById(int id)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace RobDroneGO.Controllers
         {
             var user = await _service.AddUserAsync(dto);
 
-            return CreatedAtAction(nameof(GetGetById), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
 
         // POST: api/Users/
@@ -78,7 +78,7 @@ namespace RobDroneGO.Controllers
         {
             var user = await _service.AddUtenteAsync(dto);
 
-            return CreatedAtAction(nameof(GetGetById), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
 
         // GET: api/Users/login
@@ -125,10 +125,10 @@ namespace RobDroneGO.Controllers
 
 
             // PUT: api/Users/5
-            /*[HttpPut("{id}")]
+            [HttpPut("updateUser/{id}")]
             public async Task<ActionResult<UserDto>> Update(int id, UserDto dto)
             {
-                if (id != dto.IdNumber)
+                if (id != dto.Id)
                 {
                     return BadRequest();
                 }
@@ -149,27 +149,13 @@ namespace RobDroneGO.Controllers
                 }
             }
 
-            // Inactivate: api/Users/5
-            [HttpDelete("{id}")]
-            public async Task<ActionResult<UserDto>> SoftDelete(int id)
-            {
-                var user = await _service.InactivateAsync(new UserIdNumber(id));
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(user);
-            }
-
             // DELETE: api/Users/5
-            [HttpDelete("{id}/hard")]
+            [HttpDelete("deleteUser/{id}")]
             public async Task<ActionResult<UserDto>> HardDelete(int id)
             {
                 try
                 {
-                    var user = await _service.DeleteAsync(new UserIdNumber(id));
+                    var user = await _service.DeleteAsync(new UserId(id));
 
                     if (user == null)
                     {
@@ -182,6 +168,6 @@ namespace RobDroneGO.Controllers
                 {
                    return BadRequest(new {Message = ex.Message});
                 }
-            }*/
+            }
         }
     }

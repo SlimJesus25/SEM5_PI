@@ -37,11 +37,11 @@ namespace RobDroneGO.Domain.Users
 
                 if (role == null)
                     return null;
-                var user = new User(await GenerateId(), dto.Name, dto.Email, dto.PhoneNumber, dto.Password, role.Id);
+                var user = new User(await GenerateId(), dto.Name, dto.Email, dto.PhoneNumber, "",dto.Password, role.Id);
                 await this._repo.AddAsync(user);
                 await this._unitOfWork.CommitAsync();
 
-                return new UserDto(user.Id.Id,user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(),user.RoleId.toInt());
+                return new UserDto(user.Id.Id,user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(),"",user.Password.toString(),user.RoleId.toInt());
 
             }
             catch (BusinessRuleValidationException ex)
@@ -71,28 +71,24 @@ namespace RobDroneGO.Domain.Users
             }
         }
 
-        /*public async Task<UserDto> UpdateAsync(UserDto dto)
+        public async Task<UserDto> UpdateAsync(UserDto dto)
         {
-            var user = await this._repo.GetByNumberIdAsync(new UserIdNumber(dto.IdNumber)); 
+            var user = await this._repo.GetByIdAsync(new UserId(dto.Id)); 
 
             if (user == null)
                 return null;   
 
-            // change all fields
-            /*if(dto.Description != null){
-                user.ChangeDescription(dto.Description);
-            }
 
             await this._unitOfWork.CommitAsync();
 
-            return new UserDto(user.Id.AsGuid(), user.IdNumber.toInt(),user.Name.toString(), user.Description.toString(), user.getActive());
-        }*/
+            return new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.NIF.toString(), user.Password.toString(), user.RoleId.toInt());
+}
 
         public async Task<List<UserDto>> GetAllAsync()
         {
             var list = await this._repo.GetAllAsync();
 
-            List<UserDto> listDTO = list.ConvertAll<UserDto>(user => new UserDto(user.Id.Id,user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(), user.NIF.toString(), user.RoleId.toInt()));
+            List<UserDto> listDTO = list.ConvertAll<UserDto>(user => new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.NIF.toString(),user.Password.toString(), user.RoleId.toInt()));
 
             return listDTO;
         }
@@ -104,39 +100,23 @@ namespace RobDroneGO.Domain.Users
             if (user == null)
                 return null;
 
-            return new UserDto(user.Id.Id,user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.Password.toString(), user.NIF.toString(), user.RoleId.toInt());
+            return new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.NIF.toString(), user.Password.toString(), user.RoleId.toInt());
         }
-        /*
-            public async Task<UserDto> InactivateAsync(UserIdNumber id)
+        
+
+            public async Task<UserDto> DeleteAsync(UserId id)
             {
-                var user = await this._repo.GetByNumberIdAsync(id); 
+                var user = await this._repo.GetByIdAsync(id); 
 
                 if (user == null)
                     return null;   
-
-                user.MarkAsInative();
-
-                await this._unitOfWork.CommitAsync();
-
-                return new UserDto(user.Id.AsGuid(), user.IdNumber.toInt(),user.Name.toString(), user.Description.toString(), user.getActive());
-            }
-
-            public async Task<UserDto> DeleteAsync(UserIdNumber id)
-            {
-                var user = await this._repo.GetByNumberIdAsync(id); 
-
-                if (user == null)
-                    return null;   
-
-                if (user.getActive())
-                    throw new BusinessRuleValidationException("It is not possible to delete an active user.");
 
                 this._repo.Remove(user);
                 await this._unitOfWork.CommitAsync();
 
-                return new UserDto(user.Id.AsGuid(),user.IdNumber.toInt(), user.Name.toString(), user.Description.toString(), user.getActive());
+                return new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.NIF.toString(),user.Password.toString(),  user.RoleId.toInt());
             }
-    */
+    
         private async Task<int> GenerateId()
         {
             return await _repo.CountUsers() + 1;
