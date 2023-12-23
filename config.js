@@ -46,6 +46,14 @@ export default {
   },
 
   controllers: {
+    aprovacao: {
+      name: "AprovacaoController",
+      path: "../controllers/aprovacaoController"
+    },
+    tarefaAprovacao: {
+      name: "TarefaAprovacaoController",
+      path: "../controllers/tarefaAprovacaoController"
+    },
     role: {
       name: "RoleController",
       path: "../controllers/roleController"
@@ -136,6 +144,14 @@ export default {
   },
 
   services: {
+    aprovacao: {
+      name: "AprovacaoService",
+      path: "../services/aprovacaoService"
+    },
+    tarefaAprovacao: {
+      name: "TarefaAprovacaoService",
+      path: "../services/tarefaAprovacaoService"
+    },
     role: {
       name: "RoleService",
       path: "../services/roleService"

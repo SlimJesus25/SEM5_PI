@@ -75,6 +75,16 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/tarefaSchema',
   };
 
+  const aprovacaoController = {
+    name: config.controllers.aprovacao.name,
+    path: config.controllers.aprovacao.path
+  }
+
+  const tarefaAprovacaoController = {
+    name: config.controllers.tarefaAprovacao.name,
+    path: config.controllers.tarefaAprovacao.path
+  }
+
   const roleController = {
     name: config.controllers.role.name,
     path: config.controllers.role.path
@@ -180,6 +190,16 @@ export default async ({ expressApp }) => {
     path: config.repos.tipoRobo.path
   }
 
+  const aprovacaoService = {
+    name: config.services.aprovacao.name,
+    path: config.services.aprovacao.path
+  }
+
+  const tarefaAprovacaoService = {
+    name: config.services.tarefaAprovacao.name,
+    path: config.services.tarefaAprovacao.path
+  }
+
   const tarefaService = {
     name: config.services.tarefa.name,
     path: config.services.tarefa.path
@@ -246,6 +266,8 @@ export default async ({ expressApp }) => {
       tarefaSchema
     ],
     controllers: [
+      aprovacaoController,
+      tarefaAprovacaoController,
       roleController,
       edificioController,
       elevadorController,
@@ -271,6 +293,8 @@ export default async ({ expressApp }) => {
       tarefaRepo
     ],
     services: [
+      aprovacaoService,
+      tarefaAprovacaoService,
       roleService,
       edificioService,
       elevadorService,

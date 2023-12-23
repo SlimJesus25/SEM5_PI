@@ -169,9 +169,6 @@ export default class AprovacaoService implements IAprovacaoService {
                 return Result.ok<ISequenciaDTO>({ sequencia: sequencia } as ISequenciaDTO);
             }
 
-            let errorFlag = false;
-            let errorMsg = "";
-
             let tarefas: string[][] = [];
 
             aprovacoesAceitesOrError.forEach(val => {
@@ -183,23 +180,10 @@ export default class AprovacaoService implements IAprovacaoService {
                 tarefas.push(tarefa);
             });
 
-            let solucao: string = "";
+            let solucao: string | ISequenciaDTO;
 
 
             const serverUrl = "http://localhost:5000/best_task_order";
-            /*
-            const queryString = tarefas.map(task => "tarefas=" + task.map(val => encodeURIComponent(val))
-                .join('&'))
-                .join('&');
-            const urlQuery = serverUrl + '?' + queryString;
-
-            const options: http.RequestOptions = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            */
 
             const queryString = querystring.stringify({ tarefas: JSON.stringify(tarefas) });
             const urlWithQuery = serverUrl + "?" + queryString;
@@ -222,6 +206,12 @@ export default class AprovacaoService implements IAprovacaoService {
 
                         response.on('end', () => {
                             resolve(data);
+                            const arranged = data.replace("undefined", "");
+                            try{
+                                solucao = JSON.parse(arranged) as ISequenciaDTO;
+                            }catch(err){
+                                solucao = arranged;
+                            }
                         });
                     });
 

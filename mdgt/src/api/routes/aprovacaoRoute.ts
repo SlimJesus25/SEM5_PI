@@ -38,7 +38,7 @@ export default (app: Router) => {
 
     route.get('/pesquisarRequisicaoPorEstado',
     celebrate({
-      body: Joi.object({
+      query: Joi.object({
         estado: Joi.string().required(),
       }),
     }),
@@ -46,7 +46,7 @@ export default (app: Router) => {
 
     route.get('/pesquisarRequisicaoPorTipoDispositivo',
     celebrate({
-      body: Joi.object({
+      query: Joi.object({
         tipoDispositivo: Joi.string().required(),
       }),
     }),
@@ -54,7 +54,7 @@ export default (app: Router) => {
 
     route.get('/pesquisarRequisicaoPorUtente',
     celebrate({
-      body: Joi.object({
+      query: Joi.object({
         utente: Joi.string().required(),
       }),
     }),
