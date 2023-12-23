@@ -64,7 +64,7 @@ namespace RobDroneGO.Controllers
         }
 
         // POST: api/Users/
-        [HttpPost("User")]
+        [HttpPost("criarUser")]
         public async Task<ActionResult<UserDto>> CreateUser(CreatingUserDto dto)
         {
             var user = await _service.AddUserAsync(dto);
@@ -73,7 +73,7 @@ namespace RobDroneGO.Controllers
         }
 
         // POST: api/Users/
-        [HttpPost("Utente")]
+        [HttpPost("criarUtente")]
         public async Task<ActionResult<UserDto>> CreateUtente(CreatingUserDto dto)
         {
             var user = await _service.AddUtenteAsync(dto);

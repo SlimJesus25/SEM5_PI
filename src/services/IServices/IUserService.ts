@@ -1,7 +1,11 @@
 import { Result } from "../../core/logic/Result";
-import { IUserDTO } from "../../dto/IUserDTO";
+import  ICreatingUserDTO  from "../../dto/ICreatingUserDTO";
+import  IUserDTO  from "../../dto/IUserDTO";
 
 export default interface IUserService  {
-  SignUp(userDTO: IUserDTO): Promise<Result<{userDTO: IUserDTO, token: string}>>;
+  criarUser(roleDTO: ICreatingUserDTO): Promise<Result<IUserDTO>>;
+  criarUtente(roleDTO: ICreatingUserDTO): Promise<Result<IUserDTO>>;
+  /*SignUp(userDTO: IUserDTO): Promise<Result<{userDTO: IUserDTO, token: string}>>;
   SignIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO, token: string }>>;
+*/
 }

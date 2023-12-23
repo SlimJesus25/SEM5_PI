@@ -1,21 +1,53 @@
-import { Router, Request, Response, NextFunction } from 'express';
+/*import { Router} from 'express';
 import { Container } from 'typedi';
 
 import AuthService from '../../services/userService';
-import { IUserDTO } from '../../dto/IUserDTO';
+import  IUserDTO from '../../dto/IUserDTO';
 
 import middlewares from '../middlewares';
 import { celebrate, Joi } from 'celebrate';
-import winston = require('winston');
+import config from "../../../config";
+import IUserController from '../../controllers/IControllers/IUserController';
 
-var user_controller = require('../../controllers/userController');
+
+//var user_controller = require('../../controllers/userController');
 
 const route = Router();
 
 export default (app: Router) => {
-  app.use('/auth', route);
+  app.use('/users', route);
 
-  route.post(
+  const ctrl = Container.get(config.controllers.user.name) as IUserController;
+
+  route.post('/criarUser',
+    celebrate({
+      body: Joi.object({
+        name: Joi.string(),
+        email: Joi.string(),
+        phoneNumber: Joi.string(),
+        password: Joi.string(),
+        roleId: Joi.number()
+      })
+    }),
+    (req, res, next) => ctrl.criarUser(req, res, next));
+
+    route.post('/criarUtente',
+    celebrate({
+      body: Joi.object({
+        name: Joi.string(),
+        email: Joi.string(),
+        phoneNumber: Joi.string(),
+        nif: Joi.string(),
+        password: Joi.string(),
+        roleId: Joi.number()
+      })
+    }),
+    (req, res, next) => ctrl.criarUtente(req, res, next));
+
+
+  // Verificar importante para adaptar
+
+  /*route.post(
     '/signup',
     celebrate({
       body: Joi.object({
@@ -87,7 +119,7 @@ export default (app: Router) => {
    * emitted for the session and add it to a black list.
    * It's really annoying to develop that but if you had to, please use Redis as your data store
    */
-  route.post('/logout', middlewares.isAuth, (req: Request, res: Response, next: NextFunction) => {
+  /*route.post('/logout', middlewares.isAuth, (req: Request, res: Response, next: NextFunction) => {
     const logger = Container.get('logger') as winston.Logger;
     logger.debug('Calling Sign-Out endpoint with body: %o', req.body)
     try {
@@ -102,4 +134,45 @@ export default (app: Router) => {
   app.use('/users', route);
 
   route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, user_controller.getMe);
+*/
+import { Router } from 'express';
+import { celebrate, Joi } from 'celebrate';
+
+import { Container } from 'typedi';
+
+
+import config from "../../../config";
+import IUserController from '../../controllers/IControllers/IUserController';
+
+const route = Router();
+
+export default (app: Router) => {
+  app.use('/users', route);
+
+  const ctrl = Container.get(config.controllers.user.name) as IUserController;
+
+  route.post('/criarUser',
+    celebrate({
+      body: Joi.object({
+        name: Joi.string(),
+        email: Joi.string(),
+        phoneNumber: Joi.string(),
+        password: Joi.string(),
+        roleId: Joi.number()
+      })
+    }),
+    (req, res, next) => ctrl.criarUser(req, res, next));
+
+    route.post('/criarUtente',
+    celebrate({
+      body: Joi.object({
+        name: Joi.string(),
+        email: Joi.string(),
+        phoneNumber: Joi.string(),
+        nif: Joi.string(),
+        password: Joi.string(),
+        roleId: Joi.number()
+      })
+    }),
+    (req, res, next) => ctrl.criarUtente(req, res, next));
 };

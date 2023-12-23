@@ -1,15 +1,55 @@
-import { Response, Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { Inject, Service } from 'typedi';
+import config from "../../config";
 
-import { Container} from 'typedi';
+import IUserController from "./IControllers/IUserController";
+import IUserService from '../services/IServices/IUserService';
+import IUserDTO from '../dto/IUserDTO';
 
-import config from '../../config';
+import { Result } from "../core/logic/Result";
+import ICreatingUserDTO from '../dto/ICreatingUserDTO';
+import { Console } from 'console';
 
-import IUserRepo from '../services/IRepos/IUserRepo';
+@Service()
+export default class UserController implements IUserController /* TODO: extends ../core/infra/BaseController */ {
+  constructor(
+      @Inject(config.services.user.name) private userServiceInstance : IUserService
+  ) {}
 
-import { UserMap } from "../mappers/UserMap";
-import { IUserDTO } from '../dto/IUserDTO';
+  public async criarUser(req: Request, res: Response, next: NextFunction){
+    try {
+      console.log(req.body);
+      const userOrError = await this.userServiceInstance.criarUser(req.body as ICreatingUserDTO) as Result<IUserDTO>;
+        
+      if (userOrError.isFailure) {
+        return res.status(403).send("Erro: " + userOrError.errorValue());
+      }
 
+      const userDTO = userOrError.getValue();
+      return res.json( userDTO ).status(201);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 
+  public async criarUtente(req: Request, res: Response, next: NextFunction){
+    try {
+      console.log(req.body);
+      const userOrError = await this.userServiceInstance.criarUser(req.body as ICreatingUserDTO) as Result<IUserDTO>;
+        
+      if (userOrError.isFailure) {
+        return res.status(403).send("Erro: " + userOrError.errorValue());
+      }
+
+      const userDTO = userOrError.getValue();
+      return res.json( userDTO ).status(201);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+/*
 exports.getMe = async function(req, res: Response) {
   
     // NB: a arquitetura ONION não está a ser seguida aqui
@@ -25,4 +65,6 @@ exports.getMe = async function(req, res: Response) {
 
     const userDTO = UserMap.toDTO( user ) as IUserDTO;
     return res.json( userDTO ).status(200);
+}
+*/
 }

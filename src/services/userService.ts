@@ -9,19 +9,172 @@ import { randomBytes } from 'crypto';
 
 import IUserService from '../services/IServices/IUserService';
 import { UserMap } from "../mappers/UserMap";
-import { IUserDTO } from '../dto/IUserDTO';
+import IUserDTO from '../dto/IUserDTO';
 
-import IUserRepo from './IRepos/IUserRepo';
-import IRoleRepo from './IRepos/IRoleRepo';
 
-import { User } from '../domain/user';
-import { UserPassword } from '../domain/userPassword';
-import { UserEmail } from '../domain/userEmail';
-
-import { Role } from '../domain/role';
+import * as http from 'http';
+import * as querystring from 'querystring';
 
 import { Result } from "../core/logic/Result";
+import ICreatingUserDTO from '../dto/ICreatingUserDTO';
 
+
+@Service()
+export default class UserService implements IUserService {
+
+  constructor(){
+  }
+  private serverUrl = "http://localhost:6969/api/Users/";
+
+
+  public async criarUser(userDTO: ICreatingUserDTO): Promise<Result<IUserDTO>> {
+    let err = '';
+    try {
+
+      const req = "criarUser";
+
+      //const queryString = querystring.stringify({ Name: JSON.stringify(roleDTO.name) });
+      const data = {
+        name: userDTO.name,
+        email: userDTO.email,
+        phoneNumber: userDTO.phoneNumber,
+        nif: null,
+        password: userDTO.password,
+        roleId: userDTO.roleId
+      };
+
+      const dataString = JSON.stringify(data);
+      const urlWithQuery = this.serverUrl + req;
+
+      let solucao;
+
+      const options: http.RequestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      async function makeRequest() {
+        return new Promise<string>((resolve, reject) => {
+          const request = http.request(urlWithQuery, options, (response) => {
+            let data: string;
+
+            if (response.statusCode != 201) {
+              err = response.statusMessage;
+            }
+
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+
+            response.on('end', () => {
+              resolve(data);
+              const arranged = data.replace("undefined", "");
+              try {
+                solucao = JSON.parse(arranged) as IUserDTO;
+              } catch (Eerr) {
+                solucao = arranged;
+              }
+            });
+          });
+
+          request.on('error', (error) => {
+            reject(error);
+          });
+
+          request.write(dataString);
+          request.end();
+        });
+      }
+
+      await makeRequest();
+
+      if (err.length > 0)
+        return Result.fail<IUserDTO>(solucao);
+
+      return Result.ok<IUserDTO>(solucao);
+
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async criarUtente(userDTO: ICreatingUserDTO): Promise<Result<IUserDTO>> {
+    let err = '';
+    try {
+
+      const req = "criarUtente";
+
+      //const queryString = querystring.stringify({ Name: JSON.stringify(roleDTO.name) });
+      const data = {
+        name: userDTO.name,
+        email: userDTO.email,
+        phoneNumber: userDTO.phoneNumber,
+        nif: userDTO.nif,
+        password: userDTO.password,
+        roleId: userDTO.roleId
+      };
+
+      const dataString = JSON.stringify(data);
+      const urlWithQuery = this.serverUrl + req;
+
+      let solucao;
+
+      const options: http.RequestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      async function makeRequest() {
+        return new Promise<string>((resolve, reject) => {
+          const request = http.request(urlWithQuery, options, (response) => {
+            let data: string;
+
+            if (response.statusCode != 201) {
+              err = response.statusMessage;
+            }
+
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+
+            response.on('end', () => {
+              resolve(data);
+              const arranged = data.replace("undefined", "");
+              try {
+                solucao = JSON.parse(arranged) as IUserDTO;
+              } catch (Eerr) {
+                solucao = arranged;
+              }
+            });
+          });
+
+          request.on('error', (error) => {
+            reject(error);
+          });
+
+          request.write(dataString);
+          request.end();
+        });
+      }
+
+      await makeRequest();
+
+      if (err.length > 0)
+        return Result.fail<IUserDTO>(solucao);
+
+      return Result.ok<IUserDTO>(solucao);
+
+    } catch (e) {
+      throw e;
+    }
+  }
+}
+
+/*
 @Service()
 export default class UserService implements IUserService{
   constructor(
@@ -56,8 +209,8 @@ export default class UserService implements IUserService{
        * watches every API call and if it spots a 'password' and 'email' property then
        * it decides to steal them!? Would you even notice that? I wouldn't :/
        */
-      
 
+/*
       const salt = randomBytes(32);
       this.logger.silly('Hashing password');
       const hashedPassword = await argon2.hash(userDTO.password, { salt });
@@ -117,66 +270,69 @@ export default class UserService implements IUserService{
     /**
      * We use verify from argon2 to prevent 'timing based' attacks
      */
-    this.logger.silly('Checking password');
-    const validPassword = await argon2.verify(user.password.value, password);
-    if (validPassword) {
-      this.logger.silly('Password is valid!');
-      this.logger.silly('Generating JWT');
-      const token = this.generateToken(user) as string;
+/*
+this.logger.silly('Checking password');
+const validPassword = await argon2.verify(user.password.value, password);
+if (validPassword) {
+  this.logger.silly('Password is valid!');
+  this.logger.silly('Generating JWT');
+  const token = this.generateToken(user) as string;
 
-      const userDTO = UserMap.toDTO( user ) as IUserDTO;
-      return Result.ok<{userDTO: IUserDTO, token: string}>( {userDTO: userDTO, token: token} );
-    } else {
-      throw new Error('Invalid Password');
-    }
-  }
+  const userDTO = UserMap.toDTO( user ) as IUserDTO;
+  return Result.ok<{userDTO: IUserDTO, token: string}>( {userDTO: userDTO, token: token} );
+} else {
+  throw new Error('Invalid Password');
+}
+}
 
-  private generateToken(user) {
-    const today = new Date();
-    const exp = new Date(today);
-    exp.setDate(today.getDate() + 60);
+private generateToken(user) {
+const today = new Date();
+const exp = new Date(today);
+exp.setDate(today.getDate() + 60);
 
-    /**
-     * A JWT means JSON Web Token, so basically it's a json that is _hashed_ into a string
-     * The cool thing is that you can add custom properties a.k.a metadata
-     * Here we are adding the userId, role and name
-     * Beware that the metadata is public and can be decoded without _the secret_
-     * but the client cannot craft a JWT to fake a userId
-     * because it doesn't have _the secret_ to sign it
-     * more information here: https://softwareontheroad.com/you-dont-need-passport
-     */
-    this.logger.silly(`Sign JWT for userId: ${user._id}`);
+/**
+ * A JWT means JSON Web Token, so basically it's a json that is _hashed_ into a string
+ * The cool thing is that you can add custom properties a.k.a metadata
+ * Here we are adding the userId, role and name
+ * Beware that the metadata is public and can be decoded without _the secret_
+ * but the client cannot craft a JWT to fake a userId
+ * because it doesn't have _the secret_ to sign it
+ * more information here: https://softwareontheroad.com/you-dont-need-passport
+ */
+/*
+this.logger.silly(`Sign JWT for userId: ${user._id}`);
 
-    const id = user.id.toString();
-    const email = user.email.value;
-    const firstName = user.firstName;
-    const lastName = user.lastName;
-    const role = user.role.id.value;
+const id = user.id.toString();
+const email = user.email.value;
+const firstName = user.firstName;
+const lastName = user.lastName;
+const role = user.role.id.value;
 
-    return jwt.sign(
-      {
-        id: id,
-        email: email, // We are gonna use this in the middleware 'isAuth'
-        role: role,
-        firstName: firstName,
-        lastName: lastName,
-        exp: exp.getTime() / 1000,
-      },
-      config.jwtSecret,
-    );
-  }
+return jwt.sign(
+  {
+    id: id,
+    email: email, // We are gonna use this in the middleware 'isAuth'
+    role: role,
+    firstName: firstName,
+    lastName: lastName,
+    exp: exp.getTime() / 1000,
+  },
+  config.jwtSecret,
+);
+}
 
 
-  private async getRole (roleId: string): Promise<Result<Role>> {
+private async getRole (roleId: string): Promise<Result<Role>> {
 
-    const role = await this.roleRepo.findByDomainId( roleId );
-    const found = !!role;
+const role = await this.roleRepo.findByDomainId( roleId );
+const found = !!role;
 
-    if (found) {
-      return Result.ok<Role>(role);
-    } else {
-      return Result.fail<Role>("Couldn't find role by id=" + roleId);
-    }
-  }
+if (found) {
+  return Result.ok<Role>(role);
+} else {
+  return Result.fail<Role>("Couldn't find role by id=" + roleId);
+}
+}
 
 }
+*/

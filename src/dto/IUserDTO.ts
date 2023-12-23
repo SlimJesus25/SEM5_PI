@@ -1,8 +1,10 @@
 
-export interface IUserDTO {
-  firstName: string;
-  lastName: string;
+export default interface IUserDTO {
+  id: number,
+  name: string;
   email: string;
+  phoneNumber: string,
+  nif: string,
   password: string;
-  role: string
+  roleId: number
 }

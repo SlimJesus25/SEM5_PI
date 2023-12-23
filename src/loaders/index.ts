@@ -135,6 +135,11 @@ export default async ({ expressApp }) => {
     path: config.controllers.tipoRobo.path
   }
 
+  const userController = {
+    name: config.controllers.user.name,
+    path: config.controllers.user.path
+  }
+
   const tarefaRepo = {
     name: config.repos.tarefa.name,
     path: config.repos.tarefa.path
@@ -250,10 +255,14 @@ export default async ({ expressApp }) => {
     path: config.services.tipoRobo.path
   }
 
+  const userService = {
+    name: config.services.user.name,
+    path: config.services.user.path
+  }
+
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
-      userSchema,
       roleSchema,
       edificioSchema,
       elevadorSchema,
@@ -263,7 +272,8 @@ export default async ({ expressApp }) => {
       salaSchema,
       tipoRoboSchema,
       mapaPisoSchema,
-      tarefaSchema
+      tarefaSchema,
+      userSchema,
     ],
     controllers: [
       aprovacaoController,
@@ -277,11 +287,11 @@ export default async ({ expressApp }) => {
       salaController,
       tipoRoboController,
       mapaPisoController,
-      tarefaController
+      tarefaController,
+      userController
     ],
     repos: [
       roleRepo,
-      userRepo,
       edificioRepo,
       elevadorRepo,
       passagemRepo,
@@ -290,7 +300,8 @@ export default async ({ expressApp }) => {
       salaRepo,
       tipoRoboRepo,
       mapaPisoRepo,
-      tarefaRepo
+      tarefaRepo,
+      userRepo
     ],
     services: [
       aprovacaoService,
@@ -304,7 +315,8 @@ export default async ({ expressApp }) => {
       salaService,
       tipoRoboService,
       mapaPisoService,
-      tarefaService
+      tarefaService,
+      userService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

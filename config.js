@@ -62,6 +62,10 @@ export default {
       name: "ElevadorController",
       path: "../controllers/elevadorController"
     },
+    user: {
+      name: "UserController",
+      path: "../controllers/userController"
+    },
     sala: {
       name: "SalaController",
       path: "../controllers/salaController"
@@ -155,6 +159,10 @@ export default {
     role: {
       name: "RoleService",
       path: "../services/roleService"
+    },
+    user: {
+      name: "UserService",
+      path: "../services/userService"
     },
     elevador: {
       name: "ElevadorService",
