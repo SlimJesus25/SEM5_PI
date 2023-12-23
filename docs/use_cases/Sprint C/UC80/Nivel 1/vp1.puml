@@ -1,0 +1,12 @@
+@startuml
+actor Utente as actor
+participant SistemaRobDroneGo as srdg
+actor -> srdg: Aprovar ou recusar registo de um utente
+srdg --> actor : Requesita dados
+actor -> srdg: Envia aprovação/recusa
+alt sucesso
+srdg --> actor : Mensagem de Sucesso
+else insucesso
+srdg -->actor : Mensagem de Erro
+end
+@enduml
