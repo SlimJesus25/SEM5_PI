@@ -34,13 +34,13 @@ namespace RobDroneGO.Domain.Users
             this.RoleId = roleId;
         }
 
-        public User(int id,string name, string username, string phoneNumber, string password, RoleId roleId)
+        public User(int id,string name, string email, string phoneNumber, string password, RoleId roleId)
         {
             if (roleId == null)
                 throw new BusinessRuleValidationException("Every user needs a role");
             this.Id = new UserId(id);
             this.Name = new UserName(name);
-            this.Email = new UserEmail(username);
+            this.Email = new UserEmail(email);
             this.PhoneNumber = new UserPhoneNumber(phoneNumber);
             this.Password = new UserPassword(password);
             this.RoleId = roleId;
