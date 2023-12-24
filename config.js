@@ -97,7 +97,11 @@ export default {
     tarefa: {
       name: "TarefaController",
       path: "../controllers/tarefaController"
-    }
+    },
+    pedido: {
+      name: "PedidoController",
+      path: "../controllers/pedidoController"
+    },
   },
 
   repos: {
@@ -199,6 +203,10 @@ export default {
     tarefa: {
       name: "TarefaService",
       path: "../services/tarefaService"
+    },
+    pedido: {
+      name: "PedidoService",
+      path: "../services/pedidoService"
     }
   },
 };

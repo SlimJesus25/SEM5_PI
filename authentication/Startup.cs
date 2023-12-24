@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RobDroneGO.Infrastructure;
 using RobDroneGO.Infrastructure.Roles;
 using RobDroneGO.Infrastructure.Users;
-//using RobDroneGO.Infrastructure.Pedidos;
+using RobDroneGO.Infrastructure.Pedidos;
 using RobDroneGO.Infrastructure.Shared;
 using RobDroneGO.Domain.Shared;
 
@@ -18,7 +18,7 @@ using System.Text;
 using RobDroneGO.Domain.Roles;
 using RobDroneGO.Domain.Users;
 using Microsoft.Extensions.Logging;
-//using RobDroneGO.Domain.Pedidos;
+using RobDroneGO.Domain.Pedidos;
 
 
 namespace RobDroneGO
@@ -130,9 +130,9 @@ namespace RobDroneGO
             services.AddTransient<UserService>();
             services.AddScoped<IUserService, UserService>();
 
-            // services.AddTransient<IPedidoRepository, PedidoRepository>();
-            // services.AddTransient<PedidoService>();
-            // services.AddScoped<IPedidoService,PedidoService>();
+            services.AddTransient<IPedidoRepository, PedidoRepository>();
+            services.AddTransient<PedidoService>();
+            services.AddScoped<IPedidoService,PedidoService>();
         }
     }
 }

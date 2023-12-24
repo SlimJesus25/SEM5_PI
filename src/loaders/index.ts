@@ -80,6 +80,11 @@ export default async ({ expressApp }) => {
     path: config.controllers.aprovacao.path
   }
 
+  const pedidoController = {
+    name: config.controllers.pedido.name,
+    path: config.controllers.pedido.path
+  }
+
   const tarefaAprovacaoController = {
     name: config.controllers.tarefaAprovacao.name,
     path: config.controllers.tarefaAprovacao.path
@@ -260,6 +265,11 @@ export default async ({ expressApp }) => {
     path: config.services.user.path
   }
 
+  const pedidoService = {
+    name: config.services.pedido.name,
+    path: config.services.pedido.path
+  }
+
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
@@ -288,7 +298,8 @@ export default async ({ expressApp }) => {
       tipoRoboController,
       mapaPisoController,
       tarefaController,
-      userController
+      userController,
+      pedidoController
     ],
     repos: [
       roleRepo,
@@ -316,7 +327,8 @@ export default async ({ expressApp }) => {
       tipoRoboService,
       mapaPisoService,
       tarefaService,
-      userService
+      userService,
+      pedidoService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

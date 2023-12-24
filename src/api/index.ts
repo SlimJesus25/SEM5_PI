@@ -12,11 +12,11 @@ import mapaPiso from './routes/mapaPisoRoute';
 import tarefa from './routes/tarefaRoute';
 import aprovacao from './routes/aprovacaoRoute';
 import tarefaAprovacao from './routes/tarefaAprovacaoRoute'
+import pedido from './routes/pedidoRoute'
 
 
 export default () => {
 	const app = Router();
-
 
 	user(app);
 	role(app);
@@ -31,6 +31,7 @@ export default () => {
 	tarefa(app);
 	aprovacao(app);
 	tarefaAprovacao(app);
+	pedido(app);
 
 	return app
 }
