@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Linq;
+using System.Text.Json;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 
 namespace RobDroneGO.Controllers
@@ -56,6 +59,21 @@ namespace RobDroneGO.Controllers
                 }
 
                 return user;
+
+                //Metodo guardar front end
+                /*var jsonstr = System.Text.Json.JsonSerializer.Serialize(user);
+                byte[] byteArray = System.Text.ASCIIEncoding.ASCII.GetBytes(jsonstr);
+
+                return File(byteArray, "application/force-download", "file1.json");*/
+
+                //Metodo guardar back end, falta permissoes
+                /*
+                var jsonstr = System.Text.Json.JsonSerializer.Serialize(user);
+                byte[] byteArray = System.Text.Encoding.ASCII.GetBytes(jsonstr);
+                string filePath = "";
+                System.IO.File.WriteAllBytes(filePath, byteArray);
+                return Ok("File saved on the server.");
+                */
             }
             catch (BadHttpRequestException ex)
             {
@@ -86,24 +104,27 @@ namespace RobDroneGO.Controllers
         [HttpGet("login/{email}/{password}")]
         public async Task<IActionResult> Login(string email, string password)
         {
-            try{
-                var user = await _service.Login(new UserEmail(email),new UserPassword(password));
+            try
+            {
+                var user = await _service.Login(new UserEmail(email), new UserPassword(password));
 
                 if (user == null)
                 {
                     return NotFound();
                 }
-                 var token = GenerateAsync(user);
+                var token = GenerateAsync(user);
                 return Ok(token);
-            }catch(BadHttpRequestException ex){
-                return BadRequest(new {Message = ex.Message});
+            }
+            catch (BadHttpRequestException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
             }
 
         }
 
         private async Task<string> GenerateAsync(UserDto user)
         {
-            User user1 = new User(user.Id, user.Name, user.Email, user.PhoneNumber,user.NIF, user.Password, new RoleId(user.RoleId));
+            User user1 = new User(user.Id, user.Name, user.Email, user.PhoneNumber, user.NIF, user.Password, new RoleId(user.RoleId));
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
@@ -114,23 +135,23 @@ namespace RobDroneGO.Controllers
 
 
             switch (user1.RoleId.toInt())
-        {
-            case 1:
-                claims.Add(new Claim(ClaimTypes.Role, "GestorUtilizadores"));
-                break;
-            case 2:
-                claims.Add(new Claim(ClaimTypes.Role, "GestorCampus"));
-                break;
-            case 3:
-                claims.Add(new Claim(ClaimTypes.Role, "GestorTarefas"));
-                break;
-            case 4:
-                claims.Add(new Claim(ClaimTypes.Role, "GestorFrota"));
-                break;
-            case 5:
-                claims.Add(new Claim(ClaimTypes.Role, "Utente"));
-                break;
-        }
+            {
+                case 1:
+                    claims.Add(new Claim(ClaimTypes.Role, "GestorUtilizadores"));
+                    break;
+                case 2:
+                    claims.Add(new Claim(ClaimTypes.Role, "GestorCampus"));
+                    break;
+                case 3:
+                    claims.Add(new Claim(ClaimTypes.Role, "GestorTarefas"));
+                    break;
+                case 4:
+                    claims.Add(new Claim(ClaimTypes.Role, "GestorFrota"));
+                    break;
+                case 5:
+                    claims.Add(new Claim(ClaimTypes.Role, "Utente"));
+                    break;
+            }
 
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
@@ -145,50 +166,50 @@ namespace RobDroneGO.Controllers
 
 
 
-            // PUT: api/Users/5
-            [HttpPut("updateUser/{id}")]
-            public async Task<ActionResult<UserDto>> UpdateUser(int id, UserDto dto)
+        // PUT: api/Users/5
+        [HttpPut("updateUser/{id}")]
+        public async Task<ActionResult<UserDto>> Update(int id, UserDto dto)
+        {
+            if (id != dto.Id)
             {
-                if (id != dto.Id)
-                {
-                    return BadRequest();
-                }
-
-                try
-                {
-                    var user = await _service.UpdateAsync(dto);
-
-                    if (user == null)
-                    {
-                        return NotFound();
-                    }
-                    return Ok(user);
-                }
-                catch(BusinessRuleValidationException ex)
-                {
-                    return BadRequest(new {Message = ex.Message});
-                }
+                return BadRequest();
             }
 
-            // DELETE: api/Users/5
-            [HttpDelete("deleteUser/{id}")]
-            public async Task<ActionResult<UserDto>> DeleteUser(int id)
+            try
             {
-                try
-                {
-                    var user = await _service.DeleteAsync(new UserId(id));
+                var user = await _service.UpdateAsync(dto);
 
-                    if (user == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(user);
-                }
-                catch(BusinessRuleValidationException ex)
+                if (user == null)
                 {
-                   return BadRequest(new {Message = ex.Message});
+                    return NotFound();
                 }
+                return Ok(user);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // DELETE: api/Users/5
+        [HttpDelete("deleteUser/{id}")]
+        public async Task<ActionResult<UserDto>> HardDelete(int id)
+        {
+            try
+            {
+                var user = await _service.DeleteAsync(new UserId(id));
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(user);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
             }
         }
     }
+}
