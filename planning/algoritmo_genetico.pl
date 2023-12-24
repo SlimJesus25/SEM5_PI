@@ -15,28 +15,28 @@
 % Tarefa Robo
 tarefa_robo(t1).
 
-inicializa:-write('Numero de novas Geracoes: '),read(NG),
+inicializa:-%write('Numero de novas Geracoes: '),read(NG),
 	(retract(geracoes(_));true), asserta(geracoes(NG)),
 
-	write('Dimensao da Populacao: '),read(DP),
+	%write('Dimensao da Populacao: '),read(DP),
 	(retract(populacao(_));true), asserta(populacao(DP)),
 
-	write('Probabilidade de Cruzamento (%):'), read(P1),
+	%write('Probabilidade de Cruzamento (%):'), read(P1),
 	PC is P1/100, 
 	(retract(prob_cruzamento(_));true), 	asserta(prob_cruzamento(PC)),
 
-	write('Probabilidade de Mutacao (%):'), read(P2),
+	%write('Probabilidade de Mutacao (%):'), read(P2),
 	PM is P2/100, 
 	(retract(prob_mutacao(_));true), asserta(prob_mutacao(PM)),
 
-	write('Prob. pior indiviuo gerar (%):'),read(PPI2),
+	%write('Prob. pior indiviuo gerar (%):'),read(PPI2),
 	PPI is PPI2/100,
 	(retract(prob_pior_individuo(_));true), asserta(prob_pior_individuo(PPI)),
 
-	write('Tempo maximo de calculo (segundos):'),read(TMC2),
+	%write('Tempo maximo de calculo (segundos):'),read(TMC2),
 	TMC is TMC2 * 10,
 
-	write('Estabilizacao da solucao (n):'),read(ES),
+	%write('Estabilizacao da solucao (n):'),read(ES),
 	(retract(estabilizacao_solucao(_));true), asserta(estabilizacao_solucao(ES)),
 
 	% Colocado propositadamente aqui para nao comecar a contar antes do suposto.
@@ -97,10 +97,10 @@ gera:-
 	asserta(inicio(V)),
 	inicializa,
 	gera_populacao(Pop),
-	write('Pop='),write(Pop),nl,
-	trace,
+	%write('Pop='),write(Pop),nl,
+	%trace,
 	avalia_populacao(Pop,PopAv),
-	write('PopAv='),write(PopAv),nl,
+	%write('PopAv='),write(PopAv),nl,
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
 	PopOrd = [FS|_],
@@ -183,11 +183,11 @@ gera_geracao(G,G,Pop,_):-!,
 gera_geracao(N,_,Pop,[_,_,X]):-
 	estabilizacao_solucao(X),
 	!,
-	write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
+	%write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
 	Pop = [Lista*Tempo|_],
 	(retractall(bto(_,_)),!;true),
-	asserta(bto(Lista, Tempo)),
-	write('Estabilizacao maxima atingida!').
+	asserta(bto(Lista, Tempo)).
+	%write('Estabilizacao maxima atingida!').
 	% asserta(melhor_individuo()).
 
 % Tempo maximo atingido. TODO: Consertar os segundos a mais que isto roda.
@@ -195,11 +195,11 @@ gera_geracao(N,_,Pop,_):-
 	get_time(Tempo),
 	verifica_tempo(Tempo),
 	!,
-	write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
+	%write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
 	Pop = [Lista*Tempo|_],
 	(retractall(bto(_,_)),!;true),
-	asserta(bto(Lista, Tempo)),
-	write('Tempo maximo atingido!').
+	asserta(bto(Lista, Tempo)).
+	%write('Tempo maximo atingido!').
 	% asserta(melhor_individuo()).
 
 gera_geracao(N,G,Pop,[SolAct,SolAct,X]):-
@@ -211,7 +211,7 @@ gera_geracao(N,G,Pop,[SolAnt,SolAct,_]):-
 
 gera_geracao2(N, G, Pop, [_, SolAct, X]):-
 	%trace,
-	write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
+	%write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
 	cruzamento(Pop,NPop1,1),
 	NPop1 = [NSol|_],
 	mutacao(NPop1,NPop,1),

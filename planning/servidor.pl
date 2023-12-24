@@ -73,6 +73,11 @@ obtem_caminhos2([H1, H2|T], [HH|TT], [HH2|TT2]):-
 
 obtem_caminhos2([_|_], [], []).
 
+converte_cams([], []):-!.
+
+converte_cams([H|T], [HH|TT]):-
+  converte_cam_final(H, HH),
+  converte_cams(T, TT).
 
 %obtem_caminhos2([H1|T], Ant, [HH|TT]):-
 %  ttpl(H1, Ant, A, B),
@@ -84,8 +89,6 @@ best_task_order(Request):-
   cors_enable(Request, [methods([get])]),
   http_parameters(Request, [tarefas(T, [])]),
   term_to_atom(Tarefas, T),
-  %stringify(T2, Tar),
-  %remove_outer_single_quotes_from_lists(Tar, Tarefas),
   
   request_dados(),
 
@@ -95,20 +98,19 @@ best_task_order(Request):-
 
   gera_aut,
 
+  %gtrace,
   obtem_caminhos,
   
   bto(Seq, Tempo),
-  btoPath(CamEntrePiso, CamPorPiso),
-  %round_two(T, Tempo),
+  btoPath(CEP, CamPorPiso),
 
-  R = json([plano=Seq, tempo=Tempo]),
+  converte_cams(CEP, CamEntrePiso),
   
+  R = json([plano=Seq, tempo=Tempo, caminhoPorPiso=CamPorPiso, caminhoEntrePisos=CamEntrePiso]),
+
   prolog_to_json(R, JSONObject),
   reply_json(JSONObject, [json_object(dict)]).
 
-%round_two(N, NN):-
-%  format(atom(Formatted), '~2f', [N]),
-%  atom_number(Formatted, NN).
 
 % % %
 % Faz assert do predicado:
@@ -230,7 +232,7 @@ path_between_floors(Request):-
   converte_cam_final(Cam, CamF),
 
   eliminate_redundant(CamPorPiso2, CamPorPiso),
-
+  gtrace,
   R = json([sol1=CamF, sol2=CamPorPiso]),
   prolog_to_json(R, JSONObject),
 
