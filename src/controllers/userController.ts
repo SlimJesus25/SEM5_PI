@@ -35,8 +35,7 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async criarUtente(req: Request, res: Response, next: NextFunction){
     try {
-      console.log(req.body);
-      const userOrError = await this.userServiceInstance.criarUser(req.body as ICreatingUserDTO) as Result<IUserDTO>;
+      const userOrError = await this.userServiceInstance.criarUtente(req.body as ICreatingUserDTO) as Result<IUserDTO>;
         
       if (userOrError.isFailure) {
         return res.status(403).send("Erro: " + userOrError.errorValue());
@@ -85,6 +84,21 @@ export default class UserController implements IUserController /* TODO: extends 
   public async getUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const usersOrError = await this.userServiceInstance.getUserById(req.params.id) as Result<IUserDTO>;
+
+      if (usersOrError.isFailure) {
+        return res.status(404).send("Erro: " + usersOrError.errorValue());
+      }
+
+      const usersDTO = usersOrError.getValue()
+      return res.json(usersDTO).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  };
+
+  public async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const usersOrError = await this.userServiceInstance.deleteUser(req.params.id) as Result<IUserDTO>;
 
       if (usersOrError.isFailure) {
         return res.status(404).send("Erro: " + usersOrError.errorValue());

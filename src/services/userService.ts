@@ -368,6 +368,67 @@ export default class UserService implements IUserService {
       throw e;
     }
   }
+
+  public async deleteUser(userId: string): Promise<Result<IUserDTO>> {
+    let err = '';
+    try {
+
+      const req = "deleteUser";
+
+      const urlWithQuery = this.serverUrl + req + "/" + userId;
+
+      let solucao;
+
+      const options: http.RequestOptions = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      async function makeRequest() {
+        return new Promise<string>((resolve, reject) => {
+          const request = http.get(urlWithQuery, options, (response) => {
+            let data: string;
+
+            if (response.statusCode != 200) {
+              err = response.statusMessage;
+            }
+
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+
+            response.on('end', () => {
+              resolve(data);
+              const arranged = data.replace("undefined", "");
+              try {
+                solucao = JSON.parse(arranged) as IUserDTO;
+              } catch (Eerr) {
+                solucao = arranged;
+              }
+            });
+          });
+
+          request.on('error', (error) => {
+            reject(error);
+          });
+
+          request.end();
+        });
+      }
+
+      await makeRequest();
+
+      if (err.length > 0)
+        return Result.fail<IUserDTO>(solucao);
+
+      return Result.ok<IUserDTO>(solucao);
+
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
 

@@ -204,5 +204,12 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.getUserById(req, res, next));
 
+    route.delete('/deleteUser/:id',
+    celebrate({
+      body: Joi.object({
+      })
+    }),
+    (req, res, next) => ctrl.deleteUser(req, res, next));
+
 
 };

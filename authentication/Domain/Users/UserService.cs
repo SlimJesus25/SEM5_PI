@@ -62,7 +62,7 @@ namespace RobDroneGO.Domain.Users
                 await this._repo.AddAsync(utente);
                 await this._unitOfWork.CommitAsync();
 
-            return new UserDto(utente.Id.toInt(),utente.Name.toString(),utente.Email.toString(), utente.PhoneNumber.toString(), utente.NIF.toString(), utente.Password.toString(), utente.RoleId.toInt());
+            return new UserDto(utente.Id.toInt(),utente.Name.toString(),utente.Email.toString(), utente.PhoneNumber.toString(), utente.NIF.toString(), utente.Password.toString(), 5);
 
             }
             catch (BusinessRuleValidationException ex)
