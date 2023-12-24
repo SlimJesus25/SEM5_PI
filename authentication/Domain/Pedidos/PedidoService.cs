@@ -15,13 +15,10 @@ namespace RobDroneGO.Domain.Pedidos
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPedidoRepository _repo;
 
-        private readonly IUserRepository _repoU;
-
-        public PedidoService(IUnitOfWork unitOfWork, IPedidoRepository repo, IUserRepository repoU)
+        public PedidoService(IUnitOfWork unitOfWork, IPedidoRepository repo)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
-            this._repoU = repoU;
         }
 
         public async Task<PedidoDto> AddAsync(CreatingPedidoDto dto)

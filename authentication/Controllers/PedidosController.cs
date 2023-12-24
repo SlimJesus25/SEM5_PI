@@ -26,21 +26,21 @@ namespace RobDroneGO.Controllers
 
         // GET: api/Pedidos
         [HttpGet("getAllPedidos")]
-        public async Task<ActionResult<IEnumerable<PedidoDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<PedidoDto>>> GetAllPedidos()
         {
             return await _service.GetAllAsync();
         }
 
         // GET: api/Pedidos
         [HttpGet("getAllPedidosPendentes")]
-        public async Task<ActionResult<IEnumerable<PedidoDto>>> GetAllPendentes()
+        public async Task<ActionResult<IEnumerable<PedidoDto>>> GetAllPedidosPendentes()
         {
             return await _service.GetAllPendentesAsync();
         }
         
 
         // GET: api/Pedidos?idNumber=idNumber
-        [HttpGet("getPedido/{id}")]
+        [HttpGet("getPedidoById/{id}")]
         public async Task<ActionResult<PedidoDto>> GetGetById(int id)
         {
             try{
