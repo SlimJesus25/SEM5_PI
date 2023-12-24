@@ -22,7 +22,7 @@ import ICreatingUserDTO from '../dto/ICreatingUserDTO';
 @Service()
 export default class UserService implements IUserService {
 
-  constructor(){
+  constructor() {
   }
   private serverUrl = "http://localhost:6969/api/Users/";
 
@@ -172,7 +172,205 @@ export default class UserService implements IUserService {
       throw e;
     }
   }
+
+  public async updateUser(userId: string, userDTO: IUserDTO): Promise<Result<IUserDTO>> {
+    let err = '';
+    try {
+
+      const req = "updateUser";
+
+      //const queryString = querystring.stringify({ Name: JSON.stringify(roleDTO.name) });
+      const data = {
+        id: userDTO.id,
+        name: userDTO.name,
+        email: userDTO.email,
+        phoneNumber: userDTO.phoneNumber,
+        nif: userDTO.nif,
+        password: userDTO.password,
+        roleId: userDTO.roleId
+      };
+
+      const dataString = JSON.stringify(data);
+      const urlWithQuery = this.serverUrl + req + "/" + userId;
+
+      let solucao;
+
+      const options: http.RequestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      async function makeRequest() {
+        return new Promise<string>((resolve, reject) => {
+          const request = http.request(urlWithQuery, options, (response) => {
+            let data: string;
+
+            if (response.statusCode != 200) {
+              err = response.statusMessage;
+            }
+
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+
+            response.on('end', () => {
+              resolve(data);
+              const arranged = data.replace("undefined", "");
+              try {
+                solucao = JSON.parse(arranged) as IUserDTO;
+              } catch (Eerr) {
+                solucao = arranged;
+              }
+            });
+          });
+
+          request.on('error', (error) => {
+            reject(error);
+          });
+
+          request.write(dataString);
+          request.end();
+        });
+      }
+
+      await makeRequest();
+
+      if (err.length > 0)
+        return Result.fail<IUserDTO>(solucao);
+
+      return Result.ok<IUserDTO>(solucao);
+
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getAllUsers(): Promise<Result<IUserDTO[]>> {
+    let err = '';
+    try {
+
+      const req = "getAllUsers";
+
+      const urlWithQuery = this.serverUrl + req
+
+      let solucao;
+
+      const options: http.RequestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      async function makeRequest() {
+        return new Promise<string>((resolve, reject) => {
+          const request = http.get(urlWithQuery, options, (response) => {
+            let data: string;
+
+            if (response.statusCode != 200) {
+              err = response.statusMessage;
+            }
+
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+
+            response.on('end', () => {
+              resolve(data);
+              const arranged = data.replace("undefined", "");
+              try {
+                solucao = JSON.parse(arranged) as IUserDTO;
+              } catch (Eerr) {
+                solucao = arranged;
+              }
+            });
+          });
+
+          request.on('error', (error) => {
+            reject(error);
+          });
+
+          request.end();
+        });
+      }
+
+      await makeRequest();
+
+      if (err.length > 0)
+        return Result.fail<IUserDTO[]>(solucao);
+
+      return Result.ok<IUserDTO[]>(solucao);
+
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getUserById(userId: string): Promise<Result<IUserDTO>> {
+    let err = '';
+    try {
+
+      const req = "getUserById";
+
+      const urlWithQuery = this.serverUrl + req + "/" + userId;
+
+      let solucao;
+
+      const options: http.RequestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      async function makeRequest() {
+        return new Promise<string>((resolve, reject) => {
+          const request = http.get(urlWithQuery, options, (response) => {
+            let data: string;
+
+            if (response.statusCode != 200) {
+              err = response.statusMessage;
+            }
+
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+
+            response.on('end', () => {
+              resolve(data);
+              const arranged = data.replace("undefined", "");
+              try {
+                solucao = JSON.parse(arranged) as IUserDTO;
+              } catch (Eerr) {
+                solucao = arranged;
+              }
+            });
+          });
+
+          request.on('error', (error) => {
+            reject(error);
+          });
+
+          request.end();
+        });
+      }
+
+      await makeRequest();
+
+      if (err.length > 0)
+        return Result.fail<IUserDTO>(solucao);
+
+      return Result.ok<IUserDTO>(solucao);
+
+    } catch (e) {
+      throw e;
+    }
+  }
 }
+
+
 
 /*
 @Service()

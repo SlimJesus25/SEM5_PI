@@ -49,6 +49,53 @@ export default class UserController implements IUserController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async updateUser(req: Request, res: Response, next: NextFunction){
+    try {
+      console.log(req.body);
+      const userOrError = await this.userServiceInstance.updateUser(req.params.id, req.body as IUserDTO) as Result<IUserDTO>;
+        
+      if (userOrError.isFailure) {
+        return res.status(404).send("Erro: " + userOrError.errorValue());
+      }
+
+      const userDTO = userOrError.getValue();
+      return res.json( userDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async getAllUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userOrError = await this.userServiceInstance.getAllUsers() as Result<IUserDTO[]>;
+
+      if (userOrError.isFailure) {
+        return res.status(404).send("Erro: " + userOrError.errorValue());
+      }
+
+      const usersDTO = userOrError.getValue()
+      return res.json(usersDTO).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  };
+
+  public async getUserById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const usersOrError = await this.userServiceInstance.getUserById(req.params.id) as Result<IUserDTO>;
+
+      if (usersOrError.isFailure) {
+        return res.status(404).send("Erro: " + usersOrError.errorValue());
+      }
+
+      const usersDTO = usersOrError.getValue()
+      return res.json(usersDTO).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  };
 /*
 exports.getMe = async function(req, res: Response) {
   

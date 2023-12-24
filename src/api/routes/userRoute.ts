@@ -119,21 +119,21 @@ export default (app: Router) => {
    * emitted for the session and add it to a black list.
    * It's really annoying to develop that but if you had to, please use Redis as your data store
    */
-  /*route.post('/logout', middlewares.isAuth, (req: Request, res: Response, next: NextFunction) => {
-    const logger = Container.get('logger') as winston.Logger;
-    logger.debug('Calling Sign-Out endpoint with body: %o', req.body)
-    try {
-      //@TODO AuthService.Logout(req.user) do some clever stuff
-      return res.status(200).end();
-    } catch (e) {
-      logger.error('🔥 error %o', e);
-      return next(e);
-    }
-  });
+/*route.post('/logout', middlewares.isAuth, (req: Request, res: Response, next: NextFunction) => {
+  const logger = Container.get('logger') as winston.Logger;
+  logger.debug('Calling Sign-Out endpoint with body: %o', req.body)
+  try {
+    //@TODO AuthService.Logout(req.user) do some clever stuff
+    return res.status(200).end();
+  } catch (e) {
+    logger.error('🔥 error %o', e);
+    return next(e);
+  }
+});
 
-  app.use('/users', route);
+app.use('/users', route);
 
-  route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, user_controller.getMe);
+route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, user_controller.getMe);
 */
 import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
@@ -163,7 +163,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.criarUser(req, res, next));
 
-    route.post('/criarUtente',
+  route.post('/criarUtente',
     celebrate({
       body: Joi.object({
         name: Joi.string(),
@@ -175,4 +175,34 @@ export default (app: Router) => {
       })
     }),
     (req, res, next) => ctrl.criarUtente(req, res, next));
+
+  route.put('/updateUser/:id',
+    celebrate({
+      body: Joi.object({
+        id: Joi.number(),
+        name: Joi.string(),
+        email: Joi.string(),
+        phoneNumber: Joi.string(),
+        nif: Joi.string(),
+        password: Joi.string(),
+        roleId: Joi.number()
+      })
+    }),
+    (req, res, next) => ctrl.updateUser(req, res, next));
+
+    route.get('/getAllUsers',
+    celebrate({
+      body: Joi.object({
+      })
+    }),
+    (req, res, next) => ctrl.getAllUsers(req, res, next));
+
+    route.get('/getUserById/:id',
+    celebrate({
+      body: Joi.object({
+      })
+    }),
+    (req, res, next) => ctrl.getUserById(req, res, next));
+
+
 };

@@ -46,7 +46,7 @@ namespace RobDroneGO.Controllers
 
 
         // GET: api/Users?idNumber=idNumber
-        [HttpGet("getById/{ID}")]
+        [HttpGet("getUserById/{ID}")]
         public async Task<ActionResult<UserDto>> GetById(int id)
         {
             try
@@ -168,7 +168,7 @@ namespace RobDroneGO.Controllers
 
         // PUT: api/Users/5
         [HttpPut("updateUser/{id}")]
-        public async Task<ActionResult<UserDto>> Update(int id, UserDto dto)
+        public async Task<ActionResult<UserDto>> UpdateUser(int id, UserDto dto)
         {
             if (id != dto.Id)
             {
@@ -193,7 +193,7 @@ namespace RobDroneGO.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("deleteUser/{id}")]
-        public async Task<ActionResult<UserDto>> HardDelete(int id)
+        public async Task<ActionResult<UserDto>> DeleteUser(int id)
         {
             try
             {

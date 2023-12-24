@@ -58,7 +58,7 @@ export default class RoleController implements IRoleController /* TODO: extends 
       }
 
       const rolesDTO = rolesOrError.getValue()
-      return res.json(rolesDTO).status(201);
+      return res.json(rolesDTO).status(200);
     } catch (e) {
       return next(e);
     }
@@ -73,7 +73,7 @@ export default class RoleController implements IRoleController /* TODO: extends 
       }
 
       const rolesDTO = rolesOrError.getValue()
-      return res.json(rolesDTO).status(201);
+      return res.json(rolesDTO).status(200);
     } catch (e) {
       return next(e);
     }
