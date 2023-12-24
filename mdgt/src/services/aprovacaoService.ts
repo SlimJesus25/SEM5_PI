@@ -166,7 +166,12 @@ export default class AprovacaoService implements IAprovacaoService {
 
             if (aprovacoesAceitesOrError.length == 1) {
                 sequencia.concat(aprovacoesAceitesOrError[0].tarefa.designacaoTarefa);
-                return Result.ok<ISequenciaDTO>({ sequencia: sequencia } as ISequenciaDTO);
+                return Result.ok<ISequenciaDTO>({
+                    plano: [aprovacoesAceitesOrError[0].tarefa.designacaoTarefa],
+                    tempo: 0,
+                    caminhoPorPiso: [],
+                    caminhoEntrePisos: []
+                } as ISequenciaDTO);
             }
 
             let tarefas: string[][] = [];
@@ -207,9 +212,9 @@ export default class AprovacaoService implements IAprovacaoService {
                         response.on('end', () => {
                             resolve(data);
                             const arranged = data.replace("undefined", "");
-                            try{
+                            try {
                                 solucao = JSON.parse(arranged) as ISequenciaDTO;
-                            }catch(err){
+                            } catch (err) {
                                 solucao = arranged;
                             }
                         });
@@ -231,7 +236,7 @@ export default class AprovacaoService implements IAprovacaoService {
                 await this.aprovacaoRepo.save(aprovacoesAceitesOrError[i]);
             }
 
-            return Result.ok<ISequenciaDTO>({ sequencia: sequencia } as ISequenciaDTO);
+            return Result.ok<ISequenciaDTO>(solucao as ISequenciaDTO);
 
         } catch (e) {
             throw e;
