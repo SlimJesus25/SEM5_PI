@@ -1,9 +1,8 @@
 import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
-
+var validateToken = require ("../middlewares/validateToken")
 import { Container } from 'typedi';
 import IElevadorController from '../../controllers/IControllers/IElevadorController';
-
 import config from "../../../config";
 
 const route = Router();
@@ -14,7 +13,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.elevador.name) as IElevadorController;
 
   // Criar novo elevador.
-  route.post('/createElevador',
+  route.post('/createElevador', validateToken,
     celebrate({
       body: Joi.object({
         descricao: Joi.string(),

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
-
+var validateToken = require ("../middlewares/validateToken")
+var authorize = require ("../middlewares/validateToken")
 import { Container } from 'typedi';
 import IEdificioController from '../../controllers/IControllers/IEdificioController'; 
 
@@ -14,7 +15,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.edificio.name) as IEdificioController;
 
   // Criar novo edificio.
-  route.post('/createEdificio',
+  route.post('/createEdificio', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
       dimensaoMaximaPiso: Joi.array().items(Joi.number()).min(2).max(2).required(),

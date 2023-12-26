@@ -38,6 +38,9 @@ export default {
     level: process.env.LOG_LEVEL || 'info',
   },
 
+
+  tokenKey : "hvkQVqwdqeaARucspooYjd81mcaz",
+
   /**
    * API configs
    */
