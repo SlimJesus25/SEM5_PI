@@ -106,4 +106,8 @@ export class MainMenuComponent implements OnInit {
   criarUser(){
     this.router.navigate(['criarUser']);
   }
+
+  pedidoUser(){
+    this.router.navigate(['pedidoUser']);
+  }
 }

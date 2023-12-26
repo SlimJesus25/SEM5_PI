@@ -51,6 +51,7 @@ import { BackupComponent } from './component/asist/backup/backup.component';
 
 //User
 import { RegistarUserComponent } from './component/user/registarUser/registar-user.component';
+import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.component';
 
 const routes: Routes = [
 
@@ -116,7 +117,9 @@ const routes: Routes = [
   { path: 'backup', component: BackupComponent },
 
   //User
-  { path: 'criarUser', component: RegistarUserComponent }
+  { path: 'criarUser', component: RegistarUserComponent },
+  { path: 'pedidoUser', component: PedidoUserComponent }
+
 ];
 
 

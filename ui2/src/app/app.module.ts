@@ -71,6 +71,7 @@ import { MbcoComponent } from './component/asist/mbco/mbco.component';
 import { RgpdComponent } from './component/info/rgpd/rgpd.component';
 import { BackupComponent } from './component/asist/backup/backup.component';
 import { RegistarUserComponent } from './component/user/registarUser/registar-user.component';
+import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.component';
 
 
 @NgModule({
@@ -155,7 +156,8 @@ import { RegistarUserComponent } from './component/user/registarUser/registar-us
     BackupComponent,
 
     //User
-    RegistarUserComponent
+    RegistarUserComponent,
+    PedidoUserComponent
   ],
   bootstrap: [ AppComponent ]
 })
