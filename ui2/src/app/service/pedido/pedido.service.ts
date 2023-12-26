@@ -16,8 +16,20 @@ export class PedidoService {
   constructor(private http: HttpClient) { }
 
   getPedidosPendentes(): Observable<Pedido[]> {
-    const pedidos = this.http.get<Pedido[]>(this.LogisticAPI_URL+ "/getAllPedidosPendentes");
+    const pedidos = this.http.get<Pedido[]>(this.LogisticAPI_URL + "/getAllPedidosPendentes");
 
     return pedidos;
+  }
+
+  aprovarPedido(pedido: Pedido) {
+    const aprovarPedido = this.LogisticAPI_URL + "/aprovarPedido/" + pedido.id;
+    const pedidoReq = this.http.patch<Pedido>(aprovarPedido, {});
+    return pedidoReq;
+  }
+
+  recusarPedido(pedido: Pedido) {
+    const recusarPedido = this.LogisticAPI_URL + "/recusarPedido/" + pedido.id;
+    const pedidoReq = this.http.patch<Pedido>(recusarPedido, {});
+    return pedidoReq;
   }
 }

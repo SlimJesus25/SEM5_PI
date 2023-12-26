@@ -12,7 +12,7 @@ import { PedidoService } from '../../../service/pedido/pedido.service';
 })
 export class PedidoUserComponent implements OnInit {
 
-  displayedColumns: string[] = ['Id', 'Name', 'Email', 'Numero de telemovel', 'NIF', 'Estado', 'Data Pedido', 'Data Mudança Estado'];
+  displayedColumns: string[] = ['Id', 'Name', 'Email', 'Numero de telemovel', 'NIF', 'Estado', 'Data Pedido', 'Resposta'];
   dataSource: MatTableDataSource<Pedido> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator !: MatPaginator;
@@ -27,6 +27,32 @@ export class PedidoUserComponent implements OnInit {
         this.dataSource = new MatTableDataSource(utentes);
         this.dataSource.paginator = this.paginator;
       });
+  }
+
+  aceitarPedido(pedido: Pedido){
+    let errorOrSuccess: any = this.pedidoService.aprovarPedido(pedido);
+    errorOrSuccess.subscribe(
+      (data: any) => {
+        alert("Pedido aceite");
+      },
+
+      (error: any) => {
+        alert(error.error);
+      }
+    );
+  }
+
+  recusarPedido(pedido: Pedido){
+    let errorOrSuccess: any = this.pedidoService.recusarPedido(pedido);
+    errorOrSuccess.subscribe(
+      (data: any) => {
+        alert("Pedido recusado");
+      },
+
+      (error: any) => {
+        alert(error.error);
+      }
+    );
   }
 
   filterData($event: any) {
