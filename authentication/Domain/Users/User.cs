@@ -47,23 +47,19 @@ namespace RobDroneGO.Domain.Users
         }
 
         public void AlterarNome(string name){
-            this.Name = new UserName(name);
+            Name.alterarNome(name);
         }
 
         public void AlterarPhoneNumber(string phoneNumber){
-            this.PhoneNumber = new UserPhoneNumber(phoneNumber);
+            PhoneNumber.alterarPhoneNumber(phoneNumber);
         }
 
         public void AlterarNif(string nif){
-            this.NIF = new UserNIF(nif);
+            NIF.alterarNif(nif);
         }
 
         public void AlterarPassword(string password){
-            this.Password = new UserPassword(password);
-        }
-
-        public void AlterarRoleId(int roleId){
-            this.RoleId = new RoleId(roleId);
+            Password.alterarPassword(password);
         }
     }
 }

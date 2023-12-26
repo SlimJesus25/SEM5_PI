@@ -21,5 +21,9 @@ namespace RobDroneGO.Domain.Users
         public string toString(){
             return Name;
         }
+
+        public void alterarNome (string name){
+            this.Name = name;
+        }
     }
 }

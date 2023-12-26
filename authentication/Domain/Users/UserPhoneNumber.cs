@@ -25,5 +25,12 @@ namespace RobDroneGO.Domain.Users
         public string toString(){
             return PhoneNumber;
         }
+
+        public void alterarPhoneNumber (string phoneNumber){
+            if (!Regex.IsMatch(phoneNumber,@"^\+3519\d{9}$")){
+                throw new BusinessRuleValidationException("Numero tem de começar com +351 e 9 digitos a começar por 9 (Exemplo: +351912345678)");
+            }
+            this.PhoneNumber = phoneNumber;
+        }
     }
 }

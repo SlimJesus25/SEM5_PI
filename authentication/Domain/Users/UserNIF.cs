@@ -27,5 +27,13 @@ namespace RobDroneGO.Domain.Users
         {
             return NIF;
         }
+
+        public void alterarNif(string nif){
+            if (!Regex.IsMatch(nif, @"^(\d{9})?$"))
+            {
+                throw new BusinessRuleValidationException("Nif tem de ter 9 digitos");
+            }
+            this.NIF = nif;
+        }
     }
 }
