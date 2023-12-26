@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 using RobDroneGO.Domain.Shared;
 
 namespace RobDroneGO.Domain.Pedidos
@@ -9,6 +9,10 @@ namespace RobDroneGO.Domain.Pedidos
 
         public PedidoNIF(string value)
         {
+            if (!Regex.IsMatch(value, @"^(\d{9})?$"))
+            {
+                throw new BusinessRuleValidationException("Nif tem de ter 9 digitos");
+            }
             NIF = value;
         }
 
