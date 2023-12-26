@@ -10,7 +10,7 @@ namespace RobDroneGO.Domain.Users{
         Task<UserDto> AddUtenteAsync(CreatingUserDto dto);
         //Task<UserDto> InactivateAsync(UserId id);
         Task<UserDto> UpdateAsync(UserDto dto);
-        Task<UserDto> DeleteAsync(UserId id);
+        Task<UserDto> DeleteAsync(string email);
         Task<UserDto> Login(UserEmail email,UserPassword password);
     }
 }

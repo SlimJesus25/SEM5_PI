@@ -190,10 +190,10 @@ namespace RobDroneGO.Controllers
 
 
         // PUT: api/Users/5
-        [HttpPut("updateUser/{id}")]
-        public async Task<ActionResult<UserDto>> UpdateUser(int id, UserDto dto)
+        [HttpPut("updateUser/{email}")]
+        public async Task<ActionResult<UserDto>> UpdateUser(string email, UserDto dto)
         {
-            if (id != dto.Id)
+            if (email != dto.Email)
             {
                 return BadRequest();
             }
@@ -215,12 +215,12 @@ namespace RobDroneGO.Controllers
         }
 
         // DELETE: api/Users/5
-        [HttpDelete("deleteUser/{id}")]
-        public async Task<ActionResult<UserDto>> DeleteUser(int id)
+        [HttpDelete("deleteUser/{email}")]
+        public async Task<ActionResult<UserDto>> DeleteUser(string email)
         {
             try
             {
-                var user = await _service.DeleteAsync(new UserId(id));
+                var user = await _service.DeleteAsync(email);
 
                 if (user == null)
                 {

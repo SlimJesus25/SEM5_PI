@@ -204,7 +204,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.getUserByEmail(req, res, next));
 
-    route.delete('/deleteUser/:Email',
+    route.delete('/deleteUser/:email',
     celebrate({
       body: Joi.object({
       })

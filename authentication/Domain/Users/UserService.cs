@@ -73,7 +73,7 @@ namespace RobDroneGO.Domain.Users
 
         public async Task<UserDto> UpdateAsync(UserDto dto)
         {
-            var user = await this._repo.GetByIdAsync(new UserId(dto.Id)); 
+            var user = await this._repo.GetByEmailAsync(new UserEmail(dto.Email)); 
 
             if (user == null)
                 return null;   
@@ -129,9 +129,9 @@ namespace RobDroneGO.Domain.Users
         }
         
 
-            public async Task<UserDto> DeleteAsync(UserId id)
+            public async Task<UserDto> DeleteAsync(string email)
             {
-                var user = await this._repo.GetByIdAsync(id); 
+                var user = await this._repo.GetByEmailAsync(new UserEmail(email)); 
 
                 if (user == null)
                     return null;   
