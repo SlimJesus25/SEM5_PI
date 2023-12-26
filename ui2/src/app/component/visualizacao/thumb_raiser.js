@@ -23,6 +23,7 @@ import Fog from "./fog.js";
 import Camera from "./camera.js";
 import Animations from "./animations.js";
 import UserInterface from "./user_interface.js";
+import { PassagemService } from "../../service/passagem/passagem.service.js";
 
 /*
  * generalParameters = {
@@ -151,9 +152,12 @@ import UserInterface from "./user_interface.js";
  */
 
 export default class ThumbRaiser {
-    constructor(canvas,generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
+    constructor(pisoService, edificioService, mapaPisoService, canvas,generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
         //const userInteractionInstance = new UserInterface();
         //this.mazeParameters = merge({}, userInteractionInstance.mazeData, mazeParameters);
+        this.pisoService = pisoService;
+        this.edificioService = edificioService;
+        this.mapaPisoService = mapaPisoService;
         this.generalParameters = merge({}, generalData, generalParameters);
         this.mazeParameters = merge({}, mazeParameters);
         this.playerParameters = merge({}, playerData, playerParameters);
@@ -685,6 +689,27 @@ export default class ThumbRaiser {
 
             // Update the player
             if (!this.animations.actionInProgress) {
+
+                if(this.maze.foundElevador(this.player.position)){
+                    // Apresentar o menu para teletransporte.
+                }
+                
+
+                // TODO: No componente que instancia o thumb raiser, deve ser injetado o serviço de passagens para passa-lo para aqui e verificar
+                // qual o piso que a passagem leva.
+                // O parametro que recebe o mapa piso do thumb raiser vai ter que receber mais coisas, nomeadamente, os elevadores e passagens (elevators, exits).
+                if(this.maze.foundPassagem(this.player.position)){
+                    // Teletransportar imediatamente.
+                    
+                    // 1º Pesquisar passagens e filtrar a que está presente.
+                    this.passagemService
+                    // 2º Pesquisar pelo mapa piso associado.
+                    this.mapaPisoService.getMapasPiso().subscribe(mapas => {
+                        
+                    });
+
+                }
+
                 // Check if the player found the exit
                 if (this.maze.foundExit(this.player.position)) {
                     this.finalSequence();

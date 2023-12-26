@@ -42,11 +42,14 @@ export class VisualizacaoComponent implements OnInit {
   pisos: Piso[] = [];
   designacaoPiso: string = "";
 
-
+  // Passados os serviços por parâmetro.
   initialize(mapaPiso: MapaPiso) {
 
     // Create the game
     this.thumbRaiser = new ThumbRaiser(
+      this.pisoService,
+      this.edificioService,
+      this.mapaPisoService,
       this.canvas,
       {}, // General Parameters
       { scale: new THREE.Vector3(1.0, 1, 1.0), mazeData: this.updateFloorFile(mapaPiso) }, // Maze parameters

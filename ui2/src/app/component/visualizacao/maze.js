@@ -202,4 +202,25 @@ export default class Maze {
     foundExit(position) {
         return Math.abs(position.x - this.exitLocation.x) < 0.5 * this.scale.x && Math.abs(position.z - this.exitLocation.z) < 0.5 * this.scale.z
     };
+
+
+    // Está numa posição de elevador.
+    foundElevador(position){
+        const indices = this.cartesianToCell(position);
+        if(this.map[indices[0][indices[1]]] == 4 || this.map[indices[0][indices[1]]] == 5){
+            return true;
+        }
+        return false;
+    }
+
+    // Está numa posição de passagem externa.
+    foundPassagem(position){
+        const indices = this.cartesianToCell(position);
+        if(this.map[indices[0][indices[1]]] == 8 || this.map[indices[0][indices[1]]] == 9){
+            return true;
+        }
+        return false;
+    }
+
+    
 }
