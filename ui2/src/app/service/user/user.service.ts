@@ -10,7 +10,7 @@ import { User } from '../../model/user';
   providedIn: 'root'
 })
 export class UserService {
-  private LogisticAPI_URL = 'http://localhost:5000/api/Users';  // URL to web api
+  private LogisticAPI_URL = 'http://localhost:3000/api/users';  // URL to web api
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
@@ -21,7 +21,7 @@ export class UserService {
     
     const body = JSON.stringify(user);
     console.log(body);
-    return this.http.post<User>(this.LogisticAPI_URL + "/User", body, {'headers':headers , observe: 'response'})
+    return this.http.post<User>(this.LogisticAPI_URL + "/criarUser", body, {'headers':headers , observe: 'response'})
 
   }
 }
