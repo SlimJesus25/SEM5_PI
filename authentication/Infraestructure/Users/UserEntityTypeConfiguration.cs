@@ -26,13 +26,12 @@ namespace RobDroneGO.Infrastructure.Users
                 phoneNumberBuilder.Property(e => e.PhoneNumber).HasColumnName("PhoneNumber").IsRequired();
                 phoneNumberBuilder.HasIndex(e => e.PhoneNumber).IsUnique();
             });
-            /*builder.OwnsOne(b => b.NIF).Property(b => b.NIF).HasColumnName("NIF").IsRequired();
-            builder.HasIndex("NIF").IsUnique();*/
-            builder.OwnsOne(b => b.NIF, nifBuilder =>
+            builder.OwnsOne(b => b.NIF).Property(b => b.NIF).HasColumnName("NIF").IsRequired();
+            /*builder.OwnsOne(b => b.NIF, nifBuilder =>
             {
                 nifBuilder.Property(e => e.NIF).HasColumnName("NIF").IsRequired();
                 nifBuilder.HasIndex(e => e.NIF).IsUnique();
-            });
+            });*/
             builder.OwnsOne(b => b.Password).Property(b => b.Password).HasColumnName("Password").IsRequired();
             //builder.OwnsOne(b => b.RoleId).Property(b => b.Role.AsString).HasColumnName("Role").IsRequired();
             //builder.HasOne(b => b.RoleId) .WithMany().HasForeignKey(b => b.RoleId).IsRequired();

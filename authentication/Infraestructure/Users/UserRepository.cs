@@ -23,6 +23,10 @@ namespace RobDroneGO.Infrastructure.Users
             return await this.context.Users.CountAsync();
         }
 
+        public async Task<User> GetByEmailAsync(UserEmail email){
+            return await this.context.Users.Where(x => email.Email.Equals(x.Email.Email)).FirstAsync();
+        }
+
         public async Task<User> Login(UserEmail email, UserPassword password){
             return await this.context.Users.Where(x => email.Email.Equals(x.Email.Email) && password.Password.Equals(x.Password.Password)).FirstAsync();
         }

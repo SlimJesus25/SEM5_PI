@@ -7,6 +7,7 @@ namespace RobDroneGO.Domain.Users
 {   
     public interface IUserRepository:IRepository<User,UserId>
     {
+        Task<User> GetByEmailAsync(UserEmail email);
         Task<int> CountUsers();
         Task<User> Login(UserEmail email, UserPassword password);
     }

@@ -83,6 +83,8 @@ namespace RobDroneGO.Domain.Pedidos
         {
             var pedido = await this._repo.GetByIdAsync(id); 
 
+            bool verificacao = !pedido.GetEstado().Equals(Estado.Pendente);
+
             if (pedido == null|| !pedido.GetEstado().Equals(Estado.Pendente)){
                 throw new BusinessRuleValidationException("Pedido não se encontra Pendente");
             } 

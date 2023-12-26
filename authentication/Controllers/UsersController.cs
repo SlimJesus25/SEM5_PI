@@ -51,7 +51,7 @@ namespace RobDroneGO.Controllers
         {
             try
             {
-                var user = await _service.GetByIdAsync(new UserId(id));
+                var user = await _service.GetByIdAsync(id);
 
                 if (user == null)
                 {
@@ -74,6 +74,29 @@ namespace RobDroneGO.Controllers
                 System.IO.File.WriteAllBytes(filePath, byteArray);
                 return Ok("File saved on the server.");
                 */
+            }
+            catch (BadHttpRequestException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+        }
+
+        // GET: api/Users?idNumber=idNumber
+        [HttpGet("getUserByEmail/{email}")]
+        public async Task<ActionResult<UserDto>> GetByEmail(string email)
+        {
+            try
+            {
+                var user = await _service.GetByEmailAsync(email);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return user;
+
             }
             catch (BadHttpRequestException ex)
             {

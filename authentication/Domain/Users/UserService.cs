@@ -93,10 +93,6 @@ namespace RobDroneGO.Domain.Users
             if (dto.Password != null){
                 user.AlterarPassword(dto.Password);
             }
-            
-            if (dto.RoleId != 0){
-                user.AlterarRoleId(dto.RoleId);
-            }
 
             await this._unitOfWork.CommitAsync();
 
@@ -112,9 +108,19 @@ namespace RobDroneGO.Domain.Users
             return listDTO;
         }
 
-        public async Task<UserDto> GetByIdAsync(UserId id)
+        public async Task<UserDto> GetByIdAsync(int id)
         {
-            var user = await this._repo.GetByIdAsync(id);
+            var user = await this._repo.GetByIdAsync(new UserId(id));
+
+            if (user == null)
+                return null;
+
+            return new UserDto(user.Id.toInt(),user.Name.toString(),user.Email.toString(), user.PhoneNumber.toString(), user.NIF.toString(), user.Password.toString(), user.RoleId.toInt());
+        }
+
+        public async Task<UserDto> GetByEmailAsync(string email)
+        {
+            var user = await this._repo.GetByEmailAsync(new UserEmail(email));
 
             if (user == null)
                 return null;
