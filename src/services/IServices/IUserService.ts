@@ -5,10 +5,10 @@ import  IUserDTO  from "../../dto/IUserDTO";
 export default interface IUserService  {
   criarUser(userDTO: ICreatingUserDTO): Promise<Result<IUserDTO>>;
   criarUtente(userDTO: ICreatingUserDTO): Promise<Result<IUserDTO>>;
-  updateUser(userId: string, userDTO: IUserDTO): Promise<Result<IUserDTO>>;
+  updateUser(userEmail: string, userDTO: IUserDTO): Promise<Result<IUserDTO>>;
   getAllUsers(): Promise<Result<IUserDTO[]>>;
-  getUserById(userId: string): Promise<Result<IUserDTO>>;
-  deleteUser(userId: string): Promise<Result<IUserDTO>>;
+  getUserByEmail(userEmail: string): Promise<Result<IUserDTO>>;
+  deleteUser(userEmail: string): Promise<Result<IUserDTO>>;
   /*SignUp(userDTO: IUserDTO): Promise<Result<{userDTO: IUserDTO, token: string}>>;
   SignIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO, token: string }>>;
 */

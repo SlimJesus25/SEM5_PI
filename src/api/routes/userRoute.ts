@@ -176,7 +176,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.criarUtente(req, res, next));
 
-  route.put('/updateUser/:id',
+  route.put('/updateUser/:email',
     celebrate({
       body: Joi.object({
         id: Joi.number(),
@@ -197,14 +197,14 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.getAllUsers(req, res, next));
 
-    route.get('/getUserById/:id',
+    route.get('/getUserByEmail/:email',
     celebrate({
       body: Joi.object({
       })
     }),
-    (req, res, next) => ctrl.getUserById(req, res, next));
+    (req, res, next) => ctrl.getUserByEmail(req, res, next));
 
-    route.delete('/deleteUser/:id',
+    route.delete('/deleteUser/:Email',
     celebrate({
       body: Joi.object({
       })

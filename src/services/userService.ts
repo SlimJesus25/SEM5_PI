@@ -173,7 +173,7 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async updateUser(userId: string, userDTO: IUserDTO): Promise<Result<IUserDTO>> {
+  public async updateUser(userEmail: string, userDTO: IUserDTO): Promise<Result<IUserDTO>> {
     let err = '';
     try {
 
@@ -191,7 +191,7 @@ export default class UserService implements IUserService {
       };
 
       const dataString = JSON.stringify(data);
-      const urlWithQuery = this.serverUrl + req + "/" + userId;
+      const urlWithQuery = this.serverUrl + req + "/" + userEmail;
 
       let solucao;
 
@@ -308,13 +308,13 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async getUserById(userId: string): Promise<Result<IUserDTO>> {
+  public async getUserByEmail(userEmail: string): Promise<Result<IUserDTO>> {
     let err = '';
     try {
 
-      const req = "getUserById";
+      const req = "getUserByEmail";
 
-      const urlWithQuery = this.serverUrl + req + "/" + userId;
+      const urlWithQuery = this.serverUrl + req + "/" + userEmail;
 
       let solucao;
 
@@ -369,13 +369,13 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async deleteUser(userId: string): Promise<Result<IUserDTO>> {
+  public async deleteUser(userEmail: string): Promise<Result<IUserDTO>> {
     let err = '';
     try {
 
       const req = "deleteUser";
 
-      const urlWithQuery = this.serverUrl + req + "/" + userId;
+      const urlWithQuery = this.serverUrl + req + "/" + userEmail;
 
       let solucao;
 

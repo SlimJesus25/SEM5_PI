@@ -5,6 +5,6 @@ export default interface IUserController  {
   criarUtente(req: Request, res: Response, next: NextFunction);
   updateUser(req: Request, res: Response, next: NextFunction);
   getAllUsers(req: Request, res: Response, next: NextFunction);
-  getUserById(req: Request, res: Response, next: NextFunction);
+  getUserByEmail(req: Request, res: Response, next: NextFunction);
   deleteUser(req: Request, res: Response, next: NextFunction);
 }

@@ -18,7 +18,6 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async criarUser(req: Request, res: Response, next: NextFunction){
     try {
-      console.log(req.body);
       const userOrError = await this.userServiceInstance.criarUser(req.body as ICreatingUserDTO) as Result<IUserDTO>;
         
       if (userOrError.isFailure) {
@@ -51,8 +50,7 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async updateUser(req: Request, res: Response, next: NextFunction){
     try {
-      console.log(req.body);
-      const userOrError = await this.userServiceInstance.updateUser(req.params.id, req.body as IUserDTO) as Result<IUserDTO>;
+      const userOrError = await this.userServiceInstance.updateUser(req.params.email, req.body as IUserDTO) as Result<IUserDTO>;
         
       if (userOrError.isFailure) {
         return res.status(404).send("Erro: " + userOrError.errorValue());
@@ -81,9 +79,9 @@ export default class UserController implements IUserController /* TODO: extends 
     }
   };
 
-  public async getUserById(req: Request, res: Response, next: NextFunction) {
+  public async getUserByEmail(req: Request, res: Response, next: NextFunction) {
     try {
-      const usersOrError = await this.userServiceInstance.getUserById(req.params.id) as Result<IUserDTO>;
+      const usersOrError = await this.userServiceInstance.getUserByEmail(req.params.email) as Result<IUserDTO>;
 
       if (usersOrError.isFailure) {
         return res.status(404).send("Erro: " + usersOrError.errorValue());
@@ -98,7 +96,7 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const usersOrError = await this.userServiceInstance.deleteUser(req.params.id) as Result<IUserDTO>;
+      const usersOrError = await this.userServiceInstance.deleteUser(req.params.email) as Result<IUserDTO>;
 
       if (usersOrError.isFailure) {
         return res.status(404).send("Erro: " + usersOrError.errorValue());
