@@ -120,7 +120,8 @@ const routes: Routes = [
   //User
   { path: 'criarUser', component: RegistarUserComponent },
   { path: 'pedidoUser', component: PedidoUserComponent },
-  { path: 'signUp', component: SignUpComponent }
+  { path: 'signUp', component: SignUpComponent },
+
 ];
 
 

@@ -1,5 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { MessageService } from '../../../service/message/message.service';
 import { UserService } from '../../../service/user/user.service';
 import { RoleService } from '../../../service/role/role.service';
@@ -12,9 +14,10 @@ import { PedidoService } from '../../../service/pedido/pedido.service';
 })
 export class SignUpComponent implements OnInit {
 
-  utente = { name: "", email: "", phoneNumber: "", nif: "", password: "" }
+  utente = { name: "", email: "", phoneNumber: "", nif: "", password: "",consent:false }
 
   constructor(
+    private snackBar: MatSnackBar,
     private location: Location,
     private pedidoService: PedidoService,
   ) {
@@ -30,6 +33,12 @@ export class SignUpComponent implements OnInit {
   }
 
   criarUtente() {
+    console.log('Aqui: ' + this.utente.consent);
+    if (this.utente.consent == false) {
+      this.showSnackbar('Consinta com os termos antes de efetuar o pedido.');
+      return;
+    }
+
     let errorOrSuccess: any = this.pedidoService.criarPedido(this.utente);
     errorOrSuccess.subscribe(
       (data: any) => {
@@ -42,6 +51,14 @@ export class SignUpComponent implements OnInit {
     );
 
     return errorOrSuccess;
+  }
+
+  private showSnackbar(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 5000,  // Duration in milliseconds
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
   }
 
   goBack(): void {

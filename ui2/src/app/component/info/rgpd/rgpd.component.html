@@ -1,7 +1,62 @@
 <h1>RobDroneGO</h1>
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RobDroneGO</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      position: relative;
+    }
+
+    h1, h2, h3 {
+      color: #007BFF;
+      border-bottom: 2px solid #007BFF;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    h5 {
+      margin-bottom: 5px;
+    }
+
+    div {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    #scrollButton {
+      position: fixed;
+      bottom: 20px;
+      right: 50%;
+      transform: translateX(50%);
+      padding: 10px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    #scrollButton.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
 
 <body>
+
   <div>
     <h5>NO ÂMBITO DO PROJETO INTEGRADOR DO 1º SEMESTRE DO 3º ANO</h5>
     <h5>GABRIEL SILVA (1210808)</h5>
@@ -118,4 +173,24 @@
     indivíduos e o cumprimento das regulamentações de proteção de dados, e a sua responsabilidade perante o
     incumprimento de qualquer pressuposto, bem como a sua devida correção.
   </div>
+
+  <button id="scrollButton" onclick="scrollToTop()">Scroll to Top</button>
+
+  <script>
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+      var scrollButton = document.getElementById("scrollButton");
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollButton.classList.add("show");
+      } else {
+        scrollButton.classList.remove("show");
+      }
+    }
+
+    function scrollToTop() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  </script>
 </body>
