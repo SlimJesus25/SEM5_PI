@@ -18,6 +18,7 @@ export class MapaPisoService {
 
   createMapaPiso(mapaPiso: MapaPiso) {
     const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token"),
     'Access-Control-Allow-Origin': '*', // Este cabeçalho pode ser ajustado conforme necessário
   };
     
@@ -29,7 +30,8 @@ export class MapaPisoService {
   }
 
   getMapasPiso(): Observable<MapaPiso[]> {
-    const mapas = this.http.get<MapaPiso[]>(this.LogisticAPI_URL+ "/listMapasPiso");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const mapas = this.http.get<MapaPiso[]>(this.LogisticAPI_URL+ "/listMapasPiso", {headers});
     return mapas;
   }
 
@@ -37,7 +39,8 @@ export class MapaPisoService {
 
         const updateURL = this.LogisticAPI_URL;
 
-        const headers = { 'content-type': 'application/json' };
+        const headers = { 'content-type': 'application/json',
+        'authorization': 'Bearer '+ localStorage.getItem("token") };
 
         const body = JSON.stringify(mapaPiso);
         console.log(body);

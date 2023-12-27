@@ -15,7 +15,8 @@ export class RoleService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   getAllRoles(): Observable<Role[]> {
-    const roles= this.http.get<Role[]>(this.LogisticAPI_URL+ "/getAllRoles");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const roles= this.http.get<Role[]>(this.LogisticAPI_URL+ "/getAllRoles", {headers});
 
     return roles;
   }

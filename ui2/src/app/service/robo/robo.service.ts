@@ -15,7 +15,8 @@ export class RoboService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createRobo(robo: Robo) {
-    const headers = {'content-type': 'application/json'};
+    const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token")};
     
     const body = JSON.stringify(robo);
     console.log(body);
@@ -46,7 +47,8 @@ export class RoboService {
 
     updateRobo(robo: Robo) {
 
-        const headers = { 'content-type': 'application/json' };
+        const headers = { 'content-type': 'application/json' ,
+        'authorization': 'Bearer '+ localStorage.getItem("token")};
 
         const body = JSON.stringify(robo);
         console.log(body);
@@ -54,7 +56,8 @@ export class RoboService {
     }
 
     inhibitRobo(codigo: string){
-      const headers = { 'content-type': 'application/json' };
+      const headers = { 'content-type': 'application/json',
+      'authorization': 'Bearer '+ localStorage.getItem("token")};
       const body = JSON.stringify({codigo: codigo});
       return this.http.patch<Robo>(this.LogisticAPI_URL + "/inhibitRobo", body, { 'headers': headers, observe: 'response' });
     }

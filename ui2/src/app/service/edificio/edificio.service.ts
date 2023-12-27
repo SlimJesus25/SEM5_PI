@@ -16,6 +16,7 @@ export class EdificioService {
 
   createEdificio(edificio: Edificio) {
     const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token"),
     'Access-Control-Allow-Origin': '*', // Este cabeçalho pode ser ajustado conforme necessário
   };
     
@@ -26,15 +27,17 @@ export class EdificioService {
   }
 
   getEdificios(): Observable<Edificio[]> {
-    const edificios = this.http.get<Edificio[]>(this.LogisticAPI_URL+ "/listEdificios");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const edificios = this.http.get<Edificio[]>(this.LogisticAPI_URL+ "/listEdificios", {headers});
 
     return edificios;
   }
 
   listMinMax(min: string, max: string): Observable<Edificio[]> {
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const listEdificiosMinMax = this.LogisticAPI_URL + "/listMinMax/" + min+ "/" +max;
     console.log(listEdificiosMinMax);
-    const pisos = this.http.get<Edificio[]>(listEdificiosMinMax)!;
+    const pisos = this.http.get<Edificio[]>(listEdificiosMinMax, {headers})!;
     return pisos;
 }
 
@@ -42,7 +45,8 @@ export class EdificioService {
 
         const updateURL = this.LogisticAPI_URL;
 
-        const headers = { 'content-type': 'application/json' };
+        const headers = { 'content-type': 'application/json',
+        'authorization': 'Bearer '+ localStorage.getItem("token") };
 
         const body = JSON.stringify(edificio);
         console.log(body);

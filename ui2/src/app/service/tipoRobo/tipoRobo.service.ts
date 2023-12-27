@@ -15,7 +15,8 @@ export class TipoRoboService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createTipoRobo(tipoRobo: TipoRobo) {
-    const headers = {'content-type': 'application/json'};
+    const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token")};
     
     const body = JSON.stringify(tipoRobo);
     console.log(body);
@@ -25,7 +26,8 @@ export class TipoRoboService {
   }
 
   getTipoRobo(): Observable<TipoRobo[]> {
-    const tiposRobo = this.http.get<TipoRobo[]>(this.LogisticAPI_URL+ "/listTipoRobo");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const tiposRobo = this.http.get<TipoRobo[]>(this.LogisticAPI_URL+ "/listTipoRobo", {headers});
 
     return tiposRobo;
   }
@@ -49,7 +51,8 @@ export class TipoRoboService {
 
         const updateURL = this.LogisticAPI_URL;
 
-        const headers = { 'content-type': 'application/json' };
+        const headers = { 'content-type': 'application/json',
+        'authorization': 'Bearer '+ localStorage.getItem("token") };
 
         const body = JSON.stringify(tipoRobo);
         console.log(body);

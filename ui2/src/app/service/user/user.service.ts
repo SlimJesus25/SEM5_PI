@@ -18,6 +18,7 @@ export class UserService {
   criarUser(user: CreateUser) {
     const headers = {
       'content-type': 'application/json',
+      'authorization': 'Bearer '+ localStorage.getItem("token"),
       'Access-Control-Allow-Origin': '*',
     };
 

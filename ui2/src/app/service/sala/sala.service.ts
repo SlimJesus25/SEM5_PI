@@ -16,6 +16,7 @@ export class SalaService {
 
   createSala(sala: Sala) {
     const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token"),
     'Access-Control-Allow-Origin': '*', // Este cabeçalho pode ser ajustado conforme necessário
   };
     
@@ -26,7 +27,8 @@ export class SalaService {
   }
 
   getSalas(): Observable<Sala[]> {
-    const salas = this.http.get<Sala[]>(this.LogisticAPI_URL+ "/listSalas");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const salas = this.http.get<Sala[]>(this.LogisticAPI_URL+ "/listSalas", {headers});
 
     return salas;
   }

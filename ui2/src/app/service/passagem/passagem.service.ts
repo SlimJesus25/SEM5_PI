@@ -16,7 +16,8 @@ export class PassagemService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createPassagem(passagem: Passagem) {
-    const headers = {'content-type': 'application/json'};
+    const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token")};
     
     const body = JSON.stringify(passagem);
     console.log(body);
@@ -30,7 +31,8 @@ export class PassagemService {
   }
 
   getPassagens(): Observable<Passagem[]> {
-    const edificios = this.http.get<Passagem[]>(this.LogisticAPI_URL+ "/listPassagens");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const edificios = this.http.get<Passagem[]>(this.LogisticAPI_URL+ "/listPassagens", {headers});
 
     return edificios;
   }
@@ -39,7 +41,8 @@ export class PassagemService {
 
     const updateURL = this.LogisticAPI_URL;
 
-    const headers = { 'content-type': 'application/json' };
+    const headers = { 'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token") };
 
     const body = JSON.stringify(passagem);
     console.log(body);
@@ -47,9 +50,10 @@ export class PassagemService {
   }
   
    listPisos(codEdificio: string) : Observable<Piso[]>{
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const listPisos = this.LogisticAPI_URL + "/listPisosPassagens" + codEdificio;
     console.log(listPisos);
-    const pisos =  this.http.get<Piso[]>(listPisos)!;
+    const pisos =  this.http.get<Piso[]>(listPisos, {headers})!;
     return pisos;
    }
 }

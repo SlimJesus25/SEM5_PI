@@ -15,7 +15,8 @@ export class ElevadorService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createElevador(elevador: Elevador) {
-    const headers = {'content-type': 'application/json'};
+    const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token")};
     
     const body = JSON.stringify(elevador);
     console.log(body);
@@ -25,14 +26,16 @@ export class ElevadorService {
   }
 
   getElevadores(): Observable<Elevador[]> {
-    const elevadores = this.http.get<Elevador[]>(this.LogisticAPI_URL+ "/listElevadores");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const elevadores = this.http.get<Elevador[]>(this.LogisticAPI_URL+ "/listElevadores", {headers});
 
     return elevadores;
   }
 
   listElevadoresEdificio(codigoEdificio: string): Observable<Elevador[]> {
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const listElevadoresEdificio = this.LogisticAPI_URL + "/listElevadoresEdificio/" +codigoEdificio;
-    const elevadores =  this.http.get<Elevador[]>(listElevadoresEdificio);
+    const elevadores =  this.http.get<Elevador[]>(listElevadoresEdificio, {headers});
     return elevadores;
 }
 /*
@@ -55,7 +58,8 @@ export class ElevadorService {
 
         const updateURL = this.LogisticAPI_URL;
 
-        const headers = { 'content-type': 'application/json' };
+        const headers = { 'content-type': 'application/json',
+        'authorization': 'Bearer '+ localStorage.getItem("token") };
 
         const body = JSON.stringify(elevador);
         console.log(body);

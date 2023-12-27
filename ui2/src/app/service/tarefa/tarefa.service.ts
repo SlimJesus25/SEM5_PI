@@ -16,7 +16,8 @@ export class TarefaService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createTarefa(tarefa: Tarefa) {
-    const headers = {'content-type': 'application/json'};
+    const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token")};
     
     const body = JSON.stringify(tarefa);
     console.log(body);
@@ -30,7 +31,8 @@ export class TarefaService {
   }
 
   getTarefas(): Observable<Tarefa[]> {
-    const edificios = this.http.get<Tarefa[]>(this.LogisticAPI_URL+ "/listTarefas");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const edificios = this.http.get<Tarefa[]>(this.LogisticAPI_URL+ "/listTarefas", {headers});
 
     return edificios;
   }
