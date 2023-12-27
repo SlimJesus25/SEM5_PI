@@ -6,6 +6,8 @@ import IPisoController from '../../controllers/IControllers/IPisoController';
 
 import config from "../../../config";
 import IMapaPisoController from '../../controllers/IControllers/IMapaPisoController';
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -16,7 +18,7 @@ export default (app: Router) => {
   const ctrl2 = Container.get(config.controllers.mapaPiso.name) as IMapaPisoController;
 
   // Criar novo piso.
-  route.post('/createPiso',
+  route.post('/createPiso', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
       descricao: Joi.string(),
@@ -27,7 +29,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createPiso(req, res, next));
 
     // List pisos de um edifício.
-    route.get('/listPisos/:codigoEdificio',
+    route.get('/listPisos/:codigoEdificio', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
       }),
@@ -35,7 +37,7 @@ export default (app: Router) => {
     (req, res, next) => ctrl.listPisos(req, res, next));
 
   // Update piso existente.
-  route.put('/updatePiso',
+  route.put('/updatePiso', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
       descricao: Joi.string(),
@@ -45,7 +47,7 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.updatePiso(req, res, next));
 
-    route.delete('/deletePiso',
+    route.delete('/deletePiso', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         designacao: Joi.string().required()
@@ -53,14 +55,14 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.deletePiso(req, res, next));
 
-    route.get('/listPisosGeral',
+    route.get('/listPisosGeral', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
       }),
     }),
     (req, res, next) => ctrl.listPisosGeral(req, res, next));
 
-    route.get('/listPisosGeral2',
+    route.get('/listPisosGeral2', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
       }),

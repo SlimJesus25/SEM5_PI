@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import ISalaController from '../../controllers/IControllers/ISalaController'; 
 
 import config from "../../../config";
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -13,7 +15,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.sala.name) as ISalaController;
 
-  route.post('/createSala',
+  route.post('/createSala', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         descricao: Joi.string(),
@@ -24,7 +26,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.createSala(req, res, next) );
 
-  route.put('updateSala',
+  route.put('updateSala', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         descricao: Joi.string(),
@@ -35,7 +37,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.updateSala(req, res, next) );
 
-    route.get('/listSalas',
+    route.get('/listSalas', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
     }),

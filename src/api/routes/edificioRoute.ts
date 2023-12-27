@@ -27,7 +27,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createEdificio(req, res, next));
 
   // Update edificio existente.
-  route.put('/updateEdificio',
+  route.put('/updateEdificio', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
         dimensaoMaximaPiso: Joi.array().items(Joi.number()).min(2).max(2),
@@ -41,7 +41,7 @@ export default (app: Router) => {
 
   //Mateus: Alterou de put para get
 // List todos os edificios
-  route.get('/listEdificios',
+  route.get('/listEdificios', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
     }),
@@ -49,7 +49,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.listEdificios(req, res, next));
 
 
-  route.delete('/deleteEdificio',
+  route.delete('/deleteEdificio', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         codigoEdificio: Joi.string().required(),
@@ -57,7 +57,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.deleteEdificio(req, res, next));
 
-    route.get('/listMinMax/:min/:max',
+    route.get('/listMinMax/:min/:max', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
       }),

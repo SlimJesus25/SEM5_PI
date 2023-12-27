@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 
 import config from "../../../config";
 import ITarefaAprovacaoController from '../../controllers/IControllers/ITarefaAprovacaoController';
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -13,7 +15,7 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.tarefaAprovacao.name) as ITarefaAprovacaoController;
 
-    route.post('/requisitar',
+    route.post('/requisitar', authorize('GestorTarefas'),
     celebrate({
       body: Joi.object({
         tipoDispositivo: Joi.string(),

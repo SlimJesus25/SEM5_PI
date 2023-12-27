@@ -5,6 +5,7 @@ import { Container } from 'typedi';
 import ITipoRoboController from '../../controllers/IControllers/ITipoRoboController'; 
 
 import config from "../../../config";
+var authorize = require ("../middlewares/validateToken")
 
 const route = Router();
 
@@ -14,7 +15,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.tipoRobo.name) as ITipoRoboController;
 
   // Criar novo tipo de robo.
-  route.post('/createTipoRobo',
+  route.post('/createTipoRobo', authorize('GestorFrota'),
   celebrate({
     body: Joi.object({
       designacao: Joi.string().required(),
@@ -26,7 +27,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createTipoRobo(req, res, next));
 
   // Update tipo robo existente. (verificar se existe UC para isto).
-  route.put('/updateTipoRobo',
+  route.put('/updateTipoRobo', authorize('GestorFrota'),
   celebrate({
     body: Joi.object({
         designacao: Joi.string().required(),
@@ -37,14 +38,14 @@ export default (app: Router) => {
   }),
   (req, res, next) => ctrl.updateTipoRobo(req, res, next));
 
-  route.get('/listTipoRobo',
+  route.get('/listTipoRobo', authorize('GestorFrota'),
  celebrate({
    body: Joi.object({
    }),
  }),
  (req, res, next) => ctrl.listTipoRobo(req, res, next));
 
-  route.delete('/deleteTipoRobo',
+  route.delete('/deleteTipoRobo', authorize('GestorFrota'),
     celebrate({
       body: Joi.object({
         designacao: Joi.string().required()

@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import IRoboController from '../../controllers/IControllers/IRoboController'; 
 
 import config from "../../../config";
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -14,7 +16,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.robo.name) as IRoboController;
 
   // Criar novo robo.
-  route.post('/createRobo',
+  route.post('/createRobo', authorize('GestorFrota'),
   celebrate({
     body: Joi.object({
       marca: Joi.string().required(),
@@ -27,7 +29,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createRobo(req, res, next));
 
   // Update robo existente.
-  route.put('/updateRobo',
+  route.put('/updateRobo', authorize('GestorFrota'),
   celebrate({
     body: Joi.object({
       estado: Joi.string().required(),
@@ -51,7 +53,7 @@ export default (app: Router) => {
  
   */
  // List todos os robos
- route.get('/listRobos',
+ route.get('/listRobos', authorize('GestorFrota'),
  celebrate({
    body: Joi.object({
    }),
@@ -61,7 +63,7 @@ export default (app: Router) => {
 
 
  // Inibir robo existente.
- route.patch('/inhibitRobo',
+ route.patch('/inhibitRobo', authorize('GestorFrota'),
  celebrate({
    body: Joi.object({
      codigo: Joi.string().required(),
@@ -69,7 +71,7 @@ export default (app: Router) => {
  }),
  (req, res, next) => ctrl.inhibitRobo(req, res, next));
 
- route.delete('/deleteRobo',
+ route.delete('/deleteRobo', authorize('GestorFrota'),
     celebrate({
       body: Joi.object({
         codigo: Joi.string().required()

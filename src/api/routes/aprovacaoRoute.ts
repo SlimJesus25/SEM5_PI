@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 
 import config from "../../../config";
 import IAprovacaoController from '../../controllers/IControllers/IAprovacaoController';
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -13,7 +15,7 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.aprovacao.name) as IAprovacaoController;
 
-    route.patch('/aceitarRequisicao',
+    route.patch('/aceitarRequisicao', authorize('GestorTarefas'),
         celebrate({
             body: Joi.object({
                 tarefa: Joi.string().required(),
@@ -21,7 +23,7 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.aceitarRequisicao(req, res, next));
 
-    route.patch('/recusarRequisicao',
+    route.patch('/recusarRequisicao', authorize('GestorTarefas'),
         celebrate({
             body: Joi.object({
                 tarefa: Joi.string().required(),
@@ -29,14 +31,14 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.recusarRequisicao(req, res, next));
 
-    route.get('/listarTarefasNaoAprovadas',
+    route.get('/listarTarefasNaoAprovadas', authorize('GestorTarefas'),
         celebrate({
             body: Joi.object({
             })
         }),
         (req, res, next) => ctrl.listarTarefasNaoAprovadas(req, res, next));
 
-    route.get('/pesquisarRequisicaoPorEstado',
+    route.get('/pesquisarRequisicaoPorEstado', authorize('GestorTarefas'),
         celebrate({
             body: Joi.object({
                 estado: Joi.string().required(),
@@ -44,7 +46,7 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.listarPorEstado(req, res, next));
 
-    route.get('/pesquisarRequisicaoPorTipoDispositivo',
+    route.get('/pesquisarRequisicaoPorTipoDispositivo', authorize('GestorTarefas'),
         celebrate({
             body: Joi.object({
                 tipoDispositivo: Joi.string().required(),
@@ -52,7 +54,7 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.listarPorTipoDispositivo(req, res, next));
 
-    route.get('/pesquisarRequisicaoPorUtente',
+    route.get('/pesquisarRequisicaoPorUtente', authorize('GestorTarefas'),
         celebrate({
             body: Joi.object({
                 utente: Joi.string().required(),
@@ -60,7 +62,7 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.listarPorUtente(req, res, next));
 
-    route.patch('/sequenciaTarefasAprovadas',
+    route.patch('/sequenciaTarefasAprovadas', authorize('GestorTarefas'),
         celebrate({
             body: Joi.object({
             }),

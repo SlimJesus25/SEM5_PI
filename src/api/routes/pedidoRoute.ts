@@ -3,6 +3,8 @@ import { celebrate, Joi } from 'celebrate';
 
 import { Container } from 'typedi';
 import IPedidoController from '../../controllers/IControllers/IPedidoController';
+var authorize = require ("../middlewares/validateToken")
+
 
 import config from "../../../config";
 
@@ -13,28 +15,28 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.pedido.name) as IPedidoController;
 
-    route.get('/getAllPedidos',
+    route.get('/getAllPedidos', authorize('GestorUtilizadores'),
         celebrate({
             body: Joi.object({
             })
         }),
         (req, res, next) => ctrl.getAllPedidos(req, res, next));
 
-    route.get('/getAllPedidosPendentes',
+    route.get('/getAllPedidosPendentes', authorize('GestorUtilizadores'),
         celebrate({
             body: Joi.object({
             })
         }),
         (req, res, next) => ctrl.getAllPedidosPendentes(req, res, next));
 
-    route.get('/getPedidoById/:id',
+    route.get('/getPedidoById/:id', authorize('GestorUtilizadores'),
         celebrate({
             body: Joi.object({
             })
         }),
         (req, res, next) => ctrl.getPedidoById(req, res, next));
 
-    route.post('/criarPedido',
+    route.post('/criarPedido', authorize('GestorUtilizadores'),
         celebrate({
             body: Joi.object({
                 name: Joi.string(),
@@ -47,14 +49,14 @@ export default (app: Router) => {
         (req, res, next) => ctrl.criarPedido(req, res, next));
 
 
-    route.patch('/aprovarPedido/:id',
+    route.patch('/aprovarPedido/:id', authorize('GestorUtilizadores'),
         celebrate({
             body: Joi.object({
             })
         }),
         (req, res, next) => ctrl.aprovarPedido(req, res, next));
 
-    route.patch('/recusarPedido/:id',
+    route.patch('/recusarPedido/:id', authorize('GestorUtilizadores'),
         celebrate({
             body: Joi.object({
             })

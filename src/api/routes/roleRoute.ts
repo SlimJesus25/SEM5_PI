@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import IRoleController from '../../controllers/IControllers/IRoleController';
 
 import config from "../../../config";
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -13,14 +15,14 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.role.name) as IRoleController;
 
-  route.get('/getAllRoles',
+  route.get('/getAllRoles', authorize('GestorUtilizadores'),
     celebrate({
       body: Joi.object({
       })
     }),
     (req, res, next) => ctrl.getAllRoles(req, res, next));
 
-  route.post('/criarRole',
+  route.post('/criarRole', authorize('GestorUtilizadores'),
     celebrate({
       body: Joi.object({
         name: Joi.string(),
@@ -28,7 +30,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.criarRole(req, res, next));
 
-    route.get('/getRoleById/:id',
+    route.get('/getRoleById/:id', authorize('GestorUtilizadores'),
     celebrate({
       body: Joi.object({
       })

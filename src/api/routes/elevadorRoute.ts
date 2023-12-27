@@ -4,6 +4,8 @@ var validateToken = require ("../middlewares/validateToken")
 import { Container } from 'typedi';
 import IElevadorController from '../../controllers/IControllers/IElevadorController';
 import config from "../../../config";
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -13,7 +15,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.elevador.name) as IElevadorController;
 
   // Criar novo elevador.
-  route.post('/createElevador', validateToken,
+  route.post('/createElevador', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         descricao: Joi.string(),
@@ -28,14 +30,14 @@ export default (app: Router) => {
     (req, res, next) => ctrl.createElevador(req, res, next));
 
   // List elevadores de um edifício.
-  route.get('/listElevadoresEdificio/:codigoEdificio',
+  route.get('/listElevadoresEdificio/:codigoEdificio', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
       }),
     }),
     (req, res, next) => ctrl.listElevadoresEdificio(req, res, next));
 
-  route.get('/listElevadores',
+  route.get('/listElevadores', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
       }),
@@ -43,7 +45,7 @@ export default (app: Router) => {
     (req, res, next) => ctrl.listElevadores(req, res, next));
 
   // Update elevador existente.
-  route.put('/updateElevador',
+  route.put('/updateElevador', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         descricao: Joi.string(),
@@ -57,7 +59,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.updateElevador(req, res, next));
 
-  route.delete('/deleteElevador',
+  route.delete('/deleteElevador', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         numeroIdentificativo: Joi.number().required(),

@@ -6,6 +6,8 @@ import IPisoController from '../../controllers/IControllers/IPisoController';
 
 import config from "../../../config";
 import IMapaPisoController from '../../controllers/IControllers/IMapaPisoController';
+var authorize = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -14,7 +16,7 @@ export default (app: Router) => {
 
   const ctrl2 = Container.get(config.controllers.mapaPiso.name) as IMapaPisoController;
 
-    route.post('/createMapaPiso',
+    route.post('/createMapaPiso', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
       mapa : Joi.object().required(),
@@ -24,7 +26,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl2.createMapaPiso(req, res, next));
   
 
-  route.patch('/LoadMapaPiso',
+  route.patch('/LoadMapaPiso', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         mapaPiso : Joi.number()
@@ -32,7 +34,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl2.loadMapaPiso(req, res, next));
 
-    route.delete('/deleteMapaPiso',
+    route.delete('/deleteMapaPiso', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
         piso: Joi.string().required()
@@ -40,7 +42,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl2.deleteMapaPiso(req, res, next));
 
-    route.get('/listMapasPiso',
+    route.get('/listMapasPiso', authorize('GestorCampus'),
   celebrate({
     body: Joi.object({
     }),
@@ -57,7 +59,7 @@ export default (app: Router) => {
       }),
     }), (req, res, next) => ctrl2.caminhoEntrePisos(req, res, next));
 
-    route.get('/listMapaPiso/:piso',
+    route.get('/listMapaPiso/:piso', authorize('GestorCampus'),
     celebrate({
       body: Joi.object({
       }),
