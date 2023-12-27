@@ -81,6 +81,7 @@
   <!--Utente Menu-->
   <button mat-button [matMenuTriggerFor]="utenteMenu">Utente</button>
   <mat-menu #utenteMenu="matMenu">
+    <button mat-menu-item (click)="deleteUser()">Eliminar conta</button>
   </mat-menu>
 
   <!--Visualização-->

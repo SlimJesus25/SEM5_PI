@@ -110,4 +110,8 @@ export class MainMenuComponent implements OnInit {
   pedidoUser(){
     this.router.navigate(['pedidoUser']);
   }
+
+  deleteUser(){
+    this.router.navigate(['deleteUser']);
+  }
 }

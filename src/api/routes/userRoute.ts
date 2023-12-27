@@ -144,7 +144,6 @@ import { Container } from 'typedi';
 import config from "../../../config";
 import IUserController from '../../controllers/IControllers/IUserController';
 var authorize = require ("../middlewares/validateToken")
-var authorizeEmail = require ("../middlewares/validateToken")
 
 
 const route = Router();

@@ -74,6 +74,7 @@ import { BackupComponent } from './component/asist/backup/backup.component';
 import { RegistarUserComponent } from './component/user/registarUser/registar-user.component';
 import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.component';
 import { SignUpComponent } from './component/user/signUp/sign-up.component';
+import { DeleteUserComponent } from './component/user/deleteUser/delete-user.component';
 
 
 @NgModule({
@@ -163,6 +164,7 @@ import { SignUpComponent } from './component/user/signUp/sign-up.component';
     RegistarUserComponent,
     PedidoUserComponent,
     SignUpComponent,
+    DeleteUserComponent
   ],
   bootstrap: [ AppComponent ]
 })

@@ -24,7 +24,6 @@ export class UserService {
 
     const body = JSON.stringify(user);
     return this.http.post<User>(this.LogisticAPI_URL + "/criarUser", body, { 'headers': headers, observe: 'response' })
-
   }
 
   login(email: string, password: string) {
@@ -32,4 +31,11 @@ export class UserService {
     const login = this.http.get(loginUrl);
     return login;
   }
+
+  deleteUser(email: string) {
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    return this.http.delete(this.LogisticAPI_URL+ "/deleteUser/"+ email,  {headers});
+  }
+
+  
 }
