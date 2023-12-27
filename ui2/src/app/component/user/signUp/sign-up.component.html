@@ -1,0 +1,34 @@
+<div class="background-container"></div>
+
+<body>
+  <div class="box">
+    <div>
+      <table>
+        <tr>
+          <th><label>Nome: </label></th>
+          <th><input type="string" [(ngModel)]="utente.name" /></th>
+        </tr>
+        <tr>
+          <th><label>Email: </label></th>
+          <th><input type="string" [(ngModel)]="utente.email" /></th>
+        </tr>
+        <tr>
+          <th><label>NIF: </label></th>
+          <th><input type="string" [(ngModel)]="utente.nif" /></th>
+        </tr>
+        <tr>
+          <th><label>Numero Telemóvel: </label></th>
+          <th><input type="string" [(ngModel)]="utente.phoneNumber" /></th>
+        </tr>
+        <tr>
+          <th><label>Password: </label></th>
+          <th><input type="string" [(ngModel)]="utente.password" /></th>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <button (click)="criarUtente()">Efetuar pedido</button>
+      <button (click)="goBack()">Back</button>
+    </div>
+  </div>
+</body>

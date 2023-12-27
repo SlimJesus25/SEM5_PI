@@ -12,16 +12,16 @@ export class LoginComponent {
   @Input() password: string = '';
   constructor(private router: Router) { }
 
-  signup(){
-    
-  }
-
   submit(){
     if (this.password != 'teste1234'){
       console.error('Invalid password');
     }else {
       this.router.navigate(['/mainMenu']);
     }
+  }
+
+  signUp(){
+    this.router.navigate(['/signUp']);
   }
 }
 

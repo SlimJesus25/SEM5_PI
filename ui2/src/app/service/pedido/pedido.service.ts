@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { User } from '../../model/user';
+import { Utente } from '../../model/utente';
 import { Pedido } from '../../model/pedido';
 
 @Injectable({
@@ -31,5 +31,16 @@ export class PedidoService {
     const recusarPedido = this.LogisticAPI_URL + "/recusarPedido/" + pedido.id;
     const pedidoReq = this.http.patch<Pedido>(recusarPedido, {});
     return pedidoReq;
+  }
+
+  criarPedido(utente: Utente) {
+    const headers = {'content-type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+  };
+    
+    const body = JSON.stringify(utente);
+    console.log(body);
+    return this.http.post<Utente>(this.LogisticAPI_URL + "/criarPedido", body, {'headers':headers , observe: 'response'})
+
   }
 }

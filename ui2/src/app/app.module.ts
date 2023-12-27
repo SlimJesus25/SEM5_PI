@@ -72,6 +72,7 @@ import { RgpdComponent } from './component/info/rgpd/rgpd.component';
 import { BackupComponent } from './component/asist/backup/backup.component';
 import { RegistarUserComponent } from './component/user/registarUser/registar-user.component';
 import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.component';
+import { SignUpComponent } from './component/user/signUp/sign-up.component';
 
 
 @NgModule({
@@ -157,7 +158,8 @@ import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.com
 
     //User
     RegistarUserComponent,
-    PedidoUserComponent
+    PedidoUserComponent,
+    SignUpComponent
   ],
   bootstrap: [ AppComponent ]
 })
