@@ -12,6 +12,12 @@ export class LoginComponent {
   @Input() password: string = '';
   constructor(private router: Router) { }
 
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   submit(){
     if (this.password != 'teste1234'){
       console.error('Invalid password');

@@ -26,6 +26,12 @@ export class RegistarUserComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   criarUser() {
     let errorOrSuccess: any = this.userService.criarUser(this.user);
     errorOrSuccess.subscribe(

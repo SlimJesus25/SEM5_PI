@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -94,6 +95,8 @@ import { SignUpComponent } from './component/user/signUp/sign-up.component';
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
+    MatCheckboxModule
+    
   ],
   declarations: [
     AppComponent,

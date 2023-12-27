@@ -3,7 +3,8 @@
         <h2>Login</h2>
         <form>
             <input type="text" name="username" [(ngModel)]="username">
-            <input type="password" name="password" [(ngModel)]="password">
+            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" />
+            <mat-checkbox [checked]="showPassword" (change)="togglePasswordVisibility()">Show/Hide</mat-checkbox>
             <button (click)="submit()">Login</button>
         </form>
         <div class="signup-link" (click)="signUp()">

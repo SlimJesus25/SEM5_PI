@@ -12,14 +12,20 @@ import { PedidoService } from '../../../service/pedido/pedido.service';
 })
 export class SignUpComponent implements OnInit {
 
-  utente = {name: "", email: "", phoneNumber: "", nif: "", password:""}
+  utente = { name: "", email: "", phoneNumber: "", nif: "", password: "" }
 
   constructor(
     private location: Location,
     private pedidoService: PedidoService,
-  ) { 
+  ) {
   }
 
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+  
   ngOnInit(): void {
   }
 
