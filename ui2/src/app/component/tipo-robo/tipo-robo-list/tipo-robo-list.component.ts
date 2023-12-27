@@ -25,6 +25,9 @@ export class TipoRoboListComponent {
       .subscribe(tiposRobo => {
         this.dataSource = new MatTableDataSource(tiposRobo);
         this.dataSource.paginator = this.paginator;
+      },
+      (error: any) => {
+        alert(error.error);
       });
   }
 

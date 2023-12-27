@@ -32,6 +32,9 @@ export class PisoListComponent {
           this.dataSource = new MatTableDataSource(pisos);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+        },
+        (error: any) => {
+          alert(error.error);
         });
   }
 

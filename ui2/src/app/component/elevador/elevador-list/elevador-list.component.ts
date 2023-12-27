@@ -33,6 +33,9 @@ export class ElevadorListComponent {
           this.dataSource = new MatTableDataSource(elevadores);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+        },
+        (error: any) => {
+          alert(error.error);
         });
   }
 

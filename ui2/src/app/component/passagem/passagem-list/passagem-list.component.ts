@@ -55,6 +55,9 @@ export class PassagemListComponent {
         this.dataSource2 = new MatTableDataSource(pisos);
         this.dataSource2.paginator = this.paginator;
         this.dataSource2.sort = this.sort;
+      },
+      (error: any) => {
+        alert(error.error);
       });
   }
 

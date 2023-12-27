@@ -50,6 +50,9 @@ export class EdificioListComponent {
         this.dataSource = new MatTableDataSource(edificios);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      },
+      (error: any) => {
+        alert(error.error);
       });
   }
 

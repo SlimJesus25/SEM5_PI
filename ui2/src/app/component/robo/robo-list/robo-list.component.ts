@@ -25,10 +25,11 @@ export class RoboListComponent {
         this.dataSource = new MatTableDataSource(robos);
         this.dataSource.paginator = this.paginator;
       },
-      (error: any) => {
-        alert("Utilizador necessita de permissões de gestor de Frota");
-      }
-      );
+      
+        (error: any) => {
+          alert(error.error);
+        });
+      
   }
 
   filterData($event: any) {
