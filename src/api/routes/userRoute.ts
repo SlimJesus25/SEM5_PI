@@ -143,7 +143,9 @@ import { Container } from 'typedi';
 
 import config from "../../../config";
 import IUserController from '../../controllers/IControllers/IUserController';
-import { UserEmail } from '../../domain/userEmail';
+var authorize = require ("../middlewares/validateToken")
+var authorizeEmail = require ("../middlewares/validateToken")
+
 
 const route = Router();
 
@@ -177,7 +179,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.criarUtente(req, res, next));
 
-  route.put('/updateUser/:email',
+  route.put('/updateUser/:email', authorize('Utente'),
     celebrate({
       body: Joi.object({
         id: Joi.number(),
@@ -198,14 +200,14 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.getAllUsers(req, res, next));
 
-    route.get('/getUserByEmail/:email',
+    route.get('/getUserByEmail/:email',authorize('Utente'),
     celebrate({
       body: Joi.object({
       })
     }),
     (req, res, next) => ctrl.getUserByEmail(req, res, next));
 
-    route.delete('/deleteUser/:email',
+    route.delete('/deleteUser/:email',authorize('Utente'),
     celebrate({
       body: Joi.object({
       })
