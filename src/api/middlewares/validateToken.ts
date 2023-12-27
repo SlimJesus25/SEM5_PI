@@ -34,6 +34,23 @@ function extractRoleFromJWT(token: string): string | null {
       return null;
     }
   }
+
+  // extract email from jwt
+  function extractEmailFromJWT(token: string): string | null {
+    try {
+      const decodedToken = jwt.decode(token) as { [key: string]: any };
+  
+      if (decodedToken && decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/email']) {
+        // Assuming the role is stored in 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/email'];
+      }
+  
+      return null;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
   
   // Middleware function for role-based authorization
   function authorize(roleToAuthorize: string) {
@@ -54,7 +71,26 @@ function extractRoleFromJWT(token: string): string | null {
       next();
     };
   }
-  
+  // Function to compare email from JWT with the provided email
+function authorizeEmail(emailToCompare: string) {
+  return function(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
+    const userEmail = extractEmailFromJWT(token);
+
+    if (!userEmail || userEmail !== emailToCompare) {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    // Emails match, proceed with a 200 OK response
+    return res.status(200).json({ message: 'Emails match' });
+  };
+}
   
 module.exports = validateToken;
 module.exports = authorize;
+module.exports = authorizeEmail;
