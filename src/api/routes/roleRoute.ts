@@ -15,7 +15,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.role.name) as IRoleController;
 
-  route.get('/getAllRoles', authorize('GestorUtilizadores'),
+  route.get('/getAllRoles',
     celebrate({
       body: Joi.object({
       })
@@ -30,7 +30,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.criarRole(req, res, next));
 
-    route.get('/getRoleById/:id', authorize('GestorUtilizadores'),
+    route.get('/getRoleById/:id',
     celebrate({
       body: Joi.object({
       })
