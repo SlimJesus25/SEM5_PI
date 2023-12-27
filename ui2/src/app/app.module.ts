@@ -162,7 +162,7 @@ import { SignUpComponent } from './component/user/signUp/sign-up.component';
     //User
     RegistarUserComponent,
     PedidoUserComponent,
-    SignUpComponent
+    SignUpComponent,
   ],
   bootstrap: [ AppComponent ]
 })
