@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../../model/user';
+import { CreateUser } from '../../model/createUser';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class UserService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
-  criarUser(user: User) {
+  criarUser(user: CreateUser) {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
