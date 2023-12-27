@@ -21,8 +21,9 @@
         </tr>
         <tr>
           <th><label>Password: </label></th>
-          <th><input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" />
-            <mat-checkbox [checked]="showPassword" (change)="togglePasswordVisibility()">Show/Hide</mat-checkbox></th>
+          <th><input type="password" [(ngModel)]="user.password" /></th>
+          <!--<th><input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" />
+            <mat-checkbox [checked]="showPassword" (change)="togglePasswordVisibility()">Show/Hide</mat-checkbox></th>-->
         </tr>
         <tr>
           <th><label>Role: </label></th>

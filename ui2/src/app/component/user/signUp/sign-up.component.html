@@ -22,11 +22,12 @@
         </tr>
         <tr>
           <th><label>Password: </label></th>
-          <th><input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="utente.password" /></th>
+          <th><input type="password" [(ngModel)]="utente.password" /></th>
+          <!--<th><input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="utente.password" /></th>
         </tr>
         <tr>
           <mat-checkbox [checked]="showPassword" (change)="togglePasswordVisibility()">Show/Hide</mat-checkbox>
-        </tr>
+        </tr>-->
       </table>
     </div>
     <div>

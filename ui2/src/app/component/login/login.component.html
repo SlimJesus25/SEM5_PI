@@ -2,9 +2,10 @@
     <div class="login-box">
         <h2>Login</h2>
         <form>
-            <input type="text" name="username" [(ngModel)]="username">
-            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" />
-            <mat-checkbox [checked]="showPassword" (change)="togglePasswordVisibility()">Show/Hide</mat-checkbox>
+            <input type="text" [(ngModel)]="login.email" name="email" />
+            <input type="password" [(ngModel)]="login.password" name="password" />
+            <!--<input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="login.password" />
+            <mat-checkbox [checked]="showPassword" (change)="togglePasswordVisibility()">Show/Hide</mat-checkbox>-->
             <button (click)="submit()">Login</button>
         </form>
         <div class="signup-link" (click)="signUp()">

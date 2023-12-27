@@ -1,4 +1,4 @@
-export interface Utente {
+export interface CreatePedido {
     name: string;
     email: string; 
     phoneNumber: string;

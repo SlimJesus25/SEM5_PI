@@ -211,5 +211,10 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.deleteUser(req, res, next));
 
-
+    route.get('/login/:email/:password',
+    celebrate({
+      body: Joi.object({
+      })
+    }),
+    (req, res, next) => ctrl.login(req, res, next));
 };

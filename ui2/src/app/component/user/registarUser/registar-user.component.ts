@@ -11,7 +11,7 @@ import { Role } from '../../../model/role';
 })
 export class RegistarUserComponent implements OnInit {
 
-  user = {name: "", email: "", phoneNumber: "",  password:"", roleId:0}
+  user = {name: "", email: "", phoneNumber: "",nif: "",  password:"", roleId:0}
   roles: Role[] = [];
 
   constructor(
@@ -20,7 +20,6 @@ export class RegistarUserComponent implements OnInit {
     private roleService : RoleService
   ) { 
     this.roleService.getAllRoles().subscribe(roles => this.roles = roles);
-    console.log(this.roles);
   }
 
   ngOnInit(): void {
