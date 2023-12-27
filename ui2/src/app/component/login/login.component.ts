@@ -21,7 +21,8 @@ export class LoginComponent {
   submit() {
     let errorOrSuccess: any = this.userService.login(this.login.email, this.login.password);
     errorOrSuccess.subscribe(
-      (data: any) => {
+      (token: any) => {
+        localStorage.setItem("token",token.result);
         this.router.navigate(['/mainMenu']);
       },
       (error: any) => {

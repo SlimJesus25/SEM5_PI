@@ -26,9 +26,9 @@ export class UserService {
 
   }
 
-  login(email: string, password: string): Observable<User> {
+  login(email: string, password: string) {
     const loginUrl = this.LogisticAPI_URL + "/login/" + email+ "/"+ password;
-    const login = this.http.get<User>(loginUrl);
+    const login = this.http.get(loginUrl);
     return login;
   }
 }

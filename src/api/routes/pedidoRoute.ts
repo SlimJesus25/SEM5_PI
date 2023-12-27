@@ -36,7 +36,7 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.getPedidoById(req, res, next));
 
-    route.post('/criarPedido', authorize('GestorUtilizadores'),
+    route.post('/criarPedido', authorize('Utente'),
         celebrate({
             body: Joi.object({
                 name: Joi.string(),

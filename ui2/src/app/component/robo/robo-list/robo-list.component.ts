@@ -24,7 +24,11 @@ export class RoboListComponent {
       .subscribe(robos => {
         this.dataSource = new MatTableDataSource(robos);
         this.dataSource.paginator = this.paginator;
-      });
+      },
+      (error: any) => {
+        alert("Utilizador necessita de permissões de gestor de Frota");
+      }
+      );
   }
 
   filterData($event: any) {

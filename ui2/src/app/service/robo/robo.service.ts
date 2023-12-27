@@ -25,9 +25,8 @@ export class RoboService {
   }
 
   getRobo(): Observable<Robo[]> {
-    const robos = this.http.get<Robo[]>(this.LogisticAPI_URL+ "/listRobos");
-
-    return robos;
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    return this.http.get<Robo[]>(this.LogisticAPI_URL+ "/listRobos",  {headers});
   }
 /*
   getTruckByID(idNumber: string): Observable<Truck> {

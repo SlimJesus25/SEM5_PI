@@ -143,6 +143,7 @@ import { Container } from 'typedi';
 
 import config from "../../../config";
 import IUserController from '../../controllers/IControllers/IUserController';
+import { UserEmail } from '../../domain/userEmail';
 
 const route = Router();
 
@@ -218,3 +219,4 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.login(req, res, next));
 };
+
