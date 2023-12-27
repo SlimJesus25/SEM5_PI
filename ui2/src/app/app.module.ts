@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -71,6 +72,8 @@ import { MbcoComponent } from './component/asist/mbco/mbco.component';
 import { RgpdComponent } from './component/info/rgpd/rgpd.component';
 import { BackupComponent } from './component/asist/backup/backup.component';
 import { RegistarUserComponent } from './component/user/registarUser/registar-user.component';
+import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.component';
+import { SignUpComponent } from './component/user/signUp/sign-up.component';
 
 
 @NgModule({
@@ -92,6 +95,8 @@ import { RegistarUserComponent } from './component/user/registarUser/registar-us
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
+    MatCheckboxModule
+    
   ],
   declarations: [
     AppComponent,
@@ -155,7 +160,9 @@ import { RegistarUserComponent } from './component/user/registarUser/registar-us
     BackupComponent,
 
     //User
-    RegistarUserComponent
+    RegistarUserComponent,
+    PedidoUserComponent,
+    SignUpComponent
   ],
   bootstrap: [ AppComponent ]
 })

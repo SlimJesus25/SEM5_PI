@@ -40,6 +40,7 @@
 % Relação entre pedidos HTTP e predicados que os processam
 :- http_handler('/path_between_floors', path_between_floors, []).
 :- http_handler('/best_task_order', best_task_order, []).
+:- http_handler('/full_path', full_path, []).
 
 % Criação de servidor HTTP no porto 'Port'					
 server(Port) :-						
@@ -78,6 +79,52 @@ converte_cams([], []):-!.
 converte_cams([H|T], [HH|TT]):-
   converte_cam_final(H, HH),
   converte_cams(T, TT).
+
+full_path(Request):-
+
+  cors_enable(Request, [methods([get])]),
+  
+  %gtrace,
+  % Percorre cada tarefa, calcula o caminho e intercala com os caminhos entre tarefas.
+  findall(tarefa2(A,B,C), tarefa2(A,B,C), L),
+
+  calcula_caminho_inteiro(L, R1, Resultado2, 0),
+
+  converte_cams(R1, Resultado1),
+
+  R = json([camEntrePisos=Resultado1, camPorPisos=Resultado2]),
+
+  prolog_to_json(R, JSONObject),
+  reply_json(JSONObject, [json_object(dict)]).
+
+
+calcula_caminho_inteiro([], [], [], _):-!.
+
+calcula_caminho_inteiro([H1|T1], [H2|T2], [H3|T3], 0):-!,
+  H1 = tarefa2(_, Origem, Destino),
+  ponto_acesso(Origem, ColO, LinO, PisoO),
+  ponto_acesso(Destino, ColD, LinD, PisoD),
+
+  melhor_caminho_pisos(PisoO, PisoD, Cam, PisosPer),
+
+  node(X1, ColO, LinO, _, PisoO), 
+  edge(X1, X, _, PisoO),
+
+  node(Y1, ColD, LinD, _, PisoD), 
+  edge(Y1, Y, _, PisoD),
+
+  aStar_piso(PisosPer, LC, Cam, X, Y, _),
+  eliminate_redundant(LC, LCam),
+  H2 = Cam,
+  H3 = LC,
+  calcula_caminho_inteiro(T1, T2, T3, 1).
+
+calcula_caminho_inteiro([H1|T1], [H2|T2], [H3|T3], 1):-!,
+  H1 = tarefa2(Tarefa, _, _),
+  ttpl(Tarefa, _, H2, H3),
+  calcula_caminho_inteiro(T1, T2, T3, 0).
+
+
 
 %obtem_caminhos2([H1|T], Ant, [HH|TT]):-
 %  ttpl(H1, Ant, A, B),

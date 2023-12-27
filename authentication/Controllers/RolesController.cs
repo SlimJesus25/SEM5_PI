@@ -22,7 +22,7 @@ namespace RobDroneGO.Controllers
         }
 
         // GET: api/Roles/getAllRoles
-        [Authorize(Roles = "GestorCampus")]
+        //[Authorize(Roles = "GestorCampus")]
         [HttpGet("getAllRoles")]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetAll()
         {

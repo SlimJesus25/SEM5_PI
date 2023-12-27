@@ -2,6 +2,13 @@
 <mat-toolbar>
   <h1 class="h1">RobDroneGO</h1>
 
+  <!--Gestor Utilizadores Menu-->
+  <button mat-button [matMenuTriggerFor]="gestorUtilizadoresMenu">Gestor Utilizadores</button>
+  <mat-menu #gestorUtilizadoresMenu="matMenu">
+    <button mat-menu-item (click)="criarUser()">Criar User</button>
+    <button mat-menu-item (click)="pedidoUser()">Aceitar ou recusar pedidos de utentes</button>
+  </mat-menu>
+
   <!--Gestor de Campus Menu-->
   <button mat-button [matMenuTriggerFor]="gestorCampusMenu">Gestor Campus</button>
   <mat-menu #gestorCampusMenu="matMenu">
@@ -45,6 +52,13 @@
     <button mat-menu-item (click)="createSala()">Criar sala</button>
   </mat-menu>
 
+  <!--Gestor de Tarefas Menu-->
+  <button mat-button [matMenuTriggerFor]="gestorTarefasMenu">Gestor Tarefa</button>
+  <mat-menu #gestorTarefasMenu="matMenu">
+    <button mat-menu-item (click)="calcularCaminho()">Obter percurso entre dois edificios</button>
+    <button mat-menu-item (click)="createPiso()">Analise de complexidade</button>
+  </mat-menu>
+
   <!--Gestor de Frota Menu-->
   <button mat-button [matMenuTriggerFor]="gestorFrotaMenu">Gestor Frota</button>
   <mat-menu #gestorFrotaMenu="matMenu">
@@ -64,11 +78,9 @@
     
   </mat-menu>
 
-  <!--Gestor de Tarefas Menu-->
-  <button mat-button [matMenuTriggerFor]="gestorTarefasMenu">Gestor Tarefa</button>
-  <mat-menu #gestorTarefasMenu="matMenu">
-    <button mat-menu-item (click)="calcularCaminho()">Obter percurso entre dois edificios</button>
-    <button mat-menu-item (click)="createPiso()">Analise de complexidade</button>
+  <!--Utente Menu-->
+  <button mat-button [matMenuTriggerFor]="utenteMenu">Utente</button>
+  <mat-menu #utenteMenu="matMenu">
   </mat-menu>
 
   <!--Visualização-->
@@ -79,12 +91,6 @@
   <mat-menu #asistMenu="matMenu">
     <button mat-menu-item (click)="mbco()">MBCO</button>
     <button mat-menu-item (click)="backup()">Estratégia de recuperação de dados</button>
-  </mat-menu>
-
-  <!--User Menu-->
-  <button mat-button [matMenuTriggerFor]="userMenu">User</button>
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item (click)="criarUser()">Criar User</button>
   </mat-menu>
 
   <!--Info Menu-->

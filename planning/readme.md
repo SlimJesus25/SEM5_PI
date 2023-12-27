@@ -48,7 +48,7 @@ Neste exemplo a origem é o gabinete A101 e o destino o gabinete C208, como tal 
 
 É utilizado um algoritmo com base no A-Star que vai pesquisar de um ponto de um piso até ao outro, idealmente de um ponto de acesso até outro.
 
-## Algoritmo Genético
+## Geração de plano de tarefas otimizado
 
 ### Propósito
 
@@ -58,7 +58,7 @@ O algoritmo genético está encarregue de retornar uma combinação de tarefas, 
 - T2 (pick and delivery sala B203 -> sala C201) (120 segundos);
 - T3 (limpeza sala B203) (60 segundos).
 
-Deverá, de forma eficiente, eficaz e rápida, devolver numa ordem que o tempo seja aproveitado ao máximo.
+Deverá, de forma eficiente, eficaz e rápida devolver numa ordem que o tempo seja aproveitado ao máximo.
 
 Para este exemplo, parte-se do pressuposto que o robô encontra-se na sala B203.
 
@@ -82,7 +82,7 @@ Este algoritmo apresenta condições que fazem a pesquisa terminar quando:
 - Tempo máximo atingido;
 - Establização da população é atingida (Quando a mesma população repete-se X vezes).
 
-Consideramos ainda utilizar, ao invés da estabilização, um valor específico. Porém concluimos que seria mais eficiente na existência de uma fórmula complexa que conseguisse "prever" o que seria um bom resultado para aquelas tarefas. A solução ótima varia de uma forma enorme, consoante o input das tarefas. A estabilização da população é eficaz e mais simples.
+Consideramos ainda utilizar, ao invés da estabilização, um valor específico. Porém concluimos que seria mais eficiente na existência de uma fórmula complexa que conseguisse "prever" o que seria um bom resultado para aquelas tarefas. A solução ótima varia de uma forma enorme, consoante o input das tarefas. A estabilização do indivíduo é eficaz e mais simples.
 
 ### Cruzamento variado
 

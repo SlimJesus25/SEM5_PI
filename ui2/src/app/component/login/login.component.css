@@ -59,3 +59,11 @@ body {
     height: 100%;
     opacity: 0.5; /* Adjust the opacity value as needed */
   }
+
+  .signup-link {
+    cursor: pointer;
+}
+
+.underline-text {
+    text-decoration: underline;
+}

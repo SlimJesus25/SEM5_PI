@@ -4,25 +4,20 @@ import { MessageService } from '../../../service/message/message.service';
 import { UserService } from '../../../service/user/user.service';
 import { RoleService } from '../../../service/role/role.service';
 import { Role } from '../../../model/role';
+import { PedidoService } from '../../../service/pedido/pedido.service';
 @Component({
-  selector: 'app-registar-user',
-  templateUrl: './registar-user.component.html',
-  styleUrls: ['./registar-user.component.css']
+  selector: 'app-sign-up',
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.css']
 })
-export class RegistarUserComponent implements OnInit {
+export class SignUpComponent implements OnInit {
 
-  user = {name: "", email: "", phoneNumber: "", password:"", roleId:0}
-  roles: Role[] = [];
+  utente = { name: "", email: "", phoneNumber: "", nif: "", password: "" }
 
   constructor(
     private location: Location,
-    private userService: UserService,
-    private roleService : RoleService
-  ) { 
-    this.roleService.getAllRoles().subscribe(roles => this.roles = roles);
-  }
-
-  ngOnInit(): void {
+    private pedidoService: PedidoService,
+  ) {
   }
 
   showPassword = false;
@@ -30,12 +25,15 @@ export class RegistarUserComponent implements OnInit {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
+  
+  ngOnInit(): void {
+  }
 
-  criarUser() {
-    let errorOrSuccess: any = this.userService.criarUser(this.user);
+  criarUtente() {
+    let errorOrSuccess: any = this.pedidoService.criarPedido(this.utente);
     errorOrSuccess.subscribe(
       (data: any) => {
-        alert("User criado");
+        alert("Pedido efetuado com sucesso");
       },
 
       (error: any) => {

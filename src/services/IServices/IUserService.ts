@@ -9,6 +9,7 @@ export default interface IUserService  {
   getAllUsers(): Promise<Result<IUserDTO[]>>;
   getUserByEmail(userEmail: string): Promise<Result<IUserDTO>>;
   deleteUser(userEmail: string): Promise<Result<IUserDTO>>;
+  login(userEmail: string, userPassword: string): Promise<Result<IUserDTO>>;
   /*SignUp(userDTO: IUserDTO): Promise<Result<{userDTO: IUserDTO, token: string}>>;
   SignIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO, token: string }>>;
 */

@@ -36,8 +36,6 @@ body {
 }
 
 .box {
-  height: auto; 
-  width: auto;
   width: 300px;
   padding: 20px;
   background-color: #fff;
@@ -69,4 +67,3 @@ body {
 .box button:hover {
   background-color: #0056b3;
 }
-

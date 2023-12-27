@@ -108,6 +108,21 @@ export default class UserController implements IUserController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const usersOrError = await this.userServiceInstance.login(req.params.email,req.params.password) as Result<IUserDTO>;
+
+      if (usersOrError.isFailure) {
+        return res.status(404).send("Erro: " + usersOrError.errorValue());
+      }
+
+      const usersDTO = usersOrError.getValue()
+      return res.json(usersDTO).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  };
 /*
 exports.getMe = async function(req, res: Response) {
   
