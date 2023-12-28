@@ -9,7 +9,7 @@ import IUserDTO from '../dto/IUserDTO';
 import { Result } from "../core/logic/Result";
 import ICreatingUserDTO from '../dto/ICreatingUserDTO';
 import { Console } from 'console';
-var authorizeEmail = require("../api/middlewares/validateEmail")
+var authorizeEmail = require ("../api/middlewares/validateToken")
 
 @Service()
 export default class UserController implements IUserController /* TODO: extends ../core/infra/BaseController */ {
@@ -85,7 +85,7 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async getUserByEmail(req: Request, res: Response, next: NextFunction) {
     try {
-      const stat = authorizeEmail();
+      const stat = authorizeEmail(req.params.email);
       let usersOrError;
       if (stat) {
         usersOrError = await this.userServiceInstance.getUserByEmail(req.params.email) as Result<IUserDTO>;
@@ -104,7 +104,8 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const stat = authorizeEmail();
+      console.log(req.params.email);
+      const stat = authorizeEmail(req.params.email);
       let usersOrError;
       if (stat) {
         usersOrError = await this.userServiceInstance.deleteUser(req.params.email) as Result<IUserDTO>;

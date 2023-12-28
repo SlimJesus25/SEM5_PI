@@ -39,7 +39,7 @@ export class UserService {
   }
 
   atualizarUser(utente: Utente, email: string) {
-    const updateURL = this.LogisticAPI_URL + "updateUser/"+ email;
+    const updateURL = this.LogisticAPI_URL + "/updateUser/"+ email;
     const headers = {
       'content-type': 'application/json',
       'authorization': 'Bearer ' + localStorage.getItem("token")
