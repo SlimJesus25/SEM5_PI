@@ -61,8 +61,9 @@ function extractRoleFromJWT(token: string): string | null {
       }
   
       const userRole = extractRoleFromJWT(token);
-  
-      if (!userRole || userRole !== roleToAuthorize) {
+      console.log(userRole);
+      console.log(roleToAuthorize);
+      if (userRole !== roleToAuthorize) {
         return res.status(403).json({ message: 'Unauthorized' });
       }
   
@@ -82,9 +83,8 @@ function authorizeEmail() {
     const userEmail = extractEmailFromJWT(token);
     const emailToCompare = req.params.email;
 
-    if (!userEmail || userEmail !== emailToCompare) {
+    if (userEmail !== emailToCompare) {
       console.log(userEmail);
-      console.log(emailToCompare);
       return res.status(403).json({ message: 'Unauthorized' });
     }
 

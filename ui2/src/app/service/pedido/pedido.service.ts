@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Utente } from '../../model/Utente';
+import { Utente } from '../../model/utente';
 import { Pedido } from '../../model/pedido';
 
 @Injectable({
