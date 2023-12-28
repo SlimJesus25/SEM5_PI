@@ -36,7 +36,6 @@ export class PedidoService {
 
   criarPedido(utente: CreatePedido) {
     const headers = {'content-type': 'application/json',
-    'authorization': 'Bearer '+ localStorage.getItem("token"),
     'Access-Control-Allow-Origin': '*',
   };
     
