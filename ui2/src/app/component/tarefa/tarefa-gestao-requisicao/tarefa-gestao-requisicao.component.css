@@ -65,6 +65,7 @@ body {
   height: 100%;
 }
 
-.mat-row {
-  cursor: pointer; /* Change the cursor style to pointer */
+.button-container {
+  display: flex;
+  gap: 8px; /* Adjust the gap according to your preference */
 }

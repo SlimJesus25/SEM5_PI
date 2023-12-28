@@ -1,6 +1,8 @@
+import { Aprovacao } from "./aprovacao";
+
 export interface Tarefa {
-    designacaoTarefa: string;
-    pontoTermino: string;
-    pontoInicial: string;
+    destino: string;
+    origem: string;
     tipoTarefa : string;
+    requisicao: Aprovacao;
 }

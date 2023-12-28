@@ -61,7 +61,6 @@
   </mat-menu>
   
   <mat-menu #tarefasMenu="matMenu">
-    <button mat-menu-item (click)="tarefaCreate()">Criar Tarefa</button>
     <button mat-menu-item (click)="gerirRequisicao()">Gerir Requisições</button>
     <button mat-menu-item (click)="listarTarefasNaoAprovadas()">Listar tarefas não aprovadas</button>
     <button mat-menu-item (click)="listarTarefas()">Listar Tarefas</button>
@@ -92,6 +91,7 @@
     <button mat-menu-item (click)="deleteUser()">Eliminar conta</button>
     <button mat-menu-item (click)="updateUser()">Atualizar dados</button>
     <button mat-menu-item (click)="downloadInfo()">Download dos dados pessoais</button>
+    <button mat-menu-item (click)="tarefaCreate()">Requisitar Tarefa</button>
   </mat-menu>
 
   <!--Visualização-->

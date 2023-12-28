@@ -14,7 +14,7 @@ import { Aprovacao } from '../../../model/aprovacao';
 })
 export class TarefaGestaoRequisicaoComponent {
 
-  displayedColumns: string[] = ['tipoDispositivo', 'requisitante', 'estado', 'tarefa'];
+  displayedColumns: string[] = ['tipoDispositivo', 'requisitante', 'estado', 'tarefa', 'Resposta'];
   dataSource: MatTableDataSource<Aprovacao> = new MatTableDataSource();
   selectedItems: Aprovacao[] = [];
 
@@ -40,18 +40,34 @@ export class TarefaGestaoRequisicaoComponent {
       });
   }
   
-  handleRowSelect(aprovacao: Aprovacao): void {
-    aprovacao.selected = !aprovacao.selected;
-  }
-  
   filterData($event: any) {
     this.dataSource.filter = $event.target.value;
   }
 
-  aceitarRequisicao(): void {
+  aceitarRequisicao(aprovacao: Aprovacao): void {
+    let errorOrSuccess: any = this.aprovacaoService.aceitarRequisicao(aprovacao);
+    errorOrSuccess.subscribe(
+      (data: any) => {
+        alert("Requisição aceite");
+      },
+
+      (error: any) => {
+        alert(error.error);
+      }
+    );
   }
 
-  recusarRequisicao(): void {
+  recusarRequisicao(aprovacao: Aprovacao): void {
+    let errorOrSuccess: any = this.aprovacaoService.recusarRequisicao(aprovacao);
+    errorOrSuccess.subscribe(
+      (data: any) => {
+        alert("Requisição recusada");
+      },
+
+      (error: any) => {
+        alert(error.error);
+      }
+    );
   }
 
   goBack(): void {
