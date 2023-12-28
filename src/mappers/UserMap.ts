@@ -2,7 +2,7 @@ import { Container } from 'typedi';
 
 import { Mapper } from "../core/infra/Mapper";
 
-import {IUserDTO} from "../dto/IUserDTO";
+import  IUserDTO  from "../dto/IUserDTO";
 
 import { User } from "../domain/user";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
@@ -14,7 +14,7 @@ import RoleRepo from "../repos/roleRepo";
 
 export class UserMap extends Mapper<User> {
 
-  public static toDTO( user: User): IUserDTO {
+  /*public static toDTO( user: User): IUserDTO {
     return {
       //id: user.id.toString(),
       firstName: user.firstName,
@@ -23,7 +23,7 @@ export class UserMap extends Mapper<User> {
       password: "",
       role: user.role.id.toString()
     } as IUserDTO;
-  }
+  }*/
 
   public static async toDomain (raw: any): Promise<User> {
     const userEmailOrError = UserEmail.create(raw.email);

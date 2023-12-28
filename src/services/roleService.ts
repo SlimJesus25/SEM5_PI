@@ -19,7 +19,7 @@ export default class RoleService implements IRoleService {
     private serverUrl = "http://localhost:6969/api/Roles/";
 
 
-    public async getRole(roleId: string): Promise<Result<IRoleDTO>> {
+    /*public async getRole(roleId: string): Promise<Result<IRoleDTO>> {
         try {
             const role = await this.roleRepo.findByDomainId(roleId);
 
@@ -33,7 +33,7 @@ export default class RoleService implements IRoleService {
         } catch (e) {
             throw e;
         }
-    }
+    }*/
 
 
     public async criarRole(roleDTO: ICreatingRoleDTO): Promise<Result<IRoleDTO>> {

@@ -10,12 +10,12 @@ import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 
 export class RoleMap extends Mapper<Role> {
   
-  public static toDTO( role: Role): IRoleDTO {
+  /*public static toDTO( role: Role): IRoleDTO {
     return {
       id: role.id.toString(),
       name: role.name,
     } as IRoleDTO;
-  }
+  }*/
 
   public static toDomain (role: any | Model<IRolePersistence & Document> ): Role {
     const roleOrError = Role.create(

@@ -153,7 +153,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.user.name) as IUserController;
 
-  route.post('/criarUser',
+  route.post('/criarUser', authorize('GestorUtilizadores'),
     celebrate({
       body: Joi.object({
         name: Joi.string(),
@@ -199,14 +199,14 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.getAllUsers(req, res, next));
 
-    route.get('/getUserByEmail/:email',authorize('Utente'),
+    route.get('/getUserByEmail/:email', authorize('Utente'),
     celebrate({
       body: Joi.object({
       })
     }),
     (req, res, next) => ctrl.getUserByEmail(req, res, next));
 
-    route.delete('/deleteUser/:email',authorize('Utente'),
+    route.delete('/deleteUser/:email', authorize('Utente'),
     celebrate({
       body: Joi.object({
       })

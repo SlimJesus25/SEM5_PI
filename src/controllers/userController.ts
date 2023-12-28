@@ -9,7 +9,7 @@ import IUserDTO from '../dto/IUserDTO';
 import { Result } from "../core/logic/Result";
 import ICreatingUserDTO from '../dto/ICreatingUserDTO';
 import { Console } from 'console';
-var authorizeEmail = require ("../api/middlewares/validateToken")
+var jwt = require('jsonwebtoken');
 
 @Service()
 export default class UserController implements IUserController /* TODO: extends ../core/infra/BaseController */ {
@@ -51,11 +51,11 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const stat = authorizeEmail();
-      let userOrError;
-      if (stat) {
-        userOrError = await this.userServiceInstance.updateUser(req.params.email, req.body as IUserDTO) as Result<IUserDTO>;
-      }
+      const token = req.headers.authorization?.split(' ')[1];
+      const decodedToken = jwt.decode(token) as { [key: string]: any };
+      const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+      const userOrError = await this.userServiceInstance.updateUser(email, req.body as IUserDTO) as Result<IUserDTO>;
+      
       if (userOrError.isFailure) {
         return res.status(404).send("Erro: " + userOrError.errorValue());
       }
@@ -85,11 +85,10 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async getUserByEmail(req: Request, res: Response, next: NextFunction) {
     try {
-      const stat = authorizeEmail(req.params.email);
-      let usersOrError;
-      if (stat) {
-        usersOrError = await this.userServiceInstance.getUserByEmail(req.params.email) as Result<IUserDTO>;
-      }
+      const token = req.headers.authorization?.split(' ')[1];
+      const decodedToken = jwt.decode(token) as { [key: string]: any };
+      const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+      const usersOrError = await this.userServiceInstance.getUserByEmail(email) as Result<IUserDTO>;
 
       if (usersOrError.isFailure) {
         return res.status(404).send("Erro: " + usersOrError.errorValue());
@@ -104,13 +103,11 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(req.params.email);
-      const stat = authorizeEmail(req.params.email);
-      let usersOrError;
-      if (stat) {
-        usersOrError = await this.userServiceInstance.deleteUser(req.params.email) as Result<IUserDTO>;
-      }
-
+      const token = req.headers.authorization?.split(' ')[1];
+      const decodedToken = jwt.decode(token) as { [key: string]: any };
+      const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+      const usersOrError = await this.userServiceInstance.deleteUser(email) as Result<IUserDTO>;
+      
       if (usersOrError.isFailure) {
         return res.status(404).send("Erro: " + usersOrError.errorValue());
       }

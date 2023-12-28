@@ -5,7 +5,7 @@ import { Container } from 'typedi';
 import IRoboController from '../../controllers/IControllers/IRoboController'; 
 
 import config from "../../../config";
-var authorize = require ("../middlewares/validateToken")
+var authorize  = require("../middlewares/validateToken");
 
 
 const route = Router();
