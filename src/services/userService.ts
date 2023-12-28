@@ -17,6 +17,7 @@ import * as querystring from 'querystring';
 
 import { Result } from "../core/logic/Result";
 import ICreatingUserDTO from '../dto/ICreatingUserDTO';
+import IUpdateUserDTO from '../dto/IUpdateUserDTO';
 
 
 @Service()
@@ -173,7 +174,7 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async updateUser(userEmail: string, userDTO: IUserDTO): Promise<Result<IUserDTO>> {
+  public async updateUser(userEmail: string, userDTO: IUpdateUserDTO): Promise<Result<IUserDTO>> {
     let err = '';
     try {
 
@@ -181,13 +182,10 @@ export default class UserService implements IUserService {
 
       //const queryString = querystring.stringify({ Name: JSON.stringify(roleDTO.name) });
       const data = {
-        id: userDTO.id,
         name: userDTO.name,
-        email: userDTO.email,
         phoneNumber: userDTO.phoneNumber,
         nif: userDTO.nif,
         password: userDTO.password,
-        roleId: userDTO.roleId
       };
 
       const dataString = JSON.stringify(data);

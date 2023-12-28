@@ -11,8 +11,6 @@ import { Role } from '../../../model/role';
 })
 export class DeleteUserComponent implements OnInit {
 
-  email = "";
-
   constructor(
     private location: Location,
     private userService: UserService,
@@ -23,7 +21,7 @@ export class DeleteUserComponent implements OnInit {
   }
 
   deleteUser() {
-    let errorOrSuccess: any = this.userService.deleteUser(this.email);
+    let errorOrSuccess: any = this.userService.deleteUser();
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("User eliminado");

@@ -178,16 +178,13 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.criarUtente(req, res, next));
 
-  route.put('/updateUser/:email', authorize('Utente'),
+  route.put('/updateUser', authorize('Utente'),
     celebrate({
       body: Joi.object({
-        id: Joi.number(),
         name: Joi.string(),
-        email: Joi.string(),
         phoneNumber: Joi.string(),
         nif: Joi.string(),
-        password: Joi.string(),
-        roleId: Joi.number()
+        password: Joi.string()
       })
     }),
     (req, res, next) => ctrl.updateUser(req, res, next));
@@ -199,14 +196,14 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.getAllUsers(req, res, next));
 
-    route.get('/getUserByEmail/:email', authorize('Utente'),
+    route.get('/getUserByEmail', authorize('Utente'),
     celebrate({
       body: Joi.object({
       })
     }),
     (req, res, next) => ctrl.getUserByEmail(req, res, next));
 
-    route.delete('/deleteUser/:email', authorize('Utente'),
+    route.delete('/deleteUser', authorize('Utente'),
     celebrate({
       body: Joi.object({
       })

@@ -9,6 +9,7 @@ import IUserDTO from '../dto/IUserDTO';
 import { Result } from "../core/logic/Result";
 import ICreatingUserDTO from '../dto/ICreatingUserDTO';
 import { Console } from 'console';
+import IUpdateUserDTO from '../dto/IUpdateUserDTO';
 var jwt = require('jsonwebtoken');
 
 @Service()
@@ -54,7 +55,7 @@ export default class UserController implements IUserController /* TODO: extends 
       const token = req.headers.authorization?.split(' ')[1];
       const decodedToken = jwt.decode(token) as { [key: string]: any };
       const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
-      const userOrError = await this.userServiceInstance.updateUser(email, req.body as IUserDTO) as Result<IUserDTO>;
+      const userOrError = await this.userServiceInstance.updateUser(email, req.body as IUpdateUserDTO) as Result<IUserDTO>;
       
       if (userOrError.isFailure) {
         return res.status(404).send("Erro: " + userOrError.errorValue());

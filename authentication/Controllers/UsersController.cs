@@ -211,16 +211,12 @@ namespace RobDroneGO.Controllers
 
         // PUT: api/Users/5
         [HttpPut("updateUser/{email}")]
-        public async Task<ActionResult<UserDto>> UpdateUser(string email, UserDto dto)
+        public async Task<ActionResult<UserDto>> UpdateUser(string email, UpdateUserDto dto)
         {
-            if (email != dto.Email)
-            {
-                return BadRequest();
-            }
 
             try
             {
-                var user = await _service.UpdateAsync(dto);
+                var user = await _service.UpdateAsync(email,dto);
 
                 if (user == null)
                 {

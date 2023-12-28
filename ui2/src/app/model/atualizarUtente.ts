@@ -1,6 +1,5 @@
-export interface Utente {
-    name: string;
-    email: string; 
+export interface AtualizarUtente {
+    name: string; 
     phoneNumber: string;
     nif: string;
     password: string;

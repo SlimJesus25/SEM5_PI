@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 //
 namespace RobDroneGO.Domain.Users{
@@ -9,7 +10,7 @@ namespace RobDroneGO.Domain.Users{
         Task<UserDto> AddUserAsync(CreatingUserDto dto);
         Task<UserDto> AddUtenteAsync(CreatingUserDto dto);
         //Task<UserDto> InactivateAsync(UserId id);
-        Task<UserDto> UpdateAsync(UserDto dto);
+        Task<UserDto> UpdateAsync(string email,UpdateUserDto dto);
         Task<UserDto> DeleteAsync(string email);
         Task<UserDto> Login(UserEmail email,UserPassword password);
     }

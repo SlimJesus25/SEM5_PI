@@ -37,7 +37,7 @@ export class DownloadInfoComponent implements OnInit {
   }*/
 
   downloadInfo(){
-    this.userService.downloadInfo(this.email).subscribe(response => {
+    this.userService.downloadInfo().subscribe(response => {
       const contentDispositionHeader = response.headers.get('Content-Disposition');
       const fileName = contentDispositionHeader
         ? contentDispositionHeader.split(';')[1].trim().split('=')[1]

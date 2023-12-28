@@ -11,11 +11,9 @@ import { UserService } from '../../../service/user/user.service';
 export class UpdateUserComponent implements OnInit {
 
   utente = { name: "", email: "", phoneNumber: "", nif: "", password: ""}
-  email: ""
 
 
   constructor(
-    private snackBar: MatSnackBar,
     private location: Location,
     private userService: UserService,
   ) {
@@ -25,7 +23,7 @@ export class UpdateUserComponent implements OnInit {
   }
 
   updateUser() {
-    let errorOrSuccess: any = this.userService.atualizarUser(this.utente,this.email);
+    let errorOrSuccess: any = this.userService.atualizarUser(this.utente);
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("User atualizado com sucesso");

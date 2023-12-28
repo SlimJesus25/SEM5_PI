@@ -71,9 +71,9 @@ namespace RobDroneGO.Domain.Users
             }
         }
 
-        public async Task<UserDto> UpdateAsync(UserDto dto)
+        public async Task<UserDto> UpdateAsync(string email,UpdateUserDto dto)
         {
-            var user = await this._repo.GetByEmailAsync(new UserEmail(dto.Email)); 
+            var user = await this._repo.GetByEmailAsync(new UserEmail(email)); 
 
             if (user == null)
                 return null;   

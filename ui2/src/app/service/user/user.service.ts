@@ -6,7 +6,7 @@ import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { User } from '../../model/user';
 import { CreateUser } from '../../model/createUser';
-import { Utente } from '../../model/utente';
+import { AtualizarUtente } from '../../model/atualizarUtente';
 
 @Injectable({
   providedIn: 'root'
@@ -33,23 +33,24 @@ export class UserService {
     return login;
   }
 
-  deleteUser(email: string) {
+  deleteUser() {
     const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token") };
-    return this.http.delete(this.LogisticAPI_URL + "/deleteUser/" + email, { headers });
+    return this.http.delete(this.LogisticAPI_URL + "/deleteUser", { headers });
   }
 
-  atualizarUser(utente: Utente, email: string) {
-    const updateURL = this.LogisticAPI_URL + "/updateUser/" + email;
+  atualizarUser(utente: AtualizarUtente) {
+    const updateURL = this.LogisticAPI_URL + "/updateUser";
     const headers = {
       'content-type': 'application/json',
       'authorization': 'Bearer ' + localStorage.getItem("token")
     };
     const body = JSON.stringify(utente);
-    return this.http.put<Utente>(updateURL, body, { 'headers': headers, observe: 'response' })
+    console.log(localStorage.getItem("token"));
+    return this.http.put<AtualizarUtente>(updateURL, body, { 'headers': headers, observe: 'response' })
   }
 
-  downloadInfo(email: string): Observable<HttpResponse<Blob>> {
-    const downloadUrl = this.LogisticAPI_URL + "/getUserByEmail/" + email;
+  downloadInfo(): Observable<HttpResponse<Blob>> {
+    const downloadUrl = this.LogisticAPI_URL + "/getUserByEmail";
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + localStorage.getItem('token')
