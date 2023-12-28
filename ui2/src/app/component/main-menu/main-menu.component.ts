@@ -114,4 +114,8 @@ export class MainMenuComponent implements OnInit {
   deleteUser(){
     this.router.navigate(['deleteUser']);
   }
+
+  updateUser(){
+    this.router.navigate(['updateUser']);
+  }
 }

@@ -75,6 +75,7 @@ import { RegistarUserComponent } from './component/user/registarUser/registar-us
 import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.component';
 import { SignUpComponent } from './component/user/signUp/sign-up.component';
 import { DeleteUserComponent } from './component/user/deleteUser/delete-user.component';
+import { UpdateUserComponent } from './component/user/updateUser/update-user.component';
 
 
 @NgModule({
@@ -164,7 +165,8 @@ import { DeleteUserComponent } from './component/user/deleteUser/delete-user.com
     RegistarUserComponent,
     PedidoUserComponent,
     SignUpComponent,
-    DeleteUserComponent
+    DeleteUserComponent,
+    UpdateUserComponent
   ],
   bootstrap: [ AppComponent ]
 })

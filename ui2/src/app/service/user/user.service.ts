@@ -6,6 +6,7 @@ import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../../model/user';
 import { CreateUser } from '../../model/createUser';
+import { Utente } from '../../model/Utente';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class UserService {
   criarUser(user: CreateUser) {
     const headers = {
       'content-type': 'application/json',
-      'authorization': 'Bearer '+ localStorage.getItem("token"),
+      'authorization': 'Bearer ' + localStorage.getItem("token"),
       'Access-Control-Allow-Origin': '*',
     };
 
@@ -27,15 +28,25 @@ export class UserService {
   }
 
   login(email: string, password: string) {
-    const loginUrl = this.LogisticAPI_URL + "/login/" + email+ "/"+ password;
+    const loginUrl = this.LogisticAPI_URL + "/login/" + email + "/" + password;
     const login = this.http.get(loginUrl);
     return login;
   }
 
   deleteUser(email: string) {
-    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
-    return this.http.delete(this.LogisticAPI_URL+ "/deleteUser/"+ email,  {headers});
+    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token") };
+    return this.http.delete(this.LogisticAPI_URL + "/deleteUser/" + email, { headers });
   }
 
-  
+  atualizarUser(utente: Utente, email: string) {
+    const updateURL = this.LogisticAPI_URL + "updateUser/"+ email;
+    const headers = {
+      'content-type': 'application/json',
+      'authorization': 'Bearer ' + localStorage.getItem("token")
+    };
+    const body = JSON.stringify(utente);
+    return this.http.put<Utente>(updateURL, body, { 'headers': headers, observe: 'response' })
+  }
+
+
 }

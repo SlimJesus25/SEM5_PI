@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CreatePedido } from '../../model/createPedido';
+import { Utente } from '../../model/Utente';
 import { Pedido } from '../../model/pedido';
 
 @Injectable({
@@ -34,14 +34,14 @@ export class PedidoService {
     return pedidoReq;
   }
 
-  criarPedido(utente: CreatePedido) {
+  criarPedido(utente: Utente) {
     const headers = {'content-type': 'application/json',
     'Access-Control-Allow-Origin': '*',
   };
     
     const body = JSON.stringify(utente);
     console.log(body);
-    return this.http.post<CreatePedido>(this.LogisticAPI_URL + "/criarPedido", body, {'headers':headers , observe: 'response'})
+    return this.http.post<Utente>(this.LogisticAPI_URL + "/criarPedido", body, {'headers':headers , observe: 'response'})
 
   }
 }
