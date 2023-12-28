@@ -10,7 +10,7 @@ import { UserService } from '../../../service/user/user.service';
 })
 export class UpdateUserComponent implements OnInit {
 
-  utente = { name: "", email: "", phoneNumber: "", nif: "", password: ""}
+  utente = { name: "", phoneNumber: "", nif: "", password: ""}
 
 
   constructor(
