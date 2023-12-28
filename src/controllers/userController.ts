@@ -81,8 +81,12 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async getUserByEmail(req: Request, res: Response, next: NextFunction) {
     try {
-      const usersOrError = await this.userServiceInstance.getUserByEmail(req.params.email) as Result<IUserDTO>;
-
+      const stat = authorizeEmail();
+      let usersOrError;
+      if (stat) {
+        usersOrError = await this.userServiceInstance.getUserByEmail(req.params.email) as Result<IUserDTO>;
+      }
+      
       if (usersOrError.isFailure) {
         return res.status(404).send("Erro: " + usersOrError.errorValue());
       }
