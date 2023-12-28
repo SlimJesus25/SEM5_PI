@@ -77,6 +77,9 @@ import { SignUpComponent } from './component/user/signUp/sign-up.component';
 import { DeleteUserComponent } from './component/user/deleteUser/delete-user.component';
 import { UpdateUserComponent } from './component/user/updateUser/update-user.component';
 import { DownloadInfoComponent } from './component/user/downloadInfo/download-info.component';
+import { TarefaGestaoRequisicaoComponent } from './component/tarefa/tarefa-gestao-requisicao/tarefa-gestao-requisicao.component';
+import { TarefaNaoAprovadaComponent } from './component/tarefa/tarefa-nao-aprovada/tarefa-nao-aprovada.component';
+import { TarefaListComponent } from './component/tarefa/tarefa-list/tarefa-list.component';
 
 
 @NgModule({
@@ -114,6 +117,9 @@ import { DownloadInfoComponent } from './component/user/downloadInfo/download-in
     //Tarefa
     TarefaGeralComponent,
     TarefaCreateComponent,
+    TarefaGestaoRequisicaoComponent,
+    TarefaNaoAprovadaComponent,
+    TarefaListComponent,
 
     //TipoRobo
     TipoRoboGeralComponent,

@@ -81,6 +81,23 @@ export class MainMenuComponent implements OnInit {
   createSala(){
     this.router.navigate(['salaCreate']);
   }
+  
+  //Tarefas
+  tarefaCreate(){
+    this.router.navigate(['tarefaCreate']);
+  }
+  
+  gerirRequisicao(){
+    this.router.navigate(['tarefaGestaoRequisicao']);
+  }
+  
+  listarTarefasNaoAprovadas(){
+    this.router.navigate(['listarTarefasNaoAprovadas']);
+  }
+  listarTarefas(){
+    this.router.navigate(['listarTarefas']);
+  }
+  
   //Obter caminho
   calcularCaminho(){
     this.router.navigate(['planning']);

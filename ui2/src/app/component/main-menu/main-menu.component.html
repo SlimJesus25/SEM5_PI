@@ -57,6 +57,14 @@
   <mat-menu #gestorTarefasMenu="matMenu">
     <button mat-menu-item (click)="calcularCaminho()">Obter percurso entre dois edificios</button>
     <button mat-menu-item (click)="createPiso()">Analise de complexidade</button>
+    <button mat-menu-item [matMenuTriggerFor]="tarefasMenu">Tarefas</button>
+  </mat-menu>
+  
+  <mat-menu #tarefasMenu="matMenu">
+    <button mat-menu-item (click)="tarefaCreate()">Criar Tarefa</button>
+    <button mat-menu-item (click)="gerirRequisicao()">Gerir Requisições</button>
+    <button mat-menu-item (click)="listarTarefasNaoAprovadas()">Listar tarefas não aprovadas</button>
+    <button mat-menu-item (click)="listarTarefas()">Listar Tarefas</button>
   </mat-menu>
 
   <!--Gestor de Frota Menu-->

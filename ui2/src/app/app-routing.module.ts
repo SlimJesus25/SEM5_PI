@@ -56,6 +56,9 @@ import { SignUpComponent } from './component/user/signUp/sign-up.component';
 import { DeleteUserComponent } from './component/user/deleteUser/delete-user.component';
 import { UpdateUserComponent } from './component/user/updateUser/update-user.component';
 import { DownloadInfoComponent } from './component/user/downloadInfo/download-info.component';
+import { TarefaGestaoRequisicaoComponent } from './component/tarefa/tarefa-gestao-requisicao/tarefa-gestao-requisicao.component';
+import { TarefaNaoAprovadaComponent } from './component/tarefa/tarefa-nao-aprovada/tarefa-nao-aprovada.component';
+import { TarefaListComponent } from './component/tarefa/tarefa-list/tarefa-list.component';
 
 const routes: Routes = [
 
@@ -107,6 +110,14 @@ const routes: Routes = [
   { path: 'mapaPisoCreate', component: MapaPisoCreateComponent },
   { path: 'mapaPisoUpdate', component: MapaPisoUpdateComponent },
 
+
+  //Tarefa
+  { path: 'tarefas', component: TarefaGeralComponent },
+  { path: 'tarefaCreate', component: TarefaCreateComponent },
+  { path: 'tarefaGestaoRequisicao', component: TarefaGestaoRequisicaoComponent},
+  { path: 'listarTarefasNaoAprovadas', component: TarefaNaoAprovadaComponent},
+  { path: 'listarTarefas', component: TarefaListComponent},
+  
   //Sala
   { path: 'salaCreate', component: SalaCreateComponent },
 
