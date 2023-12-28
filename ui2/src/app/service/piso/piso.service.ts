@@ -27,8 +27,9 @@ export class PisoService {
 
     //Metodo para listar pisos de um edificio
     listPisos(codigoEdificio: string): Observable<Piso[]> {
+        const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
         const listPisosEdificio = this.LogisticAPI_URL + "/listPisos/" +codigoEdificio;
-        const pisos =  this.http.get<Piso[]>(listPisosEdificio);
+        const pisos =  this.http.get<Piso[]>(listPisosEdificio, {headers});
         return pisos;
     }
 
