@@ -39,10 +39,9 @@ function extractRoleFromJWT(token: string): string | null {
   function extractEmailFromJWT(token: string): string | null {
     try {
       const decodedToken = jwt.decode(token) as { [key: string]: any };
-  
-      if (decodedToken && decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/email']) {
+      if (decodedToken && decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']) {
         // Assuming the role is stored in 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/email'];
+        return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
       }
   
       return null;
@@ -72,7 +71,7 @@ function extractRoleFromJWT(token: string): string | null {
     };
   }
   // Function to compare email from JWT with the provided email
-function authorizeEmail(emailToCompare: string) {
+function authorizeEmail() {
   return function(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.split(' ')[1];
 
@@ -81,13 +80,16 @@ function authorizeEmail(emailToCompare: string) {
     }
 
     const userEmail = extractEmailFromJWT(token);
+    const emailToCompare = req.params.email;
 
     if (!userEmail || userEmail !== emailToCompare) {
+      console.log(userEmail);
+      console.log(emailToCompare);
       return res.status(403).json({ message: 'Unauthorized' });
     }
 
     // Emails match, proceed with a 200 OK response
-    return res.status(200).json({ message: 'Emails match' });
+    next();
   };
 }
   

@@ -96,9 +96,9 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const stat = authorizeEmail(req.params.email);
+      const stat = authorizeEmail();
       let usersOrError;
-      if (stat.status(200)) {
+      if (stat) {
         usersOrError = await this.userServiceInstance.deleteUser(req.params.email) as Result<IUserDTO>;
       }
 
