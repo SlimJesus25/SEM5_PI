@@ -17,17 +17,27 @@ namespace RobDroneGO.Infrastructure.Users
         {
             this.context = context;
         }
-        
+
+        public async Task<int> GetMaxUserId()
+        {
+            var userIds = await this.context.Users.Select(x => x.Id.Id).ToListAsync();
+            var maxId = userIds.Max();
+            return maxId;
+        }
+
+
         public async Task<int> CountUsers()
         {
             return await this.context.Users.CountAsync();
         }
 
-        public async Task<User> GetByEmailAsync(UserEmail email){
+        public async Task<User> GetByEmailAsync(UserEmail email)
+        {
             return await this.context.Users.Where(x => email.Email.Equals(x.Email.Email)).FirstAsync();
         }
 
-        public async Task<User> Login(UserEmail email, UserPassword password){
+        public async Task<User> Login(UserEmail email, UserPassword password)
+        {
             return await this.context.Users.Where(x => email.Email.Equals(x.Email.Email) && password.Password.Equals(x.Password.Password)).FirstAsync();
         }
     }

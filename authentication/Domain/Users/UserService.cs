@@ -144,7 +144,7 @@ namespace RobDroneGO.Domain.Users
     
         private async Task<int> GenerateId()
         {
-            return await _repo.CountUsers() + 1;
+            return await _repo.GetMaxUserId() + 1;
         }
 
 
