@@ -9,7 +9,7 @@ import IUserDTO from '../dto/IUserDTO';
 import { Result } from "../core/logic/Result";
 import ICreatingUserDTO from '../dto/ICreatingUserDTO';
 import { Console } from 'console';
-var authorizeEmail = require("../api/middlewares/validateToken")
+var authorizeEmail = require("../api/middlewares/validateEmail")
 
 @Service()
 export default class UserController implements IUserController /* TODO: extends ../core/infra/BaseController */ {

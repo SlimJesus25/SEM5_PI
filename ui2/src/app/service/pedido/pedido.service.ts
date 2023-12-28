@@ -16,7 +16,8 @@ export class PedidoService {
   constructor(private http: HttpClient) { }
 
   getPedidosPendentes(): Observable<Pedido[]> {
-    const pedidos = this.http.get<Pedido[]>(this.LogisticAPI_URL + "/getAllPedidosPendentes");
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const pedidos = this.http.get<Pedido[]>(this.LogisticAPI_URL + "/getAllPedidosPendentes",{headers});
 
     return pedidos;
   }
