@@ -1,11 +1,28 @@
-<h1>Criar Tarefa</h1>
+<div class="background-container"></div>
+<mat-toolbar>
+  <h1 class="h1">RobDroneGO</h1>
+</mat-toolbar>
 
-<div>
+<body>
+  <div class = "box">
     <div>
       <table>
         <tr>
           <th><label>Tipo Tarefa: </label></th>
           <th><input [(ngModel)]="tarefa.tipoTarefa" /></th>
+        </tr>  
+        <tr>
+          <th><label>Designacao de Tarefa: </label></th>
+          <th><input type="string" [(ngModel)]="tarefa.designacaoTarefa" /></th>
+        </tr>
+        <tr>
+          <th><label>Ponto Inicial: </label></th>
+          <th><input type="string" [(ngModel)]="tarefa.pontoInicial" /></th>
+        </tr>
+        <tr>
+          <th><label>Ponto Termino: </label></th>
+          <th><input type="string" [(ngModel)]="tarefa.pontoTermino" /></th>
+        </tr>
       </table>
     </div>
     <div>
@@ -15,3 +32,4 @@
 
 
 </div>
+</body>

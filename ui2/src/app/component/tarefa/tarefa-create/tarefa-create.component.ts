@@ -9,7 +9,7 @@ import { TarefaService } from '../../../service/tarefa/tarefa.service';
 })
 export class TarefaCreateComponent implements OnInit {
 
-  tarefa = {tipoTarefa: ""}
+  tarefa = {designacaoTarefa: "", pontoTermino: "", pontoInicial: "", tipoTarefa: "" }
 
   constructor(
     private location: Location,
