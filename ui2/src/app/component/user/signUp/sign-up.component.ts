@@ -14,8 +14,8 @@ import { PedidoService } from '../../../service/pedido/pedido.service';
 })
 export class SignUpComponent implements OnInit {
 
-  utente = { name: "", email: "", phoneNumber: "", nif: "", password: "",consent:false }
-
+  utente = { name: "", email: "", phoneNumber: "", nif: "", password: ""}
+  consent:false 
   constructor(
     private snackBar: MatSnackBar,
     private location: Location,
@@ -33,8 +33,8 @@ export class SignUpComponent implements OnInit {
   }
 
   criarUtente() {
-    console.log('Aqui: ' + this.utente.consent);
-    if (this.utente.consent == false) {
+    console.log('Aqui: ' + this.consent);
+    if (this.consent == false) {
       this.showSnackbar('Consinta com os termos antes de efetuar o pedido.');
       return;
     }

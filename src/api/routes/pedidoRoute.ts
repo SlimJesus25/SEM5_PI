@@ -49,14 +49,14 @@ export default (app: Router) => {
         (req, res, next) => ctrl.criarPedido(req, res, next));
 
 
-    route.patch('/aprovarPedido/:id', authorize('GestorUtilizadores'),
+    route.patch('/aprovarPedido/:id',
         celebrate({
             body: Joi.object({
             })
         }),
         (req, res, next) => ctrl.aprovarPedido(req, res, next));
 
-    route.patch('/recusarPedido/:id', authorize('GestorUtilizadores'),
+    route.patch('/recusarPedido/:id',
         celebrate({
             body: Joi.object({
             })

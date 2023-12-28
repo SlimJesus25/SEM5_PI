@@ -23,18 +23,14 @@ export class PedidoService {
   }
 
   aprovarPedido(pedido: Pedido) {
-    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const aprovarPedido = this.LogisticAPI_URL + "/aprovarPedido/" + pedido.id;
-    console.log(aprovarPedido);
-    console.log(localStorage.getItem("token"));
-    const pedidoReq = this.http.patch<Pedido>(aprovarPedido, {headers});
+    const pedidoReq = this.http.patch<Pedido>(aprovarPedido, {});
     return pedidoReq;
   }
 
   recusarPedido(pedido: Pedido) {
-    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const recusarPedido = this.LogisticAPI_URL + "/recusarPedido/" + pedido.id;
-    const pedidoReq = this.http.patch<Pedido>(recusarPedido, {headers});
+    const pedidoReq = this.http.patch<Pedido>(recusarPedido, {});
     return pedidoReq;
   }
 
