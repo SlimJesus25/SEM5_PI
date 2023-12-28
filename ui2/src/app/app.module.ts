@@ -76,6 +76,7 @@ import { PedidoUserComponent } from './component/user/pedidoUser/pedido-user.com
 import { SignUpComponent } from './component/user/signUp/sign-up.component';
 import { DeleteUserComponent } from './component/user/deleteUser/delete-user.component';
 import { UpdateUserComponent } from './component/user/updateUser/update-user.component';
+import { DownloadInfoComponent } from './component/user/downloadInfo/download-info.component';
 
 
 @NgModule({
@@ -166,7 +167,8 @@ import { UpdateUserComponent } from './component/user/updateUser/update-user.com
     PedidoUserComponent,
     SignUpComponent,
     DeleteUserComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    DownloadInfoComponent
   ],
   bootstrap: [ AppComponent ]
 })

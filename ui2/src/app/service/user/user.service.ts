@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { MessageService } from '../message/message.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { User } from '../../model/user';
 import { CreateUser } from '../../model/createUser';
 import { Utente } from '../../model/utente';
@@ -39,13 +39,27 @@ export class UserService {
   }
 
   atualizarUser(utente: Utente, email: string) {
-    const updateURL = this.LogisticAPI_URL + "/updateUser/"+ email;
+    const updateURL = this.LogisticAPI_URL + "/updateUser/" + email;
     const headers = {
       'content-type': 'application/json',
       'authorization': 'Bearer ' + localStorage.getItem("token")
     };
     const body = JSON.stringify(utente);
     return this.http.put<Utente>(updateURL, body, { 'headers': headers, observe: 'response' })
+  }
+
+  downloadInfo(email: string): Observable<HttpResponse<Blob>> {
+    const downloadUrl = this.LogisticAPI_URL + "/getUserByEmail/" + email;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+
+    return this.http.get(downloadUrl, {
+      headers: headers,
+      observe: 'response',
+      responseType: 'blob' // Important: Set the response type to 'blob'
+    });
   }
 
 

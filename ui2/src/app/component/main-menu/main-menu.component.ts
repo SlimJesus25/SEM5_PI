@@ -118,4 +118,8 @@ export class MainMenuComponent implements OnInit {
   updateUser(){
     this.router.navigate(['updateUser']);
   }
+
+  downloadInfo(){
+    this.router.navigate(['downloadInfo']);
+  }
 }

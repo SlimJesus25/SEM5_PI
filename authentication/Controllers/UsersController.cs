@@ -12,13 +12,10 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using RobDroneGO.Domain.Roles;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Routing;
-using System.Linq;
 using System.Text.Json;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Routing.Constraints;
+using System;
+using System.IO;
+using System.Text.Json;
 
 
 namespace RobDroneGO.Controllers
@@ -95,7 +92,30 @@ namespace RobDroneGO.Controllers
                     return NotFound();
                 }
 
-                return user;
+                string jsonString = JsonSerializer.Serialize(user);
+
+                // Convert the JSON string to bytes
+                byte[] fileContents = System.Text.Encoding.UTF8.GetBytes(jsonString);
+
+                // Return the file as a FileResult
+                return File(fileContents, "application/json", "user.json");
+
+                //return user;
+
+                //Metodo guardar front end
+                /*var jsonstr = System.Text.Json.JsonSerializer.Serialize(user);
+                byte[] byteArray = System.Text.ASCIIEncoding.ASCII.GetBytes(jsonstr);
+
+                return File(byteArray, "application/json", "file1.json");
+
+                //Metodo guardar back end, falta permissoes
+                /*
+                var jsonstr = System.Text.Json.JsonSerializer.Serialize(user);
+                byte[] byteArray = System.Text.Encoding.ASCII.GetBytes(jsonstr);
+                string filePath = "";
+                System.IO.File.WriteAllBytes(filePath, byteArray);
+                return Ok("File saved on the server.");
+                */
 
             }
             catch (BadHttpRequestException ex)
