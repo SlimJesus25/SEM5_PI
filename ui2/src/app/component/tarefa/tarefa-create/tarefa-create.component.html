@@ -8,28 +8,43 @@
     <div>
       <table>
         <tr>
-          <th><label>Tipo Tarefa: </label></th>
-          <th><input [(ngModel)]="tarefa.tipoTarefa" /></th>
+          <mat-form-field>
+            <mat-label>Tipo de Tarefa</mat-label>
+            <mat-select [(ngModel)]="tarefa.tipoTarefa">
+              <mat-option *ngFor="let option of options" [value]="option">{{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </tr>  
+
+        <tr>
+          <mat-form-field>
+            <mat-label>Ponto Inicial</mat-label>
+            <mat-select [(ngModel)]="tarefa.origem">
+              <mat-option *ngFor="let origem of origens" [value]="origem">{{origem}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </tr>
+        <tr>
+          <mat-form-field>
+            <mat-label>Ponto Termino</mat-label>
+            <mat-select [(ngModel)]="tarefa.destino">
+              <mat-option *ngFor="let destino of destinos" [value]="destino">{{destino}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </tr>
         <tr>
           <th><label>Designacao de Tarefa: </label></th>
-          <th><input type="string" [(ngModel)]="tarefa.designacaoTarefa" /></th>
+          <th><input type="string" [(ngModel)]="requisicao.tarefa" /></th>
         </tr>
         <tr>
-          <th><label>Ponto Inicial: </label></th>
-          <th><input type="string" [(ngModel)]="tarefa.pontoInicial" /></th>
-        </tr>
-        <tr>
-          <th><label>Ponto Termino: </label></th>
-          <th><input type="string" [(ngModel)]="tarefa.pontoTermino" /></th>
+          <th><label>Tipo Dispositivo: </label></th>
+          <th><input type="string" [(ngModel)]="requisicao.tipoDispositivo" /></th>
         </tr>
       </table>
     </div>
     <div>
-      <button class="buttonBack" (click)="goBack()">Back</button>
       <button (click)="createTarefa()">Add</button>
+      <button class="buttonBack" (click)="goBack()">Back</button>
     </div>
-
-
 </div>
 </body>

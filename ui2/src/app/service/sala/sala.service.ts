@@ -27,8 +27,8 @@ export class SalaService {
   }
 
   getSalas(): Observable<Sala[]> {
-    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
-    const salas = this.http.get<Sala[]>(this.LogisticAPI_URL+ "/listSalas", {headers});
+    //const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const salas = this.http.get<Sala[]>(this.LogisticAPI_URL+ "/listSalas");
 
     return salas;
   }

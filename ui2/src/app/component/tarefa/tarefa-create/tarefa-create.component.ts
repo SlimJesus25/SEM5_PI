@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { MessageService } from '../../../service/message/message.service';
 import { TarefaService } from '../../../service/tarefa/tarefa.service';
+import { SalaService } from '../../../service/sala/sala.service';
 @Component({
   selector: 'app-tarefa-create',
   templateUrl: './tarefa-create.component.html',
@@ -9,17 +10,28 @@ import { TarefaService } from '../../../service/tarefa/tarefa.service';
 })
 export class TarefaCreateComponent implements OnInit {
 
-  tarefa = {designacaoTarefa: "", pontoTermino: "", pontoInicial: "", tipoTarefa: "" }
+  requisicao = {tipoDispositivo: "", user:"", estado:"pendente", tarefa:""}
+  tarefa = {tipoTarefa: "", origem: "", destino: "", requisicao:this.requisicao}
+  
+  options = ["pick up & delivery", "vigilância", "limpeza"];
+  
+  origens: string[] = [];
+  destinos: string[] = [];
 
   constructor(
     private location: Location,
     private TarefaService: TarefaService,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+    private salaService: SalaService,
+  ) { 
+    this.salaService.getSalas().subscribe(salas => this.origens = salas.map(sala => sala.designacao));
+    this.salaService.getSalas().subscribe(salas => this.destinos = salas.map(sala => sala.designacao));
+  }
 
 
   @Output() finalMessage: string ='';
-
+  
+  
 
   ngOnInit(): void {
   }

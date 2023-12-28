@@ -11,17 +11,18 @@ import { Aprovacao } from '../../model/aprovacao';
   providedIn: 'root'
 })
 export class TarefaService {
-  private LogisticAPI_URL = 'http://localhost:3500/api/tarefas';  // URL to web api
+  private LogisticAPI_URL = 'http://localhost:3000/api/tarefaAprovacao';  // URL to web api
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createTarefa(tarefa: Tarefa) {
-    const headers = {'content-type': 'application/json'};
-    
+    const headers = { 'content-type': 'application/json',
+    'Access-Control-Allow-Origin': '*', 'authorization': 'Bearer ' + localStorage.getItem("token") };
+
     const body = JSON.stringify(tarefa);
     console.log(body);
 
-    return this.http.post<Tarefa>(this.LogisticAPI_URL + "/createTarefa", body, {'headers':headers , observe: 'response'})
+    return this.http.post<Tarefa>(this.LogisticAPI_URL + "/requisitar", body, {'headers':headers , observe: 'response'})
 
   }
 
@@ -33,24 +34,6 @@ export class TarefaService {
     const edificios = this.http.get<Tarefa[]>(this.LogisticAPI_URL+ "/listTarefas");
 
     return edificios;
-  }
-  
-  aceitarRequisicao(requisicao: Aprovacao){
-    const headers = {'content-type': 'application/json'};
-    
-    const body = JSON.stringify(requisicao);
-    console.log(body);
-    
-    return this.http.put<Tarefa>(this.LogisticAPI_URL + "/aceitarRequisicao", body, {'headers':headers, observe: 'response'})
-  }
-  
-  recusarRequisicao(tarefa: Tarefa){
-    const headers = {'content-type': 'application/json'};
-    
-    const body = JSON.stringify(tarefa);
-    console.log(body);
-    
-    return this.http.put<Tarefa>(this.LogisticAPI_URL + "/recusarRequisicao", body, {'headers':headers, observe: 'response'})
   }
   
   
