@@ -51,7 +51,11 @@ export default class UserController implements IUserController /* TODO: extends 
 
   public async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const userOrError = await this.userServiceInstance.updateUser(req.params.email, req.body as IUserDTO) as Result<IUserDTO>;
+      const stat = authorizeEmail();
+      let userOrError;
+      if (stat) {
+        userOrError = await this.userServiceInstance.updateUser(req.params.email, req.body as IUserDTO) as Result<IUserDTO>;
+      }
       if (userOrError.isFailure) {
         return res.status(404).send("Erro: " + userOrError.errorValue());
       }
@@ -86,7 +90,7 @@ export default class UserController implements IUserController /* TODO: extends 
       if (stat) {
         usersOrError = await this.userServiceInstance.getUserByEmail(req.params.email) as Result<IUserDTO>;
       }
-      
+
       if (usersOrError.isFailure) {
         return res.status(404).send("Erro: " + usersOrError.errorValue());
       }
