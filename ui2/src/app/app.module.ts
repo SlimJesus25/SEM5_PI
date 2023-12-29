@@ -80,6 +80,7 @@ import { DownloadInfoComponent } from './component/user/downloadInfo/download-in
 import { TarefaGestaoRequisicaoComponent } from './component/tarefa/tarefa-gestao-requisicao/tarefa-gestao-requisicao.component';
 import { TarefaNaoAprovadaComponent } from './component/tarefa/tarefa-nao-aprovada/tarefa-nao-aprovada.component';
 import { TarefaListComponent } from './component/tarefa/tarefa-list/tarefa-list.component';
+import { SequenciaTarefasComponent } from './component/tarefa/sequencia-tarefas/sequencia-tarefas.component';
 
 
 @NgModule({
@@ -120,6 +121,7 @@ import { TarefaListComponent } from './component/tarefa/tarefa-list/tarefa-list.
     TarefaGestaoRequisicaoComponent,
     TarefaNaoAprovadaComponent,
     TarefaListComponent,
+    SequenciaTarefasComponent,
 
     //TipoRobo
     TipoRoboGeralComponent,

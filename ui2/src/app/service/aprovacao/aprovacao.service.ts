@@ -36,15 +36,16 @@ export class AprovacaoService {
   }
   
   getAprovacaoUtente(utente: string): Observable<Aprovacao[]>{
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const listAprovacaoUtente = this.LogisticAPI_URL + "/pesquisarRequisicaoPorUtente" + "?utente=" + utente;
-        const aprovacao =  this.http.get<Aprovacao[]>(listAprovacaoUtente);
+        const aprovacao =  this.http.get<Aprovacao[]>(listAprovacaoUtente, {headers});
         return aprovacao;
   }
   
   getAprovacaoTipoDispositivo(tipoDispositivo: string): Observable<Aprovacao[]>{
-    
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const listAprovacaoTipoDispositivo = this.LogisticAPI_URL + "/pesquisarRequisicaoPorTipoDispositivo/" + "?tipoDispositivo=" + tipoDispositivo;
-        const aprovacao =  this.http.get<Aprovacao[]>(listAprovacaoTipoDispositivo);
+        const aprovacao =  this.http.get<Aprovacao[]>(listAprovacaoTipoDispositivo, {headers});
         return aprovacao;
   }
   
@@ -56,13 +57,17 @@ export class AprovacaoService {
   }
   
   recusarRequisicao(requisicao: Aprovacao){
-    const headers = {'content-type': 'application/json',
-    'authorization': 'Bearer '+ localStorage.getItem("token")};
-    
-    const body = JSON.stringify(requisicao.tarefa);
-    console.log(body);
-    
-    return this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/recusarRequisicao", body, {headers});
+    const headers = {'content-type': 'application/json', 'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const body = {tarefa: requisicao.tarefa};
+    const pedido = this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/recusarRequisicao", body, {headers})
+    return pedido;
+  }
+  
+  gerarSequencia(){
+    const headers = {'content-type': 'application/json', 'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const body = {};
+    const pedido = this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/sequenciaTarefasAprovadas", body, {headers})
+    return pedido;
   }
   
   

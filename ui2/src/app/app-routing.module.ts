@@ -59,6 +59,7 @@ import { DownloadInfoComponent } from './component/user/downloadInfo/download-in
 import { TarefaGestaoRequisicaoComponent } from './component/tarefa/tarefa-gestao-requisicao/tarefa-gestao-requisicao.component';
 import { TarefaNaoAprovadaComponent } from './component/tarefa/tarefa-nao-aprovada/tarefa-nao-aprovada.component';
 import { TarefaListComponent } from './component/tarefa/tarefa-list/tarefa-list.component';
+import { SequenciaTarefasComponent } from './component/tarefa/sequencia-tarefas/sequencia-tarefas.component';
 
 const routes: Routes = [
 
@@ -71,7 +72,7 @@ const routes: Routes = [
   //Tarefa
   { path: 'tarefas', component: TarefaGeralComponent },
   { path: 'tarefaCreate', component: TarefaCreateComponent },
-
+  
   //TipoRobo
   { path: 'tiposRobo', component: TipoRoboGeralComponent },
   { path: 'tipoRoboCreate', component: TipoRoboCreateComponent },
@@ -117,6 +118,7 @@ const routes: Routes = [
   { path: 'tarefaGestaoRequisicao', component: TarefaGestaoRequisicaoComponent},
   { path: 'listarTarefasNaoAprovadas', component: TarefaNaoAprovadaComponent},
   { path: 'listarTarefas', component: TarefaListComponent},
+  { path: 'sequenciaTarefas', component: SequenciaTarefasComponent},
   
   //Sala
   { path: 'salaCreate', component: SalaCreateComponent },

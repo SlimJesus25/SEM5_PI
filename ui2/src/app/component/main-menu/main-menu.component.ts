@@ -98,6 +98,9 @@ export class MainMenuComponent implements OnInit {
     this.router.navigate(['listarTarefas']);
   }
   
+  sequenciaTarefas(){
+    this.router.navigate(['sequenciaTarefas']);
+  } 
   
   //Obter caminho
   calcularCaminho(){
