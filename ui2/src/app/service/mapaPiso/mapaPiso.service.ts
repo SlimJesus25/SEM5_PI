@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MapaPiso } from '../../model/mapaPiso';
 import { SolucaoCaminho } from '../../model/solucaoCaminho';
 import { CaminhoEntrePisos } from '../../model/caminhoEntrePisos';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,17 @@ export class MapaPisoService {
     return mapas;
   }
 
+  /*
+  async getMapaPorPiso(piso: string): Promise<MapaPiso | undefined> {
+    const mapas = await this.getMapasPiso().toPromise();
+    console.log('Aqui: ' + mapas);
+    if(mapas == undefined)
+      return;
+    return mapas.find(mapa => mapa.piso === piso);
+  }
+  */
+
+  /*
   getMapaPorPiso(piso: string) : MapaPiso | undefined {
     
     let res;
@@ -48,7 +60,15 @@ export class MapaPisoService {
     });
 
     return res;
-  }
+  }*/
+
+  
+getMapaPorPiso(piso: string): Observable<MapaPiso | undefined> {
+  return this.getMapasPiso().pipe(
+    map(mapas => mapas.find(mapa => mapa.piso === piso))
+  );
+}
+  
 
     updateMapaPiso(mapaPiso: MapaPiso) {
 

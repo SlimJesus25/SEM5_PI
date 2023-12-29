@@ -721,6 +721,9 @@ export default class ThumbRaiser {
 
                     let pisos = [];
 
+                    let mapaPisoSvc = this.mapaPisoService;
+                    let dropdownContainer;
+
                     window.addEventListener('keydown', (event) => {
                         if ((event.key === 'l' || event.key === 'L') && !active) {
                     // Vai buscar o elevador referente ao piso.
@@ -730,9 +733,10 @@ export default class ThumbRaiser {
                                     for(let i=0;i<elevador.pisosServidos.length;i++){
                                         if(elevador.pisosServidos[i] == this.mapaPiso.piso){
                                             pisos = this.arrayRemove(elevador.pisosServidos, elevador.pisosServidos[i]);
+                                            
                                             // Abre uma window HTML com a lista de "pisos" para os quais se pode teletransportar.
-                                            if (pisos.length > 0) {
-                                                let dropdownContainer = document.createElement('div');
+                                            if (pisos.length > 0 && !dropdownContainer) {
+                                                dropdownContainer = document.createElement('div');
                                                 dropdownContainer.id = 'pisosDropdown';
                                                 dropdownContainer.style.position = 'absolute';
                                                 dropdownContainer.style.top = '30vh';
@@ -741,6 +745,14 @@ export default class ThumbRaiser {
                                                 dropdownContainer.style.background = 'white';
                                                 dropdownContainer.style.padding = '10px';
                                                 dropdownContainer.style.border = '1px solid black';
+                                                dropdownContainer.style.display = 'flex';
+                                                dropdownContainer.style.alignItems = 'center';
+
+                                                
+                                                let label = document.createElement('label');
+                                                label.textContent = 'Escolha um piso';
+                                                label.style.marginRight = '10px'; 
+                                                dropdownContainer.appendChild(label);
 
                                                 let dropdown = document.createElement('select');
                                                 dropdown.id = 'pisoDropdownList';
@@ -753,28 +765,31 @@ export default class ThumbRaiser {
                                                 });
 
                                                 dropdownContainer.appendChild(dropdown);
+                                                dropdownContainer.appendChild(document.createElement('br'));
 
                                                 let submitButton = document.createElement('button');
-                                                submitButton.textContent = 'Submit';
+                                                submitButton.textContent = 'Fechar elevador';
                                                 submitButton.addEventListener('click', function () {
                                                     let selectedPiso = dropdown.value;
                                                     
-                                                    const mapaPisoACarregar = this.mapaPisoService.getMapaPorPiso(selectedPiso);
+                                                    const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
+                                                        coords = [mapaPiso.elevador[0][1], mapaPiso.elevador[0][2]];
+                                                        window.alert('Mapa piso: ' + coords);
+                                                        const eventDetail = {
+                                                            mapaPiso: mapaPiso,
+                                                            initialCoords: coords
+                                                        }
 
-                                                    this.maze = new Maze({
-                                                        piso: selectedPiso,
-                                                        groundTextureUrl: "../../assets/textures/ground.jpg",
-                                                        wallTextureUrl: "../../assets/textures/wall.jpg",
-                                                        size: { width: mapaPisoACarregar.largura, height: mapaPisoACarregar.profundidade },
-                                                        map: mapaPisoACarregar.mapa,
-                                                        initialPosition: coords,
-                                                        initialDirection: 0.0,
-                                                        exitLocation: [-1,-1]
-                                                      });
+                                                        // Lança o evento (que do lado do component há um método à espera).
+                                                        const event = new CustomEvent('teletransporte', { detail: eventDetail});
+                                                        window.dispatchEvent(event);
+
+                                                    });
                                                     
 
                                                     // Remove the dropdown container from the DOM
                                                     dropdownContainer.remove();
+                                                    dropdownContainer = null;
                                                 });
 
                                             
@@ -787,8 +802,13 @@ export default class ThumbRaiser {
                                                 dropdown.addEventListener('change', function () {
                                                     // You can perform additional actions on selection change if needed
                                                 });
+
+                                                console.log('Dropdown container created.');
                                             }
                                             break;
+                                        }else {
+                                            console.log('Dropdown container already exists or pisos is empty.');
+                                            console.log('Dropdown container:', dropdownContainer);
                                         }
                                     }
                                 });
