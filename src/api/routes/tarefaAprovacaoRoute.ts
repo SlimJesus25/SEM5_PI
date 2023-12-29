@@ -15,7 +15,7 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.tarefaAprovacao.name) as ITarefaAprovacaoController;
 
-    route.post('/requisitar', authorize('GestorTarefas'),
+    route.post('/requisitar', authorize(['GestorTarefas', 'Utente']),
     celebrate({
       body: Joi.object({
         tipoDispositivo: Joi.string(),
@@ -23,7 +23,6 @@ export default (app: Router) => {
         tipoTarefa: Joi.string().required(),
         pontoInicio: Joi.string().required(),
         pontoTermino: Joi.string().required(),
-        //requisitante: Joi.string().required() --> Deve ser, automaticamente, gathered pela sessão.
       })
     }),
     (req, res, next) => ctrl.requisitar(req, res, next));
