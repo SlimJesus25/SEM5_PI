@@ -152,13 +152,15 @@ import { PassagemService } from "../../service/passagem/passagem.service.js";
  */
 
 export default class ThumbRaiser {
-    constructor(pisoService, edificioService, mapaPisoService, canvas,generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
+    constructor(pisoService, edificioService, mapaPisoService, elevadorService, mapaPiso, canvas,generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
         //const userInteractionInstance = new UserInterface();
         //this.mazeParameters = merge({}, userInteractionInstance.mazeData, mazeParameters);
         this.pisoService = pisoService;
         this.edificioService = edificioService;
         this.mapaPisoService = mapaPisoService;
+        this.elevadorService = elevadorService;
         this.generalParameters = merge({}, generalData, generalParameters);
+        this.mapaPiso = mapaPiso;
         this.mazeParameters = merge({}, mazeParameters);
         this.playerParameters = merge({}, playerData, playerParameters);
         this.lightsParameters = merge({}, lightsData, lightsParameters);
@@ -657,6 +659,15 @@ export default class ThumbRaiser {
         return this.maze.distanceToWestWall(position) < this.player.radius || this.maze.distanceToEastWall(position) < this.player.radius || this.maze.distanceToNorthWall(position) < this.player.radius || this.maze.distanceToSouthWall(position) < this.player.radius;
     }
 
+
+    arrayRemove(arr, value) { 
+  
+        return arr.filter(function (geeks) { 
+            return geeks != value; 
+        }); 
+      
+    } 
+
     update() {
         if (!this.gameRunning) {
             if (this.maze.loaded && this.player.loaded) { // If all resources have been loaded
@@ -686,11 +697,118 @@ export default class ThumbRaiser {
             // Update the model animations
             const deltaT = this.clock.getDelta();
             this.animations.update(deltaT);
+            let active = false;
 
             // Update the player
             if (!this.animations.actionInProgress) {
 
-                if(this.maze.foundElevador(this.player.position)){
+
+                let infoElement = document.getElementById('info');
+                
+                if(!this.maze.foundElevador(this.player.position) && !this.maze.foundPassagem(this.player.position) && infoElement.style.visibility === 'visible'){
+                    infoElement.style.visibility = 'hidden';
+                    active = false;
+                }
+                
+                // let elevatorElement = document.getElementById('elevatorPainel');
+
+                let coords;
+
+                if((coords = this.maze.foundElevador(this.player.position)) != false && infoElement.style.visibility != 'visible'){
+
+                    infoElement.innerHTML = 'Elevador detetado. Pressiona \'L\'!';
+                    infoElement.style.visibility = 'visible';
+
+                    let pisos = [];
+
+                    window.addEventListener('keydown', (event) => {
+                        if ((event.key === 'l' || event.key === 'L') && !active) {
+                    // Vai buscar o elevador referente ao piso.
+                            active = true;
+                            this.elevadorService.getElevadores().subscribe(elevadores => {
+                                elevadores.forEach(elevador => {
+                                    for(let i=0;i<elevador.pisosServidos.length;i++){
+                                        if(elevador.pisosServidos[i] == this.mapaPiso.piso){
+                                            pisos = this.arrayRemove(elevador.pisosServidos, elevador.pisosServidos[i]);
+                                            // Abre uma window HTML com a lista de "pisos" para os quais se pode teletransportar.
+                                            if (pisos.length > 0) {
+                                                let dropdownContainer = document.createElement('div');
+                                                dropdownContainer.id = 'pisosDropdown';
+                                                dropdownContainer.style.position = 'absolute';
+                                                dropdownContainer.style.top = '30vh';
+                                                dropdownContainer.style.left = '50vw';
+                                                dropdownContainer.style.zIndex = '2';
+                                                dropdownContainer.style.background = 'white';
+                                                dropdownContainer.style.padding = '10px';
+                                                dropdownContainer.style.border = '1px solid black';
+
+                                                let dropdown = document.createElement('select');
+                                                dropdown.id = 'pisoDropdownList';
+
+                                                pisos.forEach(piso => {
+                                                    let option = document.createElement('option');
+                                                    option.value = piso;
+                                                    option.text = piso;
+                                                    dropdown.appendChild(option);
+                                                });
+
+                                                dropdownContainer.appendChild(dropdown);
+
+                                                let submitButton = document.createElement('button');
+                                                submitButton.textContent = 'Submit';
+                                                submitButton.addEventListener('click', function () {
+                                                    let selectedPiso = dropdown.value;
+                                                    
+                                                    const mapaPisoACarregar = this.mapaPisoService.getMapaPorPiso(selectedPiso);
+
+                                                    this.maze = new Maze({
+                                                        piso: selectedPiso,
+                                                        groundTextureUrl: "../../assets/textures/ground.jpg",
+                                                        wallTextureUrl: "../../assets/textures/wall.jpg",
+                                                        size: { width: mapaPisoACarregar.largura, height: mapaPisoACarregar.profundidade },
+                                                        map: mapaPisoACarregar.mapa,
+                                                        initialPosition: coords,
+                                                        initialDirection: 0.0,
+                                                        exitLocation: [-1,-1]
+                                                      });
+                                                    
+
+                                                    // Remove the dropdown container from the DOM
+                                                    dropdownContainer.remove();
+                                                });
+
+                                            
+
+                                                dropdownContainer.appendChild(submitButton);
+
+                                                document.body.appendChild(dropdownContainer);
+
+                                                // Add an event listener to handle the selection
+                                                dropdown.addEventListener('change', function () {
+                                                    // You can perform additional actions on selection change if needed
+                                                });
+                                            }
+                                            break;
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    });
+
+
+                    
+                    
+
+
+
+                    // Vai buscar a designação do elevador consoante a sua coordenada.
+                    // const mapas = this.mapaPisoService.getMapasPiso();
+                    // this.pisoService.listPisosGeral().subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao));
+                    // mapas.subscribe(mapas => {
+                        
+                    // });
+                    
                     // Apresentar o menu para teletransporte.
                 }
                 
@@ -698,9 +816,11 @@ export default class ThumbRaiser {
                 // TODO: No componente que instancia o thumb raiser, deve ser injetado o serviço de passagens para passa-lo para aqui e verificar
                 // qual o piso que a passagem leva.
                 // O parametro que recebe o mapa piso do thumb raiser vai ter que receber mais coisas, nomeadamente, os elevadores e passagens (elevators, exits).
-                if(this.maze.foundPassagem(this.player.position)){
+                if(this.maze.foundPassagem(this.player.position) != false){
                     // Teletransportar imediatamente.
-                    
+                    console.log(this.mazeParameters.elevators);
+                    this.mazeParameters.elevators;
+                    this.elevadorService
                     // 1º Pesquisar passagens e filtrar a que está presente.
                     this.passagemService
                     // 2º Pesquisar pelo mapa piso associado.
