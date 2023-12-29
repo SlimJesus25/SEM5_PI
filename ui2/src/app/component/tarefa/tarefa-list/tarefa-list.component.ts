@@ -14,13 +14,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./tarefa-list.component.css']
 })
 export class TarefaListComponent implements OnInit{
-  @Input() estado: string = '';
   @Input() utente: string = '';
   @Input() tipoDispositivo: string = '';
   selectOption: number = 0;
-
+  requisicao = {estado: ""};
+  options = ["aceite", "não-aceite", "pendente", "executado"];
+  
   displayedColumns: string[] = ['tipoDispositivo', 'requisitante', 'estado', 'tarefa'];
-  estados: string[] = ['pendente', 'aceite', 'não aceite', 'executada'];
   dataSource: MatTableDataSource<Aprovacao> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator !: MatPaginator;
@@ -42,7 +42,7 @@ export class TarefaListComponent implements OnInit{
   }
 
   listAprovacaoEstado() {
-    let errorOrSuccess = this.aprovacaoService.getAprovacaoEstado(this.estado);
+    let errorOrSuccess = this.aprovacaoService.getAprovacaoEstado(this.requisicao.estado);
     errorOrSuccess.subscribe(
       aprovacao => {
         this.dataSource = new MatTableDataSource(aprovacao);
