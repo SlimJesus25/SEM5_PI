@@ -14,8 +14,14 @@
             <mat-form-field>
                 <table>
                     <tr>
-                        <td><label>Estado: </label></td>
-                        <td><input matInput type="text" [(ngModel)]="estado"> <br></td>
+                      <th><label>Estado: </label></th>
+                      <th>
+                        <mat-form-field>
+                          <mat-select [(ngModel)]="estado" name="estado">
+                            <mat-option *ngFor="let e of estados" [value]="e">{{estado}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </th>
                     </tr>
                 </table>
                 <button (click)="listAprovacaoEstado()">Search</button>

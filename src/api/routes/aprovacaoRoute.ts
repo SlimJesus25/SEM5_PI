@@ -48,7 +48,7 @@ export default (app: Router) => {
 
     route.get('/pesquisarRequisicaoPorTipoDispositivo', authorize('GestorTarefas'),
         celebrate({
-            body: Joi.object({
+            query: Joi.object({
                 tipoDispositivo: Joi.string().required(),
             }),
         }),
@@ -56,7 +56,7 @@ export default (app: Router) => {
 
     route.get('/pesquisarRequisicaoPorUtente', authorize('GestorTarefas'),
         celebrate({
-            body: Joi.object({
+            query: Joi.object({
                 utente: Joi.string().required(),
             }),
         }),

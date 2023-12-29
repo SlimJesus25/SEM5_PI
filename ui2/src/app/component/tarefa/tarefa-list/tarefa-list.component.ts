@@ -20,6 +20,7 @@ export class TarefaListComponent implements OnInit{
   selectOption: number = 0;
 
   displayedColumns: string[] = ['tipoDispositivo', 'requisitante', 'estado', 'tarefa'];
+  estados: string[] = ['pendente', 'aceite', 'não aceite', 'executada'];
   dataSource: MatTableDataSource<Aprovacao> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator !: MatPaginator;
