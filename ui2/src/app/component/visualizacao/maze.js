@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Ground from "./ground.js";
 import Wall from "./wall.js";
+import Door from "./door.js";
 //import * as TWEEN from '@tweenjs/tween.js';
 
 /*
@@ -12,6 +13,8 @@ import Wall from "./wall.js";
  */
 
 export default class Maze {
+    
+            
     constructor(parameters) {
         this.onLoad = function (description) {
             // Store the maze's map and size
@@ -35,6 +38,10 @@ export default class Maze {
             // Create a wall
             this.wall = new Wall({ textureUrl: description.mazeData.wallTextureUrl });
 
+            //Create a door
+            //let doorSize = { width: 0.654, height: 1.686, depth: 0.035, gap: 0.0465 };
+            this.door = new Door({frontTextureUrl: "../../assets/textures/door_front.png",backTextureUrl: "../../assets/textures/door_back.png"});
+            
             // Build the maze
             let wallObject;
             let elevatorObject;
@@ -78,17 +85,15 @@ export default class Maze {
                         elevatorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
                         this.object.add(elevatorObject);
                     }
-                    //Porta vertical
+                    // Porta vertical
                     if (description.mazeData.map[j][i] == 6) {
-                        this.door = new Wall({ textureUrl: "../../assets/textures/door.jpg" });
                         doorObject = this.door.object.clone();
                         doorObject.rotateY(Math.PI / 2.0);
                         doorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
                         this.object.add(doorObject);
                     }
-                    //Porta horizontal
+                    // Porta horizontal
                     if (description.mazeData.map[j][i] == 7) {
-                        this.door = new Wall({ textureUrl: "../../assets/textures/door.jpg" });
                         doorObject = this.door.object.clone();
                         doorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
                         this.object.add(doorObject);
@@ -205,22 +210,31 @@ export default class Maze {
 
 
     // Está numa posição de elevador.
-    foundElevador(position){
+    foundElevador(position) {
         const indices = this.cartesianToCell(position);
-        if(this.map[indices[0]][indices[1]] == 4 || this.map[indices[0]][indices[1]] == 5){
+        if (this.map[indices[0]][indices[1]] == 4 || this.map[indices[0]][indices[1]] == 5) {
             return [position.x, position.z];
         }
         return false;
     }
 
     // Está numa posição de passagem externa.
-    foundPassagem(position){
+    foundPassagem(position) {
         const indices = this.cartesianToCell(position);
-        if(this.map[indices[0]][indices[1]] == 8 || this.map[indices[0]][indices[1]] == 9){
+        if (this.map[indices[0]][indices[1]] == 8 || this.map[indices[0]][indices[1]] == 9) {
             return [position.x, position.z];
         }
         return false;
     }
 
+    foundPorta(position) {
+        const indices = this.cartesianToCell(position);
+        if (this.map[indices[0]][indices[1]] ==  6|| this.map[indices[0]][indices[1]] == 7) {
+            return [position.x, position.z];
+        }
+        return false;
+    }
     
+
+
 }
