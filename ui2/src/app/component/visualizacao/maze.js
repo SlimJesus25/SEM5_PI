@@ -207,8 +207,8 @@ export default class Maze {
     // Está numa posição de elevador.
     foundElevador(position){
         const indices = this.cartesianToCell(position);
-        if(this.map[indices[0][indices[1]]] == 4 || this.map[indices[0][indices[1]]] == 5){
-            return true;
+        if(this.map[indices[0]][indices[1]] == 4 || this.map[indices[0]][indices[1]] == 5){
+            return [position.x, position.z];
         }
         return false;
     }
@@ -216,8 +216,8 @@ export default class Maze {
     // Está numa posição de passagem externa.
     foundPassagem(position){
         const indices = this.cartesianToCell(position);
-        if(this.map[indices[0][indices[1]]] == 8 || this.map[indices[0][indices[1]]] == 9){
-            return true;
+        if(this.map[indices[0]][indices[1]] == 8 || this.map[indices[0]][indices[1]] == 9){
+            return [position.x, position.z];
         }
         return false;
     }
