@@ -35,6 +35,21 @@ export class MapaPisoService {
     return mapas;
   }
 
+  getMapaPorPiso(piso: string) : MapaPiso | undefined {
+    
+    let res;
+    this.getMapasPiso().subscribe(mapas => {
+      mapas.forEach(mapa => {
+        if(mapa.piso === piso){
+          res = mapa;
+          return;
+        }
+      })
+    });
+
+    return res;
+  }
+
     updateMapaPiso(mapaPiso: MapaPiso) {
 
         const updateURL = this.LogisticAPI_URL;
