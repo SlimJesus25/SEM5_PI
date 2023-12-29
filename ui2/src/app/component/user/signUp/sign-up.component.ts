@@ -15,7 +15,7 @@ import { PedidoService } from '../../../service/pedido/pedido.service';
 export class SignUpComponent implements OnInit {
 
   utente = { name: "", email: "", phoneNumber: "", nif: "", password: ""}
-  consent:false 
+  consent=false 
   constructor(
     private snackBar: MatSnackBar,
     private location: Location,
