@@ -12,13 +12,14 @@ import IMapaPiso from '../../model/IMapaPiso';
 import IMapaPisoFinal from '../../model/IMapaFinalPiso'
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ElevadorService } from '../../service/elevador/elevador.service';
 
 
 @Component({
   selector: 'app-visualizacao',
   templateUrl: './visualizacao.component.html',
   styleUrls: ['./visualizacao.component.css'],
-  providers: [EdificioService, PisoService, MapaPisoService]
+  providers: [EdificioService, PisoService, MapaPisoService, ElevadorService]
 })
 export class VisualizacaoComponent implements OnInit {
   @ViewChild('myCanvas') private canvasRef!: ElementRef;
@@ -27,7 +28,7 @@ export class VisualizacaoComponent implements OnInit {
   //public file: File | undefined;
   
 
-  constructor(private edificioService: EdificioService, private pisoService: PisoService, private mapaPisoService: MapaPisoService) {
+  constructor(private edificioService: EdificioService, private pisoService: PisoService, private mapaPisoService: MapaPisoService, private elevadorService : ElevadorService) {
   }
 
   /*onFileSelected(event: any) {
@@ -50,6 +51,8 @@ export class VisualizacaoComponent implements OnInit {
       this.pisoService,
       this.edificioService,
       this.mapaPisoService,
+      this.elevadorService,
+      mapaPiso,
       this.canvas,
       {}, // General Parameters
       { scale: new THREE.Vector3(1.0, 1, 1.0), mazeData: this.updateFloorFile(mapaPiso) }, // Maze parameters
@@ -119,6 +122,7 @@ export class VisualizacaoComponent implements OnInit {
 
   updateFloorFile(mapa: MapaPiso): IMapaPisoFinal {
     return {
+      piso: mapa.piso,
       groundTextureUrl: "../../assets/textures/ground.jpg",
       wallTextureUrl: "../../assets/textures/wall.jpg",
       size: { width: mapa.largura, height: mapa.profundidade },
