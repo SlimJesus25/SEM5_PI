@@ -1,5 +1,5 @@
 export default interface IMapaPisoFinal {
-
+    piso: string;
     size: {
         width: number;
         height: number;
