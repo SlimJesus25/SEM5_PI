@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Output, ViewChild } from '@angular/core';
 import * as THREE from "three";
 import ThumbRaiser from './thumb_raiser';
 import Orientation from './orientation';
@@ -44,8 +44,7 @@ export class VisualizacaoComponent implements OnInit {
   designacaoPiso: string = "";
 
   // Passados os serviços por parâmetro.
-  initialize(mapaPiso: MapaPiso) {
-
+  initialize(mapaPiso: MapaPiso, initialCoords: number[]) {
     // Create the game
     this.thumbRaiser = new ThumbRaiser(
       this.pisoService,
@@ -55,7 +54,7 @@ export class VisualizacaoComponent implements OnInit {
       mapaPiso,
       this.canvas,
       {}, // General Parameters
-      { scale: new THREE.Vector3(1.0, 1, 1.0), mazeData: this.updateFloorFile(mapaPiso) }, // Maze parameters
+      { scale: new THREE.Vector3(1.0, 1, 1.0), mazeData: this.updateFloorFile(mapaPiso, initialCoords) }, // Maze parameters
       {}, // Player parameters
       { ambientLight: { intensity: 0.1 }, pointLight1: { intensity: 50.0, distance: 20.0, position: new THREE.Vector3(-3.5, 10.0, 2.5) }, pointLight2: { intensity: 50.0, distance: 20.0, position: new THREE.Vector3(3.5, 10.0, -2.5) } }, // Lights parameters
       {}, // Fog parameters
@@ -71,6 +70,19 @@ export class VisualizacaoComponent implements OnInit {
     requestAnimationFrame(this.animate);
     // Update the game
     this.thumbRaiser.update();
+  }
+
+  @HostListener('window:teletransporte', ['$event'])
+  async teletransporte(event: CustomEvent){
+
+    const result = await event.detail.mapaPiso;
+    const coords = await event.detail.initialCoords;
+
+    this.designacaoPiso = result.piso;
+    console.log('Evento: ' + result);
+    this.initialize(result, coords);
+    this.animate = this.animate.bind(this);
+    this.animate();
   }
 
   listPisos(codigoEdificio: string) {
@@ -114,20 +126,20 @@ export class VisualizacaoComponent implements OnInit {
     const piso = this.pisos.find((piso: Piso) => piso.designacao == this.designacaoPiso);
     const mapa = this.getMapaPiso(piso!.designacao).subscribe((res) => {
       //console.log("Res: " + res.mapa);
-      this.initialize(res);
+      this.initialize(res, [5,5]);
       this.animate();
     });
 
   }
 
-  updateFloorFile(mapa: MapaPiso): IMapaPisoFinal {
+  updateFloorFile(mapa: MapaPiso, initialCoords: number[]): IMapaPisoFinal {
     return {
       piso: mapa.piso,
       groundTextureUrl: "../../assets/textures/ground.jpg",
       wallTextureUrl: "../../assets/textures/wall.jpg",
       size: { width: mapa.largura, height: mapa.profundidade },
       map: mapa.mapa,
-      initialPosition: [5, 5],
+      initialPosition: initialCoords,
       initialDirection: 0.0,
       exitLocation: [-1,-1]
     } as IMapaPisoFinal;
