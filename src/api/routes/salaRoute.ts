@@ -37,7 +37,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.updateSala(req, res, next) );
 
-    route.get('/listSalas', authorize('GestorCampus'),
+    route.get('/listSalas',
   celebrate({
     body: Joi.object({
     }),

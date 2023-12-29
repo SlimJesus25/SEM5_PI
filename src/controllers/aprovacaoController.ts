@@ -69,8 +69,9 @@ export default class AprovacaoController implements IAprovacaoController /* TODO
 
     public async listarPorEstado(req: Request, res: Response, next: NextFunction) {
         try {
-            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorEstado(req.body as IEstadoDTO) as Result<IAprovacaoDTO[]>;
-
+            const estado : IEstadoDTO = {estado : req.query.estado as string}
+            const aprovacoesOrError = await this.aprovacaoServiceInstance.listarPorEstado(estado as IEstadoDTO) as Result<IAprovacaoDTO[]>;
+            console.log(aprovacoesOrError);
             if (aprovacoesOrError.isFailure) {
                 return res.status(404).send("Erro: " + aprovacoesOrError.errorValue());
             }

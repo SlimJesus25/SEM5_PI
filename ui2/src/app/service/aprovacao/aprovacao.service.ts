@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-
 import { Observable, of } from 'rxjs';
 
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Aprovacao } from '../../model/aprovacao';
+import { Tarefa } from '../../model/tarefa';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +29,9 @@ export class AprovacaoService {
   }
   
   getAprovacaoEstado(estado: string): Observable<Aprovacao[]>{
+    const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
     const listAprovacaoEstado = this.LogisticAPI_URL + "/pesquisarRequisicaoPorEstado" + "?estado=" + estado;
-        const aprovacao =  this.http.get<Aprovacao[]>(listAprovacaoEstado);
+        const aprovacao =  this.http.get<Aprovacao[]>(listAprovacaoEstado, {headers});
         return aprovacao;
   }
   
@@ -47,21 +48,21 @@ export class AprovacaoService {
         return aprovacao;
   }
   
-  aceitarRequisicao(requisicao: Aprovacao){
-
-    const aprovarRequisicao = this.LogisticAPI_URL + "/aceitarRequisicao";
-    const body = JSON.stringify(requisicao.tarefa);
-    const pedidoReq = this.http.patch<Aprovacao>(aprovarRequisicao, body);
-    return pedidoReq;
+  aceitarRequisicao(requisicao: string){
+    const headers = {'content-type': 'application/json', 'authorization': 'Bearer '+ localStorage.getItem("token")};
+    const body = {tarefa: requisicao};
+    const pedido = this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/aceitarRequisicao", body, {headers})
+    return pedido;
   }
   
   recusarRequisicao(requisicao: Aprovacao){
-    const headers = {'content-type': 'application/json'};
+    const headers = {'content-type': 'application/json',
+    'authorization': 'Bearer '+ localStorage.getItem("token")};
     
-    const body = JSON.stringify(requisicao);
+    const body = JSON.stringify(requisicao.tarefa);
     console.log(body);
     
-    return this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/recusarRequisicao", body, {'headers':headers, observe: 'response'})
+    return this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/recusarRequisicao", body, {headers});
   }
   
   

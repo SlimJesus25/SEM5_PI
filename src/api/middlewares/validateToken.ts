@@ -21,7 +21,7 @@ function extractRoleFromJWT(token: string): string | null {
   }
   
   // Middleware function for role-based authorization
-  function authorize(roleToAuthorize: string) {
+  function authorize(roleToAuthorize: string []) {
     return function(req: Request, res: Response, next: NextFunction) {
       const token = req.headers.authorization?.split(' ')[1];
   
@@ -31,7 +31,7 @@ function extractRoleFromJWT(token: string): string | null {
   
       const userRole = extractRoleFromJWT(token);
   
-      if (!userRole || userRole !== roleToAuthorize) {
+      if (!userRole || !roleToAuthorize.includes(userRole)) {
         return res.status(403).json({ message: 'Unauthorized' });
       }
   

@@ -40,7 +40,7 @@ export default (app: Router) => {
 
     route.get('/pesquisarRequisicaoPorEstado', authorize('GestorTarefas'),
         celebrate({
-            body: Joi.object({
+            query: Joi.object({
                 estado: Joi.string().required(),
             }),
         }),

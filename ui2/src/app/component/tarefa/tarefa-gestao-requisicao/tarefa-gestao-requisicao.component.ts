@@ -16,12 +16,11 @@ export class TarefaGestaoRequisicaoComponent {
 
   displayedColumns: string[] = ['tipoDispositivo', 'requisitante', 'estado', 'tarefa', 'Resposta'];
   dataSource: MatTableDataSource<Aprovacao> = new MatTableDataSource();
-  selectedItems: Aprovacao[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private aprovacaoService: AprovacaoService, private location: Location, private _liveAnnouncer: LiveAnnouncer) { }
+  constructor(private aprovacaoService: AprovacaoService, private location: Location) { }
 
   ngOnInit(): void {
     this.listAprovacao();
@@ -44,20 +43,22 @@ export class TarefaGestaoRequisicaoComponent {
     this.dataSource.filter = $event.target.value;
   }
 
-  aceitarRequisicao(aprovacao: Aprovacao): void {
-    let errorOrSuccess: any = this.aprovacaoService.aceitarRequisicao(aprovacao);
+  aceitarRequisicao(aprovacao: Aprovacao){
+  console.log(aprovacao.tarefa);
+    let errorOrSuccess: any = this.aprovacaoService.aceitarRequisicao(aprovacao.tarefa);
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("Requisição aceite");
       },
 
       (error: any) => {
-        alert(error.error);
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
       }
     );
   }
 
-  recusarRequisicao(aprovacao: Aprovacao): void {
+  recusarRequisicao(aprovacao: Aprovacao) {
     let errorOrSuccess: any = this.aprovacaoService.recusarRequisicao(aprovacao);
     errorOrSuccess.subscribe(
       (data: any) => {
