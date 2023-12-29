@@ -16,10 +16,9 @@ export class TarefaService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   createTarefa(tarefa: Tarefa) {
-    const headers = { 'content-type': 'application/json',
-    'Access-Control-Allow-Origin': '*', 'authorization': 'Bearer ' + localStorage.getItem("token") };
+    const headers = { 'content-type': 'application/json', 'authorization': 'Bearer ' + localStorage.getItem("token") };
 
-    const body = JSON.stringify(tarefa);
+    const body = {tarefa: tarefa.requisicao.tarefa, tipoDispositivo: "Polivalente", tipoTarefa: tarefa.tipoTarefa, pontoInicio: tarefa.origem, pontoTermino: tarefa.destino}
     console.log(body);
 
     return this.http.post<Tarefa>(this.LogisticAPI_URL + "/requisitar", body, {'headers':headers , observe: 'response'})
