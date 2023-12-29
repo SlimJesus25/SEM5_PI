@@ -6,6 +6,9 @@
 declare namespace Cypress {
    interface Chainable<Subject = any> {
     login(login?: string, password?: string): typeof login;
+    loginGestorTarefa(login?: string, password?: string): typeof loginGestorTarefa;
+    loginGestorUtilizador(login?: string, password?: string):typeof loginGestorUtilizador;
+    loginUtente():typeof loginUtente;
    }
 }
 
@@ -21,8 +24,36 @@ function login(login: string = "asist", password: string = "teste1234"): void {
 	cy.url().should('include', '/mainMenu');
 }
 
-Cypress.Commands.add("login", login)
+function loginGestorTarefa(login: string = "taf2@isep.ipp.pt", password: string = "Teste123456@"): void {
+	cy.visit('http://localhost:4200/login');
+		cy.get('[type="text"]').type('taf2@isep.ipp.pt');
+		cy.get('.ng-pristine').click();
+		cy.get('.ng-untouched').type('Teste123456@');
+		cy.get('button').click();
+	cy.url().should('include', '/mainMenu');
+}
 
+function loginGestorUtilizador(login: string = "jmm@isep.ipp.pt", password: string = "Teste123456!"): void {
+	cy.visit('http://localhost:4200/login');
+		cy.get('[type="text"]').type('jmm@isep.ipp.pt');
+		cy.get('.ng-pristine').click();
+		cy.get('.ng-untouched').type('Teste123456!');
+		cy.get('button').click();
+	cy.url().should('include', '/mainMenu');
+}
+
+function loginUtente():void{
+	cy.visit('http://localhost:4200/login');
+		cy.get('[type="text"]').type('gs@isep.ipp.pt');
+		cy.get('.ng-pristine').click();
+		cy.get('.ng-untouched').type('Teste123456@');
+		cy.get('button').click();
+	cy.url().should('include', '/mainMenu');
+}
+Cypress.Commands.add("loginUtente", loginUtente);
+Cypress.Commands.add("login", login)
+Cypress.Commands.add("loginGestorTarefa", loginGestorTarefa)
+Cypress.Commands.add("loginGestorUtilizador", loginGestorUtilizador)
 
 //
 // NOTE: You can use it like so:
