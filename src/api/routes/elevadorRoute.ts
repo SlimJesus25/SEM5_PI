@@ -37,7 +37,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.listElevadoresEdificio(req, res, next));
 
-  route.get('/listElevadores', authorize('GestorCampus'),
+  route.get('/listElevadores', /*authorize('GestorCampus'),*/
     celebrate({
       body: Joi.object({
       }),

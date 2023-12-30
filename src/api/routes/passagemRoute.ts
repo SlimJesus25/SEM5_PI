@@ -67,7 +67,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.deletePassagem(req, res, next));
 
-  route.get('/listPassagens', authorize('GestorCampus'),
+  route.get('/listPassagens', /*authorize('GestorCampus'),*/
     celebrate({
       body: Joi.object({}),
     }),

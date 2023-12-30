@@ -5,6 +5,7 @@ import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Aprovacao } from '../../model/aprovacao';
 import { Tarefa } from '../../model/tarefa';
+import ISequencia from '../../model/ISequencia';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,7 @@ export class AprovacaoService {
   gerarSequencia(){
     const headers = {'content-type': 'application/json', 'authorization': 'Bearer '+ localStorage.getItem("token")};
     const body = {};
-    const pedido = this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/sequenciaTarefasAprovadas", body, {headers})
+    const pedido = this.http.patch<ISequencia>(this.LogisticAPI_URL + "/sequenciaTarefasAprovadas", body, {headers})
     return pedido;
   }
   
