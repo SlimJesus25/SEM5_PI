@@ -22,11 +22,16 @@ export class PedidoUserComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.pedidoService.getPedidosPendentes()
-      .subscribe(utentes => {
-        this.dataSource = new MatTableDataSource(utentes);
-        this.dataSource.paginator = this.paginator;
-      });
+    this.loadPendingRequests();
+  }
+
+
+  loadPendingRequests(): void {
+    this.pedidoService.getPedidosPendentes().subscribe(utentes => {
+      this.dataSource = new MatTableDataSource(utentes);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
   }
 
   aceitarPedido(pedido: Pedido){
@@ -34,6 +39,7 @@ export class PedidoUserComponent implements OnInit {
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("Pedido aceite");
+        this.loadPendingRequests(); // Refresh the table after accepting the request
       },
 
       (error: any) => {
@@ -47,6 +53,7 @@ export class PedidoUserComponent implements OnInit {
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("Pedido recusado");
+        this.loadPendingRequests(); // Refresh the table after accepting the request
       },
 
       (error: any) => {
