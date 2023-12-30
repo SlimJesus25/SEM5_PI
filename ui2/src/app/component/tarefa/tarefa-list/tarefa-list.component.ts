@@ -18,7 +18,7 @@ export class TarefaListComponent implements OnInit{
   @Input() tipoDispositivo: string = '';
   selectOption: number = 0;
   requisicao = {estado: ""};
-  options = ["aceite", "não-aceite", "pendente", "executado"];
+  options = ["aceite", "não aceite", "pendente", "executado"];
   
   displayedColumns: string[] = ['tipoDispositivo', 'requisitante', 'estado', 'tarefa'];
   dataSource: MatTableDataSource<Aprovacao> = new MatTableDataSource();

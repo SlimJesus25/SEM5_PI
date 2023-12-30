@@ -21,7 +21,6 @@ export default (app: Router) => {
         tipoTarefa: Joi.string().required(),
         pontoInicio: Joi.string().required(),
         pontoTermino: Joi.string().required(),
-        requisitante: Joi.string().required()
       })
     }),
     (req, res, next) => ctrl.requisitar(req, res, next));

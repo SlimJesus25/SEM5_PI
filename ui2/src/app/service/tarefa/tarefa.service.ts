@@ -21,7 +21,7 @@ export class TarefaService {
     const body = {tarefa: tarefa.requisicao.tarefa, tipoDispositivo: "Polivalente", tipoTarefa: tarefa.tipoTarefa, pontoInicio: tarefa.origem, pontoTermino: tarefa.destino}
     console.log(body);
 
-    return this.http.post<Tarefa>(this.LogisticAPI_URL + "/requisitar", body, {'headers':headers , observe: 'response'})
+    return this.http.post<Tarefa>("http://localhost:3500/api/tarefas" + "/requisitar", body, {'headers':headers , observe: 'response'})
 
   }
 

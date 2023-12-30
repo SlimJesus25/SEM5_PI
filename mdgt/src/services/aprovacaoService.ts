@@ -112,7 +112,7 @@ export default class AprovacaoService implements IAprovacaoService {
     }
 
     private validaEstado(estado: string): Boolean {
-        return (estado == "pendente" ? true : estado == "não aceite" ? true : estado == "aceite" ? true : false);
+        return (estado == "pendente" ? true : estado == "não aceite" ? true : estado == "aceite" ? true : estado == "executado" ? true : false);
     }
 
     public async listarPorTipoDispositivo(tipoDispositivoDTO: ITipoDispositivoDTO): Promise<Result<IAprovacaoDTO[]>> {
