@@ -948,6 +948,7 @@ export default class ThumbRaiser {
                         if (this.collisionDoor(newPosition)) {
                             activeColision = true;
                             let door = this.doorAtMoment();
+                            console.log(door);
                             door[1] = true;
                             const originalPosition = { x: door[0].position.x };
                             if (activeColision && door[1]) {
@@ -1056,15 +1057,12 @@ export default class ThumbRaiser {
     doorAtMoment() {
         this.mapPortas = this.maze.arrayPortas();
         const epsilon = 1.0;
-        let door = [null, false];
+        //let door = [null, false];
 
         for (let [key, value] of this.mapPortas) {
             if (Math.abs(this.player.position.x - key.position.x) < epsilon && Math.abs(this.player.position.z - key.position.z) < epsilon) {
-                // Create deep copies of both key and value before returning
-                const keyCopy = cloneDeep(key);
-                const valueCopy = cloneDeep(value);
-                door = [keyCopy, valueCopy];
-                return door;
+                //let door = JSON.parse(JSON.stringify([key,value]));
+                return [key,value];
             }
         }
 
