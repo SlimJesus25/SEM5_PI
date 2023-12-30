@@ -19,7 +19,7 @@ export class RegistarUserComponent implements OnInit {
     private userService: UserService,
     private roleService : RoleService
   ) { 
-    this.roleService.getAllRoles().subscribe(roles => this.roles = roles);
+    this.roleService.getAllRoles().subscribe(roles => this.roles = roles.filter(role => role.name !== 'Utente'));
   }
 
   ngOnInit(): void {
