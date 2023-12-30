@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable, map, of, switchMap } from 'rxjs';
 
 import { MessageService } from '../message/message.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
@@ -55,13 +55,75 @@ export class UserService {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     });
-
+  
     return this.http.get(downloadUrl, {
       headers: headers,
       observe: 'response',
       responseType: 'blob' // Important: Set the response type to 'blob'
-    });
+    }).pipe(
+      switchMap(response => {
+        if (response.body instanceof Blob) {
+          // Process the received Blob to remove 'id' and 'roleId' fields
+          return this.removeIdAndRoleId(response.body).then(modifiedBlob => {
+            return new HttpResponse<Blob>({
+              body: modifiedBlob,
+              headers: response.headers,
+              status: response.status
+            });
+          }).catch(error => {
+            // Handle any errors that occur during modification
+            console.error('Error modifying Blob:', error);
+            // Return the original response as fallback
+            return new HttpResponse<Blob>({
+              body: response.body,
+              headers: response.headers,
+              status: response.status
+            });
+          });
+        } else {
+          // Handle the case when response.body is not a Blob
+          return of(new HttpResponse<Blob>({
+            body: new Blob(),
+            headers: response.headers,
+            status: response.status
+          }));
+        }
+      })
+    );
   }
+  
+// Function to remove 'Id' and 'RoleId' properties from the received JSON and create a new Blob
+removeIdAndRoleId(blob: Blob): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (event.target && event.target.result) {
+        const text = event.target.result.toString();
+        try {
+          const userInfo = JSON.parse(text);
+
+          // Remove 'Id' and 'RoleId' properties
+          delete userInfo.Id;
+          delete userInfo.RoleId;
+
+          // Convert the modified user info back to text
+          const modifiedText = JSON.stringify(userInfo);
+
+          // Create a new Blob with the modified text
+          const modifiedBlob = new Blob([modifiedText], { type: 'application/json' });
+
+          resolve(modifiedBlob); // Resolve the Promise with the modified blob
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+          reject(error); // Reject the Promise if an error occurs
+        }
+      }
+    };
+    reader.readAsText(blob);
+  });
+}
+
+
 
 
 }
