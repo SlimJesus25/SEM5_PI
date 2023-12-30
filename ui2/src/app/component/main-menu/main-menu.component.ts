@@ -143,4 +143,8 @@ export class MainMenuComponent implements OnInit {
   downloadInfo(){
     this.router.navigate(['downloadInfo']);
   }
+
+  logout(){
+    window.location.reload();
+  }
 }

@@ -106,11 +106,13 @@
   </mat-menu>
 
   <!--Info Menu-->
-  <button mat-button [matMenuTriggerFor]="infoMenu" class="spacer">Info</button>
+  <button mat-button [matMenuTriggerFor]="infoMenu">Info</button>
   <mat-menu #infoMenu="matMenu">
     <button mat-menu-item (click)="openAboutUs()">About Us</button>
     <button mat-menu-item (click)="rgpd()">Relatório RGPD</button>
   </mat-menu>
+
+  <button (click)="logout()" class="spacer">Logout</button>
 
 
 </mat-toolbar>
