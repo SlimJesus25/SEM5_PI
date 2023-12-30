@@ -2,6 +2,7 @@ import * as THREE from "three";
 import Ground from "./ground.js";
 import Wall from "./wall.js";
 import Door from "./door.js";
+import { mapKeys } from "lodash";
 //import * as TWEEN from '@tweenjs/tween.js';
 
 /*
@@ -49,6 +50,7 @@ export default class Maze {
             let elevatorObject;
             let doorObject;
             let passagemObject;
+            let state = false;
             for (let i = 0; i <= description.mazeData.size.width; i++) { // In order to represent the eastmost walls, the map width is one column greater than the actual maze width
                 for (let j = 0; j <= description.mazeData.size.height; j++) { // In order to represent the southmost walls, the map height is one row greater than the actual maze height
                     /*
@@ -92,18 +94,16 @@ export default class Maze {
                         doorObject = this.door.object.clone();
                         doorObject.rotateY(Math.PI / 2.0);
                         doorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
-                        const positionKey = JSON.stringify(doorObject.position);
-                        console.log(positionKey);
-                        this.mapDoorPosition.set(positionKey, doorObject);
+                        //const positionKey = JSON.stringify(doorObject.position);
+                        this.mapDoorPosition.set(doorObject,state);
                         this.object.add(doorObject);
                     }
                     // Porta horizontal
                     if (description.mazeData.map[j][i] == 7) {
                         doorObject = this.door.object.clone();
                         doorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
-                        const positionKey = JSON.stringify(doorObject.position);
-                        console.log(positionKey);
-                        this.mapDoorPosition.set(positionKey, doorObject);
+                        //const positionKey = JSON.stringify(doorObject.position);
+                        this.mapDoorPosition.set(doorObject,state);
                         this.object.add(doorObject);
                     }
                     //Corredor vertical
