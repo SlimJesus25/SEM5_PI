@@ -49,6 +49,17 @@ export class UserService {
     return this.http.put<AtualizarUtente>(updateURL, body, { 'headers': headers, observe: 'response' })
   }
 
+  getUserInfo(): Observable<User> {
+    const downloadUrl = this.LogisticAPI_URL + "/getUserByEmail";
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<User>(downloadUrl, {headers})
+  }
+
+
+
   downloadInfo(): Observable<HttpResponse<Blob>> {
     const downloadUrl = this.LogisticAPI_URL + "/getUserByEmail";
     const headers = new HttpHeaders({

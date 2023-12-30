@@ -6,24 +6,25 @@
       <table>
         <tr>
           <th><label>Nome: </label></th>
-          <th><input type="string" [(ngModel)]="utente.name" /></th>
+          <th><input type="string" [placeholder]="data[0]" [(ngModel)]="utente.name" /></th>
         </tr>
         <tr>
           <th><label>Numero Telemóvel: </label></th>
-          <th><input type="string" [(ngModel)]="utente.phoneNumber" /></th>
+          <th><input type="string" [placeholder]="data[1]" [(ngModel)]="utente.phoneNumber" /></th>
         </tr>
         <tr>
           <th><label>NIF: </label></th>
-          <th><input type="string" [(ngModel)]="utente.nif" /></th>
+          <th><input type="string" [placeholder]="data[2]" [(ngModel)]="utente.nif" /></th>
         </tr>
         <tr>
           <th><label>Password: </label></th>
-          <th><input type="password" [(ngModel)]="utente.password" /></th>
+          <th><input type="password" [placeholder]="data[3]" [(ngModel)]="utente.password" /></th>
         </tr>
       </table>
     </div>
     <div>
       <button (click)="updateUser()">Atualizar dados</button>
+      <button (click)="getUserInfo()">Mostrar dados</button>
       <button (click)="goBack()">Back</button>
     </div>
   </div>

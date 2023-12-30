@@ -11,7 +11,7 @@ import { UserService } from '../../../service/user/user.service';
 export class UpdateUserComponent implements OnInit {
 
   utente = { name: "", phoneNumber: "", nif: "", password: ""}
-
+  data : string [] = [];
 
   constructor(
     private location: Location,
@@ -20,6 +20,21 @@ export class UpdateUserComponent implements OnInit {
   }
   
   ngOnInit(): void {
+  }
+
+  getUserInfo() : void {
+    let userinfo : any = this.userService.getUserInfo();
+    userinfo.subscribe(
+      (data: any) => {
+          this.data[0] = data.name;
+          this.data[1] = data.phoneNumber;
+          this.data[2] = data.nif;
+          this.data[3] = data.password;
+      },
+      (error: any) => {
+        alert(error.error);
+      }
+    );
   }
 
   updateUser() {
