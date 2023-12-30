@@ -42,6 +42,8 @@ export default class Maze {
             //let doorSize = { width: 0.654, height: 1.686, depth: 0.035, gap: 0.0465 };
             this.door = new Door({frontTextureUrl: "../../assets/textures/door_front.png",backTextureUrl: "../../assets/textures/door_back.png"});
             
+            this.mapDoorPosition = new Map();
+            
             // Build the maze
             let wallObject;
             let elevatorObject;
@@ -90,12 +92,18 @@ export default class Maze {
                         doorObject = this.door.object.clone();
                         doorObject.rotateY(Math.PI / 2.0);
                         doorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
+                        const positionKey = JSON.stringify(doorObject.position);
+                        console.log(positionKey);
+                        this.mapDoorPosition.set(positionKey, doorObject);
                         this.object.add(doorObject);
                     }
                     // Porta horizontal
                     if (description.mazeData.map[j][i] == 7) {
                         doorObject = this.door.object.clone();
                         doorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
+                        const positionKey = JSON.stringify(doorObject.position);
+                        console.log(positionKey);
+                        this.mapDoorPosition.set(positionKey, doorObject);
                         this.object.add(doorObject);
                     }
                     //Corredor vertical
@@ -172,7 +180,7 @@ export default class Maze {
 
     distanceToWestWall(position) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3) {
+        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
         }
         return Infinity;
@@ -181,7 +189,7 @@ export default class Maze {
     distanceToEastWall(position) {
         const indices = this.cartesianToCell(position);
         indices[1]++;
-        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3) {
+        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return this.cellToCartesian(indices).x - this.scale.x / 2.0 - position.x;
         }
         return Infinity;
@@ -189,7 +197,7 @@ export default class Maze {
 
     distanceToNorthWall(position) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
         }
         return Infinity;
@@ -198,7 +206,7 @@ export default class Maze {
     distanceToSouthWall(position) {
         const indices = this.cartesianToCell(position);
         indices[0]++;
-        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return this.cellToCartesian(indices).z - this.scale.z / 2.0 - position.z;
         }
         return Infinity;
@@ -235,6 +243,46 @@ export default class Maze {
         return false;
     }
     
+    distanceToWestDoor(position) {
+        const indices = this.cartesianToCell(position);
+        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+            return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
+        }
+        return Infinity;
+    }
+
+    distanceToEastDoor(position) {
+        const indices = this.cartesianToCell(position);
+        indices[1]++;
+        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+            return this.cellToCartesian(indices).x - this.scale.x / 2.0 - position.x;
+        }
+        return Infinity;
+    }
+
+    distanceToNorthDoor(position) {
+        const indices = this.cartesianToCell(position);
+        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+            return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
+        }
+        return Infinity;
+    }
+
+    distanceToSouthDoor(position) {
+        const indices = this.cartesianToCell(position);
+        indices[0]++;
+        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+            return this.cellToCartesian(indices).z - this.scale.z / 2.0 - position.z;
+        }
+        return Infinity;
+    }
+
+    arrayPortas() {
+        return this.mapDoorPosition;
+        // Or, if you want an array of key-value pairs:
+        // return Array.from(this.mapDoorPosition.entries());
+    }
+
 
 
 }

@@ -13,6 +13,7 @@ import IMapaPisoFinal from '../../model/IMapaFinalPiso'
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ElevadorService } from '../../service/elevador/elevador.service';
+import TWEEN from "@tweenjs/tween.js";
 
 
 @Component({
@@ -70,6 +71,7 @@ export class VisualizacaoComponent implements OnInit {
     requestAnimationFrame(this.animate);
     // Update the game
     this.thumbRaiser.update();
+    TWEEN.update();
   }
 
   @HostListener('window:teletransporte', ['$event'])

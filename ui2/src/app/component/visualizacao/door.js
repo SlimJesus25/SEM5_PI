@@ -122,39 +122,6 @@ export default class Door {
         face.castShadow = true;
         face.receiveShadow = true;
         this.object.add(face);
-
-        this.state = "close";
-        this.tween = new TWEEN.Tween(this.object.rotation); // Assuming you want to animate the rotation of the door
-    }
-
-    createGUI() {
-        this.gui = new GUI();
-        this.actions = {
-            open: () => {
-                if (this.state != "open") {
-                    this.state = "open";
-                    this.tween.stop();
-                    this.tween.to({ y: Math.PI / 2.0 }, 2000 * (1.0 - this.object.rotation.y / (Math.PI / 2.0)));
-                    this.tween.startFromCurrentValues();
-                    console.log("Open");
-                }
-            },
-            stop: () => {
-                this.state = "stop";
-                this.tween.stop();
-            },
-            close: () => {
-                if (this.state != "close") {
-                    this.state = "close";
-                    this.tween.stop();
-                    this.tween.to({ y: 0.0 }, 2000 * this.object.rotation.y / (Math.PI / 2.0));
-                    this.tween.startFromCurrentValues();
-                }
-            }
-        };
-        this.gui.add(this.actions, "open");
-        this.gui.add(this.actions, "stop");
-        this.gui.add(this.actions, "close");
     }
 }
 

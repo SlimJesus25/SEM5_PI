@@ -14,7 +14,7 @@ import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
 import { generalData, playerData, lightsData, fogData, cameraData } from "./default_data.js";
-import { mazeData} from "./user_interface.js"
+import { mazeData } from "./user_interface.js"
 import { merge } from "./merge.js";
 import Maze from "./maze.js";
 import Player from "./player.js";
@@ -24,6 +24,7 @@ import Camera from "./camera.js";
 import Animations from "./animations.js";
 import UserInterface from "./user_interface.js";
 import { PassagemService } from "../../service/passagem/passagem.service.js";
+import TWEEN from "@tweenjs/tween.js";
 
 /*
  * generalParameters = {
@@ -152,7 +153,7 @@ import { PassagemService } from "../../service/passagem/passagem.service.js";
  */
 
 export default class ThumbRaiser {
-    constructor(pisoService, edificioService, mapaPisoService, elevadorService, mapaPiso, canvas,generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
+    constructor(pisoService, edificioService, mapaPisoService, elevadorService, mapaPiso, canvas, generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
         //const userInteractionInstance = new UserInterface();
         //this.mazeParameters = merge({}, userInteractionInstance.mazeData, mazeParameters);
         this.pisoService = pisoService;
@@ -190,6 +191,8 @@ export default class ThumbRaiser {
         // Create the maze
         this.maze = new Maze(this.mazeParameters);
 
+        this.mapPortas = this.maze.arrayPortas();
+
         // Create the player
         this.player = new Player(this.playerParameters);
 
@@ -214,7 +217,7 @@ export default class ThumbRaiser {
         document.body.appendChild(this.statistics.dom);
 
         // Create a renderer and turn on shadows in the renderer
-        this.renderer = new THREE.WebGLRenderer({canvas: myCanvas, antialias: true });
+        this.renderer = new THREE.WebGLRenderer({ canvas: myCanvas, antialias: true });
         if (this.generalParameters.setDevicePixelRatio) {
             this.renderer.setPixelRatio(window.devicePixelRatio);
         }
@@ -659,14 +662,18 @@ export default class ThumbRaiser {
         return this.maze.distanceToWestWall(position) < this.player.radius || this.maze.distanceToEastWall(position) < this.player.radius || this.maze.distanceToNorthWall(position) < this.player.radius || this.maze.distanceToSouthWall(position) < this.player.radius;
     }
 
+    collisionDoor(position){
+        return this.maze.distanceToWestDoor(position) < this.player.radius || this.maze.distanceToEastDoor(position) < this.player.radius || this.maze.distanceToNorthDoor(position) < this.player.radius || this.maze.distanceToSouthDoor(position) < this.player.radius;
+    }
 
-    arrayRemove(arr, value) { 
-  
-        return arr.filter(function (geeks) { 
-            return geeks != value; 
-        }); 
-      
-    } 
+
+    arrayRemove(arr, value) {
+
+        return arr.filter(function (geeks) {
+            return geeks != value;
+        });
+
+    }
 
     update() {
         if (!this.gameRunning) {
@@ -687,7 +694,7 @@ export default class ThumbRaiser {
                 this.player.direction = this.maze.initialDirection;
 
                 // Create the user interface
-                this.userInterface = new UserInterface(this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations,this.maze);
+                this.userInterface = new UserInterface(this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations, this.maze);
 
                 // Start the game
                 this.gameRunning = true;
@@ -704,17 +711,17 @@ export default class ThumbRaiser {
 
 
                 let infoElement = document.getElementById('info');
-                
-                if(!this.maze.foundElevador(this.player.position) && !this.maze.foundPassagem(this.player.position) && infoElement.style.visibility === 'visible'){
+
+                if (!this.maze.foundElevador(this.player.position) && !this.maze.foundPassagem(this.player.position) && infoElement.style.visibility === 'visible') {
                     infoElement.style.visibility = 'hidden';
                     active = false;
                 }
-                
+
                 // let elevatorElement = document.getElementById('elevatorPainel');
 
                 let coords;
 
-                if((coords = this.maze.foundElevador(this.player.position)) != false && infoElement.style.visibility != 'visible'){
+                if ((coords = this.maze.foundElevador(this.player.position)) != false && infoElement.style.visibility != 'visible') {
 
                     infoElement.innerHTML = 'Elevador detetado. Pressiona \'L\'!';
                     infoElement.style.visibility = 'visible';
@@ -726,14 +733,14 @@ export default class ThumbRaiser {
 
                     window.addEventListener('keydown', (event) => {
                         if ((event.key === 'l' || event.key === 'L') && !active) {
-                    // Vai buscar o elevador referente ao piso.
+                            // Vai buscar o elevador referente ao piso.
                             active = true;
                             this.elevadorService.getElevadores().subscribe(elevadores => {
                                 elevadores.forEach(elevador => {
-                                    for(let i=0;i<elevador.pisosServidos.length;i++){
-                                        if(elevador.pisosServidos[i] == this.mapaPiso.piso){
+                                    for (let i = 0; i < elevador.pisosServidos.length; i++) {
+                                        if (elevador.pisosServidos[i] == this.mapaPiso.piso) {
                                             pisos = this.arrayRemove(elevador.pisosServidos, elevador.pisosServidos[i]);
-                                            
+
                                             // Abre uma window HTML com a lista de "pisos" para os quais se pode teletransportar.
                                             if (pisos.length > 0 && !dropdownContainer) {
                                                 dropdownContainer = document.createElement('div');
@@ -748,10 +755,10 @@ export default class ThumbRaiser {
                                                 dropdownContainer.style.display = 'flex';
                                                 dropdownContainer.style.alignItems = 'center';
 
-                                                
+
                                                 let label = document.createElement('label');
                                                 label.textContent = 'Escolha um piso';
-                                                label.style.marginRight = '10px'; 
+                                                label.style.marginRight = '10px';
                                                 dropdownContainer.appendChild(label);
 
                                                 let dropdown = document.createElement('select');
@@ -771,7 +778,7 @@ export default class ThumbRaiser {
                                                 submitButton.textContent = 'Fechar elevador';
                                                 submitButton.addEventListener('click', function () {
                                                     let selectedPiso = dropdown.value;
-                                                    
+
                                                     const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
                                                         coords = [mapaPiso.elevador[0][1], mapaPiso.elevador[0][2]];
                                                         window.alert('Mapa piso: ' + coords);
@@ -781,18 +788,18 @@ export default class ThumbRaiser {
                                                         }
 
                                                         // Lança o evento (que do lado do component há um método à espera).
-                                                        const event = new CustomEvent('teletransporte', { detail: eventDetail});
+                                                        const event = new CustomEvent('teletransporte', { detail: eventDetail });
                                                         window.dispatchEvent(event);
 
                                                     });
-                                                    
+
 
                                                     // Remove the dropdown container from the DOM
                                                     dropdownContainer.remove();
                                                     dropdownContainer = null;
                                                 });
 
-                                            
+
 
                                                 dropdownContainer.appendChild(submitButton);
 
@@ -806,7 +813,7 @@ export default class ThumbRaiser {
                                                 console.log('Dropdown container created.');
                                             }
                                             break;
-                                        }else {
+                                        } else {
                                             console.log('Dropdown container already exists or pisos is empty.');
                                             console.log('Dropdown container:', dropdownContainer);
                                         }
@@ -817,8 +824,8 @@ export default class ThumbRaiser {
                     });
 
 
-                    
-                    
+
+
 
 
 
@@ -826,17 +833,17 @@ export default class ThumbRaiser {
                     // const mapas = this.mapaPisoService.getMapasPiso();
                     // this.pisoService.listPisosGeral().subscribe(pisos => this.pisos = pisos.map(piso => piso.designacao));
                     // mapas.subscribe(mapas => {
-                        
+
                     // });
-                    
+
                     // Apresentar o menu para teletransporte.
                 }
-                
+
 
                 // TODO: No componente que instancia o thumb raiser, deve ser injetado o serviço de passagens para passa-lo para aqui e verificar
                 // qual o piso que a passagem leva.
                 // O parametro que recebe o mapa piso do thumb raiser vai ter que receber mais coisas, nomeadamente, os elevadores e passagens (elevators, exits).
-                if(this.maze.foundPassagem(this.player.position) != false){
+                if (this.maze.foundPassagem(this.player.position) != false) {
                     // Teletransportar imediatamente.
                     console.log(this.mazeParameters.elevators);
                     this.mazeParameters.elevators;
@@ -845,10 +852,31 @@ export default class ThumbRaiser {
                     this.passagemService
                     // 2º Pesquisar pelo mapa piso associado.
                     this.mapaPisoService.getMapasPiso().subscribe(mapas => {
-                        
+
                     });
 
                 }
+                //this.doorPosition = this.maze.foundPorta(this.player.position);
+                this.doorPosition = this.maze.foundPorta(this.player.position);
+                if (this.doorPosition != false){
+                    for (let porta of this.mapPortas.values()){
+                        console.log("Posição x da porta do momento: "+this.doorPosition[0]+" Posição z da porta do momento: "+this.doorPosition[1]);
+                        console.log("Posição x da porta do array: "+porta.position.x+" Posição z da porta do array: "+porta.position.z);
+                        const valueX = porta.position.x - this.doorPosition[0];
+                        const valueZ = porta.position.z - this.doorPosition[1];
+                        if (valueX < 0.5 && valueZ < 0.5){
+                            const initialRotation = {  y: porta.rotation.y};
+                            const tween = new TWEEN.Tween(initialRotation)
+                                .to({x: -4 ,y: Math.PI / 2}, 2000 * (1.0 - porta.rotation.y / (Math.PI / 2.0))) // Animation duration in milliseconds
+                                .easing(TWEEN.Easing.Quadratic.Out) // You can choose a different easing function
+                                .onUpdate(() => {
+                                    porta.rotation.y = initialRotation.y;
+                                })
+                                .start();
+                        }
+                    }
+                }
+
 
                 // Check if the player found the exit
                 if (this.maze.foundExit(this.player.position)) {
@@ -877,6 +905,10 @@ export default class ThumbRaiser {
                             this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
                             this.player.position = newPosition;
                         }
+                        if (this.collisionDoor(newPosition)){
+                            console.log(newPosition);
+                            //console.log("Porta irá abrir");
+                        }
                     }
                     else if (this.player.keyStates.forward) {
                         const newPosition = new THREE.Vector3(coveredDistance * Math.sin(direction), 0.0, coveredDistance * Math.cos(direction)).add(this.player.position);
@@ -886,6 +918,10 @@ export default class ThumbRaiser {
                         else {
                             this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
                             this.player.position = newPosition;
+                        }
+                        if (this.collisionDoor(newPosition)){
+                            console.log(newPosition);
+                            //console.log("Porta irá abrir");
                         }
                     }
                     else if (this.player.keyStates.jump) {
@@ -962,7 +998,7 @@ export default class ThumbRaiser {
             }
         }
     }
-    destroy(){
+    destroy() {
         this.scene3D.children.forEach(child => this.scene3D.remove(child));
         this.scene2D.children.forEach(child => this.scene2D.remove(child));
         this.renderer.dispose();
