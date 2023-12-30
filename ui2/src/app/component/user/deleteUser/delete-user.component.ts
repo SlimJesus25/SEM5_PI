@@ -25,6 +25,7 @@ export class DeleteUserComponent implements OnInit {
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("User eliminado");
+        this.automaticallyRefresh();
       },
 
       (error: any) => {
@@ -33,6 +34,10 @@ export class DeleteUserComponent implements OnInit {
     );
 
     return errorOrSuccess;
+  }
+
+  automaticallyRefresh(){
+    window.location.reload();
   }
 
   goBack(): void {
