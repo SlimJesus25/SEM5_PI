@@ -227,7 +227,7 @@ export default class AprovacaoService implements IAprovacaoService {
                     request.end();
                 });
             }
-
+            
             const res = await makeRequest();
 
             // Caso de sucesso atualiza o estado das tarefas.
@@ -239,6 +239,11 @@ export default class AprovacaoService implements IAprovacaoService {
             return Result.ok<ISequenciaDTO>(solucao as ISequenciaDTO);
 
         } catch (e) {
+            let err : Error = e;
+            let res : string = err.message;
+            let regex = new RegExp("[a-zA-Z0-9 ]*ECONNREFUSED[ a-zA-Z0-9:]*");
+            if(regex.test(res))
+                return Result.fail<ISequenciaDTO>("O módulo de planeamento está inativo!");
             throw e;
         }
     }
