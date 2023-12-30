@@ -42,7 +42,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl2.deleteMapaPiso(req, res, next));
 
-    route.get('/listMapasPiso', authorize('GestorCampus'),
+    route.get('/listMapasPiso', /*authorize('GestorCampus'),*/
   celebrate({
     body: Joi.object({
     }),

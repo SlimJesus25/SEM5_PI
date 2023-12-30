@@ -55,7 +55,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.deletePiso(req, res, next));
 
-    route.get('/listPisosGeral', authorize('GestorCampus'),
+    route.get('/listPisosGeral', /*authorize('GestorCampus'),*/
     celebrate({
       body: Joi.object({
       }),

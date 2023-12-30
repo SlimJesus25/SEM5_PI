@@ -41,7 +41,7 @@ export default (app: Router) => {
 
   //Mateus: Alterou de put para get
 // List todos os edificios
-  route.get('/listEdificios', authorize('GestorCampus'),
+  route.get('/listEdificios', /*authorize('GestorCampus'),*/
   celebrate({
     body: Joi.object({
     }),

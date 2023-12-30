@@ -1,4 +1,7 @@
 export default interface ISequenciaDTO {
-    sequencia : string;
+  plano: string[];
+  tempo: number;
+  caminhoPorPiso: number[][];
+  caminhoEntrePisos: string[][];
   }
   

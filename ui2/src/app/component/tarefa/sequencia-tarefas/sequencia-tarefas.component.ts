@@ -6,6 +6,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort } from '@angular/material/sort';
 import { Aprovacao } from '../../../model/aprovacao';
 import { AprovacaoService } from '../../../service/aprovacao/aprovacao.service';
+import ISequencia from '../../../model/ISequencia';
 
 @Component({
   selector: 'app-sequencia-tarefas',
@@ -29,7 +30,8 @@ export class SequenciaTarefasComponent {
     
     let errorOrSuccess = this.aprovacaoService.gerarSequencia();
     errorOrSuccess.subscribe(
-      tarefa => {
+      (sequencia : ISequencia) => {
+        window.alert('Plano gerado: ' + sequencia.plano + '\nTempo: ' + sequencia.tempo);
         this.dataSource = new MatTableDataSource();
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
