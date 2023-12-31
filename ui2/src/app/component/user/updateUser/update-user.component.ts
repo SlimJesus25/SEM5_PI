@@ -2,16 +2,17 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../service/user/user.service';
+import { User } from '../../../model/user';
 
 @Component({
   selector: 'app-update-user',
   templateUrl: './update-user.component.html',
   styleUrls: ['./update-user.component.css']
-})
+}) 
 export class UpdateUserComponent implements OnInit {
 
   utente = { name: "", phoneNumber: "", nif: "", password: ""}
-  data : string [] = [];
+  data : User
 
   constructor(
     private location: Location,
@@ -20,18 +21,19 @@ export class UpdateUserComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.getUserInfo(); 
   }
 
   getUserInfo() : void {
     let userinfo : any = this.userService.getUserInfo();
     userinfo.subscribe(
-      (data: any) => {
-          this.data[0] = data.name;
-          this.data[1] = data.phoneNumber;
-          this.data[2] = data.nif;
-          this.data[3] = data.password;
+      (user: User) => {  
+          this.data = user;
+          this.utente.name = user.Name;
+          this.utente.phoneNumber = user.PhoneNumber;
+          this.utente.nif = user.NIF;
       },
-      (error: any) => {
+      (error: any) => { 
         alert(error.error);
       }
     );

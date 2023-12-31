@@ -24,7 +24,7 @@
             </mat-select>
           </mat-form-field>
         </tr>
-        <tr>
+        <tr *ngIf="showPontoTerminoField()">
           <mat-form-field>
             <mat-label>Ponto Termino</mat-label>
             <mat-select [(ngModel)]="tarefa.destino">
@@ -36,15 +36,11 @@
           <th><label>Designacao de Tarefa: </label></th>
           <th><input type="string" [(ngModel)]="requisicao.tarefa" /></th>
         </tr>
-        <tr>
-          <th><label>Tipo Dispositivo: </label></th>
-          <th><input type="string" [(ngModel)]="requisicao.tipoDispositivo" /></th>
-        </tr>
       </table>
     </div>
     <div>
-      <button (click)="createTarefa()">Add</button>
-      <button class="buttonBack" (click)="goBack()">Back</button>
+      <button (click)="createTarefa()">Requisitar</button>
+      <button class="buttonBack" (click)="goBack()">Retroceder</button>
     </div>
 </div>
 </body>
