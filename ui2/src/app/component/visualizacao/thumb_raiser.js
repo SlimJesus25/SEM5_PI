@@ -904,7 +904,7 @@ export default class ThumbRaiser {
                     this.finalSequence();
                 }
                 else {
-                    let activeColisionVertical = false;
+                    /*let activeColisionVertical = false;
                     let activeColisionHorizontal = false;
 
                     if (!this.collisionDoorVertical(this.player.position)) {
@@ -912,7 +912,7 @@ export default class ThumbRaiser {
                     }
                     if (!this.collisionDoorHorizontal(this.player.position)) {
                         activeColisionHorizontal = false;
-                    }
+                    }*/
 
                     let coveredDistance = this.player.walkingSpeed * deltaT;
                     let directionIncrement = this.player.turningSpeed * deltaT;
@@ -937,9 +937,9 @@ export default class ThumbRaiser {
                             this.player.position = newPosition;
                         }
                         if (this.collisionDoorHorizontal(newPosition)) {
-                            activeColisionHorizontal = true;
+                            //activeColisionHorizontal = true;
                             let door = this.doorAtMoment();
-                            if (activeColisionHorizontal) {
+                            //if (activeColisionHorizontal) {
                                 const originalPosition = {x: door[1].x};
                                 const initialPosition = { x: door[0].position.x };
                                 const targetPosition = { x: initialPosition.x - 1.0 };
@@ -958,12 +958,12 @@ export default class ThumbRaiser {
                                             .start();
                                     })
                                     .start();
-                            }
+                            //}
                         }
                         if (this.collisionDoorVertical(newPosition)) {
-                            activeColisionVertical = true;
+                            //activeColisionVertical = true;
                             let door = this.doorAtMoment();
-                            if (activeColisionVertical) {
+                            //if (activeColisionVertical) {
                                 const originalPosition = {z: door[1].z};
                                 const initialPosition = { z: door[0].position.z };
                                 const targetPosition = { z: initialPosition.z - 1.0 };
@@ -981,7 +981,7 @@ export default class ThumbRaiser {
                                             .start();
                                     })
                                     .start();
-                            }
+                           // }
                         }
                     }
                     else if (this.player.keyStates.forward) {
@@ -994,9 +994,9 @@ export default class ThumbRaiser {
                             this.player.position = newPosition;
                         }
                         if (this.collisionDoorHorizontal(newPosition)) {
-                            activeColisionHorizontal = true;
+                            //activeColisionHorizontal = true;
                             let door = this.doorAtMoment();
-                            if (activeColisionHorizontal) {
+                            //if (activeColisionHorizontal) {
                                 const originalPosition = {x: door[1].x};
                                 const initialPosition = { x: door[0].position.x };
                                 const targetPosition = { x: initialPosition.x - 1.0 };
@@ -1014,12 +1014,12 @@ export default class ThumbRaiser {
                                             .start();
                                     })
                                     .start();
-                            }
+                            //}
                         }
                         if (this.collisionDoorVertical(newPosition)) {
-                            activeColisionVertical = true;
+                            //activeColisionVertical = true;
                             let door = this.doorAtMoment();
-                            if (activeColisionVertical) {
+                            //if (activeColisionVertical) {
                                 const originalPosition = {z: door[1].z};
                                 const initialPosition = { z: door[0].position.z };
                                 const targetPosition = { z: initialPosition.z - 1.0 };
@@ -1038,7 +1038,7 @@ export default class ThumbRaiser {
                                             .start();
                                     })
                                     .start();
-                            }
+                            //}
                         }
                     }
                     else if (this.player.keyStates.jump) {

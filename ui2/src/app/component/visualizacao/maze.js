@@ -3,6 +3,7 @@ import Ground from "./ground.js";
 import Wall from "./wall.js";
 import Door from "./door.js";
 import cloneDeep from 'lodash/cloneDeep';
+import Elevator from "./elevator.js";
 //import * as TWEEN from '@tweenjs/tween.js';
 
 /*
@@ -43,7 +44,10 @@ export default class Maze {
             //let doorSize = { width: 0.654, height: 1.686, depth: 0.035, gap: 0.0465 };
             this.door = new Door({ textureUrl: "../../assets/textures/door_japanese.jpg"});
 
+            this.elevator = new Elevator({ textureUrl: "../../assets/textures/elevator.jpg"});
+
             this.mapDoorPosition = new Map();
+            this.mapElevatorPosition = new Map();
 
             // Build the maze
             let wallObject;
@@ -76,17 +80,21 @@ export default class Maze {
                     }
                     //Elevador vertical
                     if (description.mazeData.map[j][i] == 4) {
-                        this.elevator = new Wall({ textureUrl: "../../assets/textures/elevator.jpg" });
                         elevatorObject = this.elevator.object.clone();
                         elevatorObject.rotateY(Math.PI / 2.0);
                         elevatorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
+                        //const positionKey = JSON.stringify(doorObject.position);
+                        const positionKey = cloneDeep(elevatorObject.position);
+                        this.mapElevatorPosition.set(elevatorObject, positionKey);
                         this.object.add(elevatorObject);
                     }
                     //Elevador horizontal
                     if (description.mazeData.map[j][i] == 5) {
-                        this.elevator = new Wall({ textureUrl: "../../assets/textures/elevator.jpg" });
                         elevatorObject = this.elevator.object.clone();
                         elevatorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
+                        //const positionKey = JSON.stringify(doorObject.position);
+                        const positionKey = cloneDeep(elevatorObject.position);
+                        this.mapElevatorPosition.set(elevatorObject, positionKey);
                         this.object.add(elevatorObject);
                     }
                     // Porta vertical
@@ -309,6 +317,12 @@ export default class Maze {
 
     arrayPortas() {
         return this.mapDoorPosition;
+        // Or, if you want an array of key-value pairs:
+        // return Array.from(this.mapDoorPosition.entries());
+    }
+
+    arrayElevators() {
+        return this.mapElevatorPosition;
         // Or, if you want an array of key-value pairs:
         // return Array.from(this.mapDoorPosition.entries());
     }
