@@ -49,6 +49,7 @@ export class TarefaGestaoRequisicaoComponent {
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("Requisição aceite");
+        this.listAprovacao();
       },
 
       (error: any) => {
@@ -63,6 +64,7 @@ export class TarefaGestaoRequisicaoComponent {
     errorOrSuccess.subscribe(
       (data: any) => {
         alert("Requisição recusada");
+        this.listAprovacao();
       },
 
       (error: any) => {
