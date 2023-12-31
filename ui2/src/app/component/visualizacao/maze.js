@@ -2,7 +2,7 @@ import * as THREE from "three";
 import Ground from "./ground.js";
 import Wall from "./wall.js";
 import Door from "./door.js";
-import { mapKeys } from "lodash";
+import cloneDeep from 'lodash/cloneDeep';
 //import * as TWEEN from '@tweenjs/tween.js';
 
 /*
@@ -14,8 +14,8 @@ import { mapKeys } from "lodash";
  */
 
 export default class Maze {
-    
-            
+
+
     constructor(parameters) {
         this.onLoad = function (description) {
             // Store the maze's map and size
@@ -41,10 +41,10 @@ export default class Maze {
 
             //Create a door
             //let doorSize = { width: 0.654, height: 1.686, depth: 0.035, gap: 0.0465 };
-            this.door = new Door({frontTextureUrl: "../../assets/textures/door_front.png",backTextureUrl: "../../assets/textures/door_back.png"});
-            
+            this.door = new Door({ textureUrl: "../../assets/textures/door_japanese.jpg"});
+
             this.mapDoorPosition = new Map();
-            
+
             // Build the maze
             let wallObject;
             let elevatorObject;
@@ -95,7 +95,8 @@ export default class Maze {
                         doorObject.rotateY(Math.PI / 2.0);
                         doorObject.position.set(i - description.mazeData.size.width / 2.0, 0.5, j - description.mazeData.size.height / 2.0 + 0.5);
                         //const positionKey = JSON.stringify(doorObject.position);
-                        this.mapDoorPosition.set(doorObject,state);
+                        const positionKey = cloneDeep(doorObject.position);
+                        this.mapDoorPosition.set(doorObject, positionKey);
                         this.object.add(doorObject);
                     }
                     // Porta horizontal
@@ -103,7 +104,8 @@ export default class Maze {
                         doorObject = this.door.object.clone();
                         doorObject.position.set(i - description.mazeData.size.width / 2.0 + 0.5, 0.5, j - description.mazeData.size.height / 2.0);
                         //const positionKey = JSON.stringify(doorObject.position);
-                        this.mapDoorPosition.set(doorObject,state);
+                        const positionKey = cloneDeep(doorObject.position);
+                        this.mapDoorPosition.set(doorObject, positionKey);
                         this.object.add(doorObject);
                     }
                     //Corredor vertical
@@ -180,7 +182,7 @@ export default class Maze {
 
     distanceToWestWall(position) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3) {//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
         }
         return Infinity;
@@ -189,7 +191,7 @@ export default class Maze {
     distanceToEastWall(position) {
         const indices = this.cartesianToCell(position);
         indices[1]++;
-        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3) {//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return this.cellToCartesian(indices).x - this.scale.x / 2.0 - position.x;
         }
         return Infinity;
@@ -197,7 +199,7 @@ export default class Maze {
 
     distanceToNorthWall(position) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
         }
         return Infinity;
@@ -206,7 +208,7 @@ export default class Maze {
     distanceToSouthWall(position) {
         const indices = this.cartesianToCell(position);
         indices[0]++;
-        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3){//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {//|| this.map[indices[0]][indices[1]] == 6|| this.map[indices[0]][indices[1]] == 7) {
             return this.cellToCartesian(indices).z - this.scale.z / 2.0 - position.z;
         }
         return Infinity;
@@ -237,41 +239,69 @@ export default class Maze {
 
     foundPorta(position) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] ==  6|| this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7) {
             return [position.x, position.z];
         }
         return false;
     }
-    
-    distanceToWestDoor(position) {
+
+    distanceToWestDoorHorizontal(position) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+        if (this.map[indices[0]][indices[1]] == 7) {
             return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
         }
         return Infinity;
     }
-
-    distanceToEastDoor(position) {
+    distanceToEastDoorHorizontal(position) {
         const indices = this.cartesianToCell(position);
         indices[1]++;
-        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+        if (this.map[indices[0]][indices[1]] == 7) {
             return this.cellToCartesian(indices).x - this.scale.x / 2.0 - position.x;
         }
         return Infinity;
     }
-
-    distanceToNorthDoor(position) {
+    distanceToNorthDoorHorizontal(position) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+        if (this.map[indices[0]][indices[1]] == 7) {
             return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
         }
         return Infinity;
     }
-
-    distanceToSouthDoor(position) {
+    distanceToSouthDoorHorizontal(position) {
         const indices = this.cartesianToCell(position);
         indices[0]++;
-        if (this.map[indices[0]][indices[1]] == 6 || this.map[indices[0]][indices[1]] == 7){
+        if (this.map[indices[0]][indices[1]] == 7) {
+            return this.cellToCartesian(indices).z - this.scale.z / 2.0 - position.z;
+        }
+        return Infinity;
+    } 
+
+    distanceToWestDoorVertical(position) {
+        const indices = this.cartesianToCell(position);
+        if (this.map[indices[0]][indices[1]] == 6) {
+            return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
+        }
+        return Infinity;
+    }
+    distanceToEastDoorVertical(position) {
+        const indices = this.cartesianToCell(position);
+        indices[1]++;
+        if (this.map[indices[0]][indices[1]] == 6) {
+            return this.cellToCartesian(indices).x - this.scale.x / 2.0 - position.x;
+        }
+        return Infinity;
+    }
+    distanceToNorthDoorVertical(position) {
+        const indices = this.cartesianToCell(position);
+        if (this.map[indices[0]][indices[1]] == 6) {
+            return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
+        }
+        return Infinity;
+    }
+    distanceToSouthDoorVertical(position) {
+        const indices = this.cartesianToCell(position);
+        indices[0]++;
+        if (this.map[indices[0]][indices[1]] == 6) {
             return this.cellToCartesian(indices).z - this.scale.z / 2.0 - position.z;
         }
         return Infinity;

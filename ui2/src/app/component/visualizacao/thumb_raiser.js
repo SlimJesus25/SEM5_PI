@@ -25,6 +25,7 @@ import Animations from "./animations.js";
 import UserInterface from "./user_interface.js";
 import { PassagemService } from "../../service/passagem/passagem.service.js";
 import TWEEN from "@tweenjs/tween.js";
+import cloneDeep from 'lodash/cloneDeep';
 
 /*
  * generalParameters = {
@@ -662,8 +663,12 @@ export default class ThumbRaiser {
         return this.maze.distanceToWestWall(position) < this.player.radius || this.maze.distanceToEastWall(position) < this.player.radius || this.maze.distanceToNorthWall(position) < this.player.radius || this.maze.distanceToSouthWall(position) < this.player.radius;
     }
 
-    collisionDoor(position) {
-        return this.maze.distanceToWestDoor(position) < this.player.radius || this.maze.distanceToEastDoor(position) < this.player.radius || this.maze.distanceToNorthDoor(position) < this.player.radius || this.maze.distanceToSouthDoor(position) < this.player.radius;
+    collisionDoorHorizontal(position) {
+        return this.maze.distanceToWestDoorHorizontal(position) < this.player.radius || this.maze.distanceToEastDoorHorizontal(position) < this.player.radius || this.maze.distanceToNorthDoorHorizontal(position) < this.player.radius || this.maze.distanceToSouthDoorHorizontal(position) < this.player.radius;
+    }
+
+    collisionDoorVertical(position) {
+        return this.maze.distanceToWestDoorVertical(position) < this.player.radius || this.maze.distanceToEastDoorVertical(position) < this.player.radius || this.maze.distanceToNorthDoorVertical(position) < this.player.radius || this.maze.distanceToSouthDoorVertical(position) < this.player.radius;
     }
 
 
@@ -899,11 +904,14 @@ export default class ThumbRaiser {
                     this.finalSequence();
                 }
                 else {
-                    let activeColision = false;
+                    let activeColisionVertical = false;
+                    let activeColisionHorizontal = false;
 
-                    if (!this.collisionDoor(this.player.position)) {
-                        activeColision = false;
-                        console.log("Player não bateu");
+                    if (!this.collisionDoorVertical(this.player.position)) {
+                        activeColisionVertical = false;
+                    }
+                    if (!this.collisionDoorHorizontal(this.player.position)) {
+                        activeColisionHorizontal = false;
                     }
 
                     let coveredDistance = this.player.walkingSpeed * deltaT;
@@ -928,12 +936,52 @@ export default class ThumbRaiser {
                             this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
                             this.player.position = newPosition;
                         }
-                        if (this.collisionDoor(newPosition)) {
-                            activeColision = true;
-                            if (activeColision) {
-                                console.log("Player bateu");
+                        if (this.collisionDoorHorizontal(newPosition)) {
+                            activeColisionHorizontal = true;
+                            let door = this.doorAtMoment();
+                            if (activeColisionHorizontal) {
+                                const originalPosition = {x: door[1].x};
+                                const initialPosition = { x: door[0].position.x };
+                                const targetPosition = { x: initialPosition.x - 1.0 };
+
+                                const tween = new TWEEN.Tween(initialPosition)
+                                    .to(targetPosition, 1500)
+                                    .onUpdate(() => {
+                                        door[0].position.x = initialPosition.x;
+                                    })
+                                    .onComplete(() => {
+                                        const reverse = new TWEEN.Tween(initialPosition)
+                                            .to({ x: originalPosition.x }, 1500) 
+                                            .onUpdate(() => {
+                                                door[0].position.x = initialPosition.x;
+                                            })
+                                            .start();
+                                    })
+                                    .start();
                             }
-                            //console.log("Porta irá abrir");
+                        }
+                        if (this.collisionDoorVertical(newPosition)) {
+                            activeColisionVertical = true;
+                            let door = this.doorAtMoment();
+                            if (activeColisionVertical) {
+                                const originalPosition = {z: door[1].z};
+                                const initialPosition = { z: door[0].position.z };
+                                const targetPosition = { z: initialPosition.z - 1.0 };
+                                const tween = new TWEEN.Tween(initialPosition)
+                                    .to(targetPosition, 1500)
+                                    .onUpdate(() => {
+                                        door[0].position.z = initialPosition.z;
+                                    })
+                                    .onComplete(() => {
+                                        const reverse = new TWEEN.Tween(initialPosition)
+                                            .to({ z: originalPosition.z }, 1500) 
+                                            .onUpdate(() => {
+                                                door[0].position.z = initialPosition.z;
+                                            })
+                                            .start();
+                                    })
+                                    .start();
+                            }
                         }
                     }
                     else if (this.player.keyStates.forward) {
@@ -945,33 +993,53 @@ export default class ThumbRaiser {
                             this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
                             this.player.position = newPosition;
                         }
-                        if (this.collisionDoor(newPosition)) {
-                            activeColision = true;
+                        if (this.collisionDoorHorizontal(newPosition)) {
+                            activeColisionHorizontal = true;
                             let door = this.doorAtMoment();
-                            console.log(door);
-                            door[1] = true;
-                            const originalPosition = { x: door[0].position.x };
-                            if (activeColision && door[1]) {
+                            if (activeColisionHorizontal) {
+                                const originalPosition = {x: door[1].x};
                                 const initialPosition = { x: door[0].position.x };
                                 const targetPosition = { x: initialPosition.x - 1.0 };
+                                const tween = new TWEEN.Tween(initialPosition)
+                                    .to(targetPosition, 1500)
+                                    .onUpdate(() => {
+                                        door[0].position.x = initialPosition.x;
+                                    })
+                                    .onComplete(() => {
+                                        const reverse = new TWEEN.Tween(initialPosition)
+                                            .to({ x: originalPosition.x }, 1500) // Reverse to the initial position
+                                            .onUpdate(() => {
+                                                door[0].position.x = initialPosition.x;
+                                            })
+                                            .start();
+                                    })
+                                    .start();
+                            }
+                        }
+                        if (this.collisionDoorVertical(newPosition)) {
+                            activeColisionVertical = true;
+                            let door = this.doorAtMoment();
+                            if (activeColisionVertical) {
+                                const originalPosition = {z: door[1].z};
+                                const initialPosition = { z: door[0].position.z };
+                                const targetPosition = { z: initialPosition.z - 1.0 };
 
                                 const tween = new TWEEN.Tween(initialPosition)
                                     .to(targetPosition, 1500)
                                     .onUpdate(() => {
-                                        // Update the actual position of your door here
-                                        door[0].position.x = initialPosition.x;
-                                    }).onComplete(() => {
+                                        door[0].position.z = initialPosition.z;
+                                    })
+                                    .onComplete(() => {
                                         const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ x: originalPosition.x }, 1500)
+                                            .to({ z: originalPosition.z }, 1500) 
                                             .onUpdate(() => {
-                                                door[0].position.x = initialPosition.x;
-                                            }).start();
+                                                door[0].position.z = initialPosition.z;
+                                            })
+                                            .start();
                                     })
                                     .start();
-                                door[1] = false;
                             }
                         }
-
                     }
                     else if (this.player.keyStates.jump) {
                         this.animations.fadeToAction("Jump", 0.2);
@@ -1057,13 +1125,15 @@ export default class ThumbRaiser {
     doorAtMoment() {
         this.mapPortas = this.maze.arrayPortas();
         const epsilon = 1.0;
-        //let door = [null, false];
+        let door;
 
         for (let [key, value] of this.mapPortas) {
             if (Math.abs(this.player.position.x - key.position.x) < epsilon && Math.abs(this.player.position.z - key.position.z) < epsilon) {
                 //let door = JSON.parse(JSON.stringify([key,value]));
-                return [key,value];
+                return [key, value];
             }
+            /*door = cloneDeep(key);
+            return door;*/
         }
 
         return false;
