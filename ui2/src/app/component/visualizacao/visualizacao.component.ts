@@ -77,7 +77,7 @@ export class VisualizacaoComponent implements OnInit {
   @HostListener('window:teletransporte', ['$event'])
   async teletransporte(event: CustomEvent){
 
-    const result = await event.detail.mapaPiso;
+    const result : MapaPiso = await event.detail.mapaPiso;
     const coords = await event.detail.initialCoords;
 
     this.designacaoPiso = result.piso;

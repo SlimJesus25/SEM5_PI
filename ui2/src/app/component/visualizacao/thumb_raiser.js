@@ -664,14 +664,17 @@ export default class ThumbRaiser {
     }
 
     collisionDoorHorizontal(position) {
+        return this.maze.distanceToWestDoorHorizontal(position) < this.player.radius || this.maze.distanceToEastDoorHorizontal(position) < this.player.radius || this.maze.distanceToNorthDoorHorizontal(position) < this.player.radius || this.maze.distanceToSouthDoorHorizontal(position) < this.player.radius;
         return this.maze.distanceToWest(position,7) < this.player.radius || this.maze.distanceToEast(position,7) < this.player.radius || this.maze.distanceToNorth(position,7) < this.player.radius || this.maze.distanceToSouth(position,7) < this.player.radius;
     }
 
     collisionDoorVertical(position) {
+        return this.maze.distanceToWestDoorVertical(position) < this.player.radius || this.maze.distanceToEastDoorVertical(position) < this.player.radius || this.maze.distanceToNorthDoorVertical(position) < this.player.radius || this.maze.distanceToSouthDoorVertical(position) < this.player.radius;
         return this.maze.distanceToWest(position,6) < this.player.radius || this.maze.distanceToEast(position,6) < this.player.radius || this.maze.distanceToNorth(position,6) < this.player.radius || this.maze.distanceToSouth(position,6) < this.player.radius;
     }
 
     collisionElevatorHorizontal(position) {
+        return this.maze.distanceToWest(position,5) < this.player.radius || this.maze.distanceToEast(position,5) < this.player.radius || this.maze.distanceToNorth(position,5) < this.player.radius || this.maze.distanceToSouth(position,5) < this.player.radius;
         return this.maze.distanceToWest(position,5) < this.player.radius || this.maze.distanceToEast(position,5) < this.player.radius || this.maze.distanceToNorth(position,5) < this.player.radius || this.maze.distanceToSouth(position,5) < this.player.radius;
     }
 
@@ -793,7 +796,7 @@ export default class ThumbRaiser {
                                                     let selectedPiso = dropdown.value;
 
                                                     const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
-                                                        coords = [mapaPiso.elevador[0][1], mapaPiso.elevador[0][2]];
+                                                        coords = [mapaPiso.elevador[0][2]-1, mapaPiso.elevador[0][1]-1];
                                                         window.alert('Mapa piso: ' + coords);
                                                         const eventDetail = {
                                                             mapaPiso: mapaPiso,
