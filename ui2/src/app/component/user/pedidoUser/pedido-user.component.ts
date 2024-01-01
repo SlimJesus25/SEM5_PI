@@ -43,7 +43,7 @@ export class PedidoUserComponent implements OnInit {
       },
 
       (error: any) => {
-        alert(error.error);
+        alert("Falha na aceitação do pedido!");
       }
     );
   }
@@ -57,7 +57,7 @@ export class PedidoUserComponent implements OnInit {
       },
 
       (error: any) => {
-        alert(error.error);
+        alert("Falha ao recusar o pedido!");
       }
     );
   }

@@ -34,7 +34,7 @@ export class UpdateUserComponent implements OnInit {
           this.utente.nif = user.NIF;
       },
       (error: any) => { 
-        alert(error.error);
+        alert("Não foi possível retornar a infomração do User!");
       }
     );
   }
@@ -47,7 +47,7 @@ export class UpdateUserComponent implements OnInit {
       },
 
       (error: any) => {
-        alert(error.error);
+        alert("Erro! Não foi possível atualizar o User!");
       }
     );
 

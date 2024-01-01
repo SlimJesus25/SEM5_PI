@@ -39,7 +39,7 @@ export class RegistarUserComponent implements OnInit {
       },
 
       (error: any) => {
-        alert(error.error);
+        alert("Falha na criação do User!");
       }
     );
 

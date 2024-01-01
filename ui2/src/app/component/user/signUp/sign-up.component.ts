@@ -46,7 +46,7 @@ export class SignUpComponent implements OnInit {
       },
 
       (error: any) => {
-        alert(error.error);
+        alert("Pedido Inválido! Tente novamente!");
       }
     );
 

@@ -29,7 +29,7 @@ export class DeleteUserComponent implements OnInit {
       },
 
       (error: any) => {
-        alert(error.error);
+        alert("Falha ao eliminar User!");
       }
     );
 

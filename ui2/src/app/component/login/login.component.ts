@@ -26,7 +26,7 @@ export class LoginComponent {
         this.router.navigate(['/mainMenu']);
       },
       (error: any) => {
-        alert(error.error);
+        alert("Login Invalido!");
       }
     );
 
