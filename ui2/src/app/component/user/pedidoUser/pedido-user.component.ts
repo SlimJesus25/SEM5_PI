@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PedidoService } from '../../../service/pedido/pedido.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-pedido-user',
   templateUrl: './pedido-user.component.html',
@@ -18,7 +19,7 @@ export class PedidoUserComponent implements OnInit {
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
   
-  constructor(private location: Location,private pedidoService: PedidoService) { 
+  constructor(private location: Location,private pedidoService: PedidoService, private snackBar: MatSnackBar) { 
   }
 
   async ngOnInit(): Promise<void> {
@@ -38,12 +39,12 @@ export class PedidoUserComponent implements OnInit {
     let errorOrSuccess: any = this.pedidoService.aprovarPedido(pedido);
     errorOrSuccess.subscribe(
       (data: any) => {
-        alert("Pedido aceite");
+        this.showNotification("Pedido aceite");
         this.loadPendingRequests(); // Refresh the table after accepting the request
       },
 
       (error: any) => {
-        alert("Falha na aceitação do pedido!");
+        this.showNotification("Falha na aceitação do pedido!");
       }
     );
   }
@@ -52,16 +53,25 @@ export class PedidoUserComponent implements OnInit {
     let errorOrSuccess: any = this.pedidoService.recusarPedido(pedido);
     errorOrSuccess.subscribe(
       (data: any) => {
-        alert("Pedido recusado");
+        this.showNotification("Pedido recusado");
         this.loadPendingRequests(); // Refresh the table after accepting the request
       },
 
       (error: any) => {
-        alert("Falha ao recusar o pedido!");
+        this.showNotification("Falha ao recusar o pedido!");
       }
     );
   }
-
+  
+  showNotification(message: string): void {
+      this.snackBar.open(message, 'Close', {
+      duration: 3000, // Adjust the duration as needed
+      horizontalPosition: 'center', // Position of the snackbar
+      verticalPosition: 'top',
+      panelClass: ['snackbar-success', 'mat-elevation-z6'], // Optional: Add custom styling classes
+    });
+  }
+  
   filterData($event: any) {
     this.dataSource.filter = $event.target.value;
   }
