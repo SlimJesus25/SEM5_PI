@@ -42,12 +42,12 @@ export class SignUpComponent implements OnInit {
     let errorOrSuccess: any = this.pedidoService.criarPedido(this.utente);
     errorOrSuccess.subscribe(
       (data: any) => {
-        alert("Pedido efetuado com sucesso");
+        this.showNotification("Pedido efetuado com sucesso");
       },
 
       (error: any) => {
         console.log(error.error);
-        alert(error.error);
+        this.showNotification(error.error);
       }
     );
 
@@ -61,7 +61,15 @@ export class SignUpComponent implements OnInit {
       verticalPosition: 'bottom',
     });
   }
-
+  
+  showNotification(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Adjust the duration as needed
+      horizontalPosition: 'center', // Position of the snackbar
+      verticalPosition: 'top',
+      panelClass: ['snackbar-success', 'mat-elevation-z6'], // Optional: Add custom styling classes
+    });
+  }
   goBack(): void {
     this.location.back();
   }
