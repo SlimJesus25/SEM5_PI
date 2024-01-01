@@ -253,67 +253,36 @@ export default class Maze {
         return false;
     }
 
-    distanceToWestDoorHorizontal(position) {
+    distanceToWest(position,index) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == index) {
             return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
         }
         return Infinity;
     }
-    distanceToEastDoorHorizontal(position) {
+    distanceToEast(position,index) {
         const indices = this.cartesianToCell(position);
         indices[1]++;
-        if (this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == index) {
             return this.cellToCartesian(indices).x - this.scale.x / 2.0 - position.x;
         }
         return Infinity;
     }
-    distanceToNorthDoorHorizontal(position) {
+    distanceToNorth(position,index) {
         const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == index) {
             return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
         }
         return Infinity;
     }
-    distanceToSouthDoorHorizontal(position) {
+    distanceToSouth(position,index) {
         const indices = this.cartesianToCell(position);
         indices[0]++;
-        if (this.map[indices[0]][indices[1]] == 7) {
+        if (this.map[indices[0]][indices[1]] == index) {
             return this.cellToCartesian(indices).z - this.scale.z / 2.0 - position.z;
         }
         return Infinity;
     } 
-
-    distanceToWestDoorVertical(position) {
-        const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 6) {
-            return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
-        }
-        return Infinity;
-    }
-    distanceToEastDoorVertical(position) {
-        const indices = this.cartesianToCell(position);
-        indices[1]++;
-        if (this.map[indices[0]][indices[1]] == 6) {
-            return this.cellToCartesian(indices).x - this.scale.x / 2.0 - position.x;
-        }
-        return Infinity;
-    }
-    distanceToNorthDoorVertical(position) {
-        const indices = this.cartesianToCell(position);
-        if (this.map[indices[0]][indices[1]] == 6) {
-            return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
-        }
-        return Infinity;
-    }
-    distanceToSouthDoorVertical(position) {
-        const indices = this.cartesianToCell(position);
-        indices[0]++;
-        if (this.map[indices[0]][indices[1]] == 6) {
-            return this.cellToCartesian(indices).z - this.scale.z / 2.0 - position.z;
-        }
-        return Infinity;
-    }
 
     arrayPortas() {
         return this.mapDoorPosition;
@@ -326,7 +295,4 @@ export default class Maze {
         // Or, if you want an array of key-value pairs:
         // return Array.from(this.mapDoorPosition.entries());
     }
-
-
-
 }

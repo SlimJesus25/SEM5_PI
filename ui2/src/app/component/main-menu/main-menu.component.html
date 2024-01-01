@@ -3,7 +3,7 @@
   <h1 class="h1">RobDroneGO</h1>
 
   <!--Gestor Utilizadores Menu-->
-  <button mat-button *ngIf="role === 'Gestor de Utilizadores'" [matMenuTriggerFor]="gestorUtilizadoresMenu">Gestor Utilizadores</button>
+  <button mat-button *ngIf="role === 'GestorUtilizadores'" [matMenuTriggerFor]="gestorUtilizadoresMenu">Gestor Utilizadores</button>
   <mat-menu #gestorUtilizadoresMenu="matMenu">
     <button mat-menu-item (click)="criarUser()">Criar User</button>
     <button mat-menu-item (click)="pedidoUser()">Aceitar ou recusar pedidos de utentes</button>

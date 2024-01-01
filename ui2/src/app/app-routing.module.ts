@@ -60,6 +60,12 @@ import { TarefaGestaoRequisicaoComponent } from './component/tarefa/tarefa-gesta
 import { TarefaNaoAprovadaComponent } from './component/tarefa/tarefa-nao-aprovada/tarefa-nao-aprovada.component';
 import { TarefaListComponent } from './component/tarefa/tarefa-list/tarefa-list.component';
 import { SequenciaTarefasComponent } from './component/tarefa/sequencia-tarefas/sequencia-tarefas.component';
+import { UtilizadorGuard } from './guard/users.guard';
+import { UtenteGuard } from './guard/utentes.guard';
+import { TarefaGuard } from './guard/tarefas.guard';
+import { FrotaGuard } from './guard/frotas.guard';
+import { CampusGuard } from './guard/campus.guard';
+import { GeralGuard } from './guard/geral.guard';
 
 const routes: Routes = [
 
@@ -124,7 +130,7 @@ const routes: Routes = [
   { path: 'salaCreate', component: SalaCreateComponent },
 
   { path: 'login', component: LoginComponent },
-  { path: 'aboutUs', component: AboutUsComponent },
+  { path: 'aboutUs', component: AboutUsComponent/*, canActivate: [GeralGuard] */},
   { path: 'mainMenu', component: MainMenuComponent },
 
   { path: 'planning', component: PlanningComponent },

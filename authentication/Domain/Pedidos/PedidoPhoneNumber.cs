@@ -9,9 +9,9 @@ namespace RobDroneGO.Domain.Pedidos
 
         public PedidoPhoneNumber(string value)
         {
-            /*if (!Regex.IsMatch(value,@"^\+3519\d{9}$")){
+            if (!Regex.IsMatch(value,"\\+3519[1236][0-9]{7}")){
                 throw new BusinessRuleValidationException("Numero tem de começar com +351 e 9 digitos a começar por 9 (Exemplo: +351912345678)");
-            }*/
+            }
             PhoneNumber = value;
         }
 

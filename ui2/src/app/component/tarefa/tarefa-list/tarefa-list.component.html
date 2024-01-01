@@ -22,13 +22,13 @@
                       </mat-form-field>
                     </tr>
                 </table>
-                <button (click)="listAprovacaoEstado()">Search</button>
+                <button (click)="listAprovacaoEstado()">Procurar</button>
                 <br> <br>
             </mat-form-field>
             
             <div class="search-container">
                 <mat-form-field appearance="fill">
-                    <label>Search by KeyWord</label> <input matInput placeholder="key word" autocomplete="off"
+                    <label>Procurar por palavra chave</label> <input matInput placeholder="key word" autocomplete="off"
                         (keyup)="filterData($event)">
                 </mat-form-field>
             </div>
@@ -61,7 +61,7 @@
               </table>
 
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Page navigation"></mat-paginator>
-            <button (click)="goBack()">Back</button>
+            <button (click)="goBack()">Retroceder</button>
         </div>
 
         <div *ngIf="selectOption === 2">
@@ -72,13 +72,13 @@
                         <td><input matInput type="text" [(ngModel)]="utente"> <br></td>
                     </tr>
                 </table>
-                <button (click)="listAprovacaoUtente()">Search</button>
+                <button (click)="listAprovacaoUtente()">Procurar</button>
                 <br> <br>
             </mat-form-field>
             
             <div class="search-container">
                 <mat-form-field appearance="fill">
-                    <label>Search by KeyWord</label> <input matInput placeholder="key word" autocomplete="off"
+                    <label>Procurar por palavra chave</label> <input matInput placeholder="key word" autocomplete="off"
                         (keyup)="filterData($event)">
                 </mat-form-field>
             </div>
@@ -111,7 +111,7 @@
               </table>
 
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Page navigation"></mat-paginator>
-            <button (click)="goBack()">Back</button>
+            <button (click)="goBack()">Retroceder</button>
         </div>
         
         <div *ngIf="selectOption === 3">
@@ -122,13 +122,13 @@
                         <td><input matInput type="text" [(ngModel)]="tipoDispositivo"> <br></td>
                     </tr>
                 </table>
-                <button (click)="listAprovacaoTipoDispositivo()">Search</button>
+                <button (click)="listAprovacaoTipoDispositivo()">Procurar</button>
                 <br> <br>
             </mat-form-field>
             
             <div class="search-container">
                 <mat-form-field appearance="fill">
-                    <label>Search by KeyWord</label> <input matInput placeholder="key word" autocomplete="off"
+                    <label>Procurar por palavra chave</label> <input matInput placeholder="key word" autocomplete="off"
                         (keyup)="filterData($event)">
                 </mat-form-field>
             </div>
@@ -161,7 +161,7 @@
               </table>
 
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Page navigation"></mat-paginator>
-            <button (click)="goBack()">Back</button>
+            <button (click)="goBack()">Retroceder</button>
         </div>
     </div>
 </body>
