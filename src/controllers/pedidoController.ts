@@ -9,6 +9,7 @@ import IPedidoDTO from '../dto/IPedidoDTO';
 import { Result } from "../core/logic/Result";
 import ICreatingPedidoDTO from '../dto/ICreatingPedidoDTO';
 import { Console } from 'console';
+import { TextUtil } from '../utils/TextUtil';
 
 @Service()
 export default class PedidoController implements IPedidoController /* TODO: extends ../core/infra/BaseController */ {
@@ -18,11 +19,13 @@ export default class PedidoController implements IPedidoController /* TODO: exte
 
   public async criarPedido(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(req.body);
+      
       const pedidoOrError = await this.pedidoServiceInstance.criarPedido(req.body as ICreatingPedidoDTO) as Result<IPedidoDTO>;
+      
+      const finalErr = TextUtil.parseAuthAndAuthErrors(pedidoOrError.error);
 
       if (pedidoOrError.isFailure) {
-        return res.status(403).send("Erro: " + pedidoOrError.errorValue());
+        return res.status(403).send("Erro: " + finalErr);
       }
 
       const pedidoDTO = pedidoOrError.getValue();
