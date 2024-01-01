@@ -134,6 +134,17 @@ export default class UserController implements IUserController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async getCurrentUserRole(req: Request, res: Response, next: NextFunction){
+    try{
+      const token = req.headers.authorization?.split(' ')[1];
+      const decodedToken = jwt.decode(token) as { [key: string]: any };
+      const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      return res.json({"role" : role}).status(200);
+    }catch(e){
+      return next(e);
+    }
+  }
   /*
   exports.getMe = async function(req, res: Response) {
     

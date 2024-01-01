@@ -216,5 +216,13 @@ export default (app: Router) => {
       })
     }),
     (req, res, next) => ctrl.login(req, res, next));
+
+    route.get('/getCurrentUserRole',
+    celebrate({
+      body: Joi.object({
+
+      })
+    }),
+    (req, res, next) => ctrl.getCurrentUserRole(req, res, next));
 };
 
