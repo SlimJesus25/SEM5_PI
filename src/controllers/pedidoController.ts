@@ -22,7 +22,10 @@ export default class PedidoController implements IPedidoController /* TODO: exte
       
       const pedidoOrError = await this.pedidoServiceInstance.criarPedido(req.body as ICreatingPedidoDTO) as Result<IPedidoDTO>;
       
-      const finalErr = TextUtil.parseAuthAndAuthErrors(pedidoOrError.error);
+      let finalErr : string;
+
+      if(pedidoOrError.error != null)
+        finalErr = TextUtil.parseAuthAndAuthErrors(pedidoOrError.error);
 
       if (pedidoOrError.isFailure) {
         return res.status(403).send("Erro: " + finalErr);
