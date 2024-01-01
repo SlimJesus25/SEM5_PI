@@ -3,6 +3,8 @@
 <PropertyGroup>
     <TargetFramework>netcoreapp6.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel> 
+     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute> 
   </PropertyGroup>
  
   <ItemGroup>
