@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,6 +7,8 @@ import { MatSort } from '@angular/material/sort';
 import { AprovacaoService } from '../../../service/aprovacao/aprovacao.service';
 import { Aprovacao } from '../../../model/aprovacao';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MessageService } from '../../../service/message/message.service';
 
 @Component({
   selector: 'app-tarefa-list',
@@ -26,8 +28,14 @@ export class TarefaListComponent implements OnInit{
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
 
-  constructor(private aprovacaoService: AprovacaoService, private location: Location, private _liveAnnouncer: LiveAnnouncer) { }
-
+  constructor(
+    private aprovacaoService: AprovacaoService, 
+    private location: Location, 
+    private _liveAnnouncer: LiveAnnouncer,
+    private snackBar: MatSnackBar,
+    private messageService: MessageService,
+  ) { }
+  @Output() finalMessage: string ='';
   ngOnInit(): void {
   }
   
@@ -49,10 +57,22 @@ export class TarefaListComponent implements OnInit{
         this.dataSource.paginator = this.paginator;
       },
       (error) => {
+        this.messageService.add(error.error);
+        this.finalMessage = error.error;
+        this.showNotification('Erro ao listar tarefa!');
         alert(error.error);
       });
   }
-
+  
+  showNotification(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Adjust the duration as needed
+      horizontalPosition: 'center', // Position of the snackbar
+      verticalPosition: 'top',
+      panelClass: ['snackbar-success', 'mat-elevation-z6'], // Optional: Add custom styling classes
+    });
+  }
+  
   listAprovacaoUtente() {
     let errorOrSuccess = this.aprovacaoService.getAprovacaoUtente(this.utente);
     errorOrSuccess.subscribe(
@@ -61,6 +81,9 @@ export class TarefaListComponent implements OnInit{
         this.dataSource.paginator = this.paginator;
       },
       (error) => {
+        this.messageService.add(error.error);
+        this.finalMessage = error.error;
+        this.showNotification('Erro ao listar tarefa!');
         alert(error.error);
       });
   }
@@ -73,6 +96,9 @@ export class TarefaListComponent implements OnInit{
         this.dataSource.paginator = this.paginator;
       },
       (error: any) => {
+        this.messageService.add(error.error);
+        this.finalMessage = error.error;
+        this.showNotification('Erro ao listar tarefa!');
         alert(error.error);
       });
   }
