@@ -7,7 +7,7 @@
   <div class="box">
     <div class="search-container">
       <mat-form-field appearance="fill">
-        <label>Search by KeyWord</label> <input matInput placeholder="key word" autocomplete="off"
+        <label>Procurar por palavra chave</label> <input matInput placeholder="key word" autocomplete="off"
           (keyup)="filterData($event)">
       </mat-form-field>
     </div>
@@ -63,6 +63,6 @@
     </table>
 
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Page navigation"></mat-paginator>
-    <button (click)="goBack()">Back</button>
+    <button (click)="goBack()">Retroceder</button>
   </div>
 </body>
