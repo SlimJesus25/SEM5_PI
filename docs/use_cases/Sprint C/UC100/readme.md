@@ -65,7 +65,7 @@ Para solucionar este problema, foi criado um novo agregado de utilizadores e um 
 
 ##### 3.1.2.3 Nível 3
 
-![vista logica 3](/docs/logical_view/sprint3/level3/vl3.svg "Vista lógica - nível 3")
+![vista logica 3](/docs/logical_view/sprint3/level3/A&A.svg "Vista lógica - nível 3")
 
 #### 3.1.3 Vista de cenários
 

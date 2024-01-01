@@ -50,9 +50,9 @@ export class AprovacaoService {
         return aprovacao;
   }
   
-  aceitarRequisicao(requisicao: string){
+  aceitarRequisicao(requisicao: Aprovacao){
     const headers = {'content-type': 'application/json', 'authorization': 'Bearer '+ localStorage.getItem("token")};
-    const body = {tarefa: requisicao};
+    const body = {tarefa: requisicao.tarefa};
     const pedido = this.http.patch<Aprovacao>(this.LogisticAPI_URL + "/aceitarRequisicao", body, {headers})
     return pedido;
   }

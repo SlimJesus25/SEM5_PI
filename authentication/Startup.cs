@@ -36,7 +36,14 @@ namespace RobDroneGO
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options => options.AddPolicy("Cors",
+            builder =>
+            {
+                builder.
+                AllowAnyOrigin().
+                AllowAnyMethod().
+                AllowAnyHeader();
+            }));
             /*services.AddDbContext<RobDroneGODbContext>(opt =>
                 opt.UseInMemoryDatabase("RobDroneGODB")
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
@@ -102,7 +109,7 @@ namespace RobDroneGO
                 app.UseHsts();
             }
 
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors("Cors");
 
             app.UseHttpsRedirection();
 

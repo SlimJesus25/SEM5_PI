@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MainMenuService } from '../../service/main-menu/mainMenu.service';
+import { UserService } from '../../service/user/user.service';
+import { IRole } from '../../model/IRole';
 
 @Component({
   selector: 'app-main.menu',
@@ -8,9 +11,19 @@ import { Router } from '@angular/router';
 })
 export class MainMenuComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService,) {}
 
   ngOnInit(): void {
+    this.checkRole();
+  }
+
+  role : String = "";
+
+  checkRole(){
+    this.userService.getCurrentUserRole().subscribe( (loggedRole : IRole) => {
+      console.log('Role: ' + loggedRole.role);
+      this.role = loggedRole.role;
+    });
   }
 
   openAboutUs(){

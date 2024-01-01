@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { User } from '../../model/user';
 import { CreateUser } from '../../model/createUser';
 import { AtualizarUtente } from '../../model/atualizarUtente';
+import { IRole } from '../../model/IRole';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,13 @@ export class UserService {
     return this.http.get<User>(downloadUrl, {headers})
   }
 
+  getCurrentUserRole() : Observable<IRole> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<IRole>(this.LogisticAPI_URL + "/getCurrentUserRole", {headers});
+  }
 
 
   downloadInfo(): Observable<HttpResponse<Blob>> {

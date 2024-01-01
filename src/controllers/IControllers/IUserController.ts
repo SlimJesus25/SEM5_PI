@@ -8,4 +8,5 @@ export default interface IUserController  {
   getUserByEmail(req: Request, res: Response, next: NextFunction);
   deleteUser(req: Request, res: Response, next: NextFunction);
   login(req: Request, res: Response, next: NextFunction);
+  getCurrentUserRole(req: Request, res: Response, next: NextFunction);
 }

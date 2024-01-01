@@ -8,7 +8,7 @@
 
 ### 2.1 Identificação do problema
 
-O gestor de tarefas tem que conseguir fazer uma listagem de requisições filtrada com o que entender: estado, tipo de dispositivo ou utente.
+O gestor de tarefas tem que conseguir fazer uma listagem de requisições filtrada com o que entender: estado, tipo de dispositivo ou utente. Esta tarefa pode ser repartida em três.
 
 **Respostas do cliente:**
 
@@ -40,6 +40,8 @@ O gestor de tarefas tem que conseguir fazer uma listagem de requisições filtra
 
 Visto que os dados aqui inseridos poderão chegar aos milhares em, relativamente, pouco tempo, a equipa desenhou uma forma de contornar a listagem "pesadíssima" que seria listar uma quantidade tão grande informação:
 Listaremos o máximo de 500. Mais concretamente, serão listados os últimos 500 registos da base de dados.
+
+O requisito foi repartido por listagem.
 
 ### 3.1. Realização
 
