@@ -5,6 +5,8 @@ using System;
 using Microsoft.AspNetCore.Http;
 using RobDroneGO.Domain.Roles;
 using RobDroneGO.Domain.Users;
+using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -23,16 +25,39 @@ namespace RobDroneGO.Domain.Pedidos
 
         public async Task<PedidoDto> AddAsync(CreatingPedidoDto dto)
         {
-            try{
-                var pedido = new Pedido(await GenerateId(), dto.Name,dto.Email, dto.PhoneNumber, dto.NIF, dto.Password);
+            try
+            {
+                var pedido = new Pedido(await GenerateId(), dto.Name, dto.Email, dto.PhoneNumber, dto.NIF, dto.Password);
                 await this._repo.AddAsync(pedido);
                 await this._unitOfWork.CommitAsync();
 
-                return new PedidoDto(pedido.Id.toInt(),pedido.Name.toString(),pedido.Email.toString(), pedido.PhoneNumber.toString(),pedido.NIF.toString(),pedido.Password.toString(),pedido.GetEstado().ToString(),pedido.GetDataPedido().ToString(),pedido.GetDataMudancaEstado().ToString());
-                
-            } catch (BusinessRuleValidationException ex){
+                return new PedidoDto(pedido.Id.toInt(), pedido.Name.toString(), pedido.Email.toString(), pedido.PhoneNumber.toString(), pedido.NIF.toString(), pedido.Password.toString(), pedido.GetEstado().ToString(), pedido.GetDataPedido().ToString(), pedido.GetDataMudancaEstado().ToString());
+
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is MySqlException mysqlEx && mysqlEx.Number == (int)MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (mysqlEx.Message.Contains("Pedidos.IX_Pedidos_PhoneNumber"))
+                {
+                    // Caso ocorra um erro de chave duplicada (número de telefone já existe), capture e retorne uma mensagem personalizada
+                    throw new DbUpdateException("Este número de telefone já se encontra em uso! Tente outro!");
+                }
+                else if (mysqlEx.Message.Contains("Pedidos.IX_Pedidos_Email"))
+                {
+                    // Caso ocorra um erro de chave duplicada (email já existe), capture e retorne uma mensagem personalizada
+                    throw new DbUpdateException("Este email já se encontra em uso! Tente outro!");
+                }
+                else
+                {
+                    // Trate outros erros de chave duplicada aqui se necessário
+                    throw new DbUpdateException("Erro de chave duplicada ao adicionar o pedido.");
+                }
+            }
+            catch (BusinessRuleValidationException ex)
+            {
                 throw new BadHttpRequestException(ex.Message);
             }
+
+
         }
 
         /*public async Task<PedidoDto> UpdateAsync(PedidoDto dto)
@@ -52,64 +77,68 @@ namespace RobDroneGO.Domain.Pedidos
             return new PedidoDto(pedido.Id.AsGuid(), pedido.IdNumber.toInt(),pedido.Name.toString(), pedido.Description.toString(), pedido.getActive());
         }*/
 
-        public async Task<List<PedidoDto>> GetAllAsync(){
+        public async Task<List<PedidoDto>> GetAllAsync()
+        {
             var list = await this._repo.GetAllAsync();
 
-            List<PedidoDto> listDTO = list.ConvertAll<PedidoDto>(pedido => new PedidoDto(pedido.Id.toInt(),pedido.Name.toString(),pedido.Email.toString(), pedido.PhoneNumber.toString(),pedido.NIF.toString(),pedido.Password.toString(),pedido.GetEstado().ToString(),pedido.GetDataPedido().ToString(),pedido.GetDataMudancaEstado().ToString()));
-        
+            List<PedidoDto> listDTO = list.ConvertAll<PedidoDto>(pedido => new PedidoDto(pedido.Id.toInt(), pedido.Name.toString(), pedido.Email.toString(), pedido.PhoneNumber.toString(), pedido.NIF.toString(), pedido.Password.toString(), pedido.GetEstado().ToString(), pedido.GetDataPedido().ToString(), pedido.GetDataMudancaEstado().ToString()));
+
             return listDTO;
         }
 
-        public async Task<List<PedidoDto>> GetAllPendentesAsync(){
+        public async Task<List<PedidoDto>> GetAllPendentesAsync()
+        {
             Estado estado = Estado.Pendente;
             var list = await this._repo.GetAllPendentesAsync(estado);
 
-            List<PedidoDto> listDTO = list.ConvertAll<PedidoDto>(pedido => new PedidoDto(pedido.Id.toInt(),pedido.Name.toString(),pedido.Email.toString(), pedido.PhoneNumber.toString(),pedido.NIF.toString(),pedido.Password.toString(),pedido.GetEstado().ToString(),pedido.GetDataPedido().ToString(),pedido.GetDataMudancaEstado().ToString()));
-        
+            List<PedidoDto> listDTO = list.ConvertAll<PedidoDto>(pedido => new PedidoDto(pedido.Id.toInt(), pedido.Name.toString(), pedido.Email.toString(), pedido.PhoneNumber.toString(), pedido.NIF.toString(), pedido.Password.toString(), pedido.GetEstado().ToString(), pedido.GetDataPedido().ToString(), pedido.GetDataMudancaEstado().ToString()));
+
             return listDTO;
         }
-        
+
         public async Task<PedidoDto> GetByIdAsync(PedidoId id)
         {
             var pedido = await this._repo.GetByIdAsync(id);
-            
-            if(pedido == null)
+
+            if (pedido == null)
                 return null;
 
-            return new PedidoDto(pedido.Id.toInt(),pedido.Name.toString(),pedido.Email.toString(), pedido.PhoneNumber.toString(),pedido.NIF.toString(),pedido.Password.toString(),pedido.GetEstado().ToString(),pedido.GetDataPedido().ToString(),pedido.GetDataMudancaEstado().ToString());
-            }
-    
+            return new PedidoDto(pedido.Id.toInt(), pedido.Name.toString(), pedido.Email.toString(), pedido.PhoneNumber.toString(), pedido.NIF.toString(), pedido.Password.toString(), pedido.GetEstado().ToString(), pedido.GetDataPedido().ToString(), pedido.GetDataMudancaEstado().ToString());
+        }
+
         public async Task<PedidoDto> AprovarPedido(PedidoId id)
         {
-            var pedido = await this._repo.GetByIdAsync(id); 
+            var pedido = await this._repo.GetByIdAsync(id);
 
             bool verificacao = !pedido.GetEstado().Equals(Estado.Pendente);
 
-            if (pedido == null|| !pedido.GetEstado().Equals(Estado.Pendente)){
+            if (pedido == null || !pedido.GetEstado().Equals(Estado.Pendente))
+            {
                 throw new BusinessRuleValidationException("Pedido não se encontra Pendente");
-            } 
+            }
 
 
             pedido.AprovarPedido();
-            
+
             await this._unitOfWork.CommitAsync();
 
-            return new PedidoDto(pedido.Id.toInt(),pedido.Name.toString(),pedido.Email.toString(), pedido.PhoneNumber.toString(),pedido.NIF.toString(),pedido.Password.toString(),pedido.GetEstado().ToString(),pedido.GetDataPedido().ToString(),pedido.GetDataMudancaEstado().ToString());
+            return new PedidoDto(pedido.Id.toInt(), pedido.Name.toString(), pedido.Email.toString(), pedido.PhoneNumber.toString(), pedido.NIF.toString(), pedido.Password.toString(), pedido.GetEstado().ToString(), pedido.GetDataPedido().ToString(), pedido.GetDataMudancaEstado().ToString());
         }
 
         public async Task<PedidoDto> RecusarPedido(PedidoId id)
         {
-            var pedido = await this._repo.GetByIdAsync(id); 
+            var pedido = await this._repo.GetByIdAsync(id);
 
-            if (pedido == null|| !pedido.GetEstado().Equals(Estado.Pendente)){
+            if (pedido == null || !pedido.GetEstado().Equals(Estado.Pendente))
+            {
                 throw new BusinessRuleValidationException("Pedido não se encontra Pendente");
-            } 
+            }
 
             pedido.RecusarPedido();
-            
+
             await this._unitOfWork.CommitAsync();
 
-            return new PedidoDto(pedido.Id.toInt(),pedido.Name.toString(),pedido.Email.toString(), pedido.PhoneNumber.toString(),pedido.NIF.toString(),pedido.Password.toString(),pedido.GetEstado().ToString(),pedido.GetDataPedido().ToString(),pedido.GetDataMudancaEstado().ToString());
+            return new PedidoDto(pedido.Id.toInt(), pedido.Name.toString(), pedido.Email.toString(), pedido.PhoneNumber.toString(), pedido.NIF.toString(), pedido.Password.toString(), pedido.GetEstado().ToString(), pedido.GetDataPedido().ToString(), pedido.GetDataMudancaEstado().ToString());
         }
         /*
         public async Task<PedidoDto> DeleteAsync(PedidoIdNumber id)
