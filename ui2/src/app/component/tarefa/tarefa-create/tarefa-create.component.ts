@@ -17,7 +17,7 @@ import { Piso } from '../../../model/piso';
 export class TarefaCreateComponent implements OnInit {
 
   requisicao = {tipoDispositivo: "", user:"", estado:"pendente", tarefa:""}
-  tarefa = {tipoTarefa: "", origem: "", destino: "", requisicao:this.requisicao, remetente: "", destinatario: "", edificio: "", pisoInicial: "", pisoFinal: ""}
+  tarefa = {tipoTarefa: "", origem: "", destino: "", requisicao:this.requisicao, remetente: "", destinatario: "", descricao: ""}
   
   options = ["pick up & delivery", "vigilância", "limpeza"];
   

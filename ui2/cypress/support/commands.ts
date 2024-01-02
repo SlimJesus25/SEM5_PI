@@ -8,7 +8,7 @@ declare namespace Cypress {
     login(login?: string, password?: string): typeof login;
     loginGestorTarefa(login?: string, password?: string): typeof loginGestorTarefa;
     loginGestorUtilizador(login?: string, password?: string):typeof loginGestorUtilizador;
-    loginUtente():typeof loginUtente;
+    loginUtente(login?: string, password?: string):typeof loginUtente;
    }
 }
 
@@ -44,9 +44,9 @@ function loginGestorUtilizador(login: string = "jmm@isep.ipp.pt", password: stri
 
 function loginUtente():void{
 	cy.visit('http://localhost:4200/login');
-		cy.get('[type="text"]').type('gs@isep.ipp.pt');
+		cy.get('[type="text"]').type('gcs@isep.ipp.pt');
 		cy.get('.ng-pristine').click();
-		cy.get('.ng-untouched').type('Teste123456@');
+		cy.get('.ng-untouched').type('Teste123456!');
 		cy.get('button').click();
 	cy.url().should('include', '/mainMenu');
 }
