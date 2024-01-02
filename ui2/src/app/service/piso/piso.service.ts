@@ -48,8 +48,9 @@ export class PisoService {
 
     //Metodo para listar pisos geral
     listPisosGeral(): Observable<Piso[]> {
-        const pisos = this.http.get<Piso[]>(this.LogisticAPI_URL + "/listPisosGeral2");
+        const headers = {'authorization': 'Bearer '+ localStorage.getItem("token")};
+        const pisos = this.http.get<Piso[]>(this.LogisticAPI_URL + "/listPisosGeral2", {headers: headers});
         return pisos;
-    }
+    } 
 
 }

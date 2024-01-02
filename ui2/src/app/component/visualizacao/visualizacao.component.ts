@@ -96,10 +96,22 @@ export class VisualizacaoComponent implements OnInit {
     const coords = await event.detail.initialCoords;
 
     this.designacaoPiso = result.piso;
-    console.log('Evento: ' + result);
-    this.initialize(result, coords);
-    this.animate = this.animate.bind(this);
-    this.animate();
+    this.pisoService.listPisosGeral().subscribe(pisos => {
+      for(let i=0;i<pisos.length;i++){
+        if(pisos[i].designacao == result.piso){
+          this.codigoEdificio = pisos[i].edificio;
+          console.log('Event: ' + result);
+          this.initialize(result, coords);
+          this.animate = this.animate.bind(this);
+          this.animate();
+          return;
+        }
+      }
+      });
+      
+
+
+    
   }
 
   listPisos(codigoEdificio: string) {

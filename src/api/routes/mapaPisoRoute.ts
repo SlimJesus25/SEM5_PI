@@ -16,7 +16,7 @@ export default (app: Router) => {
 
   const ctrl2 = Container.get(config.controllers.mapaPiso.name) as IMapaPisoController;
 
-    route.post('/createMapaPiso', authorize('GestorCampus'),
+    route.post('/createMapaPiso', /*authorize('GestorCampus'),*/
   celebrate({
     body: Joi.object({
       mapa : Joi.object().required(),
