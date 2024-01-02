@@ -29,7 +29,7 @@ export default (app: Router) => {
   (req, res, next) => ctrl.createPiso(req, res, next));
 
     // List pisos de um edifício.
-    route.get('/listPisos/:codigoEdificio', authorize('GestorCampus'),
+    route.get('/listPisos/:codigoEdificio', //authorize('GestorCampus', 'Utente'),
     celebrate({
       body: Joi.object({
       }),

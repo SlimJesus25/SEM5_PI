@@ -7,6 +7,7 @@ import ISalaService from '../services/IServices/ISalaService';
 import ISalaDTO from '../dto/ISalaDTO';
 
 import { Result } from "../core/logic/Result";
+import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class SalaController implements ISalaController /* TODO: extends ../core/infra/BaseController */ {
@@ -49,6 +50,23 @@ export default class SalaController implements ISalaController /* TODO: extends 
   public async listSalas(req: Request, res: Response, next: NextFunction){
     try {
       const salaOrError = await this.salaServiceInstance.listSalas() as Result<ISalaDTO[]>;
+
+      if (salaOrError.isFailure) {
+        return res.status(404).send("Erro: " + salaOrError.errorValue());
+      }
+
+      const salaDTO = salaOrError.getValue();
+      return res.json( salaDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
+  
+  public async listSalasPiso(req: Request, res: Response, next: NextFunction){
+    const designacao = req.params.codigoEdificio;
+    try {
+      const salaOrError = await this.salaServiceInstance.listSalasPisos(designacao) as Result<ISalaDTO[]>;
 
       if (salaOrError.isFailure) {
         return res.status(404).send("Erro: " + salaOrError.errorValue());

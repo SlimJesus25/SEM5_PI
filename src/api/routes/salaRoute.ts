@@ -43,4 +43,12 @@ export default (app: Router) => {
     }),
   }),
   (req, res, next) => ctrl.listSalas(req, res, next));
+  
+  route.get('/listSalasPiso/:designacao',
+  celebrate({
+    body: Joi.object({
+      
+    }),
+  }),
+  (req, res, next) => ctrl.listSalasPiso(req, res, next));
 };

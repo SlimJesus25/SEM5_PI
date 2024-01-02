@@ -8,6 +8,7 @@ import { Result } from "../core/logic/Result";
 import { SalaMap } from "../mappers/SalaMap";
 import { CategoriaSala } from '../domain/categoriaSala';
 import IPisoRepo from './IRepos/IPisoRepo';
+import IPisoDTO from '../dto/IPisoDTO';
 
 @Service()
 export default class SalaService implements ISalaService {
@@ -116,6 +117,26 @@ export default class SalaService implements ISalaService {
         throw e;
       }
   }
+  public async listSalasPisos(piso: string): Promise<Result<ISalaDTO[]>> {
+    try {
 
+        const salas = await this.salaRepo.findByPiso(piso);
+
+        if (salas == null){
+          return Result.fail<ISalaDTO[]>("Não existem registos de salas");
+        }
+        
+        let salasDTO : ISalaDTO[] = [];
+
+        for(const sala of salas){
+          const p = SalaMap.toDTO(sala) as ISalaDTO;
+          salasDTO.push(p);
+        }
+
+        return Result.ok<ISalaDTO[]>( salasDTO )
+      } catch (e) {
+        throw e;
+      }
+  }
 
 }
