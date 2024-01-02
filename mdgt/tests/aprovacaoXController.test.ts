@@ -908,5 +908,429 @@ describe('aprovacao controller', function () {
         sinon.assert.calledOnce(obj);
     });
 
+    /********************************************************************************
+     ********************************************************************************
+     ********************************************************************************
+     *************************** Teste ao requisito 470. ****************************
+     ********************************************************************************
+     ********************************************************************************
+     ********************************************************************************/
+
+     it('aprovacaoController for aprovar returns status 403 unsuccess case', async function () {
+        let req: Partial<Request> = {};
+        req.body = 'Erro: Tarefa não encontrada!'
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+        };
+
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoServiceInstace = Container.get("AprovacaoService");
+
+        const obj = sinon.stub(aprovacaoServiceInstace, "aceitarRequisicao").resolves(Result.fail<IAprovacaoDTO>("Erro: Tarefa não encontrada!"));
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstace as IAprovacaoService);
+        await ctrl.aceitarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 403);
+        sinon.assert.calledWith(obj, req.body);
+    });
+
+    it('aprovacaoController for rejeitar returns status 403 unsuccess case', async function () {
+        let req: Partial<Request> = {};
+        req.body = 'Erro: Tarefa não encontrada!'
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+        };
+
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoServiceInstace = Container.get("AprovacaoService");
+
+        const obj = sinon.stub(aprovacaoServiceInstace, "recusarRequisicao").resolves(Result.fail<IAprovacaoDTO>("Erro: Tarefa não encontrada!"));
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstace as IAprovacaoService);
+        await ctrl.recusarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 403);
+        sinon.assert.calledWith(obj, req.body);
+    });
+
+    it('aprovacaoController for aprovar returns status 200 success case', async function () {
+        let req: Partial<Request> = {};
+        req.body = {
+            "estado": "aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1",
+        };
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+        };
+
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoServiceInstace = Container.get("AprovacaoService");
+
+        let dto = req.body as IAprovacaoDTO;
+
+        const obj = sinon.stub(aprovacaoServiceInstace, "aceitarRequisicao").resolves(Result.ok<IAprovacaoDTO>(dto));
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstace as IAprovacaoService);
+        await ctrl.aceitarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        sinon.assert.calledOnce(obj);
+        sinon.assert.calledWith(obj, sinon.match(req.body));
+    });
+
+    it('aprovacaoController for rejeitar returns status 200 success case', async function () {
+        let req: Partial<Request> = {};
+        req.body = {
+            "estado": "não aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1",
+        };
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+        };
+
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoServiceInstace = Container.get("AprovacaoService");
+
+        let dto = req.body as IAprovacaoDTO;
+
+        const obj = sinon.stub(aprovacaoServiceInstace, "recusarRequisicao").resolves(Result.ok<IAprovacaoDTO>(dto));
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstace as IAprovacaoService);
+        await ctrl.recusarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        sinon.assert.calledOnce(obj);
+        sinon.assert.calledWith(obj, sinon.match(req.body));
+    });
+
+    it('aceitarRequisicao: aprovacaoController + aprovacaoService integration test using spy on aprovacaoService, unsuccess case tarefa already answered', async function () {
+        // Arrange
+        let body = {
+            "estado": "aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1"
+        };
+
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            json: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoRepoInstance = Container.get("AprovacaoRepo");
+        let tarefaRepoInstance = Container.get("TarefaRepo");
+
+        const tarefa = Tarefa.create({
+            "designacaoTarefa": "T2",
+            "tipoTarefa": "pick up and delivery",
+            "pontoInicial": "B203T",
+            "pontoTermino": "C101T"
+        }).getValue();
+
+        const b = {
+            estado: "aceite",
+            requisitante: "João Dias",
+            tipoDispositivo: "Polivalente",
+            tarefa: tarefa,
+        };
+
+        const aprovacao = Aprovacao.create(b).getValue();
+
+        sinon.stub(tarefaRepoInstance, "findByDesignacao").resolves(tarefa);
+
+        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(aprovacao);
+
+        let aprovacaoServiceInstance = Container.get("AprovacaoService");
+        const aprovacaoServiceSpy = sinon.spy(aprovacaoServiceInstance, "aceitarRequisicao");
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstance as IAprovacaoService);
+
+        // Act
+        await ctrl.aceitarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 403);
+    });
+
+    it('aceitarRequisicao: aprovacaoController + aprovacaoService integration test using spy on aprovacaoService, unsuccess case tarefa doesnt exist', async function () {
+        // Arrange
+        let body = {
+            "estado": "aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1"
+        };
+
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            json: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoRepoInstance = Container.get("AprovacaoRepo");
+        let tarefaRepoInstance = Container.get("TarefaRepo");
+
+        const tarefa = Tarefa.create({
+            "designacaoTarefa": "T3",
+            "tipoTarefa": "pick up and delivery",
+            "pontoInicial": "B203T",
+            "pontoTermino": "C101T"
+        }).getValue();
+
+        const b = {
+            estado: "aceite",
+            requisitante: "João Dias",
+            tipoDispositivo: "Polivalente",
+            tarefa: tarefa,
+        };
+
+        sinon.stub(tarefaRepoInstance, "findByDesignacao").resolves(null);
+        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(null);
+        sinon.stub(aprovacaoRepoInstance, "save").resolves(null);
+
+        let aprovacaoServiceInstance = Container.get("AprovacaoService");
+        const aprovacaoServiceSpy = sinon.spy(aprovacaoServiceInstance, "aceitarRequisicao");
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstance as IAprovacaoService);
+
+        // Act
+        await ctrl.aceitarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        //sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 403);
+        sinon.assert.calledOnce(aprovacaoServiceSpy);
+        //sinon.assert.calledWith(aprovacaoServiceSpy, sinon.match({ name: req.body.name }));
+    });
+
+
+    it('aprovarRequisicao: aprovacaoController + aprovacaoService integration test using spy on aprovacaoService, success', async function () {
+        // Arrange
+        let body = {
+            "estado": "aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1",
+        };
+
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            json: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoRepoInstance = Container.get("AprovacaoRepo");
+        let tarefaRepoInstance = Container.get("TarefaRepo");
+
+        const tarefa = Tarefa.create({
+            "designacaoTarefa": "T1",
+            "tipoTarefa": "pick up and delivery",
+            "pontoInicial": "B203T",
+            "pontoTermino": "C101T"
+        }).getValue();
+
+        const aprovacao = Aprovacao.create({
+            estado: "",
+            requisitante: "João Dias",
+            tipoDispositivo: "Polivalente",
+            tarefa: tarefa,
+        }).getValue();
+
+        sinon.stub(tarefaRepoInstance, "findByDesignacao").resolves(tarefa);
+
+        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(aprovacao);
+
+        // Não interessa o que retorna o null, o serviço não dá uso e desta forma é possível assegurar que funciona corretamente.
+        sinon.stub(aprovacaoRepoInstance, "save").resolves(aprovacao);
+
+        let aprovacaoServiceInstance = Container.get("AprovacaoService");
+        const aprovacaoServiceSpy = sinon.spy(aprovacaoServiceInstance, "aceitarRequisicao");
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstance as IAprovacaoService);
+
+        // Act
+        await ctrl.aceitarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        sinon.assert.calledOnce(res.json);
+        sinon.assert.calledWith(res.json, sinon.match({
+            "estado": "aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1",
+        }));
+        sinon.assert.calledOnce(aprovacaoServiceSpy);
+        //sinon.assert.calledTwice(roleServiceSpy);
+        sinon.assert.calledWith(aprovacaoServiceSpy, sinon.match({ name: req.body.name }));
+    });
+
+    it('recusarRequisicao: aprovacaoController + aprovacaoService integration test using spy on aprovacaoService, success', async function () {
+        // Arrange
+        let body = {
+            "estado": "não aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1"
+        };
+
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            json: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoRepoInstance = Container.get("AprovacaoRepo");
+        let tarefaRepoInstance = Container.get("TarefaRepo");
+
+        const tarefa = Tarefa.create({
+            "designacaoTarefa": "T1",
+            "tipoTarefa": "pick up and delivery",
+            "pontoInicial": "B203T",
+            "pontoTermino": "C101T"
+        }).getValue();
+
+        const b = {
+            estado: "",
+            requisitante: "João Dias",
+            tipoDispositivo: "Polivalente",
+            tarefa: tarefa,
+        };
+
+        const aprovacao = Aprovacao.create(b).getValue();
+
+        sinon.stub(tarefaRepoInstance, "findByDesignacao").resolves(tarefa);
+
+        sinon.stub(aprovacaoRepoInstance, "findByTarefaName").resolves(aprovacao);
+
+        // Não interessa o que retorna o null, o serviço não dá uso e desta forma é possível assegurar que funciona corretamente.
+        sinon.stub(aprovacaoRepoInstance, "save").resolves(aprovacao);
+
+        let aprovacaoServiceInstance = Container.get("AprovacaoService");
+        const aprovacaoServiceSpy = sinon.spy(aprovacaoServiceInstance, "recusarRequisicao");
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstance as IAprovacaoService);
+
+        // Act
+        await ctrl.recusarRequisicao(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        sinon.assert.calledOnce(res.json);
+        sinon.assert.calledWith(res.json, sinon.match({
+            "estado": "não aceite",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1"
+        }));
+        sinon.assert.calledOnce(aprovacaoServiceSpy);
+        //sinon.assert.calledTwice(roleServiceSpy);
+        sinon.assert.calledWith(aprovacaoServiceSpy, sinon.match({ name: req.body.name }));
+    });
+
+    /********************************************************************************
+     ********************************************************************************
+     ********************************************************************************
+     *************************** Teste ao requisito 480. ****************************
+     ********************************************************************************
+     ********************************************************************************
+     ********************************************************************************/
+    
+
+    it('listarRequisicoesNaoAprovadas: aprovacaoController + aprovacaoService integration test using spy on aprovacaoService, success', async function () {
+        // Arrange
+        let body = {
+        };
+
+        let req: Partial<Request> = {};
+        req.body = body;
+
+        let res: Partial<Response> = {
+            json: sinon.spy()
+        };
+        let next: Partial<NextFunction> = () => { };
+
+        let aprovacaoRepoInstance = Container.get("AprovacaoRepo");
+        let tarefaRepoInstance = Container.get("TarefaRepo");
+
+        const tarefa = Tarefa.create({
+            "designacaoTarefa": "T1",
+            "tipoTarefa": "pick up and delivery",
+            "pontoInicial": "B203T",
+            "pontoTermino": "C101T"
+        }).getValue();
+
+        const aprovacao = Aprovacao.create({
+            estado: "pendente",
+            requisitante: "João Dias",
+            tipoDispositivo: "Polivalente",
+            tarefa: tarefa,
+        }).getValue();
+
+        const tarefa2 = Tarefa.create({
+            "designacaoTarefa": "T2",
+            "tipoTarefa": "pick up and delivery",
+            "pontoInicial": "C103T",
+            "pontoTermino": "C105T"
+        }).getValue();
+
+        const aprovacao2 = Aprovacao.create({
+            estado: "pendente",
+            requisitante: "Geremias da Silva",
+            tipoDispositivo: "Polivalente",
+            tarefa: tarefa,
+        }).getValue();
+
+        let aprovacoes : Aprovacao[] = [aprovacao, aprovacao2];
+
+        sinon.stub(aprovacaoRepoInstance, "listarRequisicoesNaoAprovadas").resolves(aprovacoes);
+
+        let aprovacaoServiceInstance = Container.get("AprovacaoService");
+        const aprovacaoServiceSpy = sinon.spy(aprovacaoServiceInstance, "listarRequisicoesNaoAprovadas");
+
+        const ctrl = new AprovacaoController(aprovacaoServiceInstance as IAprovacaoService);
+
+        // Act
+        await ctrl.listarTarefasNaoAprovadas(<Request>req, <Response>res, <NextFunction>next);
+
+        // Assert
+        sinon.assert.calledOnce(res.json);
+        sinon.assert.calledWith(res.json, sinon.match([sinon.match({
+            "estado": "pendente",
+            "requisitante": "João Dias",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T1"
+        }), sinon.match({
+            "estado" : "pendente",
+            "requisitante" : "Geremias da Silva",
+            "tipoDispositivo": "Polivalente",
+            "tarefa": "T2"
+        })]));
+        sinon.assert.calledOnce(aprovacaoServiceSpy);
+        //sinon.assert.calledTwice(roleServiceSpy);
+        sinon.assert.calledWith(aprovacaoServiceSpy, sinon.match({ name: req.body.name }));
+    });
+
 });
 

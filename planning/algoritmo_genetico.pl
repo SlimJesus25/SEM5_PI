@@ -173,11 +173,11 @@ btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 % Numero de geracoes maximo atingido.
 gera_geracao(G,G,Pop,_):-!,
-	write('Geracao '), write(G), write(':'), nl, write(Pop), nl,
+	%write('Geracao '), write(G), write(':'), nl, write(Pop), nl,
 	Pop = [Lista*Tempo|_],
 	(retractall(bto(_,_)),!;true),
-	asserta(bto(Lista, Tempo)),
-	write('Numero de geracoes maximo atingido!').
+	asserta(bto(Lista, Tempo)).
+	%write('Numero de geracoes maximo atingido!').
 	
 % Numero de estabilizacao maximo atingido.
 gera_geracao(N,_,Pop,[_,_,X]):-

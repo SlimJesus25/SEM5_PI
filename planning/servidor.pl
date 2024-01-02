@@ -213,8 +213,8 @@ calculo2(Tarefa, [[TDest, _, Destino]|T], Atual, Ind, [H2|T2]):-
   Tarefa = [TOrig, Origem, _],
 
   %trace,
-  ponto_acesso(Origem, ColO, LinO, PisoO),
-  ponto_acesso(Destino, ColD, LinD, PisoD),
+  (ponto_acesso(Origem, ColO, LinO, PisoO),!;elev_pos(Origem, ColO, LinO, PisoO),!;corr_pos(Origem, ColO, LinO, PisoO)),
+  (ponto_acesso(Destino, ColD, LinD, PisoD),!;elev_pos(Destino, ColD, LinD, PisoD),!;corr_pos(Destino, ColD, LinD, PisoD)),
 
   melhor_caminho_pisos(PisoO, PisoD, Cam, PisosPer),
 
