@@ -96,11 +96,11 @@ Para solucionar este problema, foi criado um novo agregado de utilizadores e um 
 
 ##### 3.1.2.1 Nível 1
 
-![vista processo 1](../vp1.svg "Vista processo - nível 1")
+![vista processo 1](../a&a/vp1.svg "Vista processo - nível 1")
 
 ##### 3.1.2.2 Nível 2
 
-![vista processo 2](../vp2.svg "Vista processo - nível 2")
+![vista processo 2](../a&a/vp2.svg "Vista processo - nível 2")
 
 ##### 3.1.2.3 Nível 3
 
@@ -130,7 +130,7 @@ Para solucionar este problema, foi criado um novo agregado de utilizadores e um 
 
 ##### 3.1.5.1 Nível 2
 
-![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+![vista implementacao 2](/docs/implementation_view/sprint3/iv2.svg "Vista implementação - nível 2")
 
 ##### 3.1.5.1 Nível 3
 

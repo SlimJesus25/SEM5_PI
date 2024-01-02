@@ -90,7 +90,7 @@ Para solucionar este problema, foi criado um novo agregado de utilizadores e um 
 
 #### 3.1.1 Excerto de domínio
 
-![excerto dominio](ed.svg "mdgt/DM.puml")
+![excerto dominio](/authentication/DM.svg "authentication/DM.svg")
 
 #### 3.1.2 Vista de processo
 
@@ -118,7 +118,7 @@ Para solucionar este problema, foi criado um novo agregado de utilizadores e um 
 
 ##### 3.1.3.3 Nível 3
 
-![vista logica 3](/docs/logical_view/sprint3/level3/mdgd.svg "Vista lógica - nível 3")
+![vista logica 3](/docs/logical_view/sprint3/level3/A&A.svg "Vista lógica - nível 3")
 
 #### 3.1.4 Vista de cenários
 
@@ -130,7 +130,7 @@ Para solucionar este problema, foi criado um novo agregado de utilizadores e um 
 
 ##### 3.1.5.1 Nível 2
 
-![vista implementacao 2](/docs/implementation_view/iv2.svg "Vista implementação - nível 2")
+![vista implementacao 2](/docs/implementation_view/sprint3/iv2.svg "Vista implementação - nível 2")
 
 ##### 3.1.5.1 Nível 3
 
