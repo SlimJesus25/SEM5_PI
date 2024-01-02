@@ -8,8 +8,32 @@
 
 ### 2.1 Identificar o problema
 
+Todos os direitos que o utilizador usufrui devem estar mencionados explicitamente na política de privacidade da empresa RobDroneGo
+
 ### 2.2 Respostas do Cliente
 
 ## 3. Desenho
 
-Os direitos do titular são aplicados se seguirem os pontos apresentados no artigo 12º, ao concretizarem a transparência da informação e comunicação. O cumprimento deste artigo pode ser verificado através dos pontos a seguir mencionados, relativos aos direitos do titular, consultar, alterar, apagar, e opor-se a este tratamento dos mesmos. Relativamente ao direito de consultar, como o registo dos dados é realizado sem a presença do titular, é necessário apresentar um conjunto de informações na fase em que o titular apresenta consentimento, e assim cumprindo o apresentado no artigo 14º. O titular destes mesmos dados pode consultá-los a qualquer momento, e assim apresentar ao responsável (a empresa “RobDroneGO”) se necessário alguma irregularidade, tal como apresentado no artigo 15º ponto 1. Sendo assim, tendo em conta o ponto anterior, leva ao segundo direito do titular dos dados, relacionado com a alteração dos mesmos, de acordo com o artigo 16º, que refere que o titular dos dados tem o direito de apresentar ao responsável um pedido de retificação e alteração dos seus dados pessoais incompletos, por meio de uma declaração adicional. O terceiro direito do titular está relacionado com o apagamento dos dados, permitindo ao mesmo obter do responsável já identificado acima pelo tratamento do apagamento dos seus dados pessoais. Contudo, os pontos 1 e 2 do artigo 17º não podem prevalecer no caso de uma obrigatoriedade contratual. Sendo assim, podem exercer deste direito quando: • Término do contrato no seu prazo estipulado; • Rescisão do contrato a qualquer momento, sem prejudicar o titular, evidenciando o direito de oposição conforme delineado no artigo 21.º, pontos 1, 2 e 3; • Uso indevido de quaisquer dados mencionados no processo de consentimento; • Utilização indevida de dados não especificados no processo de consentimento. Após a exerção deste direito, o responsável mencionado fica encarregue de apagar todos os dados do titular relacionados com a organização, tal como consta no artigo 17º ponto 2, e assim notificar todas as mudanças efetuadas ao titular dos dados, tal como pressuposto no artigo 19º.
+ 1. Direito à Informação (Right to Information)
+O titular dos dados tem o direito de ser informado sobre como os seus dados pessoais são recolhidos, processados e utilizados pela RobDroneGO. Este direito é essencial para garantir a transparência no tratamento de dados.
+
+2. Direito de Acesso (Right of Access)
+O titular dos dados tem o direito de aceder aos seus dados pessoais que são mantidos pela RobDroneGO. Isso inclui a possibilidade de solicitar informações sobre quais dados específicos estão a ser processados e como estão a ser utilizados.
+
+3. Direito de Retificação (Right to Rectification)
+Caso os dados pessoais estejam incorretos ou incompletos, o titular dos dados tem o direito de solicitar a retificação ou atualização desses dados.
+
+4. Direito de Apagamento (Right to Erasure)
+O titular dos dados pode solicitar a eliminação dos seus dados pessoais mantidos pela RobDroneGO. No entanto, existem limitações a este direito, e a empresa só pode reter os dados pelo tempo necessário para os fins descritos.
+
+5. Direito à Portabilidade dos Dados (Right to Data Portability)
+O titular dos dados tem o direito de receber os seus dados pessoais num formato estruturado, de uso comum e de leitura automática, e pode transmitir esses dados a outra entidade, se desejado.
+
+6. Direito de Oposição (Right to Object)
+O titular dos dados tem o direito de opor-se ao processamento dos seus dados pessoais em certas circunstâncias.
+
+7. Direito de Limitação do Processamento (Right to Restriction of Processing)
+O titular dos dados pode solicitar a restrição do processamento dos seus dados em determinadas situações. Isso significa que a RobDroneGO pode armazenar os dados, mas não os processar além do necessário.
+
+8. Direito de Não Ser Sujeito a Decisões Automatizadas (Right Not to Be Subject to Automated Decision-Making)
+O titular dos dados tem o direito de não ser sujeito a decisões baseadas unicamente no processamento automatizado, incluindo a criação de perfis, que tenham efeitos significativos sobre ele.
