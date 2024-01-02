@@ -38,7 +38,8 @@ export class TarefaCreateComponent implements OnInit {
     private pisoService: PisoService,
     private snackBar: MatSnackBar
   ) { 
-    this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
+    this.salaService.getSalas().subscribe(salas => this.origens = salas.map(sala => sala.designacao));
+    this.salaService.getSalas().subscribe(salas => this.destinos = salas.map(sala => sala.designacao));
   }
 
 
@@ -49,21 +50,6 @@ export class TarefaCreateComponent implements OnInit {
   ngOnInit(): void {
   }
   
-  submitEdificio(){
-    this.pisoService.listPisos(this.tarefa.edificio).subscribe(pisos => this.pisoInicials = pisos.map(piso => piso.designacao));
-    this.pisoService.listPisos(this.tarefa.edificio).subscribe(pisos => this.pisoFinals = pisos.map(piso => piso.designacao));
-  }
-  
-  submitPisoInicial(){
-
-    this.salaService.getSalasPiso(this.tarefa.pisoInicial).subscribe(salas => this.origens = salas.map(sala => sala.designacao));
-
-  }
-  
-  submitPisoFinal(){
-    this.salaService.getSalasPiso(this.tarefa.pisoFinal).subscribe(salas => this.destinos = salas.map(sala => sala.designacao));
-  }
-
   showPontoTerminoField(): boolean {
     const cond = this.tarefa.tipoTarefa === this.options[0]
     this.semDestino = cond;
