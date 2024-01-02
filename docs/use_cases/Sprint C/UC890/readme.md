@@ -34,3 +34,7 @@ Relativamente ao histórico de login dos utilizadores e à encriptação de pass
 Para acedermos aos logs de autenticação acedemos a /var/log/auth.log
  
 A encriptação de passwords é feita pelo sistema também, encontra-se em etc/shadow:
+
+Para além destas regras implementadas, no nosso projeto também aplicamos o parâmetro de autorização de acesso, onde cada utilizador só tem acesso às funcionalidades que necessita consoante a sua função, ou seja, uma Role.
+ 
+Já para as políticas de acesso, estabelece-se algumas regras para a utilização dos recursos na organização, de entre elas destacam-se, por exemplo, não utilizar em circunstância alguma a conta de outro funcionário da empresa; se encontrar algum problema técnico, informar um administrador para que este possa contactar a equipa de desenvolvimento do projeto; Em caso de algum problema de conexão com um dos servidores, contactar a equipa de manutenção.
