@@ -39,15 +39,15 @@ O requisito foi repartido por listagem.
 
 ###### Tipo de dispositivo
 
-![vista processo 2](vp2a.svg "Vista processo - nível 2")
+![vista processo 2](../mdgt/vp2a.svg "Vista processo - nível 2")
 
 ###### Estado
 
-![vista processo 2](vp2b.svg "Vista processo - nível 2")
+![vista processo 2](../mdgt/vp2b.svg "Vista processo - nível 2")
 
 ###### Utente
 
-![vista processo 3](vp2c.svg "Vista processo - nível 3")
+![vista processo 3](../mdgt/vp2c.svg "Vista processo - nível 3")
 
 ##### 3.1.2.3 Nível 3
 
