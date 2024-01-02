@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 using RobDroneGO.Domain.Shared;
 
@@ -34,6 +35,11 @@ namespace RobDroneGO.Domain.Users
                 throw new BusinessRuleValidationException("Nif tem de ter 9 digitos");
             }
             this.NIF = nif;
+        }
+
+        public static implicit operator UserNIF(string v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

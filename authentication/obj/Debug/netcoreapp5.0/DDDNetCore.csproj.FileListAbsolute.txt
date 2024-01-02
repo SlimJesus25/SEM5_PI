@@ -97,3 +97,9 @@ C:\Users\Mateus Fernandes\Desktop\ISEP\SEM5_PI\authentication\obj\Debug\netcorea
 C:\Users\Mateus Fernandes\Desktop\ISEP\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\ref\DDDNetCore.dll
 C:\Users\Mateus Fernandes\Desktop\ISEP\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.pdb
 C:\Users\Mateus Fernandes\Desktop\ISEP\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.genruntimeconfig.cache
+C:\Users\Gabriel\Documents\_3oAno\SEM5_PIv3\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.csproj.AssemblyReference.cache
+C:\Users\Gabriel\Documents\_3oAno\SEM5_PIv3\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Gabriel\Documents\_3oAno\SEM5_PIv3\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.AssemblyInfoInputs.cache
+C:\Users\Gabriel\Documents\_3oAno\SEM5_PIv3\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.AssemblyInfo.cs
+C:\Users\Gabriel\Documents\_3oAno\SEM5_PIv3\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.csproj.CoreCompileInputs.cache
+C:\Users\Gabriel\Documents\_3oAno\SEM5_PIv3\SEM5_PI\authentication\obj\Debug\netcoreapp5.0\DDDNetCore.MvcApplicationPartsAssemblyInfo.cache

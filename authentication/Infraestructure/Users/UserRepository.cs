@@ -33,6 +33,7 @@ namespace RobDroneGO.Infrastructure.Users
 
         public async Task<User> GetByEmailAsync(UserEmail email)
         {
+            //estado tem de ser diferente de rejeitado
             return await this.context.Users.Where(x => email.Email.Equals(x.Email.Email)).FirstAsync();
         }
 
