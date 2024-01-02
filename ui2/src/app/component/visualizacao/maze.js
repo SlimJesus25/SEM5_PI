@@ -178,6 +178,12 @@ export default class Maze {
         this.onLoad(parameters);
     }
 
+    cartesianToCellDecimal(position) {
+        let first = position.z / this.scale.z + this.size.height / 2.0 
+        let second = position.x / this.scale.x + this.size.width / 2.0 
+        return [ first.toFixed(1), second.toFixed(1)];
+    }
+
     // Convert cell [row, column] coordinates to cartesian (x, y, z) coordinates
     cellToCartesian(position) {
         return new THREE.Vector3((position[1] - this.size.width / 2.0 + 0.5) * this.scale.x, 0.0, (position[0] - this.size.height / 2.0 + 0.5) * this.scale.z)

@@ -271,7 +271,7 @@ export default class ThumbRaiser {
         this.buildHelpPanel();
 
         // Set the active view camera (fixed view)
-        this.setActiveViewCamera(this.fixedViewCamera);
+        this.setActiveViewCamera(this.thirdPersonViewCamera);
 
         // Arrange viewports by view mode
         this.arrangeViewports(this.multipleViewsCheckBox.checked);
@@ -319,6 +319,41 @@ export default class ThumbRaiser {
         this.activeElement = document.activeElement;
 
         this.active2 = false;
+
+        this.arrayEstatico = [
+            [                    
+                [5, 5],
+                [5, 6],
+                [5, 7],
+                [6, 8],
+                [6, 9],
+                [6, 10],
+                [6, 11],
+                [6, 12],
+                [6, 13],
+                [7, 14],
+                [7, 15],
+                [7, 16],
+                [7, 17],
+                [7, 18], // porta
+                [8, 18],
+                [9, 18],
+                [8, 18],
+                [7, 18], // porta
+                [7, 19],
+                [7, 20],
+                [7, 21],
+                [7, 22],
+                [7, 23], // elevador
+                [8, 23],
+            ]
+        ]
+
+        this.arrayEstaticoFloor = 0;
+
+        this.it = 0;
+
+        this.autoPilot = false;
     }
 
     buildHelpPanel() {
@@ -719,6 +754,97 @@ export default class ThumbRaiser {
             }
         }
         else {
+
+            // Piloto automático.
+            if(this.autoPilot){
+                if(!this.arrayEstatico.length > 0){
+                    this.autoPilot = false;
+                }else{
+                    let actualPos = this.maze.cartesianToCellDecimal(this.player.position);
+
+                    if (actualPos[0] == this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5 &&
+                        actualPos[1] == this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5) { 
+
+                        this.player.keyStates.forward = false;
+                        this.player.keyStates.backward = false;
+                        this.it++
+
+                        if (this.arrayEstatico[this.arrayEstaticoFloor][this.it] === undefined) {
+                            this.arrayEstaticoFloor++
+                            this.it = 0
+
+                            if (this.arrayEstatico[this.arrayEstaticoFloor] === undefined) {
+                                this.autoPilot = false;
+                                document.addEventListener("keydown", this.keydownListener);
+                                document.addEventListener("keyup", this.keyupListener);
+                            }
+                        }
+
+                    } else if (this.collision(this.player.position)) {
+                        this.player.direction = 180
+                        this.player.keyStates.forward = true;
+
+                    } else if (actualPos[1] != this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5 && 
+                         actualPos[0] != this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5) {
+
+                        if (actualPos[0] != this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5) { 
+                            if (actualPos[0] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5) { 
+                                this.player.direction = 0
+                                this.player.keyStates.forward = true;
+                            } else {
+                                this.player.direction = 180
+                                this.player.keyStates.forward = true;
+                            }
+                        }
+
+
+                        if (actualPos[1] != this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5) { 
+                            if (actualPos[1] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5) { 
+                                this.player.direction = 90
+                                this.player.keyStates.forward = true;
+                            } else {
+                                this.player.direction = 270
+                                this.player.keyStates.forward = true;
+                            }
+                        }
+
+                    } else if (actualPos[0] == this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5) { 
+                        if (actualPos[1] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5) {  
+                            this.player.direction = 90
+                            this.player.keyStates.forward = true;
+                        } else {
+                            this.player.direction = 270
+                            this.player.keyStates.forward = true;
+                        }
+                    } else if (actualPos[1] == this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5) { 
+                        if (actualPos[0] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5) {        
+                            this.player.direction = 0
+                            this.player.keyStates.forward = true;
+                        } else {
+                            this.player.direction = 180
+                            this.player.keyStates.forward = true;
+                        }
+                    } else if (actualPos[0] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5) { 
+                        if (actualPos[1] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5) {        
+                            this.player.direction = 90
+                            this.player.keyStates.forward = true;
+                        } else {
+                            this.player.direction = 270
+                            this.player.keyStates.forward = true;
+                        }
+                    } else if (actualPos[1] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][1] + 0.5) { 
+                        if (actualPos[0] < this.arrayEstatico[this.arrayEstaticoFloor][this.it][0] + 0.5) {        
+                            this.player.direction = 0
+                            this.player.keyStates.forward = true;
+                        } else {
+                            this.player.direction = 180
+                            this.player.keyStates.forward = true;
+                        }
+                    }
+
+                }
+            }
+
             // Update the model animations
             const deltaT = this.clock.getDelta();
             this.animations.update(deltaT);
@@ -727,6 +853,12 @@ export default class ThumbRaiser {
 
             // Update the player
             if (!this.animations.actionInProgress) {
+
+                window.addEventListener('keydown', (event) => {
+                    if ((event.key === 'a' || event.key === 'A')){
+                        this.autoPilot = !this.autoPilot;
+                    }
+                });
 
 
                 let infoElement = document.getElementById('info');
@@ -740,8 +872,9 @@ export default class ThumbRaiser {
                 // let elevatorElement = document.getElementById('elevatorPainel');
 
                 let coords;
+                let coords2;
 
-                if ((coords = this.maze.foundElevador(this.player.position)) != false && infoElement.style.visibility != 'visible') {
+                if (((coords = this.maze.foundElevador(this.player.position)) != false && infoElement.style.visibility != 'visible') || (coords2 = this.maze.foundElevador(this.player.position) && this.autoPilot)) {
 
                     infoElement.innerHTML = 'Elevador detetado. Pressiona \'L\'!';
                     infoElement.style.visibility = 'visible';
@@ -750,6 +883,23 @@ export default class ThumbRaiser {
 
                     let mapaPisoSvc = this.mapaPisoService;
                     let dropdownContainer;
+
+                    if(this.autoPilot && !active){
+                        active = true;
+                        const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso("B3TT").subscribe(mapaPiso => {
+                            coords = [mapaPiso.elevador[0][2] - 1, mapaPiso.elevador[0][1] - 1];
+                            //window.alert('Mapa piso: ' + coords);
+                            const eventDetail = {
+                                mapaPiso: mapaPiso,
+                                initialCoords: coords
+                            }
+
+                            // Lança o evento (que do lado do component há um método à espera).
+                            const event = new CustomEvent('teletransporte', { detail: eventDetail });
+                            window.dispatchEvent(event);
+
+                        });
+                    }
 
                     window.addEventListener('keydown', (event) => {
                         if ((event.key === 'l' || event.key === 'L') && !active) {
