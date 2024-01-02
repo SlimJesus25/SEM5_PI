@@ -56,7 +56,6 @@
   <button mat-button *ngIf="role === 'GestorTarefas'" [matMenuTriggerFor]="gestorTarefasMenu">Gestor Tarefa</button>
   <mat-menu #gestorTarefasMenu="matMenu">
     <button mat-menu-item (click)="calcularCaminho()">Obter percurso entre dois edificios</button>
-    <button mat-menu-item (click)="createPiso()">Analise de complexidade</button>
     <button mat-menu-item [matMenuTriggerFor]="tarefasMenu">Tarefas</button>
   </mat-menu>
   
