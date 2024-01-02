@@ -41,9 +41,9 @@ Para solucionar este problema, foi implementada uma framework em dotnet para o m
 
 ![vista processo 2](../UC1320/Nivel%202/vp2.svg "Vista processos - nível 2")
 
-#### #3.1.1.3  Nível 3
+#### #3.1.1.3  Máquina de Estados
 
-![vista logica 3](../UC1320/Nivel%203/vp3.svg "Vista processos - nível 3")
+![vista logica 3](../UC1320/me.svg "Máquina de Estados")
 
 #### 3.1.2 Vista Lógica
 
