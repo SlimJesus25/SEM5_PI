@@ -6,7 +6,7 @@ export default interface IMapaPisoFinal {
     };
 
     map: number[][];
-    exits: number[][];
+    exits: string [][];
     elevators: number[][];
     rooms: number[][];
     exitLocation: number[];

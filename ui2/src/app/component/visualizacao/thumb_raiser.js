@@ -154,13 +154,14 @@ import cloneDeep from 'lodash/cloneDeep';
  */
 
 export default class ThumbRaiser {
-    constructor(pisoService, edificioService, mapaPisoService, elevadorService, mapaPiso, canvas, generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
+    constructor(pisoService, edificioService, mapaPisoService, elevadorService, passagemService, mapaPiso, canvas, generalParameters, mazeParameters, playerParameters, lightsParameters, fogParameters, fixedViewCameraParameters, firstPersonViewCameraParameters, thirdPersonViewCameraParameters, topViewCameraParameters, miniMapCameraParameters) {
         //const userInteractionInstance = new UserInterface();
         //this.mazeParameters = merge({}, userInteractionInstance.mazeData, mazeParameters);
         this.pisoService = pisoService;
         this.edificioService = edificioService;
         this.mapaPisoService = mapaPisoService;
         this.elevadorService = elevadorService;
+        this.passagemService = passagemService;
         this.generalParameters = merge({}, generalData, generalParameters);
         this.mapaPiso = mapaPiso;
         this.mazeParameters = merge({}, mazeParameters);
@@ -664,22 +665,19 @@ export default class ThumbRaiser {
     }
 
     collisionDoorHorizontal(position) {
-        return this.maze.distanceToWestDoorHorizontal(position) < this.player.radius || this.maze.distanceToEastDoorHorizontal(position) < this.player.radius || this.maze.distanceToNorthDoorHorizontal(position) < this.player.radius || this.maze.distanceToSouthDoorHorizontal(position) < this.player.radius;
-        return this.maze.distanceToWest(position,7) < this.player.radius || this.maze.distanceToEast(position,7) < this.player.radius || this.maze.distanceToNorth(position,7) < this.player.radius || this.maze.distanceToSouth(position,7) < this.player.radius;
+        return this.maze.distanceToWest(position, 7) < this.player.radius || this.maze.distanceToEast(position, 7) < this.player.radius || this.maze.distanceToNorth(position, 7) < this.player.radius || this.maze.distanceToSouth(position, 7) < this.player.radius;
     }
 
     collisionDoorVertical(position) {
-        return this.maze.distanceToWestDoorVertical(position) < this.player.radius || this.maze.distanceToEastDoorVertical(position) < this.player.radius || this.maze.distanceToNorthDoorVertical(position) < this.player.radius || this.maze.distanceToSouthDoorVertical(position) < this.player.radius;
-        return this.maze.distanceToWest(position,6) < this.player.radius || this.maze.distanceToEast(position,6) < this.player.radius || this.maze.distanceToNorth(position,6) < this.player.radius || this.maze.distanceToSouth(position,6) < this.player.radius;
+        return this.maze.distanceToWest(position, 6) < this.player.radius || this.maze.distanceToEast(position, 6) < this.player.radius || this.maze.distanceToNorth(position, 6) < this.player.radius || this.maze.distanceToSouth(position, 6) < this.player.radius;
     }
 
     collisionElevatorHorizontal(position) {
-        return this.maze.distanceToWest(position,5) < this.player.radius || this.maze.distanceToEast(position,5) < this.player.radius || this.maze.distanceToNorth(position,5) < this.player.radius || this.maze.distanceToSouth(position,5) < this.player.radius;
-        return this.maze.distanceToWest(position,5) < this.player.radius || this.maze.distanceToEast(position,5) < this.player.radius || this.maze.distanceToNorth(position,5) < this.player.radius || this.maze.distanceToSouth(position,5) < this.player.radius;
+        return this.maze.distanceToWest(position, 5) < this.player.radius || this.maze.distanceToEast(position, 5) < this.player.radius || this.maze.distanceToNorth(position, 5) < this.player.radius || this.maze.distanceToSouth(position, 5) < this.player.radius;
     }
 
     collisionElevatorVertical(position) {
-        return this.maze.distanceToWest(position,4) < this.player.radius || this.maze.distanceToEast(position,4) < this.player.radius || this.maze.distanceToNorth(position,4) < this.player.radius || this.maze.distanceToSouth(position,4) < this.player.radius;
+        return this.maze.distanceToWest(position, 4) < this.player.radius || this.maze.distanceToEast(position, 4) < this.player.radius || this.maze.distanceToNorth(position, 4) < this.player.radius || this.maze.distanceToSouth(position, 4) < this.player.radius;
     }
 
 
@@ -796,7 +794,7 @@ export default class ThumbRaiser {
                                                     let selectedPiso = dropdown.value;
 
                                                     const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
-                                                        coords = [mapaPiso.elevador[0][2]-1, mapaPiso.elevador[0][1]-1];
+                                                        coords = [mapaPiso.elevador[0][2] - 1, mapaPiso.elevador[0][1] - 1];
                                                         window.alert('Mapa piso: ' + coords);
                                                         const eventDetail = {
                                                             mapaPiso: mapaPiso,
@@ -859,56 +857,47 @@ export default class ThumbRaiser {
                 // TODO: No componente que instancia o thumb raiser, deve ser injetado o serviço de passagens para passa-lo para aqui e verificar
                 // qual o piso que a passagem leva.
                 // O parametro que recebe o mapa piso do thumb raiser vai ter que receber mais coisas, nomeadamente, os elevadores e passagens (elevators, exits).
-                if (this.maze.foundPassagem(this.player.position) != false) {
-                    // Teletransportar imediatamente.
-                    console.log(this.mazeParameters.elevators);
-                    this.mazeParameters.elevators;
-                    this.elevadorService
-                    // 1º Pesquisar passagens e filtrar a que está presente.
-                    this.passagemService
-                    // 2º Pesquisar pelo mapa piso associado.
-                    this.mapaPisoService.getMapasPiso().subscribe(mapas => {
+                let coordsPiso;
 
-                    });
+                if ((coordsPiso = this.maze.foundPassagem(this.player.position)) != false) {
+                    let passagens = [];
 
-                }
-                //this.doorPosition = this.maze.foundPorta(this.player.position);
-                /*this.doorPosition = this.maze.foundPorta(this.player.position);
-                if (this.doorPosition != false) {
-                    for (let porta of this.mapPortas.values()) {
-                        //console.log("Posição x da porta do momento: " + this.doorPosition[0] + " Posição z da porta do momento: " + this.doorPosition[1]);
-                        //console.log("Posição x da porta do array: " + porta.position.x + " Posição z da porta do array: " + porta.position.z);
-                        let valueX = porta.position.x - this.doorPosition[0];
-                        let valueZ = porta.position.z - this.doorPosition[1];
-                        let XPortaAtual = porta.position.x;
-                        let ZPortaAtual = porta.position.z - 0.5;
-                        if (valueX < 0.5 && valueZ < 0.5) {
-                            porta.state = true;
-                            if (porta.state) {
-                                const initialPosition = { x: porta.position.x };
-                                const targetPosition = { x: -0.5 };
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 2000)
-                                    .easing(TWEEN.Easing.Quadratic.Out)
-                                    .onUpdate(() => {
-                                        porta.position.x = initialPosition.x;
-                                    })
-                                    .onComplete(() => {
-                                        // Animation complete, create another Tween to go back to the original position
-                                        const reverseTween = new TWEEN.Tween(initialPosition)
-                                            .to({ x: 0 }, 2000)  // Adjust duration as needed
-                                            .easing(TWEEN.Easing.Quadratic.InOut)
-                                            .onUpdate(() => {
-                                                porta.position.x = XPortaAtual;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                    let mapaPisoSvc = this.mapaPisoService;
+                    this.passagemService.getPassagens().subscribe(passagensGeral => {
+                        passagensGeral.forEach(passagem => {
+                            if (passagem.pisoA === this.mazeParameters.mazeData.piso || passagem.pisoB === this.mazeParameters.mazeData.piso) {
+                                passagens.push(passagem);
                             }
-                        }
-                    }
-                }*/
+                        });
+                        let selectedPiso;
+                        let coordsCorredor;
+                        for (let i = 0; i < passagens.length; i++) {
+                            if (passagens[i].designacao === this.mazeParameters.mazeData.exits[i][0]) {
+                                coordsCorredor = this.maze.cartesianToCell(this.player.position);
+                                if (passagens[i].pisoA === this.mazeParameters.mazeData.piso && this.mazeParameters.mazeData.exits[i][1] === coordsCorredor[0] && this.mazeParameters.mazeData.exits[i][2] === coordsCorredor[2]){
+                                    selectedPiso = passagens[i].pisoB;
+                                }
+                                else {
+                                    selectedPiso = passagens[i].pisoA;
+                                }
+                            }
 
+                        }
+                        const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
+                            coords = [mapaPiso.saidas[0][2] - 1, mapaPiso.saidas[0][1] - 1];
+                            //window.alert('Mapa piso: ' + coords);
+                            const eventDetail = {
+                                mapaPiso: mapaPiso,
+                                initialCoords: coords
+                            }
+
+                            // Lança o evento (que do lado do component há um método à espera).
+                            const event = new CustomEvent('teletransportePiso', { detail: eventDetail });
+                            window.dispatchEvent(event);
+
+                        });
+                    });
+                }
 
                 // Check if the player found the exit
                 if (this.maze.foundExit(this.player.position)) {
@@ -949,86 +938,86 @@ export default class ThumbRaiser {
                         }
                         if (this.collisionDoorHorizontal(newPosition)) {
                             let door = this.doorAtMoment();
-                                const originalPosition = {x: door[1].x};
-                                const initialPosition = { x: door[0].position.x };
-                                const targetPosition = { x: initialPosition.x - 1.0 };
+                            const originalPosition = { x: door[1].x };
+                            const initialPosition = { x: door[0].position.x };
+                            const targetPosition = { x: initialPosition.x - 1.0 };
 
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        door[0].position.x = initialPosition.x;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ x: originalPosition.x }, 1500) 
-                                            .onUpdate(() => {
-                                                door[0].position.x = initialPosition.x;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    door[0].position.x = initialPosition.x;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ x: originalPosition.x }, 1500)
+                                        .onUpdate(() => {
+                                            door[0].position.x = initialPosition.x;
+                                        })
+                                        .start();
+                                })
+                                .start();
                         }
                         if (this.collisionDoorVertical(newPosition)) {
                             let door = this.doorAtMoment();
-                                const originalPosition = {z: door[1].z};
-                                const initialPosition = { z: door[0].position.z };
-                                const targetPosition = { z: initialPosition.z - 1.0 };
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        door[0].position.z = initialPosition.z;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ z: originalPosition.z }, 1500) 
-                                            .onUpdate(() => {
-                                                door[0].position.z = initialPosition.z;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const originalPosition = { z: door[1].z };
+                            const initialPosition = { z: door[0].position.z };
+                            const targetPosition = { z: initialPosition.z - 1.0 };
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    door[0].position.z = initialPosition.z;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ z: originalPosition.z }, 1500)
+                                        .onUpdate(() => {
+                                            door[0].position.z = initialPosition.z;
+                                        })
+                                        .start();
+                                })
+                                .start();
                         }
 
                         if (this.collisionElevatorHorizontal(newPosition)) {
                             let elevator = this.elevatorAtMoment();
-                                const originalPosition = {x: elevator[1].x};
-                                const initialPosition = { x: elevator[0].position.x };
-                                const targetPosition = { x: initialPosition.x - 1.0 };
+                            const originalPosition = { x: elevator[1].x };
+                            const initialPosition = { x: elevator[0].position.x };
+                            const targetPosition = { x: initialPosition.x - 1.0 };
 
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        elevator[0].position.x = initialPosition.x;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ x: originalPosition.x }, 1500) 
-                                            .onUpdate(() => {
-                                                elevator[0].position.x = initialPosition.x;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    elevator[0].position.x = initialPosition.x;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ x: originalPosition.x }, 1500)
+                                        .onUpdate(() => {
+                                            elevator[0].position.x = initialPosition.x;
+                                        })
+                                        .start();
+                                })
+                                .start();
                         }
                         if (this.collisionElevatorVertical(newPosition)) {
                             let elevator = this.elevatorAtMoment();
-                                const originalPosition = {z: elevator[1].z};
-                                const initialPosition = { z: elevator[0].position.z };
-                                const targetPosition = { z: initialPosition.z - 1.0 };
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        elevator[0].position.z = initialPosition.z;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ z: originalPosition.z }, 1500) 
-                                            .onUpdate(() => {
-                                                elevator[0].position.z = initialPosition.z;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const originalPosition = { z: elevator[1].z };
+                            const initialPosition = { z: elevator[0].position.z };
+                            const targetPosition = { z: initialPosition.z - 1.0 };
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    elevator[0].position.z = initialPosition.z;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ z: originalPosition.z }, 1500)
+                                        .onUpdate(() => {
+                                            elevator[0].position.z = initialPosition.z;
+                                        })
+                                        .start();
+                                })
+                                .start();
                         }
                     }
                     else if (this.player.keyStates.forward) {
@@ -1044,90 +1033,90 @@ export default class ThumbRaiser {
                             //activeColisionHorizontal = true;
                             let door = this.doorAtMoment();
                             //if (activeColisionHorizontal) {
-                                const originalPosition = {x: door[1].x};
-                                const initialPosition = { x: door[0].position.x };
-                                const targetPosition = { x: initialPosition.x - 1.0 };
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        door[0].position.x = initialPosition.x;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ x: originalPosition.x }, 1500) // Reverse to the initial position
-                                            .onUpdate(() => {
-                                                door[0].position.x = initialPosition.x;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const originalPosition = { x: door[1].x };
+                            const initialPosition = { x: door[0].position.x };
+                            const targetPosition = { x: initialPosition.x - 1.0 };
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    door[0].position.x = initialPosition.x;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ x: originalPosition.x }, 1500) // Reverse to the initial position
+                                        .onUpdate(() => {
+                                            door[0].position.x = initialPosition.x;
+                                        })
+                                        .start();
+                                })
+                                .start();
                             //}
                         }
                         if (this.collisionDoorVertical(newPosition)) {
                             //activeColisionVertical = true;
                             let door = this.doorAtMoment();
                             //if (activeColisionVertical) {
-                                const originalPosition = {z: door[1].z};
-                                const initialPosition = { z: door[0].position.z };
-                                const targetPosition = { z: initialPosition.z - 1.0 };
+                            const originalPosition = { z: door[1].z };
+                            const initialPosition = { z: door[0].position.z };
+                            const targetPosition = { z: initialPosition.z - 1.0 };
 
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        door[0].position.z = initialPosition.z;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ z: originalPosition.z }, 1500) 
-                                            .onUpdate(() => {
-                                                door[0].position.z = initialPosition.z;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    door[0].position.z = initialPosition.z;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ z: originalPosition.z }, 1500)
+                                        .onUpdate(() => {
+                                            door[0].position.z = initialPosition.z;
+                                        })
+                                        .start();
+                                })
+                                .start();
                             //}
                         }
 
                         if (this.collisionElevatorHorizontal(newPosition)) {
                             let elevator = this.elevatorAtMoment();
-                                const originalPosition = {x: elevator[1].x};
-                                const initialPosition = { x: elevator[0].position.x };
-                                const targetPosition = { x: initialPosition.x - 1.0 };
+                            const originalPosition = { x: elevator[1].x };
+                            const initialPosition = { x: elevator[0].position.x };
+                            const targetPosition = { x: initialPosition.x - 1.0 };
 
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        elevator[0].position.x = initialPosition.x;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ x: originalPosition.x }, 1500) 
-                                            .onUpdate(() => {
-                                                elevator[0].position.x = initialPosition.x;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    elevator[0].position.x = initialPosition.x;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ x: originalPosition.x }, 1500)
+                                        .onUpdate(() => {
+                                            elevator[0].position.x = initialPosition.x;
+                                        })
+                                        .start();
+                                })
+                                .start();
                         }
                         if (this.collisionElevatorVertical(newPosition)) {
                             let elevator = this.elevatorAtMoment();
-                                const originalPosition = {z: elevator[1].z};
-                                const initialPosition = { z: elevator[0].position.z };
-                                const targetPosition = { z: initialPosition.z - 1.0 };
-                                const tween = new TWEEN.Tween(initialPosition)
-                                    .to(targetPosition, 1500)
-                                    .onUpdate(() => {
-                                        elevator[0].position.z = initialPosition.z;
-                                    })
-                                    .onComplete(() => {
-                                        const reverse = new TWEEN.Tween(initialPosition)
-                                            .to({ z: originalPosition.z }, 1500) 
-                                            .onUpdate(() => {
-                                                elevator[0].position.z = initialPosition.z;
-                                            })
-                                            .start();
-                                    })
-                                    .start();
+                            const originalPosition = { z: elevator[1].z };
+                            const initialPosition = { z: elevator[0].position.z };
+                            const targetPosition = { z: initialPosition.z - 1.0 };
+                            const tween = new TWEEN.Tween(initialPosition)
+                                .to(targetPosition, 1500)
+                                .onUpdate(() => {
+                                    elevator[0].position.z = initialPosition.z;
+                                })
+                                .onComplete(() => {
+                                    const reverse = new TWEEN.Tween(initialPosition)
+                                        .to({ z: originalPosition.z }, 1500)
+                                        .onUpdate(() => {
+                                            elevator[0].position.z = initialPosition.z;
+                                        })
+                                        .start();
+                                })
+                                .start();
                         }
                     }
                     else if (this.player.keyStates.jump) {

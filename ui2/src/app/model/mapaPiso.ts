@@ -4,7 +4,7 @@ export interface MapaPiso {
     largura: number;
     profundidade: number;
     mapa: number[][];
-    saidas: number[][];
+    saidas: string[][];
     elevador: number[][];
     saidaLocalizacao: number[];
   

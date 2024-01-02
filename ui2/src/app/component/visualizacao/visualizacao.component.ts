@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ElevadorService } from '../../service/elevador/elevador.service';
 import TWEEN from "@tweenjs/tween.js";
+import { PassagemService } from '../../service/passagem/passagem.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class VisualizacaoComponent implements OnInit {
   //public file: File | undefined;
   
 
-  constructor(private edificioService: EdificioService, private pisoService: PisoService, private mapaPisoService: MapaPisoService, private elevadorService : ElevadorService) {
+  constructor(private edificioService: EdificioService, private pisoService: PisoService, private mapaPisoService: MapaPisoService, private elevadorService : ElevadorService, private passagemService: PassagemService) {
   }
 
   /*onFileSelected(event: any) {
@@ -52,6 +53,7 @@ export class VisualizacaoComponent implements OnInit {
       this.edificioService,
       this.mapaPisoService,
       this.elevadorService,
+      this.passagemService,
       mapaPiso,
       this.canvas,
       {}, // General Parameters
@@ -76,6 +78,19 @@ export class VisualizacaoComponent implements OnInit {
 
   @HostListener('window:teletransporte', ['$event'])
   async teletransporte(event: CustomEvent){
+
+    const result : MapaPiso = await event.detail.mapaPiso;
+    const coords = await event.detail.initialCoords;
+
+    this.designacaoPiso = result.piso;
+    console.log('Evento: ' + result);
+    this.initialize(result, coords);
+    this.animate = this.animate.bind(this);
+    this.animate();
+  }
+
+  @HostListener('window:teletransportePiso', ['$event'])
+  async teletransportePiso(event: CustomEvent){
 
     const result : MapaPiso = await event.detail.mapaPiso;
     const coords = await event.detail.initialCoords;
@@ -143,7 +158,8 @@ export class VisualizacaoComponent implements OnInit {
       map: mapa.mapa,
       initialPosition: initialCoords,
       initialDirection: 0.0,
-      exitLocation: [-1,-1]
+      exitLocation: [-1,-1],
+      exits: mapa.saidas
     } as IMapaPisoFinal;
   }
 }
