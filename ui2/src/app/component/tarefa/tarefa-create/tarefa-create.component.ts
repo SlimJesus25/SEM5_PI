@@ -4,6 +4,10 @@ import { MessageService } from '../../../service/message/message.service';
 import { TarefaService } from '../../../service/tarefa/tarefa.service';
 import { SalaService } from '../../../service/sala/sala.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Edificio } from '../../../model/edificio';
+import { EdificioService } from '../../../service/edificio/edificio.service';
+import { PisoService } from '../../../service/piso/piso.service';
+import { Piso } from '../../../model/piso';
 
 @Component({
   selector: 'app-tarefa-create',
@@ -13,23 +17,28 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class TarefaCreateComponent implements OnInit {
 
   requisicao = {tipoDispositivo: "", user:"", estado:"pendente", tarefa:""}
-  tarefa = {tipoTarefa: "", origem: "", destino: "", requisicao:this.requisicao}
+  tarefa = {tipoTarefa: "", origem: "", destino: "", requisicao:this.requisicao, remetente: "", destinatario: "", edificio: "", pisoInicial: "", pisoFinal: ""}
   
   options = ["pick up & delivery", "vigilância", "limpeza"];
   
   origens: string[] = [];
   destinos: string[] = [];
+  edificios: string[] = [];
+  pisoInicials: string[] = []; 
+  pisoFinals: string[] = []; 
+  
   semDestino = false;
-
+  semDestinatario = false;
   constructor(
     private location: Location,
     private TarefaService: TarefaService,
     private messageService: MessageService,
     private salaService: SalaService,
+    private edificioService: EdificioService,
+    private pisoService: PisoService,
     private snackBar: MatSnackBar
   ) { 
-    this.salaService.getSalas().subscribe(salas => this.origens = salas.map(sala => sala.designacao));
-    this.salaService.getSalas().subscribe(salas => this.destinos = salas.map(sala => sala.designacao));
+    this.edificioService.getEdificios().subscribe(edificios => this.edificios = edificios.map(edificio => edificio.codigoEdificio));
   }
 
 
@@ -39,11 +48,31 @@ export class TarefaCreateComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
+  submitEdificio(){
+    this.pisoService.listPisos(this.tarefa.edificio).subscribe(pisos => this.pisoInicials = pisos.map(piso => piso.designacao));
+    this.pisoService.listPisos(this.tarefa.edificio).subscribe(pisos => this.pisoFinals = pisos.map(piso => piso.designacao));
+  }
+  
+  submitPisoInicial(){
 
+    this.salaService.getSalasPiso(this.tarefa.pisoInicial).subscribe(salas => this.origens = salas.map(sala => sala.designacao));
+
+  }
+  
+  submitPisoFinal(){
+    this.salaService.getSalasPiso(this.tarefa.pisoFinal).subscribe(salas => this.destinos = salas.map(sala => sala.designacao));
+  }
 
   showPontoTerminoField(): boolean {
     const cond = this.tarefa.tipoTarefa === this.options[0]
     this.semDestino = cond;
+    return cond;
+  }
+  
+  showDestinatarioField(): boolean {
+    const cond = this.tarefa.tipoTarefa === this.options[0]
+    this.semDestinatario = cond;
     return cond;
   }
 
@@ -52,6 +81,8 @@ export class TarefaCreateComponent implements OnInit {
     if(!this.semDestino)
       this.tarefa.destino = this.tarefa.origem;
     
+    if(!this.semDestinatario)
+      this.tarefa.destinatario = this.tarefa.remetente;
 
     let errorOrSuccess: any = this.TarefaService.createTarefa(this.tarefa);
     errorOrSuccess.subscribe(

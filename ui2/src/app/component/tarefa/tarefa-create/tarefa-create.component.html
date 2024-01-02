@@ -14,8 +14,38 @@
               <mat-option *ngFor="let option of options" [value]="option">{{option}}</mat-option>
             </mat-select>
           </mat-form-field>
-        </tr>  
-
+        </tr> 
+        
+        <tr>
+          <mat-form-field>
+            <mat-label>Edificio </mat-label>
+            <mat-select [(ngModel)]="tarefa.edificio">
+              <mat-option *ngFor="let edificio of edificios" [value]="edificio">{{edificio}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="submitEdificio()">Submeter</button>
+        </tr>
+        
+        <tr>
+          <mat-form-field>
+            <mat-label>Piso Inicial </mat-label>
+            <mat-select [(ngModel)]="tarefa.pisoInicial">
+              <mat-option *ngFor="let pisoInicial of pisoInicials" [value]="pisoInicial">{{pisoInicial}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="submitPisoInicial()">Submeter</button>
+        </tr>
+        
+        <tr>
+          <mat-form-field>
+            <mat-label>Piso Final </mat-label>
+            <mat-select [(ngModel)]="tarefa.pisoFinal">
+              <mat-option *ngFor="let pisoFinal of pisoFinals" [value]="pisoFinal">{{pisoFinal}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="submitPisoFinal()">Submeter</button>
+        </tr>
+        
         <tr>
           <mat-form-field>
             <mat-label>Ponto Inicial</mat-label>
@@ -24,6 +54,7 @@
             </mat-select>
           </mat-form-field>
         </tr>
+        
         <tr *ngIf="showPontoTerminoField()">
           <mat-form-field>
             <mat-label>Ponto Termino</mat-label>
@@ -32,6 +63,17 @@
             </mat-select>
           </mat-form-field>
         </tr>
+        
+        <tr *ngIf="showDestinatarioField()">
+          <th><label>Destinatario: </label></th>
+          <th><input type="string" [(ngModel)]="tarefa.destinatario" /></th>
+        </tr>
+        
+        <tr>
+          <th><label>Remetente: </label></th>
+          <th><input type="string" [(ngModel)]="tarefa.remetente" /></th>
+        </tr>
+        
         <tr>
           <th><label>Designacao de Tarefa: </label></th>
           <th><input type="string" [(ngModel)]="requisicao.tarefa" /></th>
@@ -42,5 +84,5 @@
       <button (click)="createTarefa()">Requisitar</button>
       <button class="buttonBack" (click)="goBack()">Retroceder</button>
     </div>
-</div>
+  </div>
 </body>
