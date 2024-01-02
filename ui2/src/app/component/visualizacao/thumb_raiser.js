@@ -26,6 +26,8 @@ import UserInterface from "./user_interface.js";
 import { PassagemService } from "../../service/passagem/passagem.service.js";
 import TWEEN from "@tweenjs/tween.js";
 import cloneDeep from 'lodash/cloneDeep';
+import { map } from 'rxjs/operators';
+
 
 /*
  * generalParameters = {
@@ -315,6 +317,8 @@ export default class ThumbRaiser {
         this.resetAll.addEventListener("click", event => this.buttonClick(event));
 
         this.activeElement = document.activeElement;
+
+        this.active2 = false;
     }
 
     buildHelpPanel() {
@@ -719,6 +723,7 @@ export default class ThumbRaiser {
             const deltaT = this.clock.getDelta();
             this.animations.update(deltaT);
             let active = false;
+            
 
             // Update the player
             if (!this.animations.actionInProgress) {
@@ -729,6 +734,7 @@ export default class ThumbRaiser {
                 if (!this.maze.foundElevador(this.player.position) && !this.maze.foundPassagem(this.player.position) && infoElement.style.visibility === 'visible') {
                     infoElement.style.visibility = 'hidden';
                     active = false;
+                    this.active2 = false;
                 }
 
                 // let elevatorElement = document.getElementById('elevatorPainel');
@@ -795,7 +801,7 @@ export default class ThumbRaiser {
 
                                                     const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
                                                         coords = [mapaPiso.elevador[0][2] - 1, mapaPiso.elevador[0][1] - 1];
-                                                        window.alert('Mapa piso: ' + coords);
+                                                        //window.alert('Mapa piso: ' + coords);
                                                         const eventDetail = {
                                                             mapaPiso: mapaPiso,
                                                             initialCoords: coords
@@ -859,9 +865,9 @@ export default class ThumbRaiser {
                 // O parametro que recebe o mapa piso do thumb raiser vai ter que receber mais coisas, nomeadamente, os elevadores e passagens (elevators, exits).
                 let coordsPiso;
 
-                if ((coordsPiso = this.maze.foundPassagem(this.player.position)) != false) {
+                if ((coordsPiso = this.maze.foundPassagem(this.player.position)) != false && !this.active2) {
                     let passagens = [];
-
+                    this.active2 = true;
                     let mapaPisoSvc = this.mapaPisoService;
                     this.passagemService.getPassagens().subscribe(passagensGeral => {
                         passagensGeral.forEach(passagem => {
@@ -871,31 +877,116 @@ export default class ThumbRaiser {
                         });
                         let selectedPiso;
                         let coordsCorredor;
+                        let passagemNome;
+                        let found = false;
                         for (let i = 0; i < passagens.length; i++) {
                             if (passagens[i].designacao === this.mazeParameters.mazeData.exits[i][0]) {
+
+                                if(found)
+                                    break;
+                                // Transforma as coordenadas do jogador em índices do mapa.
                                 coordsCorredor = this.maze.cartesianToCell(this.player.position);
-                                if (passagens[i].pisoA === this.mazeParameters.mazeData.piso && this.mazeParameters.mazeData.exits[i][1] === coordsCorredor[0] && this.mazeParameters.mazeData.exits[i][2] === coordsCorredor[2]){
-                                    selectedPiso = passagens[i].pisoB;
+
+                                if (passagens[i].pisoA == this.mazeParameters.mazeData.piso){
+                                    for(let j=0;j<this.mazeParameters.mazeData.exits.length;j++){
+                                        if(found)
+                                            break;
+                                        const cordsB = this.mazeParameters.mazeData.exits[j];
+                                        if(coordsCorredor[1] == parseInt(cordsB[1]-1) && coordsCorredor[0] == parseInt(cordsB[2]-1)){
+                                            selectedPiso = passagens[i].pisoB;
+                                            found = true;
+                                            passagemNome = this.mazeParameters.mazeData.exits[j][0];
+                                            break;
+                                        }
+                                    }
                                 }
-                                else {
-                                    selectedPiso = passagens[i].pisoA;
+                                else if(passagens[i].pisoB == this.mazeParameters.mazeData.piso){
+                                    for(let j=0;j<this.mazeParameters.mazeData.exits.length;j++){
+                                        if(found)
+                                            break;
+                                        const cordsB = this.mazeParameters.mazeData.exits[j];
+                                        if(coordsCorredor[1] == parseInt(cordsB[1]) && coordsCorredor[0] == parseInt(cordsB[2])){
+                                            selectedPiso = passagens[i].pisoA;
+                                            found = true;
+                                            passagemNome = this.mazeParameters.mazeData.exits[j][0];
+                                            break;
+                                        }
+                                    }
                                 }
                             }
 
                         }
-                        const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
-                            coords = [mapaPiso.saidas[0][2] - 1, mapaPiso.saidas[0][1] - 1];
-                            //window.alert('Mapa piso: ' + coords);
+
+                        if(found){
+
+                            let coords;
+
+                            /*
+                            const mapaPisoObservable = mapaPisoSvc.getMapaPorPiso(selectedPiso);
+
+                            const subscription = mapaPisoObservable.pipe(
+                            map(mapaPiso => {
+                                for (let i = 0; i < mapaPiso.saidas.length; i++) {
+                                if (mapaPiso.saidas[i][0] === passagemNome) {
+                                    return [mapaPiso.saidas[i][2], mapaPiso.saidas[i][1]];
+                                }
+                                }
+                                return null; // or any default value if not found
+                            })
+                            ).subscribe(result => {
+                            if (result) {
+                                coords = result;
+                                alert('Coords: ' + coords);
+                                // Use coords or perform other operations here
+                            } else {
+                                alert('Passagem not found');
+                            }
+
+                            // You can use coords or perform other operations here as well
+                            });
+
+                            //subscription.unsubscribe();
+
                             const eventDetail = {
                                 mapaPiso: mapaPiso,
                                 initialCoords: coords
-                            }
+                            } 
 
                             // Lança o evento (que do lado do component há um método à espera).
                             const event = new CustomEvent('teletransportePiso', { detail: eventDetail });
-                            window.dispatchEvent(event);
+                            window.dispatchEvent(event);*/
+                            
+                            const mapaPisoACarregar = mapaPisoSvc.getMapaPorPiso(selectedPiso).subscribe(mapaPiso => {
+                                let b = false;
+                                for(let i=0;i<mapaPiso.saidas.length;i++){
+                                    if(b)
+                                        break;
+                                    //alert('Saídas: ' + mapaPiso.saidas);
+                                    alert('Designacao: ' + mapaPiso.saidas[i][0] + 'Y: ' + mapaPiso.saidas[i][1])
+                                    const a = mapaPiso.saidas[i][0];
+                                    if(a == passagemNome){
+                                        coords = [mapaPiso.saidas[i][2], mapaPiso.saidas[i][1]];
+                                        b = true;
+                                    }
+                                }
 
-                        });
+                                //coords = [mapaPiso.saidas[0][2] - 1, mapaPiso.saidas[0][1] - 1];
+                                //window.alert('Mapa piso: ' + coords);
+                                if(!b){
+                                    const eventDetail = {
+                                        mapaPiso: mapaPiso,
+                                        initialCoords: coords
+                                    } 
+
+                                    // Lança o evento (que do lado do component há um método à espera).
+                                    const event = new CustomEvent('teletransportePiso', { detail: eventDetail });
+                                    window.dispatchEvent(event);
+                                }
+                            });
+                            
+                        }
+
+                        this.active2 = false;
                     });
                 }
 

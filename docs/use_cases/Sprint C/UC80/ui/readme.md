@@ -80,7 +80,7 @@ os utilizadores que utilizem a funcionalidade de registo serão sempre do tipo "
 
 ##### 3.1.5.1 Nível 3
 
-![vista implementacao 3](/docs/implementation_view/iv3.svg "Vista implementação - nível 3")
+![vista implementacao 3](/docs/implementation_view/sprint2/iv3.svg "Vista implementação - nível 3")
 
 #### 3.1.6 Vista física
 
